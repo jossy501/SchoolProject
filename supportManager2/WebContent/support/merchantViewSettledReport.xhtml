@@ -1,0 +1,471 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="../WEB-INF/layout/basic_layout.xhtml">
+                
+<ui:define name="body">
+
+
+    <h:form id="manageCardFrm">
+ 
+        
+        <!-- Detailed Report for Unsettled -->
+        <a4j:commandButton id="submit"
+                          value="    Back   " onclick="history.back()">
+        </a4j:commandButton>
+        <rich:panel style="width:100%" rendered = "#{reportAction.optionType eq 'U' and reportAction.optionType2 eq 'DR'}">
+
+           <f:facet name="header">
+
+           <rich:columnGroup>
+		         <rich:column colspan="4">
+			       <h:outputText value="Unsettled Detailed Report [ Total Record(s) found :  #{reportAction.merchantReportLog.size()} ]" />
+			           <s:link  id="drUreplogo" view="/excel-reports-templates/merchantDetailedExcelReport.xhtml"  styleClass= "menu-button"  rendered ="#{reportAction.merchantReportLog.size() > 0}"  >
+			            <h:graphicImage value="/images/excel5.jpg"/>
+			           </s:link>
+			      </rich:column>
+			 </rich:columnGroup>
+           
+           </f:facet>
+
+            <rich:dataTable id="drUcardTb" rows="500" value="#{reportAction.merchantReportLog}"  var="crd">
+                 
+                <rich:column>
+                    <f:facet name="header">SN</f:facet>
+				    <h:outputText value="#{crd.counter}"/>
+                </rich:column>
+                 
+                <rich:column>
+                    <f:facet name="header">Merchant Code</f:facet>
+				    <h:outputText value="#{crd.merchat_code}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Card No</f:facet>
+				    <h:outputText value="#{crd.card_num}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Transaction No</f:facet>
+				    <h:outputText value="#{crd.trans_no}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Transaction Description</f:facet>
+				    <h:outputText value="#{crd.trans_desc}"/>
+                </rich:column>
+                
+                 <rich:column>
+                    <f:facet name="header">Transaction Amount</f:facet>
+				    <h:outputText value="#{reportAction.makeDouble(crd.trans_amount)}" style="float: right;">
+				    	<f:convertNumber pattern="#,###,###,###,###.00"/>
+				    </h:outputText>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Channel</f:facet>
+				    <h:outputText value="#{crd.channelid}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Date</f:facet>
+				    <h:outputText value="#{crd.trans_date}"/>
+                </rich:column>
+                
+                <f:facet name="footer">
+                
+                	<rich:columnGroup>
+                        <rich:column colspan="5">
+                        	<div align="right">
+                        		Total Amount
+                        	</div>
+                        </rich:column>
+                        <rich:column colspan="3">
+                            <div align="left">
+                                <h:outputText value="#{reportAction.makeDouble(reportAction.total_amount)}">
+                                    <f:convertNumber pattern="#,###,###,###,###.00"/>
+                                </h:outputText>
+                            </div>
+                        </rich:column>
+                    </rich:columnGroup>
+                </f:facet>
+            </rich:dataTable>
+			<rich:datascroller id="drUTableDS" for="drUcardTb"  renderIfSinglePage="true">
+                <f:facet name="first">
+                    <h:outputText value="First" />
+                </f:facet>
+                <f:facet name="last">
+                    <h:outputText value="Last" />
+                </f:facet>
+            </rich:datascroller>
+
+        </rich:panel>
+        
+        
+        <!-- Detailed Report  for settled -->
+        
+        <rich:panel style="width:100%" rendered = "#{reportAction.strParam != null and reportAction.optionType eq 'S' and reportAction.optionType2 eq 'DR'}">
+
+           <f:facet name="header">
+
+           <rich:columnGroup>
+		         <rich:column colspan="4">
+			       <h:outputText value="Settled Detailed Report [ Total Record(s) found :  #{reportAction.merchantReportLog.size()} ]" />
+			           <s:link  id="drSreplogo" view="/excel-reports-templates/merchantDetailedExcelReport.xhtml"  styleClass= "menu-button"  rendered ="#{reportAction.merchantReportLog.size() > 0}"  >
+			            <h:graphicImage value="/images/excel5.jpg"/>
+			           </s:link>
+			      </rich:column>
+			 </rich:columnGroup>
+           
+           </f:facet>
+
+            <rich:dataTable id="drScardTb" rows="500" value="#{reportAction.merchantReportLog}"  var="crd">
+                 
+                <rich:column>
+                    <f:facet name="header">SN</f:facet>
+				    <h:outputText value="#{crd.counter}"/>
+                </rich:column> 
+                 
+                <rich:column>
+                    <f:facet name="header">Merchant Code</f:facet>
+				    <h:outputText value="#{crd.merchat_code}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Card No</f:facet>
+				    <h:outputText value="#{crd.card_num}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Transaction No</f:facet>
+				    <h:outputText value="#{crd.trans_no}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Transaction Description</f:facet>
+				    <h:outputText value="#{crd.trans_desc}"/>
+                </rich:column>
+                
+                 <rich:column>
+                    <f:facet name="header">Transaction Amount</f:facet>
+				    <h:outputText value="#{reportAction.makeDouble(crd.trans_amount)}" style="float: right;">
+				    	<f:convertNumber pattern="#,###,###,###,###.00"/>
+				    </h:outputText>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Channel</f:facet>
+				    <h:outputText value="#{crd.channelid}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Settle Batch</f:facet>
+				    <h:outputText value="#{crd.settle_batch}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Date</f:facet>
+				    <h:outputText value="#{crd.trans_date}"/>
+                </rich:column>
+                
+                <f:facet name="footer">
+                
+                	<rich:columnGroup>
+                        <rich:column colspan="5">
+                        	<div align="right">
+                        		Total Amount
+                        	</div>
+                        </rich:column>
+                        <rich:column colspan="4">
+                            <div align="left">
+                                <h:outputText value="#{reportAction.makeDouble(reportAction.total_amount)}">
+                                    <f:convertNumber pattern="#,###,###,###,###.00"/>
+                                </h:outputText>
+                            </div>
+                        </rich:column>
+                    </rich:columnGroup>
+                </f:facet>
+            </rich:dataTable>
+			<rich:datascroller id="drSTableDS" for="drScardTb"  renderIfSinglePage="true">
+                <f:facet name="first">
+                    <h:outputText value="First" />
+                </f:facet>
+                <f:facet name="last">
+                    <h:outputText value="Last" />
+                </f:facet>
+            </rich:datascroller>
+
+        </rich:panel>
+       
+       <!-- A  -->
+       <rich:panel style="width:100%" rendered = "#{reportAction.optionType eq 'A' and reportAction.optionType2 eq 'DR'}">
+
+           <f:facet name="header">
+           <h:outputText value="Detailed Report [ Total Record(s) found :  #{reportAction.merchantReportLog.size()} ]" />
+			<!--  
+           <rich:columnGroup>
+		         <rich:column colspan="4">
+			       <h:outputText value="Detailed Report [ Total Record(s) found :  #{reportAction.merchantReportLog.size()} ]" />
+			           <s:link  id="drAreplogo" view="/excel-reports-templates/merchantDetailedExcelReport.xhtml"  styleClass= "menu-button"  rendered ="#{reportAction.merchantReportLog.size() > 0}"  >
+			            <h:graphicImage value="/images/excel5.jpg"/>
+			           </s:link>
+			      </rich:column>
+			 </rich:columnGroup>
+           -->
+           </f:facet>
+
+            <rich:dataTable id="drAcardTb" rows="500" value="#{reportAction.merchantReportLog}"  var="crd">
+                 
+                <rich:column>
+                    <f:facet name="header">SN</f:facet>
+				    <h:outputText value="#{crd.counter}"/>
+                </rich:column>
+                 
+                <rich:column>
+                    <f:facet name="header">Merchant Code</f:facet>
+				    <h:outputText value="#{crd.merchat_code}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Card No</f:facet>
+				    <h:outputText value="#{crd.card_num}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Transaction No</f:facet>
+				    <h:outputText value="#{crd.trans_no}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Transaction Description</f:facet>
+				    <h:outputText value="#{crd.trans_desc}"/>
+                </rich:column>
+                
+                 <rich:column>
+                    <f:facet name="header">Transaction Amount</f:facet>
+				    <h:outputText value="#{reportAction.makeDouble(crd.trans_amount)}" style="float: right;">
+				    	<f:convertNumber pattern="#,###,###,###,###.00"/>
+				    </h:outputText>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Channel</f:facet>
+				    <h:outputText value="#{crd.channelid}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Date</f:facet>
+				    <h:outputText value="#{crd.trans_date}"/>
+                </rich:column>
+                
+                <f:facet name="footer">
+                
+                	<rich:columnGroup>
+                        <rich:column colspan="5">
+                        	<div align="right">
+                        		Total Amount
+                        	</div>
+                        </rich:column>
+                        <rich:column colspan="3">
+                            <div align="left">
+                                <h:outputText value="#{reportAction.makeDouble(reportAction.total_amount)}">
+                                    <f:convertNumber pattern="#,###,###,###,###.00"/>
+                                </h:outputText>
+                            </div>
+                        </rich:column>
+                    </rich:columnGroup>
+                </f:facet>
+            </rich:dataTable>
+			<rich:datascroller id="drATableDS" for="drAcardTb"  renderIfSinglePage="true">
+                <f:facet name="first">
+                    <h:outputText value="First" />
+                </f:facet>
+                <f:facet name="last">
+                    <h:outputText value="Last" />
+                </f:facet>
+            </rich:datascroller>
+
+        </rich:panel>
+        
+        
+       <!-- B  -->
+       <rich:panel style="width:100%" rendered = "#{reportAction.optionType eq 'B' and reportAction.optionType2 eq 'DR'}">
+
+           <f:facet name="header">
+           <h:outputText value="Detailed Report [ Total Record(s) found :  #{reportAction.merchantReportLog.size()} ]" />
+			<!--  
+           <rich:columnGroup>
+		         <rich:column colspan="4">
+			       <h:outputText value="Detailed Report [ Total Record(s) found :  #{reportAction.merchantReportLog.size()} ]" />
+			           <s:link  id="drAreplogo" view="/excel-reports-templates/merchantDetailedExcelReport.xhtml"  styleClass= "menu-button"  rendered ="#{reportAction.merchantReportLog.size() > 0}"  >
+			            <h:graphicImage value="/images/excel5.jpg"/>
+			           </s:link>
+			      </rich:column>
+			 </rich:columnGroup>
+           -->
+           </f:facet>
+
+            <rich:dataTable id="drBcardTb" rows="500" value="#{reportAction.merchantReportLog}"  var="crd">
+                 
+                <rich:column>
+                    <f:facet name="header">SN</f:facet>
+				    <h:outputText value="#{crd.counter}"/>
+                </rich:column>
+                 
+                <rich:column>
+                    <f:facet name="header">Merchant Code</f:facet>
+				    <h:outputText value="#{crd.merchat_code}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Card No</f:facet>
+				    <h:outputText value="#{crd.card_num}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Transaction No</f:facet>
+				    <h:outputText value="#{crd.trans_no}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Transaction Description</f:facet>
+				    <h:outputText value="#{crd.trans_desc}"/>
+                </rich:column>
+                
+                 <rich:column>
+                    <f:facet name="header">Transaction Amount</f:facet>
+				    <h:outputText value="#{reportAction.makeDouble(crd.trans_amount)}" style="float: right;">
+				    	<f:convertNumber pattern="#,###,###,###,###.00"/>
+				    </h:outputText>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Channel</f:facet>
+				    <h:outputText value="#{crd.channelid}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Date</f:facet>
+				    <h:outputText value="#{crd.trans_date}"/>
+                </rich:column>
+                
+                <f:facet name="footer">
+                
+                	<rich:columnGroup>
+                        <rich:column colspan="5">
+                        	<div align="right">
+                        		Total Amount
+                        	</div>
+                        </rich:column>
+                        <rich:column colspan="3">
+                            <div align="left">
+                                <h:outputText value="#{reportAction.makeDouble(reportAction.total_amount)}">
+                                    <f:convertNumber pattern="#,###,###,###,###.00"/>
+                                </h:outputText>
+                            </div>
+                        </rich:column>
+                    </rich:columnGroup>
+                </f:facet>
+            </rich:dataTable>
+			<rich:datascroller id="drBTableDS" for="drBcardTb"  renderIfSinglePage="true">
+                <f:facet name="first">
+                    <h:outputText value="First" />
+                </f:facet>
+                <f:facet name="last">
+                    <h:outputText value="Last" />
+                </f:facet>
+            </rich:datascroller>
+
+        </rich:panel>
+
+		<!-- C  -->
+       <rich:panel style="width:100%" rendered = "#{reportAction.optionType eq 'C' and reportAction.optionType2 eq 'DR'}">
+
+           <f:facet name="header">
+           <h:outputText value="Detailed Report [ Total Record(s) found :  #{reportAction.merchantReportLog.size()} ]" />
+           </f:facet>
+
+            <rich:dataTable id="drCcardTb" rows="500" value="#{reportAction.merchantReportLog}"  var="crd">
+                 
+                <rich:column>
+                    <f:facet name="header">SN</f:facet>
+				    <h:outputText value="#{crd.counter}"/>
+                </rich:column>
+                 
+                <rich:column>
+                    <f:facet name="header">Merchant Code</f:facet>
+				    <h:outputText value="#{crd.merchat_code}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Card No</f:facet>
+				    <h:outputText value="#{crd.card_num}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Transaction No</f:facet>
+				    <h:outputText value="#{crd.trans_no}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Transaction Description</f:facet>
+				    <h:outputText value="#{crd.trans_desc}"/>
+                </rich:column>
+                
+                 <rich:column>
+                    <f:facet name="header">Transaction Amount</f:facet>
+				    <h:outputText value="#{reportAction.makeDouble(crd.trans_amount)}" style="float: right;">
+				    	<f:convertNumber pattern="#,###,###,###,###.00"/>
+				    </h:outputText>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Channel</f:facet>
+				    <h:outputText value="#{crd.channelid}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Date</f:facet>
+				    <h:outputText value="#{crd.trans_date}"/>
+                </rich:column>
+                
+                <f:facet name="footer">
+                
+                	<rich:columnGroup>
+                        <rich:column colspan="5">
+                        	<div align="right">
+                        		Total Amount
+                        	</div>
+                        </rich:column>
+                        <rich:column colspan="3">
+                            <div align="left">
+                                <h:outputText value="#{reportAction.makeDouble(reportAction.total_amount)}">
+                                    <f:convertNumber pattern="#,###,###,###,###.00"/>
+                                </h:outputText>
+                            </div>
+                        </rich:column>
+                    </rich:columnGroup>
+                </f:facet>
+            </rich:dataTable>
+			<rich:datascroller id="drCTableDS" for="drCcardTb"  renderIfSinglePage="true">
+                <f:facet name="first">
+                    <h:outputText value="First" />
+                </f:facet>
+                <f:facet name="last">
+                    <h:outputText value="Last" />
+                </f:facet>
+            </rich:datascroller>
+
+        </rich:panel>
+
+
+    </h:form>
+    
+</ui:define>
+</ui:composition>

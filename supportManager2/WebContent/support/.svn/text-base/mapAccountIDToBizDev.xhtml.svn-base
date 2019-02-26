@@ -1,0 +1,103 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="../WEB-INF/layout/basic_layout.xhtml">
+              
+<ui:define name="body">
+    <h:form id="cardFrm">
+    
+    <rich:panel style="width:60%">
+            <f:facet name="header">Map Account ID To Business Development Personnel</f:facet>
+            <rich:graphValidator>
+                <h:panelGrid columns="2" rowClasses="prop" columnClasses="name2,value">
+                    
+                    
+                    <h:outputLabel for="sUser" value="User"/>
+                    <h:panelGroup>
+                    
+                        <h:selectOneMenu id="sUser" value="#{adminAction.curUser.username}" requiredMessage="User is required" required="true">
+                          
+						  <s:selectItems value="#{adminAction.userBizDevList}" var = "r" itemValue="#{r.username}" label = "#{r.lastname} - #{r.firstname}" 
+						  	noSelectionLabel = ".:: Select ::."/>
+						  		
+						</h:selectOneMenu> 
+						
+                        
+                        <h:outputLabel value=" *" styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="sUser" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+
+                    
+               
+		           <h:outputLabel for="card" value="Account ID" />
+		        	<h:panelGroup>
+		            	<h:inputText id="card" value="#{adminAction.curUser.account_id}" size="40"/>
+		                <br/>
+		                <rich:message for="card" styleClass="messagesingle"
+		                              errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/> 
+		            </h:panelGroup>
+
+                  </h:panelGrid>  
+                  
+                  <div class="actionButtons" >
+		            <a4j:commandButton oncomplete="document.getElementById('cardFrm:addToQueue').disabled=false"
+		                                   onclick="document.getElementById('cardFrm:addToQueue').disabled=true" reRender="modalPanel2"
+		                                   id="addToQueue" value="  Map  " action="#{adminAction.mapAccountIDToBizDev}"/>
+		          </div>
+                  
+                  <br/>
+				
+            </rich:graphValidator>
+
+        </rich:panel>
+        
+        
+        <rich:panel style="width:100%" id="modalPanel2">
+		
+           <f:facet name="header">Total Merchants Queued  #{adminAction.userMapList.size()} ]</f:facet>
+
+            <rich:dataTable id="mcardTb" rows="10" value="#{adminAction.userMapList}"  var="crd">
+                
+                <rich:column>
+                    <f:facet name="header">Business Development Personnel</f:facet>
+				    <h:outputText value="#{crd.username}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Account ID</f:facet>
+                    <h:outputText value="#{crd.account_id}"/>
+                </rich:column>
+
+                <rich:column>
+                    <f:facet name="header">Remove</f:facet>
+				    <a4j:commandButton image="/images/invalid.png" action="#{adminAction.deleteMappedAccountID}" reRender="modalPanel2">
+						<f:setPropertyActionListener target="#{adminAction.edit_id}" value="#{crd.mapping_id}" />
+					</a4j:commandButton>
+                </rich:column>
+                
+                <f:facet name="footer">
+                    <rich:datascroller id="cardTableDS" for="mcardTb"  renderIfSinglePage="true">
+                        <f:facet name="first">
+                            <h:outputText value="First" />
+                        </f:facet>
+                        <f:facet name="last">
+                            <h:outputText value="Last" />
+                        </f:facet>
+                    </rich:datascroller>
+                </f:facet>
+            </rich:dataTable>
+
+
+        </rich:panel>
+    
+    </h:form>
+</ui:define>
+</ui:composition>

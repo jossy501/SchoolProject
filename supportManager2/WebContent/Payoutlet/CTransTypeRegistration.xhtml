@@ -1,0 +1,145 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="../WEB-INF/layout/basic_layout.xhtml">
+                
+<ui:define name="body">
+
+
+	<!-- processing panel -->
+    
+    <rich:modalPanel id="panelp" width="150" height="50">
+       <h:form id="pFrm">
+        <h:panelGrid columns="1" rowClasses="prop" columnClasses="name2,value">
+           <h:outputText value="Please wait...." styleClass="messagesingle" align="center">
+               <h:graphicImage value="/images/loading_small.gif"/>
+           </h:outputText>
+          </h:panelGrid>  
+         </h:form>
+    </rich:modalPanel>
+
+    <h:form id="courseReg">
+   
+        <rich:panel style="width:40%">
+            <f:facet name="header"> :: Transaction Type Registration ::</f:facet>
+            <rich:graphValidator>
+                <h:panelGrid columns="2" rowClasses="prop" columnClasses="name2,value">
+                
+                  <h:outputLabel  value="Trans Id : "/>
+                    <h:panelGroup>
+                        <h:inputText id="transId" value="#{payoutletSetUpAction.cTransType.transId}" size="20" required="true" requiredMessage="Trans Id Required" />
+                        <h:outputLabel value=" * " styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="transId" styleClass="messagesingle"
+                              errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>  
+                    </h:panelGroup>
+				
+                   <h:outputLabel  value="Merchant Code : "/>
+                    <h:panelGroup>
+                        <h:inputText id="merchantcode" value="#{payoutletSetUpAction.cTransType.merchantCode}" size="20" required="true" requiredMessage="Merchant code Required" />
+                        <h:outputLabel value=" * " styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="merchantcode" styleClass="messagesingle"
+                              errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>  
+                    </h:panelGroup>
+                    
+                   
+                    
+                    <h:outputLabel  value="Trans Type Name : "/>
+                    <h:panelGroup>
+                        <h:inputText id="typename" value="#{payoutletSetUpAction.cTransType.typeName}" size="20" required="true" requiredMessage="Transaction Type Name Required" />
+                        <h:outputLabel value=" * " styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="typename" styleClass="messagesingle"
+                              errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>  
+                    </h:panelGroup>
+                    
+                    
+                    <h:outputLabel  value="Type Amount : "/>
+                    <h:panelGroup>
+                        <h:inputText id="typeamount" value="#{payoutletSetUpAction.cTransType.typeAmount}" size="20" required="true" requiredMessage="Amount Required" />
+                        <h:outputLabel value=" * " styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="typeamount" styleClass="messagesingle"
+                              errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>  
+                    </h:panelGroup>
+                   
+                   
+                    <h:outputLabel  value="Type Symbol : "/>
+                    <h:panelGroup>
+                        <h:inputText id="symbol" value="#{payoutletSetUpAction.cTransType.typeSymbol}" size="20" required="true" requiredMessage="Type Symbol Required" />
+                        <h:outputLabel value=" * " styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="symbol" styleClass="messagesingle"
+                              errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>  
+                    </h:panelGroup>
+                    
+                    <h:outputLabel  value="Type Quantity : "/>
+                    <h:panelGroup>
+                        <h:inputText id="quantity" value="#{payoutletSetUpAction.cTransType.typeQuantity}" size="20" required="true" requiredMessage="Type Quantity Required" />
+                        <h:outputLabel value=" * " styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="quantity" styleClass="messagesingle"
+                              errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>  
+                    </h:panelGroup>
+                    
+                    <h:outputLabel  value="Add Fee : "/>
+                    <h:panelGroup>
+                        <h:inputText id="fee" value="#{payoutletSetUpAction.cTransType.addFee}" size="20" required="true" requiredMessage="Add Fee Required" />
+                        <h:outputLabel value=" * " styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="fee" styleClass="messagesingle"
+                              errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>  
+                    </h:panelGroup>
+                    <h:outputLabel  value="Is Must : "/>
+                    <h:panelGroup>
+                        <h:inputText id="ismust" value="#{payoutletSetUpAction.cTransType.isMust}" size="20" required="true" requiredMessage="Is Must Required" />
+                        <h:outputLabel value=" * " styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="ismust" styleClass="messagesingle"
+                              errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>  
+                    </h:panelGroup>
+                    
+                     <h:outputLabel  value="Agency Id : "/>
+                    <h:panelGroup>
+                        <h:inputText id="agentId" value="#{payoutletSetUpAction.cTransType.agencyId}" size="20" required="true" requiredMessage="Agency Id Required" />
+                        <h:outputLabel value=" * " styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="agentId" styleClass="messagesingle"
+                              errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>  
+                    </h:panelGroup>
+                    
+                     <h:outputLabel  value="ALT Merchant Code: "/>
+                    <h:panelGroup>
+                        <h:inputText id="altmerchant" value="#{payoutletSetUpAction.cTransType.altMerchantCode}" size="20" required="true" requiredMessage="ALT Merchant Code Required" />
+                        <h:outputLabel value=" * " styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="altmerchant" styleClass="messagesingle"
+                              errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>  
+                    </h:panelGroup>
+                   
+                  </h:panelGrid>  
+                   
+            </rich:graphValidator>
+
+        </rich:panel>
+	
+		
+        <div class="actionButtons">
+            
+            <h:commandButton id="submit" value="  Create-Setup  " action="#{payoutletSetUpAction.createTransType}" reRender="manageCardFrm">
+            	<rich:componentControl for="panelp" attachTo="submit" operation="show" event="onclick"/>
+            </h:commandButton>
+            
+        </div>
+	
+	</h:form>
+
+</ui:define>
+</ui:composition>

@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/model
+END
+AuthenticationModel.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/model/AuthenticationModel.java
+END
+AdminModel.java
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/model/AdminModel.java
+END
+ReportModel.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/model/ReportModel.java
+END
+MerchantReportModel.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/model/MerchantReportModel.java
+END

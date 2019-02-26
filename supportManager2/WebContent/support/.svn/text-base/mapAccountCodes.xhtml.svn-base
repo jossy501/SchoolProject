@@ -1,0 +1,112 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="../WEB-INF/layout/basic_layout.xhtml">
+              
+<ui:define name="body">
+
+	<!-- processing panel -->
+    
+    <rich:modalPanel id="panelp" width="150" height="50">
+       <h:form id="pFrm">
+        <h:panelGrid columns="1" rowClasses="prop" columnClasses="name2,value">
+           <h:outputText value="Please wait...." styleClass="messagesingle" align="center">
+               <h:graphicImage value="/images/loading_small.gif"/>
+           </h:outputText>
+          </h:panelGrid>  
+         </h:form>
+    </rich:modalPanel>
+
+    <h:form id="cardFrm">
+    
+    <rich:panel style="width:60%">
+            <f:facet name="header">Map My Merchants To My Account</f:facet>
+            <rich:graphValidator>
+                <h:panelGrid columns="2" rowClasses="prop" columnClasses="name2,value">
+                    
+                    
+                    <h:outputLabel for="card" value="Merchant Code/Name" />
+		        	<h:panelGroup>
+		            	<h:inputText id="card" value="#{adminAction.merchant_name}" size="40"/>
+		            	<div class="actionButtons">
+            
+			            <a4j:commandButton oncomplete="document.getElementById('cardFrm:submit').disabled=false"
+			                                   onclick="document.getElementById('cardFrm:submit').disabled=true;" reRender="cardFrm"
+			                                   id="submit" value="   Search  " action="#{adminAction.loadMerchants}"/>
+			            
+			        </div>
+		            </h:panelGroup>
+                    
+                    <h:outputLabel id="email_label" styleClass="vertical-align:top;" value="Merchants" />
+                    <h:panelGroup>
+                    	<rich:pickList sourceListWidth="200" targetListWidth="200" value = "#{adminAction.userPickList}" id ="modalPanel" >
+                    		<s:selectItems value="#{adminAction.merchantSearchLog}" var = "r" itemValue="#{r.merchant_code}:#{r.merchant_name}" label = "#{r.merchant_code} - #{r.merchant_name}"/>
+			        	</rich:pickList>
+                    </h:panelGroup>
+                    
+                  </h:panelGrid>  
+                  
+                  <div class="actionButtons" >
+		            
+		             <h:commandButton id="addToQueue" value="  Map  " action="#{adminAction.mapMerchantsToBizDev}">
+		            	<rich:componentControl for="panelp" attachTo="addToQueue" operation="show" event="onclick"/>
+		            </h:commandButton> 
+		                                   
+		          </div>
+                  
+                  <br/>
+				
+				<rich:panel style="width:100%" id="modalPanel2">
+		
+		           <f:facet name="header">Total Merchants Queued  #{adminAction.myMerchantList.size()} ]</f:facet>
+		
+		            <rich:dataTable id="mcardTb" rows="10000" value="#{adminAction.myMerchantList}"  var="crd">
+		                
+		                <rich:column>
+		                    <f:facet name="header">Merchant Code</f:facet>
+		                    <h:outputText value="#{crd.merchant_code}"/>
+		                </rich:column>
+		                
+		                <rich:column>
+		                    <f:facet name="header">Merchant Name</f:facet>
+						    <h:outputText value="#{crd.merchant_name}"/>
+		                </rich:column>
+		                
+		                <rich:column>
+		                    <f:facet name="header">Remove</f:facet>
+						    <h:commandButton action="#{adminAction.deleteMappedMerchant}" reRender="modalPanel2"  image="/images/invalid.png" id="submit">
+								<f:setPropertyActionListener target="#{adminAction.edit_id}" value="#{crd.merchant_code}" />
+								<rich:componentControl for="panelp" attachTo="submit" operation="show" event="onclick"/>
+							</h:commandButton>
+		                </rich:column>
+		                
+		                <f:facet name="footer">
+		                    <rich:datascroller id="cardTableDS" for="mcardTb"  renderIfSinglePage="true">
+		                        <f:facet name="first">
+		                            <h:outputText value="First" />
+		                        </f:facet>
+		                        <f:facet name="last">
+		                            <h:outputText value="Last" />
+		                        </f:facet>
+		                    </rich:datascroller>
+		                </f:facet>
+		            </rich:dataTable>
+		
+		
+		        </rich:panel>
+                
+                  
+                   
+            </rich:graphValidator>
+
+        </rich:panel>
+    
+    </h:form>
+</ui:define>
+</ui:composition>

@@ -1,0 +1,98 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="../WEB-INF/layout/basic_layout.xhtml">
+                
+<ui:define name="body">
+	
+	
+	<rich:modalPanel id="panelp" width="150" height="50">
+       <h:form id="pFrm">
+        <h:panelGrid columns="1" rowClasses="prop" columnClasses="name2,value">
+           <h:outputText value="Please wait...." styleClass="messagesingle" align="center">
+               <h:graphicImage value="/images/loading_small.gif"/>
+           </h:outputText>
+          </h:panelGrid>  
+         </h:form>
+    </rich:modalPanel>
+	
+    <h:form id="manageCardFrm">
+    
+
+   		<s:link title="Back" view="/support/logSummary.xhtml"  propagation="none">
+            <h:graphicImage alt="Return" value="/images/return.png"/>
+        </s:link>
+    
+        <rich:panel style="width:100%">
+
+            <f:facet name="header">Report [ Total Record(s) found :  #{reportAction.failedSummaryLog.size()} ]</f:facet>
+
+            <rich:dataTable id="cardTb" rows="500" value="#{reportAction.failedSummaryLog}"  var="crd">
+                
+                <rich:column>
+                    <f:facet name="header">Channel</f:facet>
+                    <h:outputText value="#{crd.summary_name}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Error Code</f:facet>
+            		<h:outputText value="#{crd.summary_failed_status}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Error Description</f:facet>
+                    <h:outputText value="#{crd.summary_pending_status}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Count</f:facet>
+                    
+                    <s:link view="/support/viewFailedSummaryDrillDown.xhtml" value="#{crd.summary_count}" action="#{reportAction.failedSummaryDrillDown}">
+                            <f:param name="id" value="#{crd.summary_failed_status}"/>
+            		</s:link>
+                </rich:column>
+
+            </rich:dataTable>
+			
+
+        </rich:panel>
+        
+        
+        <rich:panel style="width:100%" rendered = "#{reportAction.supportLog.size() > 0}">
+
+            <f:facet name="header">VTU Transactions Pending Reprocessing [ Total Record(s) found :  #{reportAction.supportLog.size()} ]</f:facet>
+
+            <rich:dataTable id="cardTb1" rows="500" value="#{reportAction.supportLog}"  var="crd">
+                
+                <rich:column>
+                    <f:facet name="header">Response Code</f:facet>
+            		<h:outputText value="#{crd.summary_failed_status}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Count</f:facet>
+                    <h:outputText value="#{crd.summary_count}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Re-Process</f:facet>
+                    <h:commandButton image="/images/refresh.png"  action="#{reportAction.processFailedVTUTransaction}"  reRender="cardTb1" value="re-process" id="refresh">
+                    	<f:setPropertyActionListener target="#{reportAction.edit_id}" value="#{crd.summary_failed_status}" />
+                    	<rich:componentControl for="panelp" attachTo="refresh" operation="show" event="onclick"/>
+                    </h:commandButton>
+                </rich:column>
+
+            </rich:dataTable>
+			
+        </rich:panel>
+        
+    </h:form>
+    
+</ui:define>
+</ui:composition>

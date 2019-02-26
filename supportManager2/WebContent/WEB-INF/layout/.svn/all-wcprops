@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/supportManager2/!svn/ver/1/WebContent/WEB-INF/layout
+END
+header.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/supportManager2/!svn/ver/1/WebContent/WEB-INF/layout/header.xhtml
+END
+password_header.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/supportManager2/!svn/ver/1/WebContent/WEB-INF/layout/password_header.xhtml
+END
+basic_layout.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/supportManager2/!svn/ver/1/WebContent/WEB-INF/layout/basic_layout.xhtml
+END
+password_layout.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/supportManager2/!svn/ver/1/WebContent/WEB-INF/layout/password_layout.xhtml
+END

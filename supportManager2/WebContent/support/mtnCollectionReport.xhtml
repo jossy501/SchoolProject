@@ -1,0 +1,398 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="../WEB-INF/layout/basic_layout.xhtml">
+                
+<ui:define name="body">
+
+
+	<!-- processing panel -->
+    
+    <rich:modalPanel id="panelp" width="150" height="50">
+       <h:form id="pFrm">
+        <h:panelGrid columns="1" rowClasses="prop" columnClasses="name2,value">
+           <h:outputText value="Please wait...." styleClass="messagesingle" align="center">
+               <h:graphicImage value="/images/loading_small.gif"/>
+           </h:outputText>
+          </h:panelGrid>  
+         </h:form>
+    </rich:modalPanel>
+
+    <h:form id="cardFrm">
+   
+    
+        <rich:panel style="width:40%">
+            <f:facet name="header"> MTN Collection Report </f:facet>
+          	
+            <rich:graphValidator>
+                <h:panelGrid columns="2" rowClasses="prop" columnClasses="name2,value">
+                
+                    <h:outputLabel value="Customer ID:"/>
+                    <h:panelGroup>
+                        <h:inputText id="customerId" value="#{reportAction.customerId}" required="false" requiredMessage="Merchant Name is required"/>
+                    
+                      <h:outputLabel value=" " styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="customerId" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>   
+                    </h:panelGroup>
+                    
+                    <h:outputLabel  value="Transaction ID:"/>
+                    <h:panelGroup>
+                        <h:inputText id="transId" value="#{reportAction.transactionId}" required="false" requiredMessage="Merchant Name is required"/>
+                    
+                      <h:outputLabel value=" " styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="transId" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>   
+                    </h:panelGroup>
+                    
+                    
+                     <h:outputLabel value="Account No:"/>
+                    <h:panelGroup>
+                        <h:inputText id="acctno" value="#{reportAction.accountNo}" required="false" requiredMessage="Merchant Name is required"/>
+                    
+                      <h:outputLabel value=" " styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="acctno" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>   
+                    </h:panelGroup>
+                    
+                    
+                    <h:outputLabel  value="Customer Msisdn:"/>
+                    <h:panelGroup>
+                        <h:inputText id="custMsdn" value="#{reportAction.customerMisdn}" required="false" requiredMessage="Merchant Name is required"/>
+                    
+                      <h:outputLabel value=" " styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="custMsdn" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>   
+                    </h:panelGroup>
+                    
+                    
+                     <h:outputLabel value="Part No:"/>
+                    <h:panelGroup>
+                        <h:inputText id="partno" value="#{reportAction.partNo}" required="false" requiredMessage="Merchant Name is required"/>
+                    
+                      <h:outputLabel value=" " styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="partno" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>   
+                    </h:panelGroup>
+                    
+                    
+                    <h:outputLabel value="Transaction Type" />
+                    <h:panelGroup>
+                        <h:selectOneMenu required="false" requiredMessage="Select Transaction option"
+                                          id="optionSel2" layout="lineDirection" value="#{reportAction.trans_code}">
+                            
+                             <f:selectItem id="item_a" itemLabel="ALL" itemValue="ALL"/>
+                             <f:selectItem id="item_b" itemLabel="SUCCESSFUL" itemValue="SUCCESSFUL"/>
+                             <f:selectItem id="item_c" itemLabel="FAILED" itemValue="FAILED"/>
+                             
+                        </h:selectOneMenu>
+                        <br/>
+                        <rich:message for="optionSel2" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>                                                            
+                    </h:panelGroup> 
+                    
+                    
+                  	<h:outputLabel for="start_date" value="Start Date :"/>
+                    <h:panelGroup>
+                    	<rich:calendar value="#{reportAction.start_date}" required="true" id="start_date"
+                                       datePattern="yyyy-MM-dd" styleClass="controls-length2" requiredMessage="Start Date is required"/>
+                        <span style="white-space:nowrap">
+                            &nbsp;
+                        </span>
+                        <h:selectOneMenu id="start_hr" value="#{reportAction.start_hr}">
+                            <f:selectItem itemLabel="00" itemValue="00" />
+                            <f:selectItem itemLabel="01" itemValue="01" />
+                            <f:selectItem itemLabel="02" itemValue="02" />
+                            <f:selectItem itemLabel="03" itemValue="03" />
+                            <f:selectItem itemLabel="04" itemValue="04" />
+                            <f:selectItem itemLabel="05" itemValue="05" />
+                            <f:selectItem itemLabel="06" itemValue="06" />
+                            <f:selectItem itemLabel="07" itemValue="07" />
+                            <f:selectItem itemLabel="08" itemValue="08" />
+                            <f:selectItem itemLabel="09" itemValue="09" />
+                            <f:selectItem itemLabel="10" itemValue="10" />
+                            <f:selectItem itemLabel="11" itemValue="11" />
+                            <f:selectItem itemLabel="12" itemValue="12" />
+                            <f:selectItem itemLabel="13" itemValue="13" />
+                            <f:selectItem itemLabel="14" itemValue="14" />
+                            <f:selectItem itemLabel="15" itemValue="15" />
+                            <f:selectItem itemLabel="16" itemValue="16" />
+                            <f:selectItem itemLabel="17" itemValue="17" />
+                            <f:selectItem itemLabel="18" itemValue="18" />
+                            <f:selectItem itemLabel="19" itemValue="19" />
+                            <f:selectItem itemLabel="20" itemValue="20" />
+                            <f:selectItem itemLabel="21" itemValue="21" />
+                            <f:selectItem itemLabel="22" itemValue="22" />
+                            <f:selectItem itemLabel="23" itemValue="23" />
+
+                        </h:selectOneMenu>
+                        
+                        <h:outputLabel value=" *" styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="start_date" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>                              
+                    </h:panelGroup>
+                    
+                    
+                    <h:outputLabel for="end_date" value="End Date :"/>
+                    <h:panelGroup>
+                    	<rich:calendar value="#{reportAction.end_date}" required="true" id="end_date"
+                                       datePattern="yyyy-MM-dd" styleClass="controls-length2" requiredMessage="End Date is required"/>
+                        
+                        <span style="white-space:nowrap">
+                            &nbsp;
+                        </span>
+                        <h:selectOneMenu id="end_hr" value="#{reportAction.end_hr}">
+                            <f:selectItem itemLabel="00" itemValue="00" />
+                            <f:selectItem itemLabel="01" itemValue="01" />
+                            <f:selectItem itemLabel="02" itemValue="02" />
+                            <f:selectItem itemLabel="03" itemValue="03" />
+                            <f:selectItem itemLabel="04" itemValue="04" />
+                            <f:selectItem itemLabel="05" itemValue="05" />
+                            <f:selectItem itemLabel="06" itemValue="06" />
+                            <f:selectItem itemLabel="07" itemValue="07" />
+                            <f:selectItem itemLabel="08" itemValue="08" />
+                            <f:selectItem itemLabel="09" itemValue="09" />
+                            <f:selectItem itemLabel="10" itemValue="10" />
+                            <f:selectItem itemLabel="11" itemValue="11" />
+                            <f:selectItem itemLabel="12" itemValue="12" />
+                            <f:selectItem itemLabel="13" itemValue="13" />
+                            <f:selectItem itemLabel="14" itemValue="14" />
+                            <f:selectItem itemLabel="15" itemValue="15" />
+                            <f:selectItem itemLabel="16" itemValue="16" />
+                            <f:selectItem itemLabel="17" itemValue="17" />
+                            <f:selectItem itemLabel="18" itemValue="18" />
+                            <f:selectItem itemLabel="19" itemValue="19" />
+                            <f:selectItem itemLabel="20" itemValue="20" />
+                            <f:selectItem itemLabel="21" itemValue="21" />
+                            <f:selectItem itemLabel="22" itemValue="22" />
+                            <f:selectItem itemLabel="23" itemValue="23" />
+
+                        </h:selectOneMenu>
+                        <h:outputLabel value=" *" styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="end_date" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>                              
+                    </h:panelGroup>
+                 </h:panelGrid>
+                   
+            </rich:graphValidator>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+            
+            <h:commandButton id="submit" value="  Search  " action="#{reportAction.getMtnCollectionReport}" reRender="manageCardFrm">
+            	<rich:componentControl for="panelp" attachTo="submit" operation="show" event="onclick"/>
+            </h:commandButton>
+            
+        </div>
+   </h:form>
+   
+   <rich:spacer width="10px" height="20px"/>
+
+    <h:form id="manageCardFrm">
+
+		<rich:panel style="width:100%" id="debitP" rendered="#{reportAction.cardholdertranLog.size() > 0}">
+ 			<f:facet name="header">MTN Collection Report [ Total Record(s) found :  #{reportAction.cardholdertranLog.size()} ] </f:facet>
+				        
+            <s:link  id="srADreplogo" view="/excel-reports-templates/mtnCollectionExcelReport.xhtml"  rendered ="#{reportAction.cardholdertranLog.size() > 0}"  >
+           		<h:graphicImage value="/images/excel5.jpg"/>
+          	</s:link>
+				
+				<rich:dataTable id="debitTb" rowKeyVar = "krv"  rows="1000" value="#{reportAction.cardholdertranLog}"  var="crd">
+	                <rich:column>
+	                    <f:facet name="header"><h:outputText styleClass="headerText" value="SN" /></f:facet>
+	                    <h:outputText value="#{krv+1}" />
+	                </rich:column>
+	                
+	                
+	                <rich:column>
+	                	<f:facet name="header"><h:outputText styleClass="headerText" value="Account No" /></f:facet>
+					    <h:outputText value="#{crd.accountno}" style="float: center;"/>
+	                </rich:column>
+	                
+	                <rich:column>
+	                	<f:facet name="header"><h:outputText styleClass="headerText" value="Customer Msisdn" /></f:facet>
+					    <h:outputText value="#{crd.customerMsisdn}" style="float: left;" />
+	                </rich:column>
+	                
+	                 <rich:column>
+	                	<f:facet name="header"><h:outputText styleClass="headerText" value="Customer Id" /></f:facet>
+					    <h:outputText value="#{crd.customerID}" style="float: left;" />
+	                </rich:column>
+	                
+
+	                <rich:column>
+	                	<f:facet name="header"><h:outputText styleClass="headerText" value="Customer Name" /></f:facet>
+	                	 <h:outputText value="#{crd.customerName}" style="float: left;"/>
+	                </rich:column>
+	              
+	                
+	                <rich:column>
+	                	<f:facet name="header"><h:outputText styleClass="headerText" value="Depositor Name" /></f:facet>
+	                	 <h:outputText value="#{crd.depositorName}" style="float: left;"/>
+	                </rich:column>
+	                
+	                 <rich:column>
+	                	<f:facet name="header"><h:outputText styleClass="headerText" value="Depositor Msisdn" /></f:facet>
+	                	 <h:outputText value="#{crd.depositorMsisdn}" style="float: left;"/>
+	                </rich:column>
+	                
+	                
+	                <rich:column>
+	                	<f:facet name="header"><h:outputText styleClass="headerText" value="Transaction Id" /></f:facet>
+	                	 <h:outputText value="#{crd.transactionID}" style="float: left;"/>
+	                </rich:column>
+	                
+	                 <rich:column>
+	                	<f:facet name="header"><h:outputText styleClass="headerText" value="Transaction Date" /></f:facet>
+	                	 <h:outputText value="#{crd.transactionDate}" style="float: left;"/>
+	                </rich:column>
+	                
+	                
+	                  <rich:column>
+	                	<f:facet name="header"><h:outputText styleClass="headerText" value="Part No" /></f:facet>
+	                	 <h:outputText value="#{crd.partNo}" style="float: left;"/>
+	                </rich:column>
+	                
+	                 <rich:column>
+	                	<f:facet name="header"><h:outputText styleClass="headerText" value="Cheque No" /></f:facet>
+	                	 <h:outputText value="#{crd.chequeNo}" style="float: left;"/>
+	                </rich:column>
+	                
+	                <rich:column>
+	                	<f:facet name="header"><h:outputText styleClass="headerText" value="Payment Description" /></f:facet>
+	                	 <h:outputText value="#{crd.paymentDescription}" style="float: left;"/>
+	                </rich:column>
+	                
+	                <rich:column>
+	                	<f:facet name="header"><h:outputText styleClass="headerText" value="Response Code" /></f:facet>
+	                	 <h:outputText value="#{crd.errCode}" style="float: left;"/>
+	                </rich:column>
+	                
+	                 <rich:column>
+	                	<f:facet name="header"><h:outputText styleClass="headerText" value="Response Message" /></f:facet>
+	                	 <h:outputText value="#{crd.errMessage}" style="float: left;"/>
+	                </rich:column>
+	                
+	                
+	                <rich:column>
+	                	<f:facet name="header"><h:outputText styleClass="headerText" value="Channel" /></f:facet>
+	                	 <h:outputText value="#{crd.channel}" style="float: left;"/>
+	                </rich:column>
+	                
+	                
+	                   <rich:column>
+	                	<f:facet name="header"><h:outputText styleClass="headerText" value="Bank" /></f:facet>
+	                	 <h:outputText value="#{reportAction.getBankName(crd.issuerCode)}" style="float: left;"/>
+	                </rich:column>
+            		
+            		
+	                <rich:column>
+	                	<f:facet name="header"><h:outputText styleClass="headerText" value="Amount" /></f:facet>
+					    <h:outputText value="#{crd.amount}" style="float: center;"/>
+	                </rich:column>
+	                
+	                <rich:column>
+	                    <f:facet name="header"><h:outputText styleClass="headerText" value="Action" /></f:facet>
+	                    <h:commandButton action="#{reportAction.getMtnCollectionParameters}"   value="Forward Records" id="dehotlist">
+			            	<f:setPropertyActionListener target="#{reportAction.accountNo}" value="#{crd.accountno}" />
+			            	<f:setPropertyActionListener target="#{reportAction.customerMisdn}" value="#{crd.customerMsisdn}" />
+			            	<f:setPropertyActionListener target="#{reportAction.customerId}" value="#{crd.customerID}" />
+			            	<f:setPropertyActionListener target="#{reportAction.companyname}" value="#{crd.customerName}" />
+			            	<f:setPropertyActionListener target="#{reportAction.vsmFullName}" value="#{crd.depositorName}" />
+			            	<f:setPropertyActionListener target="#{reportAction.accountName}" value="#{crd.depositorMsisdn}" />
+			            	<f:setPropertyActionListener target="#{reportAction.transactionId}" value="#{crd.transactionID}" />
+			            	<f:setPropertyActionListener target="#{reportAction.transDate}" value="#{crd.transactionDate}" />
+			            	<f:setPropertyActionListener target="#{reportAction.partNo}" value="#{crd.partNo}" />
+			            	<f:setPropertyActionListener target="#{reportAction.to_dest}" value="#{crd.chequeNo}" />
+			            	<f:setPropertyActionListener target="#{reportAction.status_id}" value="#{crd.paymentDescription}" />
+			            	<f:setPropertyActionListener target="#{reportAction.edit_id}" value="#{crd.errCode}" />
+			            	<f:setPropertyActionListener target="#{reportAction.operation_id}" value="#{crd.errMessage}" />
+			            	<f:setPropertyActionListener target="#{reportAction.channel_id}" value="#{crd.channel}" />
+			            	<f:setPropertyActionListener target="#{reportAction.strParam}" value="#{crd.amount}" />
+			            	<f:setPropertyActionListener target="#{reportAction.subscriber_id}" value="#{crd.userid}" />
+			            	<f:setPropertyActionListener target="#{reportAction.esa}" value="#{crd.customerEmail}" />
+			            	<f:setPropertyActionListener target="#{reportAction.pin}" value="#{crd.paymentMode}" />
+			            	<f:setPropertyActionListener target="#{reportAction.chequeDate}" value="#{crd.CHEQUECLEARDATE}" />
+			            	<f:setPropertyActionListener target="#{reportAction.mtiNumber}" value="#{crd.merchantReferenceID}" />
+			            	<f:setPropertyActionListener target="#{reportAction.companyId}" value="#{crd.priceListId}" />
+			            	<f:setPropertyActionListener target="#{reportAction.line_type}" value="#{crd.paymentType}" />
+			            	<f:setPropertyActionListener target="#{reportAction.companyBank}" value="#{crd.CHEQUEBANK}" />
+			            	<f:setPropertyActionListener target="#{reportAction.tarrif_type}" value="#{crd.currency}" />
+			            	<f:setPropertyActionListener target="#{reportAction.depotId}" value="#{crd.region}" />
+			            	<f:setPropertyActionListener target="#{reportAction.optionType}" value="#{crd.option1}" />
+			            	<f:setPropertyActionListener target="#{reportAction.optionType2}" value="#{crd.option2}" />
+			            	<f:setPropertyActionListener target="#{reportAction.schemeId}" value="#{crd.option3}" />
+			            	<f:setPropertyActionListener target="#{reportAction.schemeName}" value="#{crd.option4}" />
+			            	<f:setPropertyActionListener target="#{reportAction.meterno}" value="#{crd.tellerNo}" />
+			            	<f:setPropertyActionListener target="#{reportAction.trans_count}" value="#{crd.transactionCodeId}" />
+			            	<f:setPropertyActionListener target="#{reportAction.month}" value="#{crd.transactionStatus}" />
+			            	<f:setPropertyActionListener target="#{reportAction.year}" value="#{crd.chequeStatus}" />
+			            	<f:setPropertyActionListener target="#{reportAction.branch_code}" value="#{crd.payTypeDetail}" />
+			            	<f:setPropertyActionListener target="#{reportAction.from_source}" value="#{crd.serviceType}" />
+			            	
+			            	
+			            	<rich:componentControl for="panelp" attachTo="dehotlist" operation="show" event="onclick"/>
+			            </h:commandButton>
+             		</rich:column>
+	                
+	                
+					<f:facet name="footer">
+                
+                	<rich:columnGroup>
+                        <rich:column>
+                        	<div align="left">
+                        		Total
+                        	</div>
+                     </rich:column>
+                        <rich:column>
+                        	<div align="right">
+                        		<h:outputText value="#{reportAction.makeDouble(reportAction.total_amount)}">
+                                    <f:convertNumber pattern="#,###,###,###,###.00"/>
+                                </h:outputText>
+                        	</div>
+                        </rich:column>
+                        <rich:column>
+                        	<div align="right">
+                        		
+                        	</div>
+                        </rich:column>
+                        
+                    </rich:columnGroup>
+                </f:facet>
+
+	         </rich:dataTable>
+	         
+	          <rich:datascroller id="srADcardTableDS" for="debitTb"  renderIfSinglePage="true">
+                <f:facet name="first">
+                    <h:outputText value="First" />
+                </f:facet>
+                <f:facet name="last">
+                    <h:outputText value="Last" />
+                </f:facet>
+             </rich:datascroller>
+
+ 		</rich:panel>
+ 				
+		
+		<rich:panel style="width: 100%; height:50px" rendered="#{reportAction.cardholdertranLog.size() == 0}">
+			<h:outputText value="&nbsp;No record(s) found. "/>
+		</rich:panel>
+ 
+    </h:form>
+    
+</ui:define>
+</ui:composition>

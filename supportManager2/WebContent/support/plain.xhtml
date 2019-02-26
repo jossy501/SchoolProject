@@ -1,0 +1,30 @@
+<m:message xmlns="http://www.w3.org/1999/xhtml"
+            xmlns:m="http://jboss.com/products/seam/mail"
+            xmlns:h="http://java.sun.com/jsf/html"
+            xmlns:f="http://java.sun.com/jsf/core"
+            importance="high">
+            
+    <m:header name="technical.support@etranzact.net" value="Login Details" />
+    <m:from name="eTranzact" address="technical.support@etranzact.net" />
+    <m:to name="#{adminAction.curUser.lastname} #{adminAction.curUser.firstname}">#{adminAction.curUser.email}</m:to>
+    <m:subject>Login Details</m:subject>
+    <m:body>
+        <html>
+            <body>
+                <p><b>Dear #{adminAction.curUser.firstname} #{adminAction.curUser.lastname},</b></p>
+                <p>Here are your login details</p>
+                <p>URL : http://support.etranzact.com/XPortal/index.etz</p>
+                <p>
+                	Username : #{adminAction.curUser.username}<br/>
+                	Password : #{adminAction.curUser.password}
+                </p>
+                <p>Please ensure you change password before usage.</p>
+                <p>Best Regards</p>
+                <center><p><font size = "2">Powered by eTranzact International Plc. All rights reserved.</font></p></center>
+            </body>
+        </html>
+        <f:facet name="alternative">
+            <h:outputText>Please contact the eTranzact support desk for any enquiries.</h:outputText>
+        </f:facet>
+    </m:body>
+</m:message>

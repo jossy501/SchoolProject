@@ -1,0 +1,64 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="../WEB-INF/layout/basic_layout.xhtml">
+
+<ui:define name="body">
+
+
+   <rich:spacer width="10px" height="20px"/>
+
+    <h:form id="manageCardFrm">
+
+        <rich:panel style="width:100%">
+	<s:link view="/DRS/DRS_viewClaimsList.xhtml" action="#{claimcontroller.listClaim}" value="List All Claims" styleClass="textLink" propagation="none">
+                            <f:param name="defaultDate" value="NOO" />
+                            <f:param name="searchype" value="2" />
+                        </s:link>
+            <f:facet name="header"> [ Total Record(s) found :  #{claimcontroller.claimsSummary.size()} ]
+
+
+</f:facet>
+
+            <rich:dataTable id="viewClaimsSum" rows="20" value="#{claimcontroller.claimsSummary}" width="50%"  var="r">
+
+                 <rich:column>
+                    <f:facet name="header">Issuing Bank</f:facet>
+                    <h:outputText value="#{r.fromBank}"/>
+                </rich:column>
+
+                <rich:column>
+                    <f:facet name="header">No. of Claims</f:facet>
+                    <h:outputText value="#{r.noOfClaim}"/>
+                </rich:column>
+
+                <rich:column>
+                    <f:facet name="header">Previous Unresolved Claims</f:facet>
+                    <h:outputText value="#{r.noOfUnresolvedClaims}"/>
+                </rich:column>
+
+
+                <f:facet name="footer">
+                    <rich:datascroller id="cardTableDS" for="viewClaimsSum"  renderIfSinglePage="true">
+                        <f:facet name="first">
+                            <h:outputText value="First" />
+                        </f:facet>
+                        <f:facet name="last">
+                            <h:outputText value="Last" />
+                        </f:facet>
+                    </rich:datascroller>
+                </f:facet>
+            </rich:dataTable>
+
+        </rich:panel>
+
+    </h:form>
+
+</ui:define>
+</ui:composition>

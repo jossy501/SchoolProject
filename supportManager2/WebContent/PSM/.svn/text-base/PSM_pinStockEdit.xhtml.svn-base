@@ -1,0 +1,66 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="../WEB-INF/layout/basic_layout.xhtml">
+
+<ui:define name="body">
+
+
+    <a4j:form id="userFrm">
+        <rich:panel style="width:60%">
+            <f:facet name="header">Pin Stock Info</f:facet>
+            <rich:graphValidator>
+			<s:link view="/PSM/PSM_pinReport.xhtml" value="Return" styleClass="textLink" propagation="none"/>
+                <h:panelGrid columns="2" rowClasses="prop" columnClasses="name2,value">
+                    <h:outputLabel styleClass="readonly" value="Dealer Name:"/>
+                    <h:outputLabel  value="#{tpsmcontroller.stock.dealer.dealerName}"/>
+
+                    <h:outputLabel styleClass="readonly" value="Pin Deno:"/>
+                    <h:outputLabel  value="#{tpsmcontroller.stock.formatedPinDeno}"/>
+
+                    <h:outputLabel styleClass="readonly" value="Pin Value:"/>
+                    <h:outputLabel  value="#{tpsmcontroller.stock.formatedPinValue}"/>
+
+                    <h:outputLabel styleClass="readonly" value="Pin Serial Number:"/>
+                    <h:outputLabel  value="#{tpsmcontroller.stock.SERIAL}"/>
+
+                     <h:outputLabel styleClass="readonly" value="Pin Number:"/>
+                    <h:outputLabel  value="XXXXXXXXXXXXXXXXXX"/>
+
+                     <h:outputLabel styleClass="readonly" value="Pin Batch Number:"/>
+                    <h:outputLabel  value=""/>
+
+                    <h:outputLabel styleClass="readonly" value="Pin Status:"/>
+                    <h:outputLabel   value="#{tpsmcontroller.stock.PIN_STATUS}"/>
+
+                     <h:outputLabel styleClass="readonly" value="Pin Issued Date:"/>
+                    <h:outputLabel   value="#{tpsmcontroller.stock.PIN_ISSUED}"/>
+
+                  </h:panelGrid>
+
+            </rich:graphValidator>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+		 <rich:toolBar style="width:60%">
+                            <rich:toolBarGroup>
+        <s:link  view="/PSM/PSM_pinReport.xhtml" title="Return" propagation="none">
+                       <h:graphicImage  value="/images/return.png"/>
+					   </s:link>
+					   </rich:toolBarGroup>
+					   </rich:toolBar>
+        </div>
+   </a4j:form>
+
+   <rich:spacer width="10px" height="10px"/>
+
+
+</ui:define>
+</ui:composition>

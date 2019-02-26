@@ -1,0 +1,83 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="../WEB-INF/layout/basic_layout.xhtml">
+
+<ui:define name="body">
+
+
+    <a4j:form id="userFrm">
+        <rich:panel style="width:60%">
+            <f:facet name="header">Edit Dealer Info</f:facet>
+            <rich:graphValidator>
+			<s:link view="/PSM/PSM_listvendor.xhtml" value="List All Vendors" styleClass="textLink" propagation="none"/>
+                <h:panelGrid columns="2" rowClasses="prop" columnClasses="name2,value">
+                    <h:outputLabel for="name" value="Dealer Name:"/>
+                    <h:panelGroup>
+                    	<h:inputText id="name" value="#{dealercontroller.dealer.dealerName}" required="true" requiredMessage="Dealer Name is required"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="name" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+					<h:outputLabel for="email" value="Dealer Address:"/>
+                    <h:panelGroup>
+                    	<h:inputText id="address" value="#{dealercontroller.dealer.dealerAddress}" required="true" requiredMessage="Dealer Address is required"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="address" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+
+		<h:outputLabel for="mobile" value="Phone Number:"/>
+                    <h:panelGroup>
+                    	<h:inputText  value="#{dealercontroller.dealer.dealerPhoneNumber}" required="true" id="mobile" requiredMessage="Mobile Number is required"/>
+                    	<h:outputLabel value="*" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="mobile" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+					<h:outputLabel for="mobile" value="Email Address:"/>
+                    <h:panelGroup>
+                    	<h:inputText value="#{dealercontroller.dealer.dealerEmail}"  id ="email" required="true" requiredMessage="Email is required"/>
+                    	<h:outputLabel value="*" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="email" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+
+
+
+
+
+                  </h:panelGrid>
+
+            </rich:graphValidator>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+<h:panelGroup>
+                        <rich:toolBar style="width:60%">
+                            <rich:toolBarGroup>
+
+            <a4j:commandButton oncomplete="document.getElementById('userFrm:submit').disabled=false"
+                                   onclick="document.getElementById('userFrm:submit').disabled=true"
+                                   id="submit" value="   Modify  " action="#{dealercontroller.modifiyDealer}" reRender="userFrm, manageUserFrm"/>
+ </rich:toolBarGroup>
+                        </rich:toolBar>
+						</h:panelGroup>
+        </div>
+   </a4j:form>
+
+   <rich:spacer width="10px" height="10px"/>
+
+
+</ui:define>
+</ui:composition>

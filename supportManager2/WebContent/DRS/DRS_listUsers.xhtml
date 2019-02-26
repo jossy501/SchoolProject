@@ -1,0 +1,166 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="../WEB-INF/layout/basic_layout.xhtml">
+
+<ui:define name="body">
+    <h:form id="viewClaim">
+
+
+        <rich:panel style="width:100%">
+            <f:facet name="header">Bank User Contact : Search</f:facet>
+            <rich:graphValidator>
+
+                <h:panelGrid columns="8" rowClasses="prop" columnClasses="name2,value">
+
+                    <h:outputLabel id ="start_date" for="start_date" value="Start Date"/>
+                    <h:panelGroup>
+                    	<rich:calendar value="#{usercontactcontroller.searchBean.startDate}" required="false" id="strt_date"
+                                       datePattern="yyyy-MM-dd" styleClass="controls-length2" requiredMessage="Start Date is required"/>
+                        <span style="white-space:nowrap">
+                            &nbsp;
+                        </span>
+
+                        <h:outputLabel value="        " styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="start_date" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+
+
+                    <h:outputLabel id="end_date" for="end_date" value="End Date"/>
+                    <h:panelGroup>
+                    	<rich:calendar value="#{usercontactcontroller.searchBean.endDate}" required="false" id="ed_date"
+                                       datePattern="yyyy-MM-dd" styleClass="controls-length2" requiredMessage="End Date is required"/>
+
+                        <span style="white-space:nowrap">
+                            &nbsp;
+                        </span>
+
+                        <h:outputLabel value="        " styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="end_date" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+
+
+			 <h:outputLabel for="acquirer" value="Bank:"/>
+                    <h:selectOneMenu styleClass="controls-length2" required="false" requiredMessage="Acquirer is required" id="acquirer"
+                                         value="#{usercontactcontroller.searchBean.acquirer}">
+
+                               <s:selectItems var="r" value="#{utility.bankList}" itemValue="#{r.bankcode}"
+                                                       label="#{r.bankname}" noSelectionLabel=":: Select ::" />
+                        </h:selectOneMenu>
+
+
+
+					<h:outputLabel value="Fullname:"/>
+                    <h:panelGroup>
+                    	<h:inputText value="#{usercontactcontroller.searchBean.fullname}" required="false" id="crdNo" />
+
+                        <span style="white-space:nowrap">
+                            &nbsp;
+                        </span>
+
+                        <h:outputLabel value="        " styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="end_date" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+
+					<h:outputLabel value="eMail:"/>
+                    <h:panelGroup>
+                    	<h:inputText value="#{usercontactcontroller.searchBean.email}" required="false" id="claimId" />
+
+                        <span style="white-space:nowrap">
+                            &nbsp;
+                        </span>
+
+                        <h:outputLabel value="        " styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="end_date" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+
+
+                  </h:panelGrid>
+
+            </rich:graphValidator>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="submit" value="  Search  " action="#{usercontactcontroller.getUserList}"
+            	reRender="manageCardFrm" />
+        </div>
+   </h:form>
+
+   <rich:spacer width="10px" height="20px"/>
+
+    <a4j:form id="manageUserFrm">
+         <rich:panel style="width:100%" id="displayUserPanel">
+
+             <f:facet name="header">Manage Users</f:facet>
+
+             <rich:dataTable id="userTb" reRender="userTableDS" rows="20" value="#{usercontactcontroller.userList}"  var="r">
+				<rich:column>
+					<f:facet name="header">Bank</f:facet>
+					<h:outputText value="#{r.decodeBank}"/>
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">User Fullname</f:facet>
+					<h:outputText value="#{r.fullname}"/>
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">User eMail</f:facet>
+					<h:outputText value="#{r.email}"/>
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">User Phone Number</f:facet>
+					<h:outputText value="#{r.mobile}"/>
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">User Current Status</f:facet>
+					<h:outputText value="#{r.decodeStatus}"/>
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">Created Date</f:facet>
+					<h:outputText value="#{r.created}"/>
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">Last Modified Date</f:facet>
+					<h:outputText value="#{r.modified}"/>
+				</rich:column>
+
+				<rich:column>
+					<a4j:commandButton title="View" action="#{usercontactcontroller.viewUserAction}" image="/images/view.png">
+                                    <f:setPropertyActionListener value="#{r}" target="#{usercontactcontroller.clUser}"/>
+                    </a4j:commandButton>
+				</rich:column>
+				<f:facet name="footer">
+					<rich:datascroller id="userTableDS" for="userTb"  renderIfSinglePage="true">
+						<f:facet name="first">
+							<h:outputText value="First" />
+						</f:facet>
+						<f:facet name="last">
+							<h:outputText value="Last" />
+						</f:facet>
+					</rich:datascroller>
+				</f:facet>
+			</rich:dataTable>
+
+
+         </rich:panel>
+
+
+     </a4j:form>
+
+</ui:define>
+</ui:composition>

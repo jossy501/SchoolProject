@@ -1,0 +1,599 @@
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/supportManager2/!svn/ver/1/WebContent/support
+END
+updateUserMail.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/supportManager2/!svn/ver/1/WebContent/support/updateUserMail.xhtml
+END
+atmInvestigation.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/supportManager2/!svn/ver/1/WebContent/support/atmInvestigation.xhtml
+END
+billInvestigation.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/supportManager2/!svn/ver/1/WebContent/support/billInvestigation.xhtml
+END
+failedFundsTransfer.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/supportManager2/!svn/ver/1/WebContent/support/failedFundsTransfer.xhtml
+END
+myMerchants.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/supportManager2/!svn/ver/1/WebContent/support/myMerchants.xhtml
+END
+fundsTransferTransaction.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/supportManager2/!svn/ver/1/WebContent/support/fundsTransferTransaction.xhtml
+END
+viewFailedSummary.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/supportManager2/!svn/ver/1/WebContent/support/viewFailedSummary.xhtml
+END
+createBankUser.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/supportManager2/!svn/ver/1/WebContent/support/createBankUser.xhtml
+END
+viewMtoDetails.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/supportManager2/!svn/ver/1/WebContent/support/viewMtoDetails.xhtml
+END
+merchantAllReportByTransCodeAndAccountID.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/supportManager2/!svn/ver/1/WebContent/support/merchantAllReportByTransCodeAndAccountID.xhtml
+END
+standardSplitFormula.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/supportManager2/!svn/ver/1/WebContent/support/standardSplitFormula.xhtml
+END
+merchantAllReportByBankAndTransCode.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/supportManager2/!svn/ver/1/WebContent/support/merchantAllReportByBankAndTransCode.xhtml
+END
+phcnMerchantReport.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/supportManager2/!svn/ver/1/WebContent/support/phcnMerchantReport.xhtml
+END
+merchantAllReportByBankCode.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/supportManager2/!svn/ver/1/WebContent/support/merchantAllReportByBankCode.xhtml
+END
+changePassword.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/supportManager2/!svn/ver/1/WebContent/support/changePassword.xhtml
+END
+merchantSplitReport.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/supportManager2/!svn/ver/1/WebContent/support/merchantSplitReport.xhtml
+END
+airtimeSalesBreakDownReport.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/supportManager2/!svn/ver/1/WebContent/support/airtimeSalesBreakDownReport.xhtml
+END
+merchantViewSettledReport.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/supportManager2/!svn/ver/1/WebContent/support/merchantViewSettledReport.xhtml
+END
+MTOSummary.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/supportManager2/!svn/ver/1/WebContent/support/MTOSummary.xhtml
+END
+viewMenuitemIPAddress.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/supportManager2/!svn/ver/1/WebContent/support/viewMenuitemIPAddress.xhtml
+END
+mmoneyCardHolders.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/supportManager2/!svn/ver/1/WebContent/support/mmoneyCardHolders.xhtml
+END
+changeFirstPassword.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/supportManager2/!svn/ver/1/WebContent/support/changeFirstPassword.xhtml
+END
+view_merchant_settlement_detail.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/supportManager2/!svn/ver/1/WebContent/support/view_merchant_settlement_detail.xhtml
+END
+webInvestigation.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/supportManager2/!svn/ver/1/WebContent/support/webInvestigation.xhtml
+END
+viewPocketMoniDrillDown.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/supportManager2/!svn/ver/1/WebContent/support/viewPocketMoniDrillDown.xhtml
+END
+menuitemToRoleMapping.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/supportManager2/!svn/ver/1/WebContent/support/menuitemToRoleMapping.xhtml
+END
+merchantReport.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/supportManager2/!svn/ver/1/WebContent/support/merchantReport.xhtml
+END
+posReport.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/supportManager2/!svn/ver/1/WebContent/support/posReport.xhtml
+END
+switchReport.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/supportManager2/!svn/ver/1/WebContent/support/switchReport.xhtml
+END
+settlementTransactions_atm_pos.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/supportManager2/!svn/ver/1/WebContent/support/settlementTransactions_atm_pos.xhtml
+END
+merchant_settlement_reports_summary.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/supportManager2/!svn/ver/1/WebContent/support/merchant_settlement_reports_summary.xhtml
+END
+exceptionInvestigation.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/supportManager2/!svn/ver/1/WebContent/support/exceptionInvestigation.xhtml
+END
+pendingCardDeletion.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/supportManager2/!svn/ver/1/WebContent/support/pendingCardDeletion.xhtml
+END
+plain.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/supportManager2/!svn/ver/1/WebContent/support/plain.xhtml
+END
+mmoneyCardBalance.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/supportManager2/!svn/ver/1/WebContent/support/mmoneyCardBalance.xhtml
+END
+posInvestigation.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/supportManager2/!svn/ver/1/WebContent/support/posInvestigation.xhtml
+END
+viewLogData.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/supportManager2/!svn/ver/1/WebContent/support/viewLogData.xhtml
+END
+createMenuItem.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/supportManager2/!svn/ver/1/WebContent/support/createMenuItem.xhtml
+END
+merchantAllReportByChannel_TransCode.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/supportManager2/!svn/ver/1/WebContent/support/merchantAllReportByChannel_TransCode.xhtml
+END
+settlementTransactionsToBank.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/supportManager2/!svn/ver/1/WebContent/support/settlementTransactionsToBank.xhtml
+END
+viewFailedSummaryDrillDown.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/supportManager2/!svn/ver/1/WebContent/support/viewFailedSummaryDrillDown.xhtml
+END
+merchantTransactionDetails.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/supportManager2/!svn/ver/1/WebContent/support/merchantTransactionDetails.xhtml
+END
+mapAccountIDToBizDev.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/supportManager2/!svn/ver/1/WebContent/support/mapAccountIDToBizDev.xhtml
+END
+viewMerchantComDetail.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/supportManager2/!svn/ver/1/WebContent/support/viewMerchantComDetail.xhtml
+END
+gtbanktransferreimbursementreportdetails.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/supportManager2/!svn/ver/1/WebContent/support/gtbanktransferreimbursementreportdetails.xhtml
+END
+viewELog.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/supportManager2/!svn/ver/1/WebContent/support/viewELog.xhtml
+END
+vtuInvestigation.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/supportManager2/!svn/ver/1/WebContent/support/vtuInvestigation.xhtml
+END
+pocketMoniTotalSubscribers.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/supportManager2/!svn/ver/1/WebContent/support/pocketMoniTotalSubscribers.xhtml
+END
+mmoneyNewSubscribers.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/supportManager2/!svn/ver/1/WebContent/support/mmoneyNewSubscribers.xhtml
+END
+accessRestriction.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/supportManager2/!svn/ver/1/WebContent/support/accessRestriction.xhtml
+END
+pinInvestigation.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/supportManager2/!svn/ver/1/WebContent/support/pinInvestigation.xhtml
+END
+rechargePinMail.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/supportManager2/!svn/ver/1/WebContent/support/rechargePinMail.xhtml
+END
+rechargePinInvestigation.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/supportManager2/!svn/ver/1/WebContent/support/rechargePinInvestigation.xhtml
+END
+etmcInvestigation.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/supportManager2/!svn/ver/1/WebContent/support/etmcInvestigation.xhtml
+END
+fundsTransferTransactionOnly.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/supportManager2/!svn/ver/1/WebContent/support/fundsTransferTransactionOnly.xhtml
+END
+logSummary.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/supportManager2/!svn/ver/1/WebContent/support/logSummary.xhtml
+END
+mmoneyCardHolders2.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/supportManager2/!svn/ver/1/WebContent/support/mmoneyCardHolders2.xhtml
+END
+createUser.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/supportManager2/!svn/ver/1/WebContent/support/createUser.xhtml
+END
+cardDetails_Tran.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/supportManager2/!svn/ver/1/WebContent/support/cardDetails_Tran.xhtml
+END
+ipAddressRestriction.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/supportManager2/!svn/ver/1/WebContent/support/ipAddressRestriction.xhtml
+END
+posDebitReport.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/supportManager2/!svn/ver/1/WebContent/support/posDebitReport.xhtml
+END
+mobileInvestigation_bank.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/supportManager2/!svn/ver/1/WebContent/support/mobileInvestigation_bank.xhtml
+END
+lottoTransaction.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/supportManager2/!svn/ver/1/WebContent/support/lottoTransaction.xhtml
+END
+gtbanktransferreimbursementreport.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/supportManager2/!svn/ver/1/WebContent/support/gtbanktransferreimbursementreport.xhtml
+END
+viewWebLog.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/supportManager2/!svn/ver/1/WebContent/support/viewWebLog.xhtml
+END
+mobileInvestigation.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/supportManager2/!svn/ver/1/WebContent/support/mobileInvestigation.xhtml
+END
+merchantCommisionReport.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/supportManager2/!svn/ver/1/WebContent/support/merchantCommisionReport.xhtml
+END
+bankEvent.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/supportManager2/!svn/ver/1/WebContent/support/bankEvent.xhtml
+END
+createCardService.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/supportManager2/!svn/ver/1/WebContent/support/createCardService.xhtml
+END
+investigation.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/supportManager2/!svn/ver/1/WebContent/support/investigation.xhtml
+END
+merchantAllReportByTransCode.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/supportManager2/!svn/ver/1/WebContent/support/merchantAllReportByTransCode.xhtml
+END
+cardNumberMail.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/supportManager2/!svn/ver/1/WebContent/support/cardNumberMail.xhtml
+END
+tmcEvent.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/supportManager2/!svn/ver/1/WebContent/support/tmcEvent.xhtml
+END
+settlementReportDetails.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/supportManager2/!svn/ver/1/WebContent/support/settlementReportDetails.xhtml
+END
+merchantRevenueReport.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/supportManager2/!svn/ver/1/WebContent/support/merchantRevenueReport.xhtml
+END
+menuitemToMenuMapping.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/supportManager2/!svn/ver/1/WebContent/support/menuitemToMenuMapping.xhtml
+END
+createMenu.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/supportManager2/!svn/ver/1/WebContent/support/createMenu.xhtml
+END
+merchantAllReportByChannel_TransCodeAndAccountID.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/supportManager2/!svn/ver/1/WebContent/support/merchantAllReportByChannel_TransCodeAndAccountID.xhtml
+END
+mobileSubscriptionDetails_admin.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/supportManager2/!svn/ver/1/WebContent/support/mobileSubscriptionDetails_admin.xhtml
+END
+bankCommissionMerchantReport.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/supportManager2/!svn/ver/1/WebContent/support/bankCommissionMerchantReport.xhtml
+END
+posTransactions.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/supportManager2/!svn/ver/1/WebContent/support/posTransactions.xhtml
+END
+merchantAllReportByBankAndTranCodeAndChannel.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/supportManager2/!svn/ver/1/WebContent/support/merchantAllReportByBankAndTranCodeAndChannel.xhtml
+END
+failedFundsTransferGroupByBank.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/supportManager2/!svn/ver/1/WebContent/support/failedFundsTransferGroupByBank.xhtml
+END
+singleMerchantReport.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/supportManager2/!svn/ver/1/WebContent/support/singleMerchantReport.xhtml
+END
+mmoneyReport.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/supportManager2/!svn/ver/1/WebContent/support/mmoneyReport.xhtml
+END
+merchantReport_bizdev.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/supportManager2/!svn/ver/1/WebContent/support/merchantReport_bizdev.xhtml
+END
+switchReportForBank.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/supportManager2/!svn/ver/1/WebContent/support/switchReportForBank.xhtml
+END
+merchantSplitFormula.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/supportManager2/!svn/ver/1/WebContent/support/merchantSplitFormula.xhtml
+END
+MTOTransaction.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/supportManager2/!svn/ver/1/WebContent/support/MTOTransaction.xhtml
+END
+mapAccountCodes.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/supportManager2/!svn/ver/1/WebContent/support/mapAccountCodes.xhtml
+END
+menusToRolesMapping.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/supportManager2/!svn/ver/1/WebContent/support/menusToRolesMapping.xhtml
+END
+viewLog.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/supportManager2/!svn/ver/1/WebContent/support/viewLog.xhtml
+END
+chammsSettlement.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/supportManager2/!svn/ver/1/WebContent/support/chammsSettlement.xhtml
+END
+mmoneySummaryReport.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/supportManager2/!svn/ver/1/WebContent/support/mmoneySummaryReport.xhtml
+END
+airtimeSalesReport.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/supportManager2/!svn/ver/1/WebContent/support/airtimeSalesReport.xhtml
+END
+merchantTransactionDetailsOnly.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/supportManager2/!svn/ver/1/WebContent/support/merchantTransactionDetailsOnly.xhtml
+END
+settlementReport.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/supportManager2/!svn/ver/1/WebContent/support/settlementReport.xhtml
+END
+mobileSubscriptionDetails.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/supportManager2/!svn/ver/1/WebContent/support/mobileSubscriptionDetails.xhtml
+END
+pocketMoniSummaryReport.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/supportManager2/!svn/ver/1/WebContent/support/pocketMoniSummaryReport.xhtml
+END

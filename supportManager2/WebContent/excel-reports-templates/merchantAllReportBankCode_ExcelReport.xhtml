@@ -1,0 +1,77 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:e="http://jboss.com/products/seam/excel"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:c="http://java.sun.com/jstl/core">
+
+<e:workbook type="jxl" ignoreBlanks="false" filename="merchantAllReportByTransCode.xsl">
+<e:worksheet name="Report" value="#{reportAction.allMerchantChannelReportLog}" var="crd" startRow="0">
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="No"/>
+	</f:facet>
+	<e:formula value="ROW()-1"/>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Bank"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{reportAction.getBankName(crd.bank_code)}" escape="false"/>
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Product"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{reportAction.getTransName(crd.trans_code)}" escape="false"/>
+	</e:cell>
+</e:column>
+
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Channel Code"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{crd.channelid}" escape="false"/>
+	</e:cell>
+</e:column>
+
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Channel Name"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{reportAction.getChannelName(crd.channelid)}" escape="false"/>
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Total Count"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{crd.transaction_count}" escape="false"/>
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Total Amount"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{reportAction.makeDouble(crd.total_amount)}" escape="false"/>
+	</e:cell>
+</e:column>
+
+
+</e:worksheet>
+</e:workbook>
+</html>

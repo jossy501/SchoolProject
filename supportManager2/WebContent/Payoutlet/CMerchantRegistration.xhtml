@@ -1,0 +1,291 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="../WEB-INF/layout/basic_layout.xhtml">
+                
+<ui:define name="body">
+
+
+	<!-- processing panel -->
+    
+    <rich:modalPanel id="panelp" width="150" height="50">
+       <h:form id="pFrm">
+        <h:panelGrid columns="1" rowClasses="prop" columnClasses="name2,value">
+           <h:outputText value="Please wait...." styleClass="messagesingle" align="center">
+               <h:graphicImage value="/images/loading_small.gif"/>
+           </h:outputText>
+          </h:panelGrid>  
+         </h:form>
+    </rich:modalPanel>
+
+    <h:form id="courseReg">
+   
+        <rich:panel style="width:40%">
+            <f:facet name="header"> :: Merchant Registration ::</f:facet>
+            <rich:graphValidator>
+                <h:panelGrid columns="2" rowClasses="prop" columnClasses="name2,value">
+                
+             
+                   <h:outputLabel  value="Merchant Code : "/>
+                    <h:panelGroup>
+                        <h:inputText id="merchantcode" value="#{payoutletSetUpAction.cMerchant.merchantCode}" size="20" required="true" requiredMessage="Merchant code Required" />
+                        <h:outputLabel value=" * " styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="merchantcode" styleClass="messagesingle"
+                              errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>  
+                    </h:panelGroup>
+                    
+                     <h:outputLabel  value="Merchant Name : "/>
+                    <h:panelGroup>
+                        <h:inputText id="merchantname" value="#{payoutletSetUpAction.cMerchant.merchantName}" size="20" required="true" requiredMessage="Merchant Name Required" />
+                        <h:outputLabel value=" * " styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="merchantname" styleClass="messagesingle"
+                              errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>  
+                    </h:panelGroup>
+                    
+                    
+                    <h:outputLabel  value="Street : "/>
+                    <h:panelGroup>
+                        <h:inputText id="street" value="#{payoutletSetUpAction.cMerchant.street}" size="20" required="true" requiredMessage="Street Required" />
+                        <h:outputLabel value=" * " styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="street" styleClass="messagesingle"
+                              errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>  
+                    </h:panelGroup>
+                    
+                     <h:outputLabel  value="City : "/>
+                    <h:panelGroup>
+                        <h:inputText id="city" value="#{payoutletSetUpAction.cMerchant.city}" size="20" required="true" requiredMessage="City Required" />
+                        <h:outputLabel value=" * " styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="city" styleClass="messagesingle"
+                              errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>  
+                    </h:panelGroup>
+                    
+                     <h:outputLabel  value="State : "/>
+                    <h:panelGroup>
+                        <h:inputText id="state" value="#{payoutletSetUpAction.cMerchant.state}" size="20" required="true" requiredMessage="State Required" />
+                        <h:outputLabel value=" * " styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="state" styleClass="messagesingle"
+                              errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>  
+                    </h:panelGroup>
+                    
+                    <h:outputLabel  value="Zip : "/>
+                    <h:panelGroup>
+                        <h:inputText id="zip" value="#{payoutletSetUpAction.cMerchant.zip}" size="20" required="true" requiredMessage="Zip Required" />
+                        <h:outputLabel value=" * " styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="zip" styleClass="messagesingle"
+                              errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>  
+                    </h:panelGroup>
+                    
+                    <h:outputLabel  value="Country : "/>
+                    <h:panelGroup>
+                        <h:inputText id="country" value="#{payoutletSetUpAction.cMerchant.country}" size="20" required="true" requiredMessage="Country Required" />
+                        <h:outputLabel value=" * " styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="country" styleClass="messagesingle"
+                              errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>  
+                    </h:panelGroup>
+                    
+                     <h:outputLabel  value="Phone : "/>
+                    <h:panelGroup>
+                        <h:inputText id="phone" value="#{payoutletSetUpAction.cMerchant.phone}" size="20" required="true" requiredMessage="Phone Required" />
+                        <h:outputLabel value=" * " styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="phone" styleClass="messagesingle"
+                              errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>  
+                    </h:panelGroup>
+                    
+                     <h:outputLabel  value="Fax : "/>
+                    <h:panelGroup>
+                        <h:inputText id="fax" value="#{payoutletSetUpAction.cMerchant.fax}" size="20" required="true" requiredMessage="Fax Required" />
+                        <h:outputLabel value=" * " styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="fax" styleClass="messagesingle"
+                              errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>  
+                    </h:panelGroup>
+                    
+                    <h:outputLabel  value="Email : "/>
+                    <h:panelGroup>
+                        <h:inputText id="email" value="#{payoutletSetUpAction.cMerchant.email}" size="20" required="true" requiredMessage="Fax Required" />
+                        <h:outputLabel value=" * " styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="email" styleClass="messagesingle"
+                              errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>  
+                    </h:panelGroup>
+                    
+                    <h:outputLabel  value="About us : "/>
+                    <h:panelGroup>
+                        <h:inputText id="aboutus" value="#{payoutletSetUpAction.cMerchant.aboutUs}" size="20" required="true" requiredMessage="About us Required" />
+                        <h:outputLabel value=" * " styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="aboutus" styleClass="messagesingle"
+                              errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>  
+                    </h:panelGroup>
+                    
+                     <h:outputLabel  value="URL : "/>
+                    <h:panelGroup>
+                        <h:inputText id="url" value="#{payoutletSetUpAction.cMerchant.url}" size="20" required="true" requiredMessage="Url Required" />
+                        <h:outputLabel value=" * " styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="url" styleClass="messagesingle"
+                              errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>  
+                    </h:panelGroup>
+                    
+                    <h:outputLabel  value="Logo : "/>
+                    <h:panelGroup>
+                        <h:inputText id="logo" value="#{payoutletSetUpAction.cMerchant.logo}" size="20" required="true" requiredMessage="Logo Required" />
+                        <h:outputLabel value=" * " styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="logo" styleClass="messagesingle"
+                              errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>  
+                    </h:panelGroup>
+                    
+                    <h:outputLabel  value="Account Text : "/>
+                    <h:panelGroup>
+                        <h:inputText id="accounttext" value="#{payoutletSetUpAction.cMerchant.accountText}" size="20" required="true" requiredMessage="Account Text Required" />
+                        <h:outputLabel value=" * " styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="accounttext" styleClass="messagesingle"
+                              errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>  
+                    </h:panelGroup>
+                    
+                    <h:outputLabel  value="V Maxlen : "/>
+                    <h:panelGroup>
+                        <h:inputText id="vmaxlen" value="#{payoutletSetUpAction.cMerchant.vMaxlen}" size="20" required="true" requiredMessage="V Maxlen Required" />
+                        <h:outputLabel value=" * " styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="vmaxlen" styleClass="messagesingle"
+                              errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>  
+                    </h:panelGroup>
+                    
+                     <h:outputLabel  value="V Minlen : "/>
+                    <h:panelGroup>
+                        <h:inputText id="vminlen" value="#{payoutletSetUpAction.cMerchant.vMinlen}" size="20" required="true" requiredMessage="V Minlen Required" />
+                        <h:outputLabel value=" * " styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="vminlen" styleClass="messagesingle"
+                              errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>  
+                    </h:panelGroup>
+                    
+                     <h:outputLabel  value="V Suffix : "/>
+                    <h:panelGroup>
+                        <h:inputText id="vsuffix" value="#{payoutletSetUpAction.cMerchant.vSuffix}" size="20" required="true" requiredMessage="V Suffix Required" />
+                        <h:outputLabel value=" * " styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="vsuffix" styleClass="messagesingle"
+                              errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>  
+                    </h:panelGroup>
+                    
+                     <h:outputLabel  value="V Digit : "/>
+                    <h:panelGroup>
+                        <h:inputText id="vdigit" value="#{payoutletSetUpAction.cMerchant.vDigit}" size="20" required="true" requiredMessage="V Digit Required" />
+                        <h:outputLabel value=" * " styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="vdigit" styleClass="messagesingle"
+                              errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>  
+                    </h:panelGroup>
+                    
+                     <h:outputLabel  value="V Letter : "/>
+                    <h:panelGroup>
+                        <h:inputText id="vletter" value="#{payoutletSetUpAction.cMerchant.vLatter}" size="20" required="true" requiredMessage="V Letter Required" />
+                        <h:outputLabel value=" * " styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="vletter" styleClass="messagesingle"
+                              errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>  
+                    </h:panelGroup>
+                    
+                    <h:outputLabel  value="V FullName : "/>
+                    <h:panelGroup>
+                        <h:inputText id="vfullname" value="#{payoutletSetUpAction.cMerchant.vFullName}" size="20" required="true" requiredMessage="V FullName Required" />
+                        <h:outputLabel value=" * " styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="vfullname" styleClass="messagesingle"
+                              errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>  
+                    </h:panelGroup>
+                    
+                     <h:outputLabel  value="V Address : "/>
+                    <h:panelGroup>
+                        <h:inputText id="vaddress" value="#{payoutletSetUpAction.cMerchant.vAddress}" size="20" required="true" requiredMessage="V Address Required" />
+                        <h:outputLabel value=" * " styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="vaddress" styleClass="messagesingle"
+                              errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>  
+                    </h:panelGroup>
+                    
+                     <h:outputLabel  value="V Quantity : "/>
+                    <h:panelGroup>
+                        <h:inputText id="vquantity" value="#{payoutletSetUpAction.cMerchant.vQuantity}" size="20" required="true" requiredMessage="V Quantity Required" />
+                        <h:outputLabel value=" * " styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="vquantity" styleClass="messagesingle"
+                              errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>  
+                    </h:panelGroup>
+                    
+                    <h:outputLabel  value="V Account : "/>
+                    <h:panelGroup>
+                        <h:inputText id="vaccount" value="#{payoutletSetUpAction.cMerchant.vAccount}" size="20" required="true" requiredMessage="V Account Required" />
+                        <h:outputLabel value=" * " styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="vaccount" styleClass="messagesingle"
+                              errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>  
+                    </h:panelGroup>
+                    
+                     <h:outputLabel  value="Allow Multiple : "/>
+                    <h:panelGroup>
+                        <h:inputText id="allowmultiple" value="#{payoutletSetUpAction.cMerchant.allowMultiple}" size="20" required="true" requiredMessage="Allow Multiple Required" />
+                        <h:outputLabel value=" * " styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="allowmultiple" styleClass="messagesingle"
+                              errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>  
+                    </h:panelGroup>
+                    
+                     
+                     <h:outputLabel  value="Receipt Footer 1 : "/>
+                    <h:panelGroup>
+                        <h:inputText id="receipt1" value="#{payoutletSetUpAction.cMerchant.receiptFooter1}" size="20" required="true" requiredMessage="Receipt Footer 1 Required" />
+                        <h:outputLabel value=" * " styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="receipt1" styleClass="messagesingle"
+                              errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>  
+                    </h:panelGroup>
+                    
+                    <h:outputLabel  value="Receipt Footer 2 : "/>
+                    <h:panelGroup>
+                        <h:inputText id="receipt2" value="#{payoutletSetUpAction.cMerchant.receiptFooter2}" size="20" required="true" requiredMessage="Receipt Footer 2 Required" />
+                        <h:outputLabel value=" * " styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="receipt2" styleClass="messagesingle"
+                              errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>  
+                    </h:panelGroup>
+                    
+                    
+               </h:panelGrid>     
+                   
+                   
+            </rich:graphValidator>
+
+        </rich:panel>
+	
+		
+        <div class="actionButtons">
+            
+            <h:commandButton id="submit" value="  Create-Setup  " action="#{payoutletSetUpAction.createMerchant}" reRender="manageCardFrm">
+            	<rich:componentControl for="panelp" attachTo="submit" operation="show" event="onclick"/>
+            </h:commandButton>
+            
+        </div>
+	
+	</h:form>
+
+</ui:define>
+</ui:composition>

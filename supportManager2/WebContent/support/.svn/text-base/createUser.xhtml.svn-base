@@ -1,0 +1,415 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="../WEB-INF/layout/basic_layout.xhtml">
+                
+<ui:define name="body">
+
+
+	<!-- processing panel -->
+    
+    <rich:modalPanel id="panelp" width="150" height="50">
+       <h:form id="pFrm">
+        <h:panelGrid columns="1" rowClasses="prop" columnClasses="name2,value">
+           <h:outputText value="Please wait...." styleClass="messagesingle" align="center">
+               <h:graphicImage value="/images/loading_small.gif"/>
+           </h:outputText>
+          </h:panelGrid>  
+         </h:form>
+    </rich:modalPanel>
+
+    <a4j:form id="userFrm">
+        <rich:panel style="width:40%" rendered = "#{adminAction.edit_id eq null}">
+            <f:facet name="header">Create User</f:facet>
+            <rich:graphValidator>
+                <h:panelGrid columns="2" rowClasses="prop" columnClasses="name2,value">
+                    
+                    
+                    <h:outputLabel for="type_id" value="User Type"/>
+                    <h:panelGroup>
+                        <h:selectOneMenu styleClass="controls-length2" required="true" requiredMessage="User Type is required" id="type_id"
+                                         value="#{adminAction.curUser.type_id}">
+
+                               <s:selectItems var="r" value="#{adminAction.userTypeList}" itemValue="#{r.type_descr}"
+                                                       label="#{r.type_descr}" noSelectionLabel=".:: Select ::." />          
+                                                                                 
+                           <a4j:support event="onchange" action="#{adminAction.getBanks}" ajaxSingle="true" onchange="document.getElementById('userFrm:submit').disabled=true" oncomplete="document.getElementById('userFrm:submit').disabled=false" reRender="userFrm"/>
+                        </h:selectOneMenu>
+                        
+                        <h:outputLabel value=" *" styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="type_id" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+
+
+                    <h:outputLabel for="bank_code" value="Banks" rendered = "#{adminAction.curUser.type_id eq 'BANK OFFICER' or adminAction.curUser.type_id eq 'BANK ADMINISTRATOR' or adminAction.curUser.type_id eq 'BANK AUTHORIZER'}"/>
+                    <h:panelGroup rendered = "#{adminAction.curUser.type_id eq 'BANK OFFICER' or adminAction.curUser.type_id eq 'BANK ADMINISTRATOR' or adminAction.curUser.type_id eq 'BANK AUTHORIZER'}"><!-- if the bank type is selected, that is when this drop down should show -->
+                        
+                        <h:selectOneMenu styleClass="controls-length2" required="true" requiredMessage="Bank is required" id="bank_code"
+                                         value="#{adminAction.curUser.user_code}">
+                                         
+                               <s:selectItems var="r" value="#{adminAction.bankList}" itemValue="#{r.bank_code}"
+                                                       label="#{r.bank_nm}" noSelectionLabel=".:: Select ::." />
+                        </h:selectOneMenu>
+                        
+                        <h:outputLabel value=" *" styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="bank_code" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                    
+                    
+                    <h:outputLabel for="dealer_code" value="Dealers" rendered = "#{adminAction.curUser.type_id eq 'DEALER'}"/>
+                    <h:panelGroup rendered = "#{adminAction.curUser.type_id eq 'DEALER'}"><!-- if the dealer type is selected, that is when this drop down should show -->
+                        
+                        <h:selectOneMenu styleClass="controls-length2" required="true" requiredMessage="Dealer is required" id="dealer_code"
+                                         value="#{adminAction.curUser.user_code}">
+                                         
+                               <s:selectItems var="r" value="#{adminAction.dealerList}" itemValue="#{r.dealerName} "
+                                                       label="#{r.dealerAddress}" noSelectionLabel=".:: Select ::." />
+                        </h:selectOneMenu>
+                        
+                        <h:outputLabel value=" *" styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="dealer_code" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                    
+                    <h:outputLabel id="username_label" value="Username"/>
+                    <h:panelGroup>
+                    	<h:inputText id="username" value="#{adminAction.curUser.username}" required="true" requiredMessage="Username is required"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="username" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+
+                    <h:outputLabel id="email_label" value="Email"/>
+                    <h:panelGroup>
+                    	<h:inputText id="email" value="#{adminAction.curUser.email}" required="true" requiredMessage="Email is required" size="40"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="email" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                    
+                    
+                    <h:outputLabel id="email_lname" value="Surname"/>
+                    <h:panelGroup>
+                    	<h:inputText id="lastname" value="#{adminAction.curUser.lastname}" required="true" requiredMessage="Lastname is required"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="lastname" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                    
+                    <h:outputLabel id="email_fname" value="Firstname"/>
+                    <h:panelGroup>
+                    	<h:inputText id="firstname" value="#{adminAction.curUser.firstname}" required="true" requiredMessage="Firstname is required"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="firstname" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                    
+                    <h:outputLabel id="email_mobile" value="Mobile No."/>
+                    <h:panelGroup>
+                    	<h:inputText id="mobile" value="#{adminAction.curUser.mobile}" required="false"/>
+                        <br/>
+                        <rich:message for="mobile" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                    
+                    <h:outputLabel  value="Service ID"/>
+                    <h:panelGroup>
+                    	<h:inputText id="serviceid" value="#{adminAction.curUser.service_id}" required="false"/>
+                        <br/>
+                        <rich:message for="serviceid" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                    <h:outputLabel  value="ESA Authentication"/>
+                    <h:panelGroup>
+                    	<h:selectOneMenu styleClass="controls-length2" id="selStatus"
+                                         value="#{adminAction.curUser.esa_type}">
+                            <f:selectItem itemLabel="NO" itemValue="1" />
+                            <f:selectItem itemLabel="YES" itemValue="0" />
+                        </h:selectOneMenu>
+                        
+                        <h:outputLabel value=" *" styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="selStatus" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                    
+                  </h:panelGrid>  
+                   
+            </rich:graphValidator>
+            
+            
+            <div class="actionButtons" >
+            <a4j:commandButton oncomplete="document.getElementById('userFrm:submit').disabled=false"
+                                   onclick="document.getElementById('userFrm:submit').disabled=true"
+                                   id="submit" value="   Submit  " action="#{adminAction.createUser}" reRender="userFrm, manageUserFrm"/>
+        </div>
+
+        </rich:panel>
+        
+        <!-- update -->
+        
+        <rich:panel style="width:60%" rendered = "#{adminAction.edit_id ne null}">
+            <f:facet name="header">Update User</f:facet>
+            <rich:graphValidator>
+                <h:panelGrid columns="2" rowClasses="prop" columnClasses="name2,value">
+                    
+                    
+                    <h:outputLabel for="type_id1" value="User Type"/>
+                    <h:panelGroup>
+                        <h:selectOneMenu styleClass="controls-length2" required="true" requiredMessage="User Type is required" id="type_id1"
+                                         value="#{adminAction.curUser.type_id}">
+                                         
+                                         <s:selectItems var="r" value="#{adminAction.userTypeList}" itemValue="#{r.type_descr}"
+                                                       label="#{r.type_descr}" noSelectionLabel=".:: Select ::." />
+                                                                                                
+                           <a4j:support event="onchange" action="#{adminAction.getBanks}" ajaxSingle="true" onchange="document.getElementById('userFrm:submit1').disabled=true" oncomplete="document.getElementById('userFrm:submit1').disabled=false" reRender="userFrm"/>
+                        </h:selectOneMenu>
+                        
+                        <h:outputLabel value=" *" styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="type_id1" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+
+
+                    <h:outputLabel for="bank_code1" value="Banks" rendered = "#{adminAction.curUser.type_id eq 'BANK OFFICER' or adminAction.curUser.type_id eq 'BANK ADMINISTRATOR' or adminAction.curUser.type_id eq 'BANK AUTHORIZER'}"/>
+                    <h:panelGroup rendered = "#{adminAction.curUser.type_id eq 'BANK OFFICER' or adminAction.curUser.type_id eq 'BANK ADMINISTRATOR' or adminAction.curUser.type_id eq 'BANK AUTHORIZER'}"><!-- if the bank type is selected, that is when this drop down should show -->
+                        
+                        <h:selectOneMenu styleClass="controls-length2" required="true" requiredMessage="Bank is required" id="bank_code1"
+                                         value="#{adminAction.curUser.user_code}">
+                                         
+                               <s:selectItems var="r" value="#{adminAction.bankList}" itemValue="#{r.bank_code}"
+                                                       label="#{r.bank_nm}" noSelectionLabel=".:: Select ::." />
+                        </h:selectOneMenu>
+                        
+                        <h:outputLabel value=" *" styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="bank_code1" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                    
+                    <h:outputLabel for="dealer_code1" value="Dealers" rendered = "#{adminAction.curUser.type_id eq 'DEALER'}"/>
+                    <h:panelGroup rendered = "#{adminAction.curUser.type_id eq 'DEALER'}"><!-- if the dealer type is selected, that is when this drop down should show -->
+                        
+                        <h:selectOneMenu styleClass="controls-length2" required="true" requiredMessage="Dealer is required" id="dealer_code1"
+                                         value="#{adminAction.curUser.user_code}">
+                                         
+                               <s:selectItems var="r" value="#{adminAction.dealerList}" itemValue="#{r.dealerName} "
+                                                       label="#{r.dealerAddress}" noSelectionLabel=".:: Select ::." />
+                        </h:selectOneMenu>
+                        
+                        <h:outputLabel value=" *" styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="dealer_code1" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                    
+                    <h:outputLabel id="username_label1" value="Username"/>
+                    <h:panelGroup>
+                    	<h:inputText id="username1" value="#{adminAction.curUser.username}" required="true" requiredMessage="Username is required"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="username1" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                    
+                    <h:outputLabel id="email_label1" value="Email"/>
+                    <h:panelGroup>
+                    	<h:inputText id="email1" value="#{adminAction.curUser.email}" required="true" requiredMessage="Email is required" size="40"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="email1" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                    
+                    
+                    <h:outputLabel id="email_lname1" value="Surname"/>
+                    <h:panelGroup>
+                    	<h:inputText id="lastname1" value="#{adminAction.curUser.lastname}" required="true" requiredMessage="Lastname is required"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="lastname1" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                    
+                    <h:outputLabel id="email_fname1" value="Firstname"/>
+                    <h:panelGroup>
+                    	<h:inputText id="firstname1" value="#{adminAction.curUser.firstname}" required="true" requiredMessage="Firstname is required"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="firstname1" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                    
+                    <h:outputLabel id="email_mobile1" value="Mobile No."/>
+                    <h:panelGroup>
+                    	<h:inputText id="mobile1" value="#{adminAction.curUser.mobile}" required="false"/>
+                        <br/>
+                        <rich:message for="mobile1" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                    
+                    <h:outputLabel  value="Service ID"/>
+                    <h:panelGroup>
+                    	<h:inputText id="serviceid1" value="#{adminAction.curUser.service_id}" required="false"/>
+                        <br/>
+                        <rich:message for="serviceid1" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                    
+                    <h:outputLabel  value="ESA Authentication"/>
+                    <h:panelGroup>
+                    	<h:selectOneMenu styleClass="controls-length2" id="selStatus1"
+                                         value="#{adminAction.curUser.esa_type}">
+                            <f:selectItem itemLabel="NO" itemValue="1" />
+                            <f:selectItem itemLabel="YES" itemValue="0" />
+                        </h:selectOneMenu>
+                        
+                        <h:outputLabel value=" *" styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="selStatus1" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                    
+                  </h:panelGrid>  
+                   
+            </rich:graphValidator>
+            
+            <div class="actionButtons" >
+            <a4j:commandButton oncomplete="document.getElementById('userFrm:submit1').disabled=false"
+                                   onclick="document.getElementById('userFrm:submit1').disabled=true"
+                                   id="submit1" value="   Update  " action="#{adminAction.updateUsers}" reRender="userFrm, manageUserFrm"/>
+            
+            <a4j:commandButton oncomplete="document.getElementById('userFrm:submit2').disabled=false"
+                                   onclick="document.getElementById('userFrm:submit2').disabled=true"
+                                   id="submit2" value="   New User  " action="#{adminAction.resetValues}" reRender="userFrm, manageUserFrm"/>
+            
+                                   
+        </div>
+
+        </rich:panel>
+
+        
+        
+   </a4j:form>
+
+   <rich:spacer width="10px" height="10px"/>
+   
+   <a4j:form id="manageUserFrm">
+         <rich:panel style="width:100%" id="displayUserPanel">
+         
+             <f:facet name="header">Manage Users</f:facet>
+             
+             <rich:dataTable id="userTb" reRender="userTableDS" rowKeyVar="rowKey" rows="1000" value="#{adminAction.userList}"  var="usr">
+				
+				<rich:column>
+						<f:facet name="header">S/N</f:facet>
+						<h:outputText value="#{rowKey+1}"/>
+				</rich:column>
+				
+				<rich:column>
+					<f:facet name="header">Username</f:facet>
+					<h:outputText value="#{usr.username}"/>
+				</rich:column>
+				
+				<rich:column>
+					<f:facet name="header">Email Address</f:facet>
+					<h:outputText value="#{usr.email}"/>
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">Last Name</f:facet>
+					<h:outputText value="#{usr.lastname}"/>
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">First Name</f:facet>
+					<h:outputText value="#{usr.firstname}"/>
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">Mobile</f:facet>
+					<h:outputText value="#{usr.mobile}"/>
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">Type</f:facet>
+					<h:outputText value="#{usr.type_nm}"/>
+				</rich:column>
+				<rich:column rendered = "#{usr.type_nm ne 'DEALER'}">
+					<f:facet name="header">User Code</f:facet>
+					<h:outputText value="#{usr.user_code_nm}"/>
+				</rich:column>
+				<rich:column rendered = "#{usr.type_nm eq 'DEALER'}">
+					<f:facet name="header">User Code</f:facet>
+					<h:outputText value="#{usr.dealer_nm}"/>
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">Service ID</f:facet>
+					<h:outputText value="#{usr.service_id}"/>
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">Status</f:facet>
+					<h:outputText value="#{usr.status_nm}"/>
+				</rich:column>
+				<rich:column>
+					
+					<h:commandButton action="#{adminAction.setToEdit}" value="edit" id="submit_edit">
+		            	<f:setPropertyActionListener target="#{adminAction.edit_id}" value="#{usr.user_id}" />
+		            	<rich:componentControl for="panelp" attachTo="submit_edit" operation="show" event="onclick"/>
+		            </h:commandButton>
+					
+					<rich:spacer width="10px"/>
+					
+					<h:commandButton action="#{adminAction.disable_enableUser}" reRender="manageUserFrm"  value="disable" id="submit_disable" rendered = "#{usr.status_id eq 1}">
+		            	<f:setPropertyActionListener target="#{adminAction.operation_id}" value="2" />
+		            	<f:setPropertyActionListener target="#{adminAction.edit_id}" value="#{usr.user_id}" />
+		            	<rich:componentControl for="panelp" attachTo="submit_disable" operation="show" event="onclick"/>
+		            </h:commandButton>
+		            
+		            <h:commandButton action="#{adminAction.disable_enableUser}" reRender="manageUserFrm"  value="enable" id="submit_enable" rendered = "#{usr.status_id eq 2}">
+		            	<f:setPropertyActionListener target="#{adminAction.operation_id}" value="1" />
+		            	<f:setPropertyActionListener target="#{adminAction.edit_id}" value="#{usr.user_id}" />
+		            	<rich:componentControl for="panelp" attachTo="submit_enable" operation="show" event="onclick"/>
+		            </h:commandButton>
+		            
+		            <rich:spacer width="10px"/>
+					
+					<h:commandButton action="#{adminAction.resetPassword}" reRender="manageUserFrm"  value="reset password" id="submit">
+		            	<f:setPropertyActionListener target="#{adminAction.operation_id}" value="#{usr.user_id}" />
+		            	<f:setPropertyActionListener target="#{adminAction.edit_id}" value="#{usr.username}" />
+		            	<rich:componentControl for="panelp" attachTo="submit" operation="show" event="onclick"/>
+		            </h:commandButton>
+
+				</rich:column>
+				<f:facet name="footer">
+					<rich:datascroller id="userTableDS" for="userTb"  renderIfSinglePage="true">
+						<f:facet name="first">
+							<h:outputText value="First" />
+						</f:facet>
+						<f:facet name="last">
+							<h:outputText value="Last" />
+						</f:facet>
+					</rich:datascroller>
+				</f:facet>
+			</rich:dataTable>
+
+         </rich:panel>
+         
+         
+     </a4j:form>
+   
+    
+</ui:define>
+</ui:composition>

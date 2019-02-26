@@ -1,0 +1,81 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="../WEB-INF/layout/basic_layout.xhtml">
+
+<ui:define name="body">
+   <rich:spacer width="10px" height="20px"/>
+
+    <a4j:form id="manageUserFrm">
+         <rich:panel style="width:100%" id="displayUserPanel">
+
+             <f:facet name="header">Provider List</f:facet>
+
+             <rich:dataTable id="userTb" reRender="userTableDS" rows="20" value="#{networkprovidercontroller.providerList}"  var="r">
+				<rich:column>
+					<f:facet name="header">Provider ID</f:facet>
+					<h:outputText value="#{r.providerId}"/>
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">Provider Name</f:facet>
+					<h:outputText value="#{r.providerName}"/>
+				</rich:column>
+                                <rich:column>
+					<f:facet name="header">Provider Code</f:facet>
+					<h:outputText value="#{r.providerCode}"/>
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">Provider Pin Length</f:facet>
+					<h:outputText value="#{r.pinLength}"/>
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">Created Date</f:facet>
+					<h:outputText value="#{r.createdDate}"/>
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">Created User</f:facet>
+					<h:outputText value="#{r.createdUser}"/>
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">Modified Date</f:facet>
+					<h:outputText value="#{r.modifiedDate}"/>
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">Modified User</f:facet>
+					<h:outputText value="#{r.modifiedUser}"/>
+				</rich:column><rich:column>
+					<f:facet name="header">File Type</f:facet>
+					<h:outputText value="#{r.providerFileType}"/>
+				</rich:column>
+ 
+				<rich:column>
+					<a4j:commandButton title="View" action="#{networkprovidercontroller.viewProvider4Edit}" image="/images/view.png">
+                                    <f:setPropertyActionListener value="#{r}" target="#{networkprovidercontroller.provider}"/>
+                    </a4j:commandButton>
+				</rich:column>
+				<f:facet name="footer">
+					<rich:datascroller id="userTableDS" for="userTb"  renderIfSinglePage="true">
+						<f:facet name="first">
+							<h:outputText value="First" />
+						</f:facet>
+						<f:facet name="last">
+							<h:outputText value="Last" />
+						</f:facet>
+					</rich:datascroller>
+				</f:facet>
+			</rich:dataTable>
+
+
+         </rich:panel>
+
+
+     </a4j:form>
+
+</ui:define>
+</ui:composition>

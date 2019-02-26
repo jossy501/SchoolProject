@@ -1,0 +1,88 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:e="http://jboss.com/products/seam/excel"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:c="http://java.sun.com/jstl/core">
+
+<e:workbook type="jxl" ignoreBlanks="false" filename="merchantServiceReport.xls">
+<e:worksheet name="Report" value="#{reportAction.cardholdertranLog}" var="crd" startRow="0">
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="S/No"/>
+	</f:facet>
+	<e:formula value="ROW()-1"/>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Trans No"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{crd.trans_no}" escape="false"/>
+	</e:cell>
+</e:column>
+
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Customer Name"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{crd.firstname}" escape="false"/>
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Toll No"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{crd.lastname}" escape="false"/>
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Trans Desc"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{crd.trans_desc}" escape="false"/>
+	</e:cell>
+</e:column>
+
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Card Number"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText rendered = "#{crd.card_num.length() == 10}" value="#{crd.card_num}" escape="false"/>
+		<h:outputText rendered = "#{crd.card_num.length() > 10}" value="#{reportAction.hashData(crd.card_num)}" escape="false"/>
+	</e:cell>
+</e:column>
+
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Amount"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{reportAction.makeDouble(crd.trans_amount)}" escape="false"/>
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Date"/>
+	</f:facet>
+	<e:cell value="#{crd.trans_date}">
+		
+	</e:cell>
+</e:column>
+
+
+</e:worksheet>
+</e:workbook>
+</html>

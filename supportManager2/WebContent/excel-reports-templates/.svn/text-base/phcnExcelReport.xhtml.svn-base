@@ -1,0 +1,104 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:e="http://jboss.com/products/seam/excel"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:c="http://java.sun.com/jstl/core">
+
+<e:workbook type="jxl" ignoreBlanks="false" filename="PHCN Report.xls">
+<e:worksheet name="Report" value="#{reportAction.pinLog}" var="crd" startRow="0">
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="ETZ REFRENCE"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{crd.transid}" escape="false"/>
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="PHCN ACCOUNT"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="NA" escape="false"/>
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="PREPAID METER NO"/>
+	</f:facet>
+	<e:cell value="NA">
+
+	</e:cell>
+</e:column>
+
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="CUSTOMER NAME"/>
+	</f:facet>
+	<e:cell value="#{crd.t_fullname}">
+
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="CUSTOMER ADDRESS"/>
+	</f:facet>
+	<e:cell value="#{crd.t_address}">
+		
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="PHCN NARATION"/>
+	</f:facet>
+	<e:cell value="#{crd.trans_descr}">
+		
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="AMOUNT"/>
+	</f:facet>
+	<e:cell value="#{reportAction.makeDouble(crd.trans_amount)}">
+		
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="BANK CODE"/>
+	</f:facet>
+	<e:cell value="NA">
+		
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="BRANCH CODE"/>
+	</f:facet>
+	<e:cell value="NA">
+		
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="DATE"/>
+	</f:facet>
+	<e:cell value="#{crd.trans_date}">
+		
+	</e:cell>
+</e:column>
+
+</e:worksheet>
+</e:workbook>
+</html>

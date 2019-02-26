@@ -1,0 +1,239 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="../WEB-INF/layout/basic_layout.xhtml">
+                
+<ui:define name="body">
+
+
+	<!-- processing panel -->
+    
+    <rich:modalPanel id="panelp" width="150" height="50">
+       <h:form id="pFrm">
+        <h:panelGrid columns="1" rowClasses="prop" columnClasses="name2,value">
+           <h:outputText value="Please wait...." styleClass="messagesingle" align="center">
+               <h:graphicImage value="/images/loading_small.gif"/>
+           </h:outputText>
+          </h:panelGrid>  
+         </h:form>
+    </rich:modalPanel>
+
+    <h:form id="cardFrm">
+        <rich:panel style="width:40%">
+            <f:facet name="header"> Activation Report </f:facet>
+            <rich:graphValidator>
+                <h:panelGrid columns="2" rowClasses="prop" columnClasses="name2,value">
+                    
+                    <h:outputLabel id ="start_date" for="start_date" value="Start Date"/>
+                    <h:panelGroup>
+                    	<rich:calendar value="#{reportAction.start_date}" required="true" id="strt_date"
+                                       datePattern="yyyy-MM-dd" styleClass="controls-length2" requiredMessage="Start Date is required"/>
+                        <span style="white-space:nowrap">
+                            &nbsp;
+                        </span>
+                        <h:selectOneMenu id="start_hr" value="#{reportAction.start_hr}">
+                            <f:selectItem itemLabel="00" itemValue="00" />
+                            <f:selectItem itemLabel="01" itemValue="01" />
+                            <f:selectItem itemLabel="02" itemValue="02" />
+                            <f:selectItem itemLabel="03" itemValue="03" />
+                            <f:selectItem itemLabel="04" itemValue="04" />
+                            <f:selectItem itemLabel="05" itemValue="05" />
+                            <f:selectItem itemLabel="06" itemValue="06" />
+                            <f:selectItem itemLabel="07" itemValue="07" />
+                            <f:selectItem itemLabel="08" itemValue="08" />
+                            <f:selectItem itemLabel="09" itemValue="09" />
+                            <f:selectItem itemLabel="10" itemValue="10" />
+                            <f:selectItem itemLabel="11" itemValue="11" />
+                            <f:selectItem itemLabel="12" itemValue="12" />
+                            <f:selectItem itemLabel="13" itemValue="13" />
+                            <f:selectItem itemLabel="14" itemValue="14" />
+                            <f:selectItem itemLabel="15" itemValue="15" />
+                            <f:selectItem itemLabel="16" itemValue="16" />
+                            <f:selectItem itemLabel="17" itemValue="17" />
+                            <f:selectItem itemLabel="18" itemValue="18" />
+                            <f:selectItem itemLabel="19" itemValue="19" />
+                            <f:selectItem itemLabel="20" itemValue="20" />
+                            <f:selectItem itemLabel="21" itemValue="21" />
+                            <f:selectItem itemLabel="22" itemValue="22" />
+                            <f:selectItem itemLabel="23" itemValue="23" />
+
+                        </h:selectOneMenu>
+                        <h:outputLabel value=" *" styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="start_date" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>                              
+                    </h:panelGroup>
+                    
+                    
+                    <h:outputLabel id="end_date" for="end_date" value="End Date"/>
+                    <h:panelGroup>
+                    	<rich:calendar value="#{reportAction.end_date}" required="true" id="ed_date"
+                                       datePattern="yyyy-MM-dd" styleClass="controls-length2" requiredMessage="End Date is required"/>
+                        
+                        <span style="white-space:nowrap">
+                            &nbsp;
+                        </span>
+                        <h:selectOneMenu id="end_hr" value="#{reportAction.end_hr}">
+                            <f:selectItem itemLabel="00" itemValue="00" />
+                            <f:selectItem itemLabel="01" itemValue="01" />
+                            <f:selectItem itemLabel="02" itemValue="02" />
+                            <f:selectItem itemLabel="03" itemValue="03" />
+                            <f:selectItem itemLabel="04" itemValue="04" />
+                            <f:selectItem itemLabel="05" itemValue="05" />
+                            <f:selectItem itemLabel="06" itemValue="06" />
+                            <f:selectItem itemLabel="07" itemValue="07" />
+                            <f:selectItem itemLabel="08" itemValue="08" />
+                            <f:selectItem itemLabel="09" itemValue="09" />
+                            <f:selectItem itemLabel="10" itemValue="10" />
+                            <f:selectItem itemLabel="11" itemValue="11" />
+                            <f:selectItem itemLabel="12" itemValue="12" />
+                            <f:selectItem itemLabel="13" itemValue="13" />
+                            <f:selectItem itemLabel="14" itemValue="14" />
+                            <f:selectItem itemLabel="15" itemValue="15" />
+                            <f:selectItem itemLabel="16" itemValue="16" />
+                            <f:selectItem itemLabel="17" itemValue="17" />
+                            <f:selectItem itemLabel="18" itemValue="18" />
+                            <f:selectItem itemLabel="19" itemValue="19" />
+                            <f:selectItem itemLabel="20" itemValue="20" />
+                            <f:selectItem itemLabel="21" itemValue="21" />
+                            <f:selectItem itemLabel="22" itemValue="22" />
+                            <f:selectItem itemLabel="23" itemValue="23" />
+
+                        </h:selectOneMenu>
+                        <h:outputLabel value=" *" styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="end_date" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>                              
+                    </h:panelGroup>
+                    
+                    
+                    <!--   <h:outputLabel id="status" for="status" value=" Report Option "/>
+                    <h:panelGroup>
+                        <h:selectOneMenu styleClass="controls-length2" id="selStatus" required="true" requiredMessage="Report option is required" 
+                                         value="#{reportAction.trans_code}">
+                                         
+                            <f:selectItem itemLabel=".:: Select ::." itemValue="" />
+                            <f:selectItem itemLabel="ACTIVATION BY DEBIT CARD" itemValue="01" />
+                            <f:selectItem itemLabel="ACTIVATION BY PREPAID CARD" itemValue="02" />
+                                     
+                        </h:selectOneMenu>
+                        <h:outputLabel value=" *" styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="selStatus" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup> -->
+                    
+       
+                  </h:panelGrid>  
+                   
+            </rich:graphValidator>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+        	
+            <h:commandButton id="submit" value="  Search  " action="#{reportAction.getActivationUBADebitCardReport}" reRender="manageCardFrm">
+            	<rich:componentControl for="panelp" attachTo="submit" operation="show" event="onclick"/>
+            </h:commandButton>
+            
+        </div>
+   </h:form>
+   
+   <rich:spacer width="10px" height="20px"/>
+
+    <h:form id="manageCardFrm">
+        
+        <rich:panel style="width:100%" rendered = "#{reportAction.switchReportLog.size() > 0 }">
+
+            <f:facet name="header">
+            	<h:outputText value=" Transaction Report [ Total Record(s) found :  #{reportAction.switchReportLog.size()} ] " />
+            </f:facet>
+
+            <rich:dataTable id="acardTb1" rows="1000" value="#{reportAction.switchReportLog}"  var="crd">
+                
+     
+                <rich:column>
+                    <f:facet name="header">Debit Count</f:facet>
+                    <h:outputText value="#{crd.card_count}"/>
+                </rich:column>
+                
+                  <rich:column>
+                    <f:facet name="header">Account Count</f:facet>
+                    <h:outputText value="#{crd.volume}"/>
+                </rich:column> 
+                
+                <rich:column>
+                    <f:facet name="header">PrePaid Count</f:facet>
+                    <h:outputText value="#{crd.counter}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">New Subscriber Count(All Activation)</f:facet>
+                    <h:outputText value="#{crd.phone}"/>
+                </rich:column>
+                
+                
+                <rich:column>
+                    <f:facet name="header">Transaction Volume / Value</f:facet>
+                    <h:outputText value="#{crd.closed}"/>
+                    <h:outputText value="#{crd.closed}"/>
+                    
+                </rich:column>
+                
+             <!--    <rich:column>
+                    <f:facet name="header">Cumm. Volume / Value</f:facet>
+                    <h:outputText value="#{crd.closed}"/>
+                </rich:column> -->
+                
+                <rich:column>
+                    <f:facet name="header">New Subscriber Count(Activation By Account)</f:facet>
+                    <h:outputText value="#{crd.closed}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Cumm. Number Of Registered Customers</f:facet>
+                    <h:outputText value="#{crd.closed}"/>
+                </rich:column>
+                
+                
+          <!--       <f:facet name="footer">
+                	<rich:columnGroup>
+                        <rich:column colspan="5">
+                        	<div align="left">
+                        		Download
+                        		<s:link  id="srADreplogo" view="/excel-reports-templates/switch_ExcelReport.xhtml"  styleClass= "menu-button"  rendered ="#{reportAction.switchReportLog.size() > 0}"  >
+				            		<h:graphicImage value="/images/excel5.jpg"/>
+				           		</s:link>
+                        	</div>
+                        </rich:column>
+                    </rich:columnGroup>
+                </f:facet> -->
+                
+            </rich:dataTable>
+            
+            <rich:datascroller id="cardTableDS1" for="acardTb1"  renderIfSinglePage="true">
+               <f:facet name="first">
+                   <h:outputText value="First" />
+               </f:facet>
+               <f:facet name="last">
+                   <h:outputText value="Last" />
+               </f:facet>
+           </rich:datascroller>
+            
+        </rich:panel> 
+        
+      
+        
+       <rich:panel style="width: 100%; height:50px" rendered="#{reportAction.switchReportLog.size() == 0}">
+			<h:outputText value="&nbsp;No record(s) found. "/>
+		</rich:panel>
+    </h:form>
+    
+</ui:define>
+</ui:composition>

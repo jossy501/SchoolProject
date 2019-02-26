@@ -1,0 +1,205 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="../WEB-INF/layout/basic_layout.xhtml">
+
+    <ui:define name="body">
+
+
+        <rich:spacer width="10px" height="20px"/>
+
+        <a4j:form id="userFrm">
+            <rich:panel style="width:100%" id ="panel">
+                <f:facet name="header">PIN Upload</f:facet>
+                <rich:graphValidator>
+				<h:outputLabel value="Provider   :" />
+				 <h:panelGroup>
+                        <h:selectOneMenu styleClass="controls-length2" required="true" requiredMessage="Provider is required" id="provider"
+                                         value="#{fileUploadBean.pinLength}">
+
+                               <s:selectItems var="r" value="#{networkprovidercontroller.providerList}" itemValue="#{r.pinLength}_#{r.providerCode}_#{r.providerFileType}"
+                                                       label="#{r.providerName}" noSelectionLabel=":: Select ::" />
+                        </h:selectOneMenu>
+
+
+                        <h:outputLabel value="*" styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="provider" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                                <br/>
+                    <h:outputLabel for="key" value="Encryption Key"/>
+                    <h:panelGroup>
+                    	<h:inputText id="key" value="#{fileUploadBean.key}" requiredMessage=""/>
+                    	<h:outputLabel value="" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="key" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+					<br/>
+					<br/>
+					Specify amount for Starcoms and Visafone only
+					<br/>
+                    <h:outputLabel for="amount" value="Amount"/>
+                    <h:panelGroup>
+                    	<h:inputText id="amount" value="#{fileUploadBean.amount}" />
+                    	<h:outputLabel value="" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="amount" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+
+                    <h:panelGrid columns="2" rowClasses="prop" columnClasses="name2,value">
+                        <rich:fileUpload disabled="#{!empty fileUploadBean.uploadedPins}" fileUploadListener="#{fileUploadBean.listener}"
+                                         maxFilesQuantity="1"
+                                         id="upload"
+                                         immediateUpload="true"
+                                         onuploadcomplete="document.getElementById('userFrm:submit').disabled=false"
+                                         acceptedTypes="xls,xlsx,txt" addControlLabel="Upload File" doneLabel="File Successfully Copied To The Server" listHeight="60" listWidth ="500">
+                            <a4j:support event="onclear" reRender="userFrm" />
+                            <f:facet name="label">
+                                <h:outputText value="{_KB}KB from {KB}KB uploaded --- {mm}:{ss}" />
+                            </f:facet>
+
+                        </rich:fileUpload>
+
+
+                    </h:panelGrid>
+
+                    <h:commandButton  id="submit" value="  Process  " onclick="document.getElementById('userFrm.submit').disabled=true" action="#{fileUploadBean.processUpload}" reRender="manageCardFrm" >
+                    </h:commandButton>
+
+
+                </rich:graphValidator>
+
+            </rich:panel>
+
+        </a4j:form>
+        <br/>
+
+        <h:form id="manageCardFrm" >
+
+            <rich:panel style="width:100%" rendered="#{!empty fileUploadBean.uploadedPins || !empty fileUploadBean.invalid}">
+			<h:panelGrid columns="3" rowClasses="prop" columnClasses="name2,value">
+					 <h:outputLabel  rendered="#{fileUploadBean.uploadedPins.size() > 0}" value="Total Valid Record(s):"/>
+					 <h:outputLabel  rendered="#{fileUploadBean.uploadedPins.size() > 0}" value="#{fileUploadBean.uploadedPins.size()}"/>
+					 <h:outputLabel value=""/>
+					 <h:outputLabel  rendered="#{fileUploadBean.invalid.size() > 0}" value="Total Invalid Record(s):"/>
+					 <h:outputLink rendered="#{fileUploadBean.invalid.size() > 0}" title="View" value="#" id ="link">
+					 <h:outputLabel  rendered="#{fileUploadBean.invalid.size() > 0}" value="#{fileUploadBean.invalid.size()}"/>
+					 <h:graphicImage alt="View" value="/images/view.png"/>
+                        <rich:componentControl for="panel2" attachTo="link" operation="show" event="onclick"/>
+                    </h:outputLink>
+
+
+
+		</h:panelGrid>
+                <h:commandButton  id="s" value="  Submit  " onclick="document.getElementById('manageCardFrm.s').disabled=true" action="#{fileUploadBean.insertData}" reRender="manageCardFrm" >
+                </h:commandButton>
+                <f:facet name="header"> [ Total Record(s) :  #{fileUploadBean.uploadedPins.size()} ]
+
+
+                </f:facet>
+
+                <rich:dataTable id="viewClaimsSum"  rows="20" value="#{fileUploadBean.uploadedPins}" width="50%"  var="r">
+
+                    <rich:column>
+                        <f:facet name="header">S/N</f:facet>
+                        <h:outputText value="#{r.id}"/>
+                    </rich:column>
+                    <rich:column>
+                        <f:facet name="header">PIN Denomination</f:facet>
+                        <h:outputText value="#{r.PIN_DENO}"/>
+                    </rich:column>
+
+                    <rich:column>
+                        <f:facet name="header">PIN Value</f:facet>
+                        <h:outputText value="#{r.PIN_VALUE}"/>
+                    </rich:column>
+
+                    <rich:column>
+                        <f:facet name="header">PIN Provider</f:facet>
+                        <h:outputText value="#{r.PROVIDER_ID}"/>
+                    </rich:column>
+
+                    <rich:column>
+                        <f:facet name="header">PIN Serial Number</f:facet>
+                        <h:outputText value="#{r.SERIAL}"/>
+                    </rich:column>
+
+
+                    <f:facet name="footer">
+                        <rich:datascroller id="cardTableDS" for="viewClaimsSum"  renderIfSinglePage="true">
+                            <f:facet name="first">
+                                <h:outputText value="First" />
+                            </f:facet>
+                            <f:facet name="last">
+                                <h:outputText value="Last" />
+                            </f:facet>
+                        </rich:datascroller>
+                    </f:facet>
+                </rich:dataTable>
+
+                <h:commandButton  id="s2_" value="  Return  " onclick="document.getElementById('manageCardFrm.s2_').disabled=true" action="#{fileUploadBean.returns}" reRender="manageCardFrm" >
+                </h:commandButton>
+                <h:commandButton  id="s2" value="  Submit  " onclick="document.getElementById('manageCardFrm.s2').disabled=true" action="#{fileUploadBean.insertData}" reRender="manageCardFrm" >
+                </h:commandButton>
+
+            </rich:panel>
+
+        </h:form>
+
+
+		<rich:modalPanel id="panel2" width="250" height="400" style="overflow : auto;">
+            <f:facet name="header">
+                <h:panelGroup>
+                    <h:outputText value="Invalid PIN Record"></h:outputText>
+                </h:panelGroup>
+            </f:facet>
+            <f:facet name="controls">
+                <h:panelGroup>
+                    <h:graphicImage value="/images/close.gif" styleClass="hidelink" id="hidelink2"/>
+                    <rich:componentControl for="panel2" attachTo="hidelink2" operation="hide" event="onclick"/>
+                </h:panelGroup>
+            </f:facet>
+            <h:form id="vFrm2">
+                <h:panelGrid columns="2" rowClasses="prop" columnClasses="name2,value" >
+<f:facet name="header"> [ Total Invalid Record(s) :  #{fileUploadBean.invalid.size()} ]
+
+
+                </f:facet>
+				<rich:dataTable id="viewClaimsSum"  rows="20" value="#{fileUploadBean.invalid}" width="300%"  var="r">
+
+                    <rich:column>
+                        <f:facet name="header">Line</f:facet>
+                        <h:outputText value="#{r.line}"/>
+                    </rich:column>
+                    <rich:column>
+                        <f:facet name="header">Description</f:facet>
+                        <h:outputText value="#{r.errorDesc}"/>
+                    </rich:column>
+                    <f:facet name="footer">
+                        <rich:datascroller id="cardTableDS" for="viewClaimsSum"  renderIfSinglePage="true">
+                            <f:facet name="first">
+                                <h:outputText value="First" />
+                            </f:facet>
+                            <f:facet name="last">
+                                <h:outputText value="Last" />
+                            </f:facet>
+                        </rich:datascroller>
+                    </f:facet>
+                </rich:dataTable>
+
+                </h:panelGrid>
+
+            </h:form>
+        </rich:modalPanel>
+
+    </ui:define>
+</ui:composition>

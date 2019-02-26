@@ -1,0 +1,135 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:e="http://jboss.com/products/seam/excel"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:c="http://java.sun.com/jstl/core">
+
+<e:workbook type="jxl" ignoreBlanks="false" filename="PHCN Report.xls">
+<e:worksheet name="Report" value="#{reportAction.billLog}" var="crd" startRow="0">
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="ETZ REFERENCE"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="ETZ" escape="false"/>
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="CHANNEL"/>
+	</f:facet>
+	<e:cell value="#{reportAction.getChannelName(crd.trans_channel)}">
+		
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="LOCATION OF TRANSACTION"/>
+	</f:facet>
+	<e:cell value="">
+		
+	</e:cell>
+</e:column>
+
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="CUSTOMER TYPE"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="POSTPAID" escape="false" rendered = "#{crd.status_desc eq '0|0|0|0'}"/>
+		<h:outputText value="PREPAID" escape="false" rendered = "#{crd.status_desc ne '0|0|0|0'}"/>
+	</e:cell>
+</e:column>
+
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="TRANS REFERENCE"/>
+	</f:facet>
+	<e:cell value="#{crd.unique_trans_id}">
+
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="RECEIPT NO"/>
+	</f:facet>
+	<e:cell value="">
+
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="PHCN ACCOUNT / METER NO"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{crd.subscriber_id}" escape="false"/>
+	</e:cell>
+</e:column>
+
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="CUSTOMER NAME"/>
+	</f:facet>
+	<e:cell value="#{crd.card_fullname}">
+
+	</e:cell>
+</e:column>
+
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="AMOUNT"/>
+	</f:facet>
+	<e:cell value="#{reportAction.makeDouble(crd.trans_amount)}">
+		
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="PAYMENT DATE"/>
+	</f:facet>
+	<e:cell value="#{crd.trans_date}">
+		
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="DISTRIBUTION COMPANY"/>
+	</f:facet>
+	<e:cell value="">
+		
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="DISTRICT"/>
+	</f:facet>
+	<e:cell value="">
+		
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="PHONE"/>
+	</f:facet>
+	<e:cell value="">
+		
+	</e:cell>
+</e:column>
+
+</e:worksheet>
+</e:workbook>
+</html>

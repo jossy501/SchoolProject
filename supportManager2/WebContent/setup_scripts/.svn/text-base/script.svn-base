@@ -1,0 +1,108 @@
+drop table telcodb..support_bank
+CREATE TABLE telcodb.dbo.support_bank (
+	bank_code varchar(3) NULL,
+	description varchar(50) NULL,
+	acronym varchar(3) NULL
+);
+INSERT INTO telcodb.dbo.support_bank(bank_code, description, acronym) VALUES ('044', 'Access Bank plc', 'ACC')
+INSERT INTO telcodb.dbo.support_bank(bank_code, description, acronym) VALUES ('014', 'AFRIBANK', 'AFR')
+INSERT INTO telcodb.dbo.support_bank(bank_code, description, acronym) VALUES ('082', 'Bank PHB', 'PHB')
+INSERT INTO telcodb.dbo.support_bank(bank_code, description, acronym) VALUES ('063', 'Diamond Bank', 'DIA')
+INSERT INTO telcodb.dbo.support_bank(bank_code, description, acronym) VALUES ('050', 'ECOBANK', 'ECO')
+INSERT INTO telcodb.dbo.support_bank(bank_code, description, acronym) VALUES ('024', 'Equitorial Trust Bank', 'ETB')
+INSERT INTO telcodb.dbo.support_bank(bank_code, description, acronym) VALUES ('070', 'Fidelity Bank', 'FID')
+INSERT INTO telcodb.dbo.support_bank(bank_code, description, acronym) VALUES ('085', 'FINBANK PLC', 'FIN')
+INSERT INTO telcodb.dbo.support_bank(bank_code, description, acronym) VALUES ('214', 'First City Monument Bank Plc', 'FCM')
+INSERT INTO telcodb.dbo.support_bank(bank_code, description, acronym) VALUES ('011', 'FIRSTBANK', 'FIR')
+INSERT INTO telcodb.dbo.support_bank(bank_code, description, acronym) VALUES ('058', 'Guaranty Trust Bank PLC', 'GTB')
+INSERT INTO telcodb.dbo.support_bank(bank_code, description, acronym) VALUES ('069', 'Intercontinental Bank PLC', 'IBP')
+INSERT INTO telcodb.dbo.support_bank(bank_code, description, acronym) VALUES ('056', 'Oceanic Bank Plc.', 'OCE')
+INSERT INTO telcodb.dbo.support_bank(bank_code, description, acronym) VALUES ('076', 'Skye Bank Plc', 'SKY')
+INSERT INTO telcodb.dbo.support_bank(bank_code, description, acronym) VALUES ('084', 'Spring Bank', 'SPR')
+INSERT INTO telcodb.dbo.support_bank(bank_code, description, acronym) VALUES ('039', 'STANBIC IBTC Bank', 'IBT')
+INSERT INTO telcodb.dbo.support_bank(bank_code, description, acronym) VALUES ('232', 'Sterling Bank', 'STE')
+INSERT INTO telcodb.dbo.support_bank(bank_code, description, acronym) VALUES ('032', 'Union Bank of Nigeria', 'UBN')
+INSERT INTO telcodb.dbo.support_bank(bank_code, description, acronym) VALUES ('033', 'United Bank for Africa', 'UBA')
+INSERT INTO telcodb.dbo.support_bank(bank_code, description, acronym) VALUES ('215', 'Unity Bank PLC', 'UTY')
+INSERT INTO telcodb.dbo.support_bank(bank_code, description, acronym) VALUES ('035', 'WEMA', 'WEM')
+INSERT INTO telcodb.dbo.support_bank(bank_code, description, acronym) VALUES ('057', 'Zenith Bank Plc', 'ZIB')
+
+INSERT INTO telcodb.dbo.support_bank(bank_code, description, acronym) VALUES ('733', 'CU Community Bank', 'CUB')
+INSERT INTO telcodb.dbo.support_bank(bank_code, description, acronym) VALUES ('755', 'Nal Bank ePurse Scheme', 'NBE')
+INSERT INTO telcodb.dbo.support_bank(bank_code, description, acronym) VALUES ('778', 'South West Ikoyi Community Bank', 'SWI')
+INSERT INTO telcodb.dbo.support_bank(bank_code, description, acronym) VALUES ('784', 'URBAN MICROFINANCE', 'URM')
+INSERT INTO telcodb.dbo.support_bank(bank_code, description, acronym) VALUES ('785', 'ASO SAVINGS', 'ASS')
+INSERT INTO telcodb.dbo.support_bank(bank_code, description, acronym) VALUES ('786', 'Access Solutions Ltd', 'ASL')
+INSERT INTO telcodb.dbo.support_bank(bank_code, description, acronym) VALUES ('787', 'OKO COMMUNITY BANK', 'OCB')
+
+INSERT INTO telcodb.dbo.support_bank(bank_code, description, acronym) VALUES ('788', 'Ogui Urban MFB', 'OUM')
+INSERT INTO telcodb.dbo.support_bank(bank_code, description, acronym) VALUES ('789', 'U and C MFI', 'UCM')
+INSERT INTO telcodb.dbo.support_bank(bank_code, description, acronym) VALUES ('790', 'LAV Micro Finance Bank', 'LMB')
+INSERT INTO telcodb.dbo.support_bank(bank_code, description, acronym) VALUES ('791', 'OOU MICRO-FINANCE BANK', 'OMB')
+INSERT INTO telcodb.dbo.support_bank(bank_code, description, acronym) VALUES ('792', 'FINCONNEKT MICROFINANCE', 'FMB')
+INSERT INTO telcodb.dbo.support_bank(bank_code, description, acronym) VALUES ('793', 'ACCION Bank Plc', 'ABP')
+INSERT INTO telcodb.dbo.support_bank(bank_code, description, acronym) VALUES ('794', 'CALM MICROFINANCE BANK LTD', 'CMB')
+
+INSERT INTO telcodb.dbo.support_bank(bank_code, description, acronym) VALUES ('795', 'Supercard', 'SPC')
+INSERT INTO telcodb.dbo.support_bank(bank_code, description, acronym) VALUES ('796', 'Abia State University MFB', 'AUM')
+INSERT INTO telcodb.dbo.support_bank(bank_code, description, acronym) VALUES ('797', 'FCE OBUDU MFB', 'FOM')
+INSERT INTO telcodb.dbo.support_bank(bank_code, description, acronym) VALUES ('798', 'ISUOFIA NFB', 'ISN')
+INSERT INTO telcodb.dbo.support_bank(bank_code, description, acronym) VALUES ('799', 'Kenya Commercial Bank', 'KCB')
+
+-----------------------------------------------------------------------------------------------------------------
+
+
+drop table telcodb..support_status
+CREATE TABLE telcodb.dbo.support_status (
+	status_id int identity NOT NULL,
+	status_desc varchar(45) NOT NULL,
+	PRIMARY KEY (status_id)
+)
+INSERT INTO telcodb.dbo.support_status(status_desc) VALUES ('ACTIVE')
+INSERT INTO telcodb.dbo.support_status(status_desc) VALUES ('NON ACTIVE')
+
+
+-----------------------------------------------------------------------------------------------------------------
+
+
+drop table telcodb..support_type
+CREATE TABLE telcodb.dbo.support_type (
+	type_id int identity NOT NULL,
+	type_desc varchar(45) NULL,
+	PRIMARY KEY (type_id)
+)
+INSERT INTO telcodb..support_type(type_desc) VALUES ('ADMINISTRATOR')
+INSERT INTO telcodb..support_type(type_desc) VALUES ('SUPPORT OFFICER')
+INSERT INTO telcodb..support_type(type_desc) VALUES ('BANK')
+INSERT INTO telcodb..support_type(type_desc) VALUES ('REPORT OFFICER')
+-------------------------------------------------------------------------------------------
+
+drop table telcodb..support_user
+CREATE TABLE telcodb.dbo.SUPPORT_USER (
+	USER_ID int identity NOT NULL,
+	EMAIL varchar(50) NULL,
+	PASSWORD varchar(25) NULL,
+	LASTNAME varchar(25) NULL,
+	FIRSTNAME varchar(25) NULL,
+	MOBILE varchar(25) NULL,
+	TYPE_ID int NULL,
+	STATUS_ID int NULL,
+	CREATE_DATE datetime NULL,
+	MODIFIED_DATE datetime NULL,
+	IP_ADDRESS varchar(25) NULL,
+	user_code varchar(3) NOT NULL,
+	PRIMARY KEY (USER_ID)
+);
+
+ALTER TABLE telcodb.dbo.SUPPORT_USER
+	ADD FOREIGN KEY (STATUS_ID) 
+	REFERENCES support_status (status_id)
+
+ALTER TABLE telcodb.dbo.SUPPORT_USER
+	ADD FOREIGN KEY (TYPE_ID) 
+	REFERENCES support_type (type_id)
+
+
+INSERT INTO telcodb..support_user(EMAIL, PASSWORD, LASTNAME, FIRSTNAME, MOBILE, TYPE_ID, STATUS_ID, CREATE_DATE, MODIFIED_DATE, IP_ADDRESS, user_code) VALUES ('admin@etranzact.net', 'admin', 'ADMIN', '000', 'ADMIN', 00000, 1, '1', '2011-03-23 09:13:30.826', '1900-01-01 00:00:00.0', '000.000.00.000')
+
+---------------------------------------------------------------------------------------------------------------

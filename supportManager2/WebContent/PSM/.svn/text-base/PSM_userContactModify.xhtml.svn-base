@@ -1,0 +1,89 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="../WEB-INF/layout/basic_layout.xhtml">
+
+<ui:define name="body">
+
+
+    <a4j:form id="userFrm">
+        <rich:panel style="width:60%">
+            <f:facet name="header">User Contact Edit</f:facet>
+            <rich:graphValidator>
+			<s:link view="/PSM/PSM_lisUser.xhtml" value="List All User" styleClass="textLink" propagation="none"/>
+                <h:panelGrid columns="2" rowClasses="prop" columnClasses="name2,value">
+
+				<h:outputLabel for="dealer" value="Dealer:"/>
+                    <h:panelGroup>
+                        <h:selectOneMenu styleClass="controls-length2" required="true" requiredMessage="Dealer is required" id="dealer"
+                                         value="#{tpsmusercontactcontroller.userContact.dealerId}">
+
+                               <s:selectItems var="r" value="#{dealercontroller.dealerList}" itemValue="#{r.dealerId}"
+                                                       label="#{r.dealerName}" noSelectionLabel=":: Select ::" />
+                        </h:selectOneMenu>
+
+
+                        <h:outputLabel value=" *" styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="dealer" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                    <h:outputLabel for="name" value="User Fullname:"/>
+                    <h:panelGroup>
+                    	<h:inputText id="name" value="#{tpsmusercontactcontroller.userContact.userFullname}" required="true" requiredMessage="User Fullname is required"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="name" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+					<h:outputLabel for="email" value="Email Address"/>
+                    <h:panelGroup>
+                    	<h:inputText id="email" value="#{tpsmusercontactcontroller.userContact.userEmail}" required="true" requiredMessage="Email is required"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="email" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+
+					<h:outputLabel for="email" value="Phone Number"/>
+                    <h:panelGroup>
+                    	<h:inputText id="phone" value="#{tpsmusercontactcontroller.userContact.userPhoneNumber}" required="true" requiredMessage="Phone number is required"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="phone" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+
+
+
+
+
+                  </h:panelGrid>
+
+            </rich:graphValidator>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+ <rich:toolBar style="width:60%">
+                            <rich:toolBarGroup>
+
+            <a4j:commandButton oncomplete="document.getElementById('userFrm:submit').disabled=false"
+                                   onclick="document.getElementById('userFrm:submit').disabled=true"
+                                   id="submit" value="   Modify  " action="#{tpsmusercontactcontroller.modifiyUserContact}" reRender="userFrm, manageUserFrm"/>
+</rich:toolBarGroup>
+                        </rich:toolBar>
+        </div>
+   </a4j:form>
+
+   <rich:spacer width="10px" height="10px"/>
+
+
+</ui:define>
+</ui:composition>

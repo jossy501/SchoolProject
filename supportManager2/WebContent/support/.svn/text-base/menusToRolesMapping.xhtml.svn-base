@@ -1,0 +1,122 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="../WEB-INF/layout/basic_layout.xhtml">
+              
+<ui:define name="body">
+
+	<!-- processing panel -->
+    
+    <rich:modalPanel id="panelp" width="150" height="50">
+       <h:form id="pFrm">
+        <h:panelGrid columns="1" rowClasses="prop" columnClasses="name2,value">
+           <h:outputText value="Please wait...." styleClass="messagesingle" align="center">
+               <h:graphicImage value="/images/loading_small.gif"/>
+           </h:outputText>
+          </h:panelGrid>  
+         </h:form>
+    </rich:modalPanel>
+
+    <h:form id="cardFrm">
+    
+    <rich:panel style="width:65%" id="modalPanel1">
+            <f:facet name="header">Map Menus To Roles</f:facet>
+            <rich:graphValidator>
+                <h:panelGrid columns="2" rowClasses="prop" columnClasses="name2,value">
+                    
+                    
+                    <h:outputLabel for="sUser" value="User Roles"/>
+                    <h:panelGroup>
+                    
+                        <h:selectOneMenu id="sUser" value="#{adminAction.curUser.type_id}" requiredMessage="User Role is required" required="true">
+						  <s:selectItems value="#{adminAction.userTypeList}" var = "r" itemValue="#{r.type_id}" label = "#{r.type_descr}" 
+						  	noSelectionLabel = ".:: Select ::."/>
+						 <a4j:support event="onchange" action="#{adminAction.loadMappedMenusToRoles}" ajaxSingle="true" onchange="document.getElementById('cardFrm:addToQueue').disabled=true" oncomplete="document.getElementById('cardFrm:addToQueue').disabled=false" reRender="modalPanel2"/> 		
+						</h:selectOneMenu> 
+						
+                        <h:outputLabel value=" *" styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="sUser" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+
+                    <h:outputLabel id="email_label" styleClass="vertical-align:top;" value="Menus" />
+                    <h:panelGroup>
+                    	<rich:pickList value = "#{adminAction.menuToRoleList}" id ="modalPanel" >
+                    		<s:selectItems value="#{adminAction.menuList}" var = "r" itemValue="#{r.menu_id}" label = "#{r.menu_nm}"/>
+			        	</rich:pickList>
+                    </h:panelGroup>
+                    
+                  </h:panelGrid>  
+                  
+                  <div class="actionButtons" >
+		            
+		                                   
+		            <h:commandButton id="addToQueue" value="  Map  " action="#{adminAction.mapMenuToRole}">
+		            	<rich:componentControl for="panelp" attachTo="addToQueue" operation="show" event="onclick"/>
+		            </h:commandButton>                       
+		                                   
+		                                   
+		          </div>
+                  
+                  <br/>
+				
+				<rich:panel style="width:100%" id="modalPanel2">
+		
+		           <f:facet name="header">Total Mapping Queued  #{adminAction.menuMapToRoleList.size()} ]</f:facet>
+		
+		            <rich:dataTable id="mcardTb" rows="10" value="#{adminAction.menuMapToRoleList}"  var="crd">
+		                
+		                <rich:column>
+		                    <f:facet name="header">Menu</f:facet>
+		                    <h:outputText value="#{crd.menu_nm}"/>
+		                </rich:column>
+		                
+		                <rich:column>
+		                    <f:facet name="header">Role Type</f:facet>
+						    <h:outputText value="#{crd.userType_nm}"/>
+		                </rich:column>
+		                
+		                
+		                <rich:column>
+		                    <f:facet name="header">Created Date</f:facet>
+						    <h:outputText value="#{crd.created_dt}"/>
+		                </rich:column>
+		                
+		                <rich:column>
+		                    <f:facet name="header">Remove</f:facet>
+						    <a4j:commandButton image="/images/invalid.png" action="#{adminAction.setToEdit}" reRender="modalPanel2">
+								<f:setPropertyActionListener target="#{adminAction.edit_id}" value="#{crd.mapping_id}" />
+							</a4j:commandButton>
+		                </rich:column>
+		                
+		                <f:facet name="footer">
+		                    <rich:datascroller id="cardTableDS" for="mcardTb"  renderIfSinglePage="true">
+		                        <f:facet name="first">
+		                            <h:outputText value="First" />
+		                        </f:facet>
+		                        <f:facet name="last">
+		                            <h:outputText value="Last" />
+		                        </f:facet>
+		                    </rich:datascroller>
+		                </f:facet>
+		            </rich:dataTable>
+		
+		
+		        </rich:panel>
+                
+                  
+                   
+            </rich:graphValidator>
+
+        </rich:panel>
+    
+    </h:form>
+</ui:define>
+</ui:composition>

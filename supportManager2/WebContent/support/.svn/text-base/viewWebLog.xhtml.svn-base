@@ -1,0 +1,121 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="../WEB-INF/layout/basic_layout.xhtml">
+                
+<ui:define name="body">
+
+    <h:form id="manageCardFrm">
+    
+    	<a4j:form>
+	        <a4j:commandButton id="submit"
+	                           value="    Back   " onclick="history.back()">
+	        </a4j:commandButton>
+    	</a4j:form>
+    
+        <rich:panel style="width:100%">
+
+            <f:facet name="header">DATA FROM REQUEST LOG</f:facet>
+
+            <rich:dataTable id="reqTb" rows="20" value="#{reportAction.failedFundsLog}"  var="crd">
+                
+                <rich:column>
+                    <f:facet name="header">Trans ID</f:facet>
+                    <h:outputText value="#{crd.transid}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Card Number</f:facet>
+                    <h:outputText value="#{crd.card_num}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Merchant</f:facet>
+                    <h:outputText value="#{crd.merchant_desc}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Trans Code</f:facet>
+                    <h:outputText value="#{crd.trans_code}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Trans Descr</f:facet>
+                    <h:outputText value="#{crd.trans_descr}"/>
+                </rich:column>
+                
+                
+                <rich:column>
+                    <f:facet name="header">Response Code</f:facet>
+                    <h:outputText value="#{crd.response_code}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Delay Time(In secs)</f:facet>
+                    <h:outputText value="#{crd.response_time_in_secs}"/>
+                </rich:column>
+                
+                
+                
+            </rich:dataTable>
+
+        </rich:panel>
+        
+        
+        <rich:spacer width="10px" height="30px"/>
+        
+        
+        <rich:panel style="width:100%">
+
+            <f:facet name="header">DATA FROM E TRANSACTION LOG</f:facet>
+
+            <rich:dataTable id="cardTb" rows="20" value="#{reportAction.tranLog}"  var="crd">
+                
+                <rich:column>
+                    <f:facet name="header">Trans ID</f:facet>
+                    <h:outputText value="#{crd.transid}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Card Number</f:facet>
+                    <h:outputText value="#{crd.card_num}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Description</f:facet>
+                    <h:outputText value="#{crd.trans_desc}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Merchant Code</f:facet>
+                    <h:outputText value="#{crd.merchat_code}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Amount</f:facet>
+                    <h:outputText value="#{crd.trans_amount}"/>
+                </rich:column>
+                
+                
+                <rich:column>
+                    <f:facet name="header">Date</f:facet>
+                    <h:outputText value="#{crd.trans_date}"/>
+                </rich:column>
+                
+                
+                
+            </rich:dataTable>
+
+
+        </rich:panel>
+
+    </h:form>
+    
+</ui:define>
+</ui:composition>

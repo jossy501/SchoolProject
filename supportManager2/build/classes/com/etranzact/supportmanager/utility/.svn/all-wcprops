@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/utility
+END
+Utils.java
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/utility/Utils.java
+END
+Env.java
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/utility/Env.java
+END
+HttpMessenger.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/utility/HttpMessenger.java
+END
+DateUtil.java
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/utility/DateUtil.java
+END
+HashNumber.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/utility/HashNumber.java
+END
+MailExample.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/utility/MailExample.java
+END

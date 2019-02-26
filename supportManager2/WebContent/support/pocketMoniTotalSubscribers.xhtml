@@ -1,0 +1,73 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="../WEB-INF/layout/basic_layout.xhtml">
+                
+<ui:define name="body">
+
+    <!-- processing panel -->
+    
+    <rich:modalPanel id="panelp" width="150" height="50">
+       <h:form id="pFrm">
+        <h:panelGrid columns="1" rowClasses="prop" columnClasses="name2,value">
+           <h:outputText value="Please wait...." styleClass="messagesingle" align="center">
+               <h:graphicImage value="/images/loading_small.gif"/>
+           </h:outputText>
+          </h:panelGrid>  
+         </h:form>
+    </rich:modalPanel>
+    
+    <!-- -->
+    <h:form id="cardFrm">
+        
+        <rich:panel style="width: 20%; height:45px">
+			<h:outputText value="&nbsp;Click on the Refresh Icon"/><br/>		            
+			<h:commandButton action="#{reportAction.getPocketMoniTotalNumberOfUsers}" reRender="cardFrm" image="/images/refresh.png" id="submit">
+            	<rich:componentControl for="panelp" attachTo="submit" operation="show" event="onclick"/>
+            </h:commandButton>
+		</rich:panel>
+        
+        <rich:panel style="width: 60%;">
+        	
+        	
+        
+			<rich:dataTable id="act" rowKeyVar="rowKey" rows="1000" value="#{reportAction.mmoneyLog}"  var="usr">
+	
+				<rich:column>
+						 <f:facet name="header">Total No Of Subscribers</f:facet>
+						 
+						 <h:outputText value="#{reportAction.makeDouble(usr[0])}">
+                            <f:convertNumber pattern="#,###,###,###,###"/>
+                         </h:outputText>
+				</rich:column>
+				<rich:column>
+						<f:facet name="header">Active Subscribers(@ least N150)</f:facet>
+						<h:outputText value="#{reportAction.makeDouble(usr[1])}">
+                            <f:convertNumber pattern="#,###,###,###,###"/>
+                         </h:outputText>
+				</rich:column>
+				<rich:column>
+						<f:facet name="header">Percentage Of Active Subscribers</f:facet>
+						<h:outputText value="#{reportAction.makeDouble(usr[3])} %">
+                           <f:convertNumber pattern="#0.00"/>
+                        </h:outputText>
+				</rich:column>
+				<rich:column>
+						<f:facet name="header">InActive Subscribers</f:facet>
+						<h:outputText value="#{reportAction.makeDouble(usr[2])}">
+                            <f:convertNumber pattern="#,###,###,###,###"/>
+                         </h:outputText>
+				</rich:column>
+			</rich:dataTable>
+		</rich:panel>
+	
+   </h:form>
+
+</ui:define>
+</ui:composition>

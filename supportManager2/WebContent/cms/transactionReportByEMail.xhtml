@@ -1,0 +1,42 @@
+<m:message xmlns="http://www.w3.org/1999/xhtml"
+            xmlns:m="http://jboss.com/products/seam/mail"
+            xmlns:h="http://java.sun.com/jsf/html"
+            xmlns:f="http://java.sun.com/jsf/core"
+            importance="high">
+            
+    <m:header name="technical.support@etranzact.net" value="Cardholder Transaction Details" />
+    <m:from name="eTranzact" address="technical.support@etranzact.net" />
+    <m:to name="#{cardManagementAction.lastName} #{cardManagementAction.firstName}">#{cardManagementAction.email}</m:to>
+    <m:subject>Login Details</m:subject>
+    <m:body>
+        <html>
+            <body>
+                <p><b>Dear #{cardManagementAction.firstName} #{cardManagementAction.lastName},</b></p>
+
+                 <p>Here are your Transaction Details</p>
+                
+                <p>
+                	Firstname : #{cardManagementAction.firstName}<br/>
+                	Lastname : #{cardManagementAction.lastName}<br/>
+                	Trans Date: #{cardManagementAction.transDate}<br/>
+                	Trans No :   #{cardManagementAction.transNo}<br/>
+                	Trans Code: #{cardManagementAction.transCode}<br/>
+                	Transaction Description :#{cardManagementAction.transDesc}<br/>
+                	Channel : #{cardManagementAction.channel}<br/>
+                	Card Number: #{cardManagementAction.edit_id}<br/>
+                	Merchant Code : #{cardManagementAction.merchantCode}<br/>
+                	Debit : #{cardManagementAction.debitAmt}<br/>
+                	Credit: #{cardManagementAction.creditAmt}<br/>
+                	Total Amount: #{cardManagementAction.total_amount}
+                	
+                	
+                </p>
+                <p>Best Regards</p>
+                <center><p><font size = "2">Powered by eTranzact International Plc. All rights reserved.</font></p></center>
+            </body>
+        </html>
+        <f:facet name="alternative">
+            <h:outputText>Please contact the eTranzact support desk for any enquiries.</h:outputText>
+        </f:facet>
+    </m:body>
+</m:message>

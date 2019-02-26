@@ -1,0 +1,74 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="../WEB-INF/layout/basic_layout.xhtml">
+                
+<ui:define name="body">
+
+
+    <a4j:form id="logClaimFrm">
+        <rich:panel style="width:60%">
+            <f:facet name="header">Dispute Resolution System : Confirm</f:facet>
+            <rich:graphValidator>
+                <h:panelGrid columns="2" rowClasses="prop" columnClasses="name2,value">
+                    
+                    
+                    <h:outputLabel for="acquirer" styleClass="readonly" value="Acquirer:"/>
+		<h:outputLabel for="acquirer" value="UBA PLC"/>
+                    
+                    <h:outputLabel for="channel_type" styleClass="readonly" value="Channel Type:"/>
+		<h:outputLabel for="channel_type" value="C24"/>
+                    
+                    <h:outputLabel id="card_no" styleClass="readonly" value="Card No:"/>
+		<h:outputLabel id="Card_no" value="22878874"/>
+
+			<h:outputLabel for="stan" styleClass="readonly" value="STAN:"/>
+		<h:outputLabel for="Stan" value="12565653"/>
+                    
+                    <h:outputLabel id="terminal_id" styleClass="readonly" value="Terminal ID :"/>
+		<h:outputLabel id="Terminal_id" value="256565322878874"/>
+
+                   
+                    <h:outputLabel id="amount" styleClass="readonly" value="Amount:"/>
+		 <h:outputLabel id="Amount" value="2000,00"/>
+
+                    <h:outputLabel for="tran_date" styleClass="readonly" value="Date of transaction:"/>
+		<h:outputLabel for="tran_date" value="12/03/2011"/>
+
+                    <h:outputLabel for="Claim" styleClass="readonly" value="Claim:"/>
+		<h:outputLabel for="Claim" value="CASH NOT DISPENSED"/>
+
+                    <h:outputLabel id="comment_journal" styleClass="readonly" value="Comment/Journal:"/>
+		<h:outputLabel id="Aomment_journal" value="Reverse"/>
+                                        
+                  </h:panelGrid>  
+                   
+            </rich:graphValidator>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+            
+            
+            <a4j:commandButton oncomplete="document.getElementById('logClaimFrm:submit').disabled=false"
+                                   onclick="document.getElementById('logClaimFrm:edit').disabled=true"
+                                   id="edit" value="      Edit     " action="#{userAction.createUser}" reRender="logClaimFrm"/>
+	<a4j:commandButton oncomplete="document.getElementById('logClaimFrm:submit').disabled=false"
+                                   onclick="document.getElementById('logClaimFrm:submit').disabled=true"
+                                   id="submit" value="   Submit  " action="#{userAction.createUser}" reRender="logClaimFrm"/>
+            
+        </div>
+	
+   </a4j:form>
+   
+   <rich:spacer width="10px" height="10px"/>
+   
+    
+</ui:define>
+</ui:composition>

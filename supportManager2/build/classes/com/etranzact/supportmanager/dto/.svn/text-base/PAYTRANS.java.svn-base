@@ -1,0 +1,81 @@
+/**
+ * 
+ */
+package com.etranzact.supportmanager.dto;
+
+/**
+ * @author Etrantact
+ *
+ */
+public class PAYTRANS 
+{
+
+	private String counter;
+	private String subscriber_id;
+	private String trans_date;
+	private String process_status;
+	private String status_desc;
+	private String unique_trans_id;
+	private String mobile_no;
+	private String successful_tran;
+	
+	public PAYTRANS(){}
+	
+	public String getSubscriber_id() {
+		return subscriber_id;
+	}
+	public void setSubscriber_id(String subscriber_id) {
+		this.subscriber_id = subscriber_id;
+	}
+	public String getTrans_date() {
+		return trans_date;
+	}
+	public void setTrans_date(String trans_date) {
+		this.trans_date = trans_date;
+	}
+	public String getProcess_status() {
+		return process_status;
+	}
+	public void setProcess_status(String process_status) {
+		this.process_status = process_status;
+	}
+	public String getStatus_desc() {
+		return status_desc;
+	}
+	public void setStatus_desc(String status_desc) {
+		this.status_desc = status_desc;
+	}
+	public String getUnique_trans_id() {
+		return unique_trans_id;
+	}
+	public void setUnique_trans_id(String unique_trans_id) {
+		this.unique_trans_id = unique_trans_id;
+	}
+
+	public String getMobile_no() {
+		return mobile_no;
+	}
+
+	public void setMobile_no(String mobile_no) {
+		this.mobile_no = mobile_no;
+	}
+
+	public String getCounter() {
+		return counter;
+	}
+
+	public void setCounter(String counter) {
+		this.counter = counter;
+	}
+
+	public String getSuccessful_tran() {
+		return successful_tran;
+	}
+
+	public void setSuccessful_tran(String successful_tran) {
+		this.successful_tran = successful_tran;
+	}
+	
+	
+	
+}

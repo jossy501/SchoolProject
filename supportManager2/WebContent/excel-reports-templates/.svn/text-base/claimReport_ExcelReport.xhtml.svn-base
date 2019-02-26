@@ -1,0 +1,115 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:e="http://jboss.com/products/seam/excel"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:c="http://java.sun.com/jstl/core">
+
+<e:workbook type="jxl" ignoreBlanks="false" filename="claimsReport.xls">
+<e:worksheet name="Claim Report" value="#{claimcontroller.claimList}" var="r" startRow="0">
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="No"/>
+	</f:facet>
+	<e:formula value="ROW()-1"/>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Claim ID"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{r.id}" escape="false"/>
+	</e:cell>
+</e:column>
+
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Issuing Bank"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{r.decodeSentBank}" escape="false"/>
+	</e:cell>
+</e:column>
+
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Channel Type"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{r.channel.channelName}" escape="false"/>
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Dispute"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{r.clDispute.dispute}" escape="false"/>
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Cards Number"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{r.cardNo}" escape="false"/>
+	</e:cell>
+</e:column>
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Total Amount"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{r.formatAmount}" escape="false"/>
+	</e:cell>
+</e:column>
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Date Logged"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{r.createdDate}" escape="false"/>
+	</e:cell>
+</e:column>
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Due Date"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{r.dueDate}" escape="false"/>
+	</e:cell>
+</e:column>
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Status"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{r.statusDescription}" escape="false"/>
+	</e:cell>
+</e:column>
+<e:column>
+	<f:facet name="header">
+		<e:cell value="STAN"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{r.transactionStan}" escape="false"/>
+	</e:cell>
+</e:column>
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Reason For Decline"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{r.declineReason}" escape="false"/>
+	</e:cell>
+</e:column>
+
+</e:worksheet>
+</e:workbook>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="../WEB-INF/layout/basic_layout.xhtml">
+                
+<ui:define name="body">
+
+    <h:form id="cardFrm">
+   </h:form>
+   
+   <rich:spacer width="10px" height="10px"/>
+  
+    <h:form id="manageCardFrm">
+    
+        <rich:panel style="width:100%" rendered="#{reportAction.reversalList.size() > 0 }">
+
+            <f:facet name="header">  REVERSAL AWAITING AUTHORIZATION  [ Total Record(s) found :  #{reportAction.reversalList.size()} ]</f:facet>
+
+            <rich:dataTable id="cardTb1" rows="1000" rowKeyVar="rowKey" value="#{reportAction.reversalList}"  var="crd">
+             
+                
+                <rich:column>
+                    <f:facet name="header">SN</f:facet>
+                    <h:outputText value="#{rowKey+1}" style="float: left;"/>
+                </rich:column>
+                
+           
+           		 <rich:column>
+                    <f:facet name="header">Unique TransId</f:facet>
+                    <h:outputText value="#{crd.unique_transid}" style="float: left;"/>
+                </rich:column>
+                
+               	<rich:column>
+                    <f:facet name="header">Trans No</f:facet>
+                    <h:outputText value="#{crd.trans_no}" style="float: left;"/>
+                </rich:column>
+                
+       
+                <rich:column>
+                    <f:facet name="header">Card Number</f:facet>
+				     <h:outputText rendered = "#{crd.card_num.length() > 10}" value="#{reportAction.hashData(crd.card_num)}" style="float: left;"/>
+                </rich:column>
+                
+           
+                <rich:column>
+                    <f:facet name="header">Trans Desc</f:facet>
+                    <h:outputText value="#{crd.trans_desc}" style="float: left;"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Merchant Code</f:facet>
+                    <h:outputText value="#{crd.merchat_code}" style="float: left;"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header"> Initiator </f:facet>
+                    <h:outputText value="#{crd.year}" style="float: left;"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Date Initiated</f:facet>
+                    <h:outputText value="#{crd.day}" style="float: left;"/>
+                </rich:column>
+                
+              
+                
+                
+            	 <rich:column>
+                    <f:facet name="header"></f:facet>
+                     <h:outputText value="Reversal awaiting Authorization"  styleClass="messagesingle" />
+                      <br/>
+                    <h:commandButton action="#{reportAction.getAuthorizedReversal}" value=" Authorize Reversal " id="reversal">
+		            	<f:setPropertyActionListener target="#{reportAction.card_num}" value="#{crd.card_num}" />
+		            	<f:setPropertyActionListener target="#{reportAction.edit_id}" value="#{crd.unique_transid}" />
+		            	<f:setPropertyActionListener target="#{reportAction.transAmount}" value="#{crd.trans_amount}" />
+		            	<f:setPropertyActionListener target="#{reportAction.description}" value="#{crd.merchat_code}" />
+		            	<f:setPropertyActionListener target="#{reportAction.channel_id}" value="#{crd.channelid}" />
+		            	<f:setPropertyActionListener target="#{reportAction.trans_code}" value="#{crd.trans_desc}" />
+		            	<f:setPropertyActionListener target="#{reportAction.meterno}" value="#{crd.trans_no}" />
+		            	<f:setPropertyActionListener target="#{reportAction.to_dest}" value="#{crd.closed}" />
+		            	<rich:componentControl for="panelp" attachTo="reversal" operation="show" event="onclick"/>
+		            </h:commandButton>
+
+                </rich:column>
+            	
+                <f:facet name="footer">
+                    <rich:datascroller id="cardTableDS" for="cardTb1"  renderIfSinglePage="true">
+                        <f:facet name="first">
+                            <h:outputText value="First" />
+                        </f:facet>
+                        <f:facet name="last">
+                            <h:outputText value="Last" />
+                        </f:facet>
+                    </rich:datascroller>
+                </f:facet>
+                
+            </rich:dataTable>
+
+
+        </rich:panel>
+        
+       	<rich:panel style="width: 100%; height:50px" rendered="#{reportAction.reversalList.size() == 0}">
+			<h:outputText value="&nbsp;No record(s) found. "/>
+		</rich:panel>
+ 
+        
+    </h:form>
+    
+</ui:define>
+</ui:composition>

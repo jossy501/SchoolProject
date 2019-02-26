@@ -1,0 +1,529 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="../WEB-INF/layout/basic_layout.xhtml">
+                
+<ui:define name="body">
+	
+    <h:form id="manageCardFrm">
+    
+   		<a4j:form>
+	        <a4j:commandButton id="submit"
+	                           value="    Back   " onclick="history.back()">
+	        </a4j:commandButton>
+    	</a4j:form>
+    
+    	<!-- WEB -->
+        <rich:panel style="width:100%"  rendered = "#{reportAction.failedSummaryDrillDownLog.size() >0 and reportAction.channel_id eq '1'}">
+
+            <f:facet name="header">Total Record(s) found :  #{reportAction.failedSummaryDrillDownLog.size()}</f:facet>
+
+            <rich:dataTable id="cardTb" rows="1000" value="#{reportAction.failedSummaryDrillDownLog}"  var="crd">
+                
+                <rich:column>
+                    <f:facet name="header">Trans ID</f:facet>
+                    <h:outputText value="#{crd.transid}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Card Number</f:facet>
+                    <h:outputText value="#{reportAction.hashData(crd.card_num)}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Merchant</f:facet>
+                    <h:outputText value="#{crd.merchant_desc}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Trans Descr</f:facet>
+                    <h:outputText value="#{crd.trans_descr}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Amount</f:facet>
+                    <h:outputText value="#{crd.trans_amount}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Response</f:facet>
+                    <h:outputText value="#{crd.response_code}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Trans Date</f:facet>
+                    <h:outputText value="#{crd.trans_date}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Delay Time(In secs)</f:facet>
+                    <h:outputText value="#{crd.response_time_in_secs}"/>
+                </rich:column>
+                
+                
+                <f:facet name="footer">
+                    <rich:datascroller id="cardTableDS" for="cardTb"  renderIfSinglePage="true">
+                        <f:facet name="first">
+                            <h:outputText value="First" />
+                        </f:facet>
+                        <f:facet name="last">
+                            <h:outputText value="Last" />
+                        </f:facet>
+                    </rich:datascroller>
+                </f:facet>
+            </rich:dataTable>
+
+
+        </rich:panel>
+    
+        <!-- Mobile -->
+        <rich:panel style="width:100%"  rendered = "#{reportAction.failedSummaryDrillDownLog.size() >0 and reportAction.channel_id eq '2'}">
+
+            <f:facet name="header">Total Record(s) found :  #{reportAction.failedSummaryDrillDownLog.size()}</f:facet>
+
+            <rich:dataTable id="mcardTb" rows="1000" value="#{reportAction.failedSummaryDrillDownLog}"  var="crd">
+                
+                 <rich:column>
+                    <f:facet name="header">Unique Trans ID</f:facet>
+                    <h:outputText value="#{crd.unique_transid}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Mobile</f:facet>
+                    <h:outputText value="#{crd.mobile}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Trans Type</f:facet>
+                    <h:outputText value="#{crd.trans_type}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Response Message</f:facet>
+                    <h:outputText value="#{crd.response_message}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Response Code</f:facet>
+                    <h:outputText value="#{crd.response_code}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Date</f:facet>
+                    <h:outputText value="#{crd.message_date}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Delay Time(in secs)</f:facet>
+                    <h:outputText value="#{crd.response_time_in_secs}"/>
+                </rich:column>
+                
+                <f:facet name="footer">
+                    <rich:datascroller id="cardTableDS" for="mcardTb"  renderIfSinglePage="true">
+                        <f:facet name="first">
+                            <h:outputText value="First" />
+                        </f:facet>
+                        <f:facet name="last">
+                            <h:outputText value="Last" />
+                        </f:facet>
+                    </rich:datascroller>
+                </f:facet>
+            </rich:dataTable>
+
+
+        </rich:panel>
+        
+        
+        <!-- POS -->
+      
+      <rich:panel style="width:100%"  rendered = "#{reportAction.failedSummaryDrillDownLog.size() >0 and reportAction.channel_id eq '3'}">
+
+            <f:facet name="header">Total Record(s) found :  #{reportAction.failedSummaryDrillDownLog.size()}</f:facet>
+
+            <rich:dataTable id="pcardTb" rows="1000" value="#{reportAction.failedSummaryDrillDownLog}"  var="crd">
+
+                <rich:column>
+                    <f:facet name="header">Pan</f:facet>
+                    <h:outputText value="#{crd.pan}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Pro Code</f:facet>
+                    <h:outputText value="#{crd.pro_code}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Card Acct. Name</f:facet>
+                    <h:outputText value="#{crd.card_acc_name}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Acquirer</f:facet>
+                    <h:outputText value="#{crd.aqid}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Terminal ID</f:facet>
+                    <h:outputText value="#{crd.terminal_id}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Amount</f:facet>
+                    <h:outputText value="#{crd.amount}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Trans Date</f:facet>
+                    <h:outputText value="#{crd.trans_date}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Response</f:facet>
+                    <h:outputText value="#{crd.response_code}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Reference</f:facet>
+                    <h:outputText value="#{crd.trans_seq}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Delay Time(In secs)</f:facet>
+                    <h:outputText value="#{crd.response_time_in_secs}"/>
+                </rich:column>
+                
+                <f:facet name="footer">
+                    <rich:datascroller id="cardTableDS" for="pcardTb"  renderIfSinglePage="true">
+                        <f:facet name="first">
+                            <h:outputText value="First" />
+                        </f:facet>
+                        <f:facet name="last">
+                            <h:outputText value="Last" />
+                        </f:facet>
+                    </rich:datascroller>
+                </f:facet>
+            </rich:dataTable>
+
+
+        </rich:panel>  
+        
+        
+        <!-- ATM -->
+        
+        <rich:panel style="width:100%"  rendered = "#{reportAction.failedSummaryDrillDownLog.size() >0 and reportAction.channel_id eq '4'}">
+
+            <f:facet name="header">Total Record(s) found :  #{reportAction.failedSummaryDrillDownLog.size()}</f:facet>
+
+            <rich:dataTable id="acardTb" rows="1000" value="#{reportAction.failedSummaryDrillDownLog}"  var="crd">
+                
+                
+                <rich:column>
+                    <f:facet name="header">Pan</f:facet>
+                    <h:outputText value="#{crd.pan}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Pro Code</f:facet>
+                    <h:outputText value="#{crd.pro_code}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Card Acct. Name</f:facet>
+                    <h:outputText value="#{crd.card_acc_name}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Acquirer</f:facet>
+                    <h:outputText value="#{crd.aqid}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Terminal ID</f:facet>
+                    <h:outputText value="#{crd.terminal_id}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Amount</f:facet>
+                    <h:outputText value="#{crd.amount}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Trans Date</f:facet>
+                    <h:outputText value="#{crd.trans_date}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Response</f:facet>
+                    <h:outputText value="#{crd.response_code}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Reference</f:facet>
+                    <h:outputText value="#{crd.trans_seq}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Delay Time(In secs)</f:facet>
+                    <h:outputText value="#{crd.response_time_in_secs}"/>
+                </rich:column>
+                
+                <f:facet name="footer">
+                    <rich:datascroller id="cardTableDS" for="acardTb"  renderIfSinglePage="true">
+                        <f:facet name="first">
+                            <h:outputText value="First" />
+                        </f:facet>
+                        <f:facet name="last">
+                            <h:outputText value="Last" />
+                        </f:facet>
+                    </rich:datascroller>
+                </f:facet>
+            </rich:dataTable>
+
+	
+        </rich:panel> 
+        
+         <!-- VTU -->
+        
+        <rich:panel style="width:100%"  rendered = "#{reportAction.failedSummaryDrillDownLog.size() >0 and reportAction.channel_id eq '5'}">
+
+            <f:facet name="header">Total Record(s) found :  #{reportAction.failedSummaryDrillDownLog.size()}</f:facet>
+
+            <rich:dataTable id="vcardTb" rows="1000" value="#{reportAction.failedSummaryDrillDownLog}"  var="crd">
+
+                <rich:column>
+                    <f:facet name="header">ID</f:facet>
+            		<h:outputText value="#{crd.id}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Trans ID</f:facet>
+                    <h:outputText value="#{crd.unique_trans_id}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Line Type</f:facet>
+                    <h:outputText value="#{crd.line_type}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Voucher Type</f:facet>
+                    <h:outputText value="#{crd.voucher_type}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Destination</f:facet>
+                    <h:outputText value="#{crd.dest_msisdn}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Status</f:facet>
+                    <h:outputText value="#{crd.status_id}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Response Message</f:facet>
+                    <h:outputText value="#{crd.response_message}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Amount</f:facet>
+                    <h:outputText value="#{crd.amount}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Date</f:facet>
+                    <h:outputText value="#{crd.txn_date_time}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Response Date</f:facet>
+                    <h:outputText value="#{crd.response_date}"/>
+                </rich:column>
+                
+                <f:facet name="footer">
+                    <rich:datascroller id="cardTableDS" for="vcardTb"  renderIfSinglePage="true">
+                        <f:facet name="first">
+                            <h:outputText value="First" />
+                        </f:facet>
+                        <f:facet name="last">
+                            <h:outputText value="Last" />
+                        </f:facet>
+                    </rich:datascroller>
+                </f:facet>
+            </rich:dataTable>
+
+	
+        </rich:panel> 
+        
+        
+        <!-- Mobile Version II -->
+        
+        <rich:panel style="width:100%"  rendered = "#{reportAction.failedSummaryDrillDownLog.size() >0 and reportAction.channel_id eq '6'}">
+
+            <f:facet name="header">Total Record(s) found :  #{reportAction.failedSummaryDrillDownLog.size()}</f:facet>
+
+            <rich:dataTable id="mvcardTb" rows="1000" value="#{reportAction.failedSummaryDrillDownLog}"  var="crd">
+
+                <rich:column>
+                    <f:facet name="header">ID</f:facet>
+                    <h:outputText value="#{crd.id}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Message ID</f:facet>
+                    <h:outputText value="#{crd.message_id}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Mobile</f:facet>
+                    <h:outputText value="#{crd.mobile_no}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">App ID</f:facet>
+                    <h:outputText value="#{crd.appid}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Response Message</f:facet>
+                    <h:outputText value="#{crd.response_message}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Response Code</f:facet>
+                    <h:outputText value="#{crd.response_code}"/>
+                </rich:column>
+                
+                
+                <rich:column>
+                    <f:facet name="header">Date</f:facet>
+                    <h:outputText value="#{crd.created}"/>
+                </rich:column>
+                
+                <f:facet name="footer">
+                    <rich:datascroller id="cardTableDS" for="mvcardTb"  renderIfSinglePage="true">
+                        <f:facet name="first">
+                            <h:outputText value="First" />
+                        </f:facet>
+                        <f:facet name="last">
+                            <h:outputText value="Last" />
+                        </f:facet>
+                    </rich:datascroller>
+                </f:facet>
+            </rich:dataTable>
+
+	
+        </rich:panel> 
+        
+        
+        <!-- VTU Version II -->
+        
+        <rich:panel style="width:100%"  rendered = "#{reportAction.failedSummaryDrillDownLog.size() >0 and reportAction.channel_id eq '7'}">
+
+            <f:facet name="header">Total Record(s) found :  #{reportAction.failedSummaryDrillDownLog.size()}</f:facet>
+
+            <rich:dataTable id="vvvcardTb" rows="1000" value="#{reportAction.failedSummaryDrillDownLog}"  var="crd">
+
+                <rich:column>
+                    <f:facet name="header">Sequence</f:facet>
+            		<h:outputText value="#{crd.sequence}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">UniqueTrans ID</f:facet>
+                    <h:outputText value="#{crd.uniqueTransid}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Source</f:facet>
+                    <h:outputText value="#{crd.source}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Destination</f:facet>
+                    <h:outputText value="#{crd.destAccount}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Amount</f:facet>
+                    <h:outputText value="#{crd.amount}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Source Account</f:facet>
+                    <h:outputText value="#{crd.sourceAccount}"/>
+                </rich:column>
+                
+
+                <rich:column>
+                    <f:facet name="header">Line Type</f:facet>
+                    <h:outputText value="#{crd.lineType}"/>
+                </rich:column>
+                
+                
+                <rich:column>
+                    <f:facet name="header">Response Code</f:facet>
+                    <h:outputText value="#{crd.responseCode}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Response Message</f:facet>
+                    <h:outputText value="#{crd.responseMessage}"/>
+                </rich:column>
+                
+
+                <rich:column>
+                    <f:facet name="header">Provider</f:facet>
+                    <h:outputText value="#{crd.provider}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Initial Response Code</f:facet>
+                    <h:outputText value="#{crd.initialResponsecode}"/>
+                </rich:column>
+
+                <rich:column>
+                    <f:facet name="header">Alias</f:facet>
+                    <h:outputText value="#{crd.alias}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Attempts</f:facet>
+                    <h:outputText value="#{crd.attempts}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Trans Date</f:facet>
+                    <h:outputText value="#{crd.transDate}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Response Date</f:facet>
+                    <h:outputText value="#{crd.responseDate}"/>
+                </rich:column>
+                
+                <f:facet name="footer">
+                    <rich:datascroller id="cardTableDS" for="vvvcardTb"  renderIfSinglePage="true">
+                        <f:facet name="first">
+                            <h:outputText value="First" />
+                        </f:facet>
+                        <f:facet name="last">
+                            <h:outputText value="Last" />
+                        </f:facet>
+                    </rich:datascroller>
+                </f:facet>
+            </rich:dataTable>
+
+	
+        </rich:panel>
+        
+    </h:form>
+    
+</ui:define>
+</ui:composition>

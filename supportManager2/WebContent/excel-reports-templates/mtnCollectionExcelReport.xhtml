@@ -1,0 +1,164 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:e="http://jboss.com/products/seam/excel"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:c="http://java.sun.com/jstl/core">
+
+<e:workbook type="jxl" ignoreBlanks="false" filename="mtnCollectionExcelReport.xls">
+<e:worksheet name="Report" value="#{reportAction.cardholdertranLog}" var="crd" startRow="0">
+
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Account No"/>
+	</f:facet>
+	<e:cell value="#{crd.accountno}">
+		
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Customer Msisdn"/>
+	</f:facet>
+	<e:cell value="#{crd.customerMsisdn}">
+		
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Customer Id"/>
+	</f:facet>
+	<e:cell value="#{crd.customerID}">
+		
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Customer Name"/>
+	</f:facet>
+	<e:cell value="#{crd.customerName}">
+		
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Depositor Name"/>
+	</f:facet>
+	<e:cell value="#{crd.depositorName}">
+		
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Depositor Msisdn"/>
+	</f:facet>
+	<e:cell value="#{crd.depositorMsisdn}">
+		
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Transaction Id"/>
+	</f:facet>
+	<e:cell value="#{crd.transactionID}">
+		
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Transaction Date"/>
+	</f:facet>
+	<e:cell value="#{crd.transactionDate}">
+		
+	</e:cell>
+</e:column>
+
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Part No"/>
+	</f:facet>
+	<e:cell value="#{crd.partNo}">
+		
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Cheque No"/>
+	</f:facet>
+	<e:cell value="#{crd.chequeNo}">
+		
+	</e:cell>
+</e:column>
+
+
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Payment Description"/>
+	</f:facet>
+	<e:cell value="#{crd.paymentDescription}">
+		
+	</e:cell>
+</e:column>
+
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Error Code"/>
+	</f:facet>
+	<e:cell value="#{crd.errCode}">
+		
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Error Message"/>
+	</f:facet>
+	<e:cell value="#{crd.errMessage}">
+		
+	</e:cell>
+</e:column>
+
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Channel"/>
+	</f:facet>
+	<e:cell value="#{crd.channel}">
+		
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Bank"/>
+	</f:facet>
+	<e:cell value="#{reportAction.getBankName(crd.issuerCode)}">
+		
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Amount"/>
+	</f:facet>
+	<e:cell value="#{reportAction.makeDouble(crd.amount)}">
+		
+	</e:cell>
+</e:column>
+
+
+</e:worksheet>
+</e:workbook>
+</html>

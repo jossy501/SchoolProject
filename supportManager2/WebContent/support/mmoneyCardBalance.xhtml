@@ -1,0 +1,196 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="../WEB-INF/layout/basic_layout.xhtml">
+                
+<ui:define name="body">
+
+	<rich:modalPanel id="panel" width="150" height="50">
+       <h:form id="vFrm">
+        <h:panelGrid columns="1" rowClasses="prop" columnClasses="name2,value">
+           <h:outputText value="Please wait...." styleClass="messagesingle" >
+               <h:graphicImage value="/images/loading_small.gif"/>
+           </h:outputText>
+          </h:panelGrid>  
+         </h:form>
+    </rich:modalPanel>
+
+    <!-- -->
+    
+    <h:form id="cardFrm">
+        <rich:panel style="width:40%">
+            <f:facet name="header">Card Balance Report</f:facet>
+            <rich:graphValidator>
+                <h:panelGrid columns="2" rowClasses="prop" columnClasses="name2,value">
+                    
+					<h:outputLabel id="cardno" for="cardno" value="Card No"/>
+                    <h:panelGroup>
+                    	<h:inputText id="card" value="#{reportAction.card_num}" required="false"/>
+                    </h:panelGroup>
+
+                  </h:panelGrid>  
+                   
+            </rich:graphValidator>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+        
+        	<h:commandButton id="submit" value="  Search  " action="#{reportAction.getMMoneyCardBalance}" reRender="manageCardFrm">
+        		<rich:componentControl for="panel" attachTo="submit" operation="show" event="onclick"/>
+        	</h:commandButton>
+
+        </div>
+   </h:form>
+   
+   <rich:spacer width="10px" height="20px"/>
+
+    <h:form id="manageCardFrm">
+        
+        <rich:panel style="width:100%" rendered = "#{reportAction.mmoneyLog.size() > 0 }">
+
+            <f:facet name="header">
+            	<h:outputText value="Mobile Money Card Balance Report [ Total Record(s) found :  #{reportAction.mmoneyLog.size()} ]" />
+            </f:facet>
+
+            <rich:dataTable id="acardTb" rows="1000" value="#{reportAction.mmoneyLog}"  var="crd">
+                
+                <rich:column>
+                    <f:facet name="header">Card Number</f:facet>
+                    <h:outputText value="#{reportAction.hashData(crd.card_num)}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Last Name</f:facet>
+                    <h:outputText value="#{crd.lastname}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">First Name</f:facet>
+                    <h:outputText value="#{crd.firstname}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Online Balance</f:facet>
+                    <h:outputText value="#{crd.online_balance}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Online Date</f:facet>
+                    <h:outputText value="#{crd.online_date}"/>
+                </rich:column>
+                
+                <f:facet name="footer">
+                
+                	<rich:columnGroup>
+                        <rich:column>
+                        	<div align="left">
+                        		Total
+                        	</div>
+                        </rich:column> 
+                        <rich:column>
+                        	<div align="left">
+                        		
+                        	</div>
+                        </rich:column>  
+                        <rich:column>
+                        	<div align="left">
+                        		
+                        	</div>
+                        </rich:column>                         
+                        <rich:column>
+                            <div align="right">
+                                <h:outputText value="#{reportAction.makeDouble(reportAction.total_amount)}">
+                                    <f:convertNumber pattern="#,###,###,###,###.00"/>
+                                </h:outputText>
+                            </div>
+                        </rich:column>
+                        <rich:column>
+                        	<div align="left">
+                        		
+                        	</div>
+                        </rich:column>
+                    </rich:columnGroup>
+                </f:facet>
+                
+            </rich:dataTable>
+            
+            <rich:datascroller id="cardTableDS" for="acardTb"  renderIfSinglePage="true">
+               <f:facet name="first">
+                   <h:outputText value="First" />
+               </f:facet>
+               <f:facet name="last">
+                   <h:outputText value="Last" />
+               </f:facet>
+           </rich:datascroller>
+            
+        </rich:panel> 
+        
+        
+        <rich:panel style="width:100%" rendered = "#{reportAction.mmoneySummaryLog.size() > 0 }">
+
+            <f:facet name="header">
+            	<h:outputText value="Mobile Money Card Balance Report [ Total Record(s) found :  #{reportAction.mmoneySummaryLog.size()} ]" />
+            </f:facet>
+
+            <rich:dataTable id="asumcardTb" rows="1000" value="#{reportAction.mmoneySummaryLog}"  var="crd">
+                
+                <rich:column>
+                    <f:facet name="header">Card Number Scheme</f:facet>
+                    <h:commandLink value="#{crd.card_num}" action="#{reportAction.getMMoneyCardBalance}" id="link2">
+				        <f:setPropertyActionListener target="#{reportAction.card_num}" value="#{crd.card_num}" />
+				        <rich:componentControl for="panel" attachTo="link2" operation="show" event="onclick"/>
+				    </h:commandLink>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Total Online Balance</f:facet>
+                    <h:outputText value="#{crd.online_balance}"/>
+                </rich:column>
+                
+                
+                <f:facet name="footer">
+                
+                	<rich:columnGroup>
+                        <rich:column>
+                        	<div align="left">
+                        		Total
+                        	</div>
+                        </rich:column>                        
+                        <rich:column>
+                            <div align="right">
+                                <h:outputText value="#{reportAction.makeDouble(reportAction.total_amount)}">
+                                    <f:convertNumber pattern="#,###,###,###,###.00"/>
+                                </h:outputText>
+                            </div>
+                        </rich:column>
+                        
+                    </rich:columnGroup>
+                </f:facet>
+                
+            </rich:dataTable>
+            
+            <rich:datascroller for="asumcardTb"  renderIfSinglePage="true">
+               <f:facet name="first">
+                   <h:outputText value="First" />
+               </f:facet>
+               <f:facet name="last">
+                   <h:outputText value="Last" />
+               </f:facet>
+           </rich:datascroller>
+            
+        </rich:panel> 
+        
+       <rich:panel style="width: 100%; height:50px" rendered="#{reportAction.mmoneyLog.size() == 0 and reportAction.mmoneySummaryLog.size() == 0}">
+			<h:outputText value="&nbsp;No record(s) found. "/>
+		</rich:panel>
+    </h:form>
+    
+</ui:define>
+</ui:composition>

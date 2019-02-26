@@ -1,0 +1,137 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="../WEB-INF/layout/phcn_layout.xhtml">
+                
+<ui:define name="body">
+
+    <!-- processing panel -->
+    
+    <rich:modalPanel id="panelp" width="150" height="50">
+       <h:form id="pFrm">
+        <h:panelGrid columns="1" rowClasses="prop" columnClasses="name2,value">
+           <h:outputText value="Please wait...." styleClass="messagesingle" >
+               <h:graphicImage value="/images/loading_small.gif"/>
+           </h:outputText>
+          </h:panelGrid>  
+         </h:form>
+    </rich:modalPanel>
+ 
+   
+   <h:form id="manageCardFrm">
+		
+		<rich:panel style="width:100%" rendered ="#{reportAction.billLog.size() > 0}" >
+
+           <f:facet name="header">Customer Account Report [ Total Record(s) found :  #{reportAction.billLog.size()} ], [Total Amount : #{reportAction.total_amount}]</f:facet>
+
+            <rich:dataTable id="scardTb" rowKeyVar="rk"  value="#{reportAction.billLog}"  var="crd">   
+                <rich:column>
+                    <f:facet name="header">SN</f:facet>
+				    <h:outputText value="#{(rk+1)}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">ETZ REFRENCE</f:facet>
+				    <h:outputText value="#{crd.unique_trans_id}"/>
+                </rich:column>
+                
+                <rich:column rendered = "#{reportAction.tarrif_type eq 'PHCN: TARRIFF'}">
+                    <f:facet name="header">ACCOUNT NO</f:facet>
+				    <h:outputText value="#{crd.subscriber_id}"/>
+                </rich:column>
+                
+                 <rich:column rendered = "#{reportAction.tarrif_type eq 'PHCN: PREPAID'}">
+                    <f:facet name="header">PREPAID METER NO</f:facet>
+				    <h:outputText value="#{crd.subscriber_id}"/>
+                </rich:column>
+                
+                <rich:column rendered = "#{reportAction.tarrif_type eq 'ANY'}">
+                    <f:facet name="header">ACCOUNT/PREPAID METER NO</f:facet>
+				    <h:outputText value="#{crd.subscriber_id}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">CUSTOMER NAME</f:facet>
+				    <h:outputText value="#{crd.card_fullname}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">CUSTOMER ADDRESS</f:facet>
+				    <h:outputText value="#{crd.t_address}"/>
+                </rich:column>
+                
+                
+                <rich:column>
+                    <f:facet name="header">AMOUNT</f:facet>
+				    <h:outputText value="#{crd.trans_amount}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">COMM. AMOUNT</f:facet>
+				    <h:outputText value="#{crd.etzCommissionAmt}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">NET AMOUNT</f:facet>
+				    <h:outputText value="#{crd.netAmt}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">BANK NAME</f:facet>
+				    <h:outputText value="#{reportAction.getBankName(crd.issuer_code)}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">CHANNEL</f:facet>
+				    <h:outputText value="#{reportAction.getChannelName(crd.trans_channel)}"/>
+                </rich:column>
+ 
+                <rich:column>
+                    <f:facet name="header">DATE</f:facet>
+				    <h:outputText value="#{crd.trans_date}"/>
+                </rich:column>
+                
+                <f:facet name="footer">
+                
+                	<rich:columnGroup>
+                        <rich:column>
+                        	<div align="left">
+                        		Total
+                        	</div>
+                        </rich:column>
+                        <rich:column colspan="4">
+                        	<div align="right">
+                        		
+                        	</div>
+                        </rich:column>
+                        <rich:column>
+                        	<div align="right">
+                        		<h:outputText value="#{reportAction.makeDouble(reportAction.total_amount)}">
+                                    <f:convertNumber pattern="#,###,###,###,###.00"/>
+                                </h:outputText>
+                        	</div>
+                        </rich:column>
+						<rich:column colspan="5">
+                        	<div align="left">
+                        		
+                        	</div>
+                        </rich:column>
+                    </rich:columnGroup>
+                </f:facet>
+                
+                
+            </rich:dataTable>
+        </rich:panel>
+		<rich:panel style="width: 100%; height:50px" rendered="#{reportAction.billLog.size() == 0 }">
+			<h:outputText value="&nbsp;No record(s) found. "/>
+		</rich:panel>
+
+    </h:form>
+</ui:define>
+</ui:composition>

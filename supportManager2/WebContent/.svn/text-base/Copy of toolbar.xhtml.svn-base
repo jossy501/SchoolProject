@@ -1,0 +1,845 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    xmlns:c="http://java.sun.com/jstl/core">
+    
+   <h:form>
+   
+   		<!-- logged in for administrator -->
+   		<rich:toolBar rendered="#{authenticator.curUser.loggedIn and authenticator.curUser.type_nm eq 'ADMINISTRATOR'}">
+    
+			<rich:toolBarGroup itemSeparator="disc">
+				<h:outputText value="#{projectName}:"/>
+				<s:link view="/welcome.xhtml" value="Home" propagation="none"/>
+				
+				<rich:dropDownMenu>
+                    <f:facet name="label">
+                        <h:outputText value="Users" />
+                    </f:facet>
+                    <rich:menuItem submitMode="none">
+                        <s:link view="/support/createUser.xhtml" value="Users" action="#{adminAction.resetValues}" propagation="none"/>
+                    </rich:menuItem>
+                    
+                    <rich:menuItem submitMode="none">
+                        <s:link view="/support/mapAccountIDToBizDev.xhtml" value="Map Account ID To Business Dev Personnel" action="#{adminAction.resetValues}" propagation="none"/>
+                    </rich:menuItem>
+                    
+                    <rich:menuItem submitMode="none">
+                        <s:link view="/support/createMenu.xhtml" value="Create Menus" action="#{adminAction.resetValues}" propagation="none"/>
+                    </rich:menuItem>
+                    
+                    <rich:menuItem submitMode="none">
+                        <s:link view="/support/createMenuItem.xhtml" value="Create MenuItems" action="#{adminAction.resetValues}" propagation="none"/>
+                    </rich:menuItem>
+                    
+                    <rich:menuItem submitMode="none">
+                        <s:link view="/support/menuitemToMenuMapping.xhtml" value="Map MenuItems To Menus" action="#{adminAction.resetValues}" propagation="none"/>
+                    </rich:menuItem>
+                    
+                    <rich:menuItem submitMode="none">
+                        <s:link view="/support/menuitemToRoleMapping.xhtml" value="Map MenuItems To Roles" action="#{adminAction.resetValues}" propagation="none"/>
+                    </rich:menuItem>
+                    
+                    
+                    
+                </rich:dropDownMenu>
+				
+				<!-- -->
+				<s:link view="/support/changePassword.xhtml" value="Change Password"  propagation="none"/>
+				
+				<rich:dropDownMenu>
+		           	<f:facet name="label">
+		                   <h:outputText value="Report" />
+		            </f:facet>
+
+					<rich:menuGroup value="Investigation">
+						
+						
+						<rich:menuItem submitMode="none">
+							<s:link id="wASetUp" view="/support/webInvestigation.xhtml" action="#{reportAction.resetValues}" value="Web Investigation" propagation="none"/>
+						</rich:menuItem>
+						
+						<rich:menuItem submitMode="none">
+							<s:link id="mASetUp" view="/support/mobileInvestigation.xhtml" action="#{reportAction.mobile_resetValues}" value="Mobile Investigation" propagation="none"/>
+						</rich:menuItem>
+						
+						<!-- 
+						
+						<rich:menuItem submitMode="none">
+							<s:link id="aASetUp" view="/support/atmInvestigation.xhtml" action="#{reportAction.resetValues}" value="Atm Investigation" propagation="none"/>
+						</rich:menuItem>
+						
+						<rich:menuItem submitMode="none">
+							<s:link id="pASetUp" view="/support/posInvestigation.xhtml" action="#{reportAction.resetValues}" value="Pos Investigation" propagation="none"/>
+						</rich:menuItem> 
+						 -->
+						
+						<rich:menuItem submitMode="none">
+							<s:link view="/support/posReport.xhtml" action="#{reportAction.resetValues}" value="Pos Bridge Report" propagation="none"/>
+						</rich:menuItem> 
+						
+						<rich:menuItem submitMode="none">
+							<s:link view="/support/etmcInvestigation.xhtml" action="#{reportAction.resetValues}" value="Switch ETMC Report" propagation="none"/>
+						</rich:menuItem>
+						
+						
+						 
+						<rich:menuItem submitMode="none">
+							<s:link id="Avtu" view="/support/vtuInvestigation.xhtml" action="#{reportAction.resetValues}" value="VTU Investigation" propagation="none"/>
+						</rich:menuItem>
+						
+						<rich:menuItem submitMode="none">
+							<s:link id="Abill" view="/support/billInvestigation.xhtml" action="#{reportAction.resetValues}" value="Bill Payment Investigation" propagation="none"/>
+						</rich:menuItem>
+						
+						<rich:menuItem submitMode="none">
+							<s:link view="/support/pinInvestigation.xhtml" action="#{reportAction.resetValues}" value="Pin Investigation" propagation="none"/>
+						</rich:menuItem>
+
+                	</rich:menuGroup>
+					 
+					<rich:menuSeparator/>
+					
+					<rich:menuGroup value="Monitor">
+					
+						<rich:menuItem submitMode="none">
+							<s:link id="AtmcEvent" view="/support/tmcEvent.xhtml" action="#{reportAction.resetValues}" value="TMC Event Monitor" propagation="none"/>
+						</rich:menuItem>
+						
+						<rich:menuItem submitMode="none">
+							<s:link view="/support/bankEvent.xhtml" action="#{reportAction.resetValues}" value="Bank Monitor" propagation="none"/>
+						</rich:menuItem>
+
+                	</rich:menuGroup>
+                	
+                	<rich:menuSeparator/>
+					
+					<rich:menuItem submitMode="none">
+						<s:link id="AfailedFundsTransfer" view="/support/failedFundsTransfer.xhtml" action="#{reportAction.resetValues}" value="Failed Funds Transfer" propagation="none"/>
+					</rich:menuItem>
+					
+					<rich:menuItem submitMode="none">
+						<s:link id="AmobileDetails" view="/support/mobileSubscriptionDetails.xhtml" action="#{reportAction.resetValues}" value="Mobile Subscription Details" propagation="none"/>
+					</rich:menuItem>
+					
+					<rich:menuItem submitMode="none">
+						<s:link id="AsummaryLog" view="/support/logSummary.xhtml" action="#{reportAction.resetValues}" value="Summary" propagation="none"/>
+					</rich:menuItem>
+					
+					<rich:menuItem submitMode="none">
+						<s:link id="AsReport" view="/support/switchReport.xhtml" action="#{reportAction.resetValues}" value="Switch Performance Report" propagation="none"/>
+					</rich:menuItem>
+					
+					<rich:menuItem submitMode="none">
+						<s:link view="/support/singleMerchantReport.xhtml" action="#{reportAction.resetValues}" value="Merchant Report" propagation="none"/>
+					</rich:menuItem>
+					
+					<rich:menuItem submitMode="none">
+						<s:link view="/support/exceptionInvestigation.xhtml" action="#{reportAction.resetValues}" value="Exception Report" propagation="none"/>
+					</rich:menuItem>
+					
+					<rich:menuSeparator/>
+					
+					<rich:menuGroup value="Commission Report">
+
+						<rich:menuItem submitMode="none">
+							<s:link id="AmerchantReport" view="/support/merchantReport.xhtml" action="#{reportAction.resetValues}" value="General Merchant Report" propagation="none"/>
+						</rich:menuItem>
+						
+						<rich:menuItem submitMode="none">
+							<s:link view="/support/merchantReport_bizdev.xhtml" action="#{reportAction.resetValues}" value="General Merchant Report - BizDev" propagation="none"/>
+						</rich:menuItem>
+						
+						<rich:menuItem submitMode="none">
+							<s:link id="AmerchantSplitFormula" view="/support/merchantSplitFormula.xhtml" action="#{reportAction.resetValues}" value="Commission/Special Split Formula" propagation="none"/>
+						</rich:menuItem>
+						
+						<rich:menuItem submitMode="none">
+							<s:link id="AstandardSplitFormula" view="/support/standardSplitFormula.xhtml" value="Standard Split Formula" propagation="none"/>
+						</rich:menuItem>
+
+                	</rich:menuGroup>
+                	
+                	<rich:menuSeparator/>
+                	
+                	<!-- mobile money -->
+                	<rich:menuGroup value="Mobile Money Report">
+						
+						<rich:menuItem submitMode="none">
+							<s:link id="AmmoneySummaryReport" view="/support/mmoneySummaryReport.xhtml" action="#{reportAction.resetValues}" value="Mobile Money Summary Report" propagation="none"/>
+						</rich:menuItem>
+						
+						<rich:menuItem submitMode="none">
+							<s:link id="AmmoneyReport" view="/support/mmoneyReport.xhtml" action="#{reportAction.resetValues}" value="Mobile Money Transaction Report" propagation="none"/>
+						</rich:menuItem>
+						
+						<rich:menuItem submitMode="none">
+							<s:link id="AmmoneyCardHolderReport" view="/support/mmoneyCardHolders.xhtml" action="#{reportAction.cardholders_resetValues}" value="Mobile Money Card Holders" propagation="none"/>
+						</rich:menuItem>
+						
+						<rich:menuItem submitMode="none">
+							<s:link view="/support/mmoneyCardHolders2.xhtml" action="#{reportAction.cardholders_resetValues}" value="Mobile Money Card Holders Only" propagation="none"/>
+						</rich:menuItem>
+						
+						<rich:menuItem submitMode="none">
+							<s:link id="AmmoneyCardBalanceReport" view="/support/mmoneyCardBalance.xhtml" action="#{reportAction.resetValues}" value="Mobile Money Card Balance" propagation="none"/>
+						</rich:menuItem>
+						
+						<rich:menuItem submitMode="none">
+							<s:link view="/support/mmoneyNewSubscribers.xhtml" action="#{reportAction.resetValues}" value="New Mobile Money Subscribers" propagation="none"/>
+						</rich:menuItem>
+						
+                	</rich:menuGroup>
+				
+				</rich:dropDownMenu>
+				
+				
+				<rich:dropDownMenu>
+                    <f:facet name="label">
+                        <h:outputText value="DRS" />
+                    </f:facet>
+                    
+                    <rich:menuItem submitMode="none">
+                        <s:link view="/DRS/DRS_viewClaims.xhtml" action="#{claimcontroller.distroy}" value="View Claims" propagation="none"/>
+                    </rich:menuItem>
+                    
+                    <rich:menuItem submitMode="none">
+                        <s:link id="ViewReques" view="/DRS/DRS_report.xhtml" action="#{claimcontroller.distroy}" value="View Report" propagation="none">
+                            <f:param name="defaultDate" value="YES" />
+                        </s:link>
+                    </rich:menuItem>
+                    <rich:menuItem submitMode="none">
+                        <s:link id="downloadReques" view="/DRS/DRS_downloadClaim.xhtml" action="#{claimcontroller.distroy}" value="Claim Download" propagation="none">
+                            <f:param name="defaultDate" value="YES" />
+                        </s:link>
+                    </rich:menuItem>
+                    <rich:menuItem submitMode="none">
+                        <s:link id="ViewMessage" view="/DRS/DRS_viewMessage.xhtml" action="#{claimcontroller.distroy}" value="View Message" propagation="none">
+                            <f:param name="defaultDate" value="YES" />
+                        </s:link>
+                    </rich:menuItem>
+                    <rich:menuItem submitMode="none">
+                        <s:link id="BankUserContacts" view="/DRS/DRS_bankUserContact.xhtml" action="#{claimcontroller.distroy}" value="Bank User Contacts" propagation="none"/>
+                    </rich:menuItem>
+                </rich:dropDownMenu>
+				
+				<rich:dropDownMenu>
+                    <f:facet name="label">
+                        <h:outputText value="PIN Stock Manager" />
+                    </f:facet>
+                    
+                    <rich:menuItem submitMode="none">
+                        <s:link  view="/PSM/PSM_pinReport.xhtml" action="#{tpsmcontroller.distroy}" value="PIN Report" propagation="none"/>
+                    </rich:menuItem>
+                    <rich:menuItem submitMode="none">
+                        <s:link  view="/PSM/PSM_userContact.xhtml" action="#{tpsmcontroller.distroy}" value="User Contact" propagation="none">
+                            <f:param name="defaultDate" value="YES" />
+                        </s:link>
+                    </rich:menuItem>
+                    <rich:menuItem submitMode="none">
+                        <s:link  view="/PSM/PSM_vendorSetup.xhtml" action="#{tpsmcontroller.distroy}" value="Dealer Setup" propagation="none">
+                            <f:param name="defaultDate" value="YES" />
+                        </s:link>
+                    </rich:menuItem>
+                    <rich:menuItem submitMode="none">
+                        <s:link view="/PSM/PSM_providerSetup.xhtml" action="#{tpsmcontroller.distroy}" value="Provider Setup" propagation="none">
+                            <f:param name="defaultDate" value="YES" />
+                        </s:link>
+                    </rich:menuItem>
+                    
+
+
+                </rich:dropDownMenu>
+				
+				
+		    </rich:toolBarGroup>
+		    
+	
+			<rich:toolBarGroup location="right">
+				<h:outputText value="signed in as: #{authenticator.curUser.firstname} #{authenticator.curUser.lastname} [ #{authenticator.curUser.type_nm} ]"/>
+				<s:link id="AlogoutForm" 
+		              action="#{authenticator.signOut}" value="Logout" style="color : white;"
+		              propagation="none" />   
+		              
+			</rich:toolBarGroup>
+		
+		</rich:toolBar>
+		
+		
+		<!-- logged in for support level -->
+   		<rich:toolBar rendered="#{authenticator.curUser.loggedIn and authenticator.curUser.type_nm eq 'SUPPORT OFFICER'}">
+    
+			<rich:toolBarGroup itemSeparator="disc">
+				<h:outputText value="#{projectName}:"/>
+				<s:link view="/welcome.xhtml" value="Home" propagation="none"/>
+				<s:link view="/support/changePassword.xhtml" value="Change Password"  propagation="none"/>
+				
+				<c:forEach items="#{authenticator.userMenuOptions}" var="men" varStatus="menu">
+	                <rich:dropDownMenu>
+	                    <f:facet name="label">
+	                        <h:outputText value="#{men.menu_nm}" />
+	                    </f:facet>
+	                    
+	                    <c:forEach items="#{men.arr_menuitems}" var="mitem" varStatus="item">
+	                        <rich:menuItem submitMode="none">
+	                            <s:link view="#{mitem.menuitem_link}" action="#{reportAction.resetValues}" value="#{mitem.menuitem_nm}" propagation="none"/>
+	                        </rich:menuItem>
+                    	</c:forEach>
+	                    
+	                </rich:dropDownMenu>
+            	</c:forEach>
+				
+				
+				<rich:dropDownMenu>
+		           	<f:facet name="label">
+		                   <h:outputText value="Report" />
+		            </f:facet>
+
+					<rich:menuGroup value="Investigation">
+						
+						
+						<rich:menuItem submitMode="none">
+							<s:link id="wSSetUp" view="/support/webInvestigation.xhtml" action="#{reportAction.resetValues}" value="Web Investigation" propagation="none"/>
+						</rich:menuItem>
+						
+						<rich:menuItem submitMode="none">
+							<s:link id="mSSetUp" view="/support/mobileInvestigation.xhtml" action="#{reportAction.mobile_resetValues}" value="Mobile Investigation" propagation="none"/>
+						</rich:menuItem>
+						
+						<!-- 
+						
+						<rich:menuItem submitMode="none">
+							<s:link id="aSSetUp" view="/support/atmInvestigation.xhtml" action="#{reportAction.resetValues}" value="Atm Investigation" propagation="none"/>
+						</rich:menuItem>
+						
+						<rich:menuItem submitMode="none">
+							<s:link id="pSSetUp" view="/support/posInvestigation.xhtml" action="#{reportAction.resetValues}" value="Pos Investigation" propagation="none"/>
+						</rich:menuItem> 
+						 
+						 -->
+						
+						<rich:menuItem submitMode="none">
+							<s:link view="/support/posReport.xhtml" action="#{reportAction.resetValues}" value="Pos Bridge Report" propagation="none"/>
+						</rich:menuItem> 
+						
+						<rich:menuItem submitMode="none">
+							<s:link view="/support/etmcInvestigation.xhtml" action="#{reportAction.resetValues}" value="Switch ETMC Report" propagation="none"/>
+						</rich:menuItem>
+						
+						<rich:menuItem submitMode="none">
+							<s:link id="Svtu" view="/support/vtuInvestigation.xhtml" action="#{reportAction.resetValues}" value="VTU Investigation" propagation="none"/>
+						</rich:menuItem>
+						
+						<rich:menuItem submitMode="none">
+							<s:link id="Sbill" view="/support/billInvestigation.xhtml" action="#{reportAction.resetValues}" value="Bill Payment Investigation" propagation="none"/>
+						</rich:menuItem>
+						
+						<rich:menuItem submitMode="none">
+							<s:link view="/support/pinInvestigation.xhtml" action="#{reportAction.resetValues}" value="Pin Investigation" propagation="none"/>
+						</rich:menuItem>
+
+                	</rich:menuGroup>
+					 
+					<rich:menuSeparator/>
+					
+					<rich:menuGroup value="Monitor">
+					
+						<rich:menuItem submitMode="none">
+							<s:link id="StmcEvent" view="/support/tmcEvent.xhtml" action="#{reportAction.resetValues}" value="TMC Event Monitor" propagation="none"/>
+						</rich:menuItem>
+						
+						<rich:menuItem submitMode="none">
+							<s:link view="/support/bankEvent.xhtml" action="#{reportAction.resetValues}" value="Bank Monitor" propagation="none"/>
+						</rich:menuItem>
+
+                	</rich:menuGroup>
+                	
+                	<rich:menuSeparator/>
+					
+					<rich:menuItem submitMode="none">
+						<s:link id="SfailedFundsTransfer" view="/support/failedFundsTransfer.xhtml" action="#{reportAction.resetValues}" value="Failed Funds Transfer" propagation="none"/>
+					</rich:menuItem>
+					
+					<rich:menuItem submitMode="none">
+						<s:link id="SmobileDetails" view="/support/mobileSubscriptionDetails.xhtml" action="#{reportAction.resetValues}" value="Mobile Subscription Details" propagation="none"/>
+					</rich:menuItem>
+					
+					<rich:menuItem submitMode="none">
+						<s:link id="SsummaryLog" view="/support/logSummary.xhtml" action="#{reportAction.resetValues}" value="Summary" propagation="none"/>
+					</rich:menuItem>
+					
+					
+					
+					<rich:menuSeparator/>
+					
+					<rich:menuGroup value="Commission Report">
+						
+						<rich:menuItem submitMode="none">
+							<s:link id="SmerchantReport" view="/support/merchantReport.xhtml" action="#{reportAction.resetValues}" value="General Merchant Report" propagation="none"/>
+						</rich:menuItem>
+						
+						<rich:menuItem submitMode="none">
+							<s:link id="SmerchantSplitFormula" view="/support/merchantSplitFormula.xhtml" action="#{reportAction.resetValues}" value="Commission/Special Split Formula" propagation="none"/>
+						</rich:menuItem>
+						
+						<rich:menuItem submitMode="none">
+							<s:link id="SstandardSplitFormula" view="/support/standardSplitFormula.xhtml" value="Standard Split Formula" propagation="none"/>
+						</rich:menuItem>
+						
+                	</rich:menuGroup>
+                	
+                	<rich:menuSeparator/>
+                	
+                	<!-- mobile money -->
+                	<rich:menuGroup value="Mobile Money Report">
+						
+						<rich:menuItem submitMode="none">
+							<s:link  view="/support/mmoneySummaryReport.xhtml" action="#{reportAction.resetValues}" value="Summary Report" propagation="none"/>
+						</rich:menuItem>
+						
+						<rich:menuItem submitMode="none">
+							<s:link  view="/support/mmoneyReport.xhtml" action="#{reportAction.resetValues}" value="Transaction Report" propagation="none"/>
+						</rich:menuItem>
+						
+						<rich:menuItem submitMode="none">
+							<s:link  view="/support/mmoneyCardHolders.xhtml" action="#{reportAction.cardholders_resetValues}" value="Card Holders Report" propagation="none"/>
+						</rich:menuItem>
+						
+						<rich:menuItem submitMode="none">
+							<s:link view="/support/mmoneyCardHolders2.xhtml" action="#{reportAction.cardholders_resetValues}" value="Card Holders Only" propagation="none"/>
+						</rich:menuItem>
+						
+						<rich:menuItem submitMode="none">
+							<s:link view="/support/mmoneyCardBalance.xhtml" action="#{reportAction.resetValues}" value="Card Balance Report" propagation="none"/>
+						</rich:menuItem>
+						
+						<rich:menuItem submitMode="none">
+							<s:link view="/support/mmoneyNewSubscribers.xhtml" action="#{reportAction.resetValues}" value="New Subscribers Report" propagation="none"/>
+						</rich:menuItem>
+						
+                	</rich:menuGroup>
+
+				</rich:dropDownMenu>
+				
+				
+				<rich:dropDownMenu>
+                    <f:facet name="label">
+                        <h:outputText value="DRS" />
+                    </f:facet>
+                    
+                    <rich:menuItem submitMode="none">
+                        <s:link view="/DRS/DRS_viewClaims.xhtml" action="#{claimcontroller.distroy}" value="View Claims" propagation="none"/>
+                    </rich:menuItem>
+                    
+                    <rich:menuItem submitMode="none">
+                        <s:link view="/DRS/DRS_report.xhtml" action="#{claimcontroller.distroy}" value="View Report" propagation="none">
+                            <f:param name="defaultDate" value="YES" />
+                        </s:link>
+                    </rich:menuItem>
+                    <rich:menuItem submitMode="none">
+                        <s:link view="/DRS/DRS_downloadClaim.xhtml" action="#{claimcontroller.distroy}" value="Claim Download" propagation="none">
+                            <f:param name="defaultDate" value="YES" />
+                        </s:link>
+                    </rich:menuItem>
+                    <rich:menuItem submitMode="none">
+                        <s:link view="/DRS/DRS_viewMessage.xhtml" action="#{claimcontroller.distroy}" value="View Message" propagation="none">
+                            <f:param name="defaultDate" value="YES" />
+                        </s:link>
+                    </rich:menuItem>
+                    <rich:menuItem submitMode="none">
+                        <s:link view="/DRS/DRS_bankUserContact.xhtml" action="#{claimcontroller.distroy}" value="Bank User Contacts" propagation="none"/>
+                    </rich:menuItem>
+                </rich:dropDownMenu>
+				
+				<rich:dropDownMenu>
+                    <f:facet name="label">
+                        <h:outputText value="PIN Stock Manager" />
+                    </f:facet>
+                    
+                    <rich:menuItem submitMode="none">
+                        <s:link  view="/PSM/PSM_pinReport.xhtml" action="#{tpsmcontroller.distroy}" value="PIN Report" propagation="none"/>
+                    </rich:menuItem>
+                    <rich:menuItem submitMode="none">
+                        <s:link  view="/PSM/PSM_userContact.xhtml" action="#{tpsmcontroller.distroy}" value="User Contact" propagation="none">
+                            <f:param name="defaultDate" value="YES" />
+                        </s:link>
+                    </rich:menuItem>
+                    <rich:menuItem submitMode="none">
+                        <s:link  view="/PSM/PSM_vendorSetup.xhtml" action="#{tpsmcontroller.distroy}" value="Dealer Setup" propagation="none">
+                            <f:param name="defaultDate" value="YES" />
+                        </s:link>
+                    </rich:menuItem>
+                    <rich:menuItem submitMode="none">
+                        <s:link view="/PSM/PSM_providerSetup.xhtml" action="#{tpsmcontroller.distroy}" value="Provider Setup" propagation="none">
+                            <f:param name="defaultDate" value="YES" />
+                        </s:link>
+                    </rich:menuItem>
+                    
+
+
+                </rich:dropDownMenu>
+				
+				
+				
+		    </rich:toolBarGroup>
+		    
+	
+			<rich:toolBarGroup location="right">
+				<h:outputText value="signed in as: #{authenticator.curUser.firstname} #{authenticator.curUser.lastname} [ #{authenticator.curUser.type_nm} ]"/>
+				<s:link id="SlogoutForm" 
+		              action="#{authenticator.signOut}" value="Logout" style="color : white;"
+		              propagation="none" />   
+		              
+			</rich:toolBarGroup>
+		
+		</rich:toolBar>
+		
+		
+		<!-- for logged in bank users -->
+		<rich:toolBar rendered="#{authenticator.curUser.loggedIn and authenticator.curUser.type_nm eq 'BANK OFFICER'}">
+
+		    <rich:toolBarGroup itemSeparator="disc">
+				<h:outputText value="#{projectName}:"/>
+				<s:link view="/welcome.xhtml" value="Home" propagation="none"/>
+				<s:link view="/support/changePassword.xhtml" value="Change Password"  propagation="none"/>
+				
+				<rich:dropDownMenu>
+		           	<f:facet name="label">
+		                   <h:outputText value="Report" />
+		            </f:facet>
+
+					<rich:menuGroup value="Investigation">
+
+						<rich:menuItem submitMode="none">
+							<s:link id="wSetUp" view="/support/webInvestigation.xhtml" action="#{reportAction.resetValues}" value="Web Investigation" propagation="none"/>
+						</rich:menuItem>
+						
+						<rich:menuItem submitMode="none">
+							<s:link id="mSetUp" view="/support/mobileInvestigation.xhtml" action="#{reportAction.mobile_resetValues}" value="Mobile Investigation" propagation="none"/>
+						</rich:menuItem>
+						 
+						<rich:menuItem submitMode="none">
+							<s:link id="vtu" view="/support/vtuInvestigation.xhtml" action="#{reportAction.resetValues}" value="VTU Investigation" propagation="none"/>
+						</rich:menuItem>
+						
+						<rich:menuItem submitMode="none">
+							<s:link id="bill" view="/support/billInvestigation.xhtml" action="#{reportAction.resetValues}" value="Bill Payment Investigation" propagation="none"/>
+						</rich:menuItem>
+						
+						<rich:menuItem submitMode="none">
+							<s:link view="/support/pinInvestigation.xhtml" action="#{reportAction.resetValues}" value="Pin Investigation" propagation="none"/>
+						</rich:menuItem>
+
+                	</rich:menuGroup>
+
+				</rich:dropDownMenu>
+				
+				
+				<rich:dropDownMenu>
+                    <f:facet name="label">
+                        <h:outputText value="DRS" />
+                    </f:facet>
+                    
+                    <rich:menuItem submitMode="none">
+                        <s:link view="/DRS/DSR_logClaims.xhtml" action="#{claimcontroller.distroy}" value="Log Claims" propagation="none"/>
+                    </rich:menuItem>
+                    <rich:menuItem submitMode="none">
+                        <s:link view="/DRS/DRS_viewClaims.xhtml" action="#{claimcontroller.distroy}" value="View Claims" propagation="none"/>
+                    </rich:menuItem>
+                    <rich:menuItem submitMode="none">
+                        <s:link view="/DRS/DRS_report.xhtml" action="#{claimcontroller.distroy}" value="View Report" propagation="none">
+                            <f:param name="defaultDate" value="YES" />
+                        </s:link>
+                    </rich:menuItem>
+                    <rich:menuItem submitMode="none">
+                        <s:link view="/DRS/DRS_viewMessage.xhtml" action="#{claimcontroller.distroy}" value="View Message" propagation="none">
+                            <f:param name="defaultDate" value="YES" />
+                        </s:link>
+                    </rich:menuItem>
+
+                </rich:dropDownMenu>
+				
+				
+
+		    </rich:toolBarGroup>
+		    
+		    
+	
+			<rich:toolBarGroup location="right">
+				<h:outputText value="signed in as: #{authenticator.curUser.firstname} #{authenticator.curUser.lastname} [ #{authenticator.curUser.type_nm} ]"/>
+				<s:link id="logoutForm" 
+		              action="#{authenticator.signOut}" value="Logout" style="color : white;"
+		              propagation="none" />
+			</rich:toolBarGroup>
+		
+		</rich:toolBar>
+		
+		
+		<!-- logged in for business development -->
+   		<rich:toolBar rendered="#{authenticator.curUser.loggedIn and authenticator.curUser.type_nm eq 'BUSINESS DEVELOPMENT'}">
+    
+			<rich:toolBarGroup itemSeparator="disc">
+				<h:outputText value="#{projectName}:"/>
+				<s:link view="/welcome.xhtml" value="Home" propagation="none"/>
+				<s:link view="/support/changePassword.xhtml" value="Change Password"  propagation="none"/>
+				
+				<rich:dropDownMenu>
+		           	<f:facet name="label">
+		                   <h:outputText value="Report" />
+		            </f:facet>
+
+					<rich:menuGroup value="Investigation">
+						
+						
+						<rich:menuItem submitMode="none">
+							<s:link view="/support/webInvestigation.xhtml" action="#{reportAction.resetValues}" value="Web Investigation" propagation="none"/>
+						</rich:menuItem>
+						
+						<rich:menuItem submitMode="none">
+							<s:link  view="/support/mobileInvestigation.xhtml" action="#{reportAction.mobile_resetValues}" value="Mobile Investigation" propagation="none"/>
+						</rich:menuItem>
+						
+						<rich:menuItem submitMode="none">
+							<s:link  view="/support/atmInvestigation.xhtml" action="#{reportAction.resetValues}" value="Atm Investigation" propagation="none"/>
+						</rich:menuItem>
+						
+						<rich:menuItem submitMode="none">
+							<s:link  view="/support/posInvestigation.xhtml" action="#{reportAction.resetValues}" value="Pos Investigation" propagation="none"/>
+						</rich:menuItem> 
+						 
+						<rich:menuItem submitMode="none">
+							<s:link  view="/support/vtuInvestigation.xhtml" action="#{reportAction.resetValues}" value="VTU Investigation" propagation="none"/>
+						</rich:menuItem>
+						
+						<rich:menuItem submitMode="none">
+							<s:link  view="/support/billInvestigation.xhtml" action="#{reportAction.resetValues}" value="Bill Payment Investigation" propagation="none"/>
+						</rich:menuItem>
+						
+						<rich:menuItem submitMode="none">
+							<s:link view="/support/pinInvestigation.xhtml" action="#{reportAction.resetValues}" value="Pin Investigation" propagation="none"/>
+						</rich:menuItem>
+
+                	</rich:menuGroup>
+					 
+					<rich:menuSeparator/>
+					
+					
+					<rich:menuItem submitMode="none">
+						<s:link view="/support/failedFundsTransfer.xhtml" action="#{reportAction.resetValues}" value="Failed Funds Transfer" propagation="none"/>
+					</rich:menuItem>
+					
+					<rich:menuItem submitMode="none">
+						<s:link view="/support/mobileSubscriptionDetails.xhtml" action="#{reportAction.resetValues}" value="Mobile Subscription Details" propagation="none"/>
+					</rich:menuItem>
+					
+					<rich:menuGroup value="Merchant Report">
+						
+						<rich:menuItem submitMode="none">
+							<s:link view="/support/merchantReport_bizdev.xhtml" action="#{reportAction.resetValues}" value="General Merchant Report" propagation="none"/>
+						</rich:menuItem>
+						
+						<rich:menuItem submitMode="none">
+							<s:link view="/support/merchantSplitFormula.xhtml" action="#{reportAction.resetValues}" value="Commission/Special Split Formula" propagation="none"/>
+						</rich:menuItem>
+						
+						<rich:menuItem submitMode="none">
+							<s:link view="/support/standardSplitFormula.xhtml" value="Standard Split Formula" propagation="none"/>
+						</rich:menuItem>
+						
+                	</rich:menuGroup>
+                	
+                	<rich:menuSeparator/>
+                	
+                	<!-- mobile money -->
+                	<rich:menuGroup value="Mobile Money Report">
+						
+						<rich:menuItem submitMode="none">
+							<s:link  view="/support/mmoneySummaryReport.xhtml" action="#{reportAction.resetValues}" value="Summary Report" propagation="none"/>
+						</rich:menuItem>
+						
+						<rich:menuItem submitMode="none">
+							<s:link  view="/support/mmoneyReport.xhtml" action="#{reportAction.resetValues}" value="Transaction Report" propagation="none"/>
+						</rich:menuItem>
+						
+						<rich:menuItem submitMode="none">
+							<s:link  view="/support/mmoneyCardHolders.xhtml" action="#{reportAction.cardholders_resetValues}" value="Card Holders Report" propagation="none"/>
+						</rich:menuItem>
+						
+						<rich:menuItem submitMode="none">
+							<s:link view="/support/mmoneyCardHolders2.xhtml" action="#{reportAction.cardholders_resetValues}" value="Card Holders Only" propagation="none"/>
+						</rich:menuItem>
+						
+						<rich:menuItem submitMode="none">
+							<s:link view="/support/mmoneyCardBalance.xhtml" action="#{reportAction.resetValues}" value="Card Balance Report" propagation="none"/>
+						</rich:menuItem>
+						
+						<rich:menuItem submitMode="none">
+							<s:link view="/support/mmoneyNewSubscribers.xhtml" action="#{reportAction.resetValues}" value="New Subscribers Report" propagation="none"/>
+						</rich:menuItem>
+						
+                	</rich:menuGroup>
+
+				</rich:dropDownMenu>
+				
+		    </rich:toolBarGroup>
+		    
+	
+			<rich:toolBarGroup location="right">
+				<h:outputText value="signed in as: #{authenticator.curUser.firstname} #{authenticator.curUser.lastname} [ #{authenticator.curUser.type_nm} ]"/>
+				<s:link
+		              action="#{authenticator.signOut}" value="Logout" style="color : white;"
+		              propagation="none" />   
+		              
+			</rich:toolBarGroup>
+		
+		</rich:toolBar>
+		
+		
+		<!-- for logged in bank admin -->
+		<rich:toolBar rendered="#{authenticator.curUser.loggedIn and authenticator.curUser.type_nm eq 'BANK ADMINISTRATOR'}">
+
+		    <rich:toolBarGroup itemSeparator="disc">
+				<h:outputText value="#{projectName}:"/>
+				<s:link view="/welcome.xhtml" value="Home" propagation="none"/>
+				
+				<rich:dropDownMenu>
+                    <f:facet name="label">
+                        <h:outputText value="Users" />
+                    </f:facet>
+                    <rich:menuItem submitMode="none">
+                        <s:link view="/support/createBankUser.xhtml" value="Users" action="#{adminAction.resetValues}" propagation="none"/>
+                    </rich:menuItem>                    
+                </rich:dropDownMenu>
+				
+				<s:link view="/support/changePassword.xhtml" value="Change Password"  propagation="none"/>
+				
+				<rich:dropDownMenu>
+		           	<f:facet name="label">
+		                   <h:outputText value="Report" />
+		            </f:facet>
+
+					<rich:menuGroup value="Investigation">
+
+						<rich:menuItem submitMode="none">
+							<s:link  view="/support/webInvestigation.xhtml" action="#{reportAction.resetValues}" value="Web Investigation" propagation="none"/>
+						</rich:menuItem>
+						
+						<rich:menuItem submitMode="none">
+							<s:link view="/support/mobileInvestigation.xhtml" action="#{reportAction.mobile_resetValues}" value="Mobile Investigation" propagation="none"/>
+						</rich:menuItem>
+						 
+						<rich:menuItem submitMode="none">
+							<s:link view="/support/vtuInvestigation.xhtml" action="#{reportAction.resetValues}" value="VTU Investigation" propagation="none"/>
+						</rich:menuItem>
+						
+						<rich:menuItem submitMode="none">
+							<s:link  view="/support/billInvestigation.xhtml" action="#{reportAction.resetValues}" value="Bill Payment Investigation" propagation="none"/>
+						</rich:menuItem>
+						
+						<rich:menuItem submitMode="none">
+							<s:link view="/support/pinInvestigation.xhtml" action="#{reportAction.resetValues}" value="Pin Investigation" propagation="none"/>
+						</rich:menuItem>
+
+                	</rich:menuGroup>
+
+				</rich:dropDownMenu>
+				
+				<rich:dropDownMenu>
+                    <f:facet name="label">
+                        <h:outputText value="DRS" />
+                    </f:facet>
+                    
+                    <rich:menuItem submitMode="none">
+                        <s:link view="/DRS/DSR_logClaims.xhtml" action="#{claimcontroller.distroy}" value="Log Claims" propagation="none"/>
+                    </rich:menuItem>
+                    <rich:menuItem submitMode="none">
+                        <s:link view="/DRS/DRS_viewClaims.xhtml" action="#{claimcontroller.distroy}" value="View Claims" propagation="none"/>
+                    </rich:menuItem>
+                    <rich:menuItem submitMode="none">
+                        <s:link view="/DRS/DRS_report.xhtml" action="#{claimcontroller.distroy}" value="View Report" propagation="none">
+                            <f:param name="defaultDate" value="YES" />
+                        </s:link>
+                    </rich:menuItem>
+                    <rich:menuItem submitMode="none">
+                        <s:link view="/DRS/DRS_viewMessage.xhtml" action="#{claimcontroller.distroy}" value="View Message" propagation="none">
+                            <f:param name="defaultDate" value="YES" />
+                        </s:link>
+                    </rich:menuItem>
+
+                </rich:dropDownMenu>
+
+		    </rich:toolBarGroup>
+		    
+		    
+	
+			<rich:toolBarGroup location="right">
+				<h:outputText value="signed in as: #{authenticator.curUser.firstname} #{authenticator.curUser.lastname} [ #{authenticator.curUser.type_nm} ]"/>
+				<s:link
+		              action="#{authenticator.signOut}" value="Logout" style="color : white;"
+		              propagation="none" />
+			</rich:toolBarGroup>
+		
+		</rich:toolBar>
+		
+		
+		
+		<!-- for logged in dealer -->
+		<rich:toolBar rendered="#{authenticator.curUser.loggedIn and authenticator.curUser.type_nm eq 'DEALER'}">
+
+		    <rich:toolBarGroup itemSeparator="disc">
+				<h:outputText value="#{projectName}:"/>
+				<s:link view="/welcome.xhtml" value="Home" propagation="none"/>
+				
+				<s:link view="/support/changePassword.xhtml" value="Change Password"  propagation="none"/>
+						
+				<rich:dropDownMenu>
+                    <f:facet name="label">
+                        <h:outputText value="PIN Stock Manager" />
+                    </f:facet>
+                    
+                    <rich:menuItem submitMode="none">
+                        <s:link  view="/PSM/PSM_uploadPin.xhtml" action="#{tpsmcontroller.distroy}" value="PIN Upload" propagation="none"/>
+                    </rich:menuItem>
+                    <rich:menuItem submitMode="none">
+                        <s:link  view="/PSM/PSM_pinReport.xhtml" action="#{tpsmcontroller.distroy}" value="PIN Report" propagation="none"/>
+                    </rich:menuItem>
+                    <rich:menuItem submitMode="none">
+                        <s:link view="/PSM/PSM_Approval.xhtml" action="#{tpsmcontroller.distroy}" value="PIN Approval" propagation="none">
+                            <f:param name="defaultDate" value="YES" />
+                        </s:link>
+                    </rich:menuItem>
+
+
+                </rich:dropDownMenu>
+				
+		    </rich:toolBarGroup>
+		    
+		    
+	
+			<rich:toolBarGroup location="right">
+				<h:outputText value="signed in as: #{authenticator.curUser.firstname} #{authenticator.curUser.lastname} [ #{authenticator.curUser.type_nm} ]"/>
+				<s:link
+		              action="#{authenticator.signOut}" value="Logout" style="color : white;"
+		              propagation="none" />
+			</rich:toolBarGroup>
+		
+		</rich:toolBar>
+		
+   
+   		<!-- not logged in -->
+        <rich:toolBar itemSeparator="disc" rendered="#{!authenticator.curUser.loggedIn}">
+    
+			<rich:toolBarGroup itemSeparator="disc">
+				<h:outputText value="#{projectName}:"/>
+				<s:link view="/index.xhtml" value="Home" propagation="none"/>
+		    </rich:toolBarGroup>
+			
+		</rich:toolBar>
+		
+	</h:form>
+		
+</ui:composition>

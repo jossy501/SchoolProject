@@ -1,0 +1,107 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="../WEB-INF/layout/basic_layout.xhtml">
+                
+<ui:define name="body">
+
+	<!-- processing panel -->
+    
+    <rich:modalPanel id="panelp" width="150" height="50">
+       <h:form id="pFrm">
+        <h:panelGrid columns="1" rowClasses="prop" columnClasses="name2,value">
+           <h:outputText value="Please wait...." styleClass="messagesingle" >
+               <h:graphicImage value="/images/loading_small.gif"/>
+           </h:outputText>
+          </h:panelGrid>  
+         </h:form>
+    </rich:modalPanel>
+
+    <h:form id="cardFrm">
+        
+        <rich:panel style="width:40%">
+            <f:facet name="header">Bank Monitor</f:facet>
+            <rich:graphValidator>
+                <h:panelGrid columns="2" rowClasses="prop" columnClasses="name2,value">
+                    
+                    <h:outputLabel id="status" for="status" value="Source"/>
+                    <h:panelGroup>
+                        <h:selectOneMenu styleClass="controls-length2" id="selStatus"
+                                         value="#{reportAction.status_id}">
+                            <f:selectItem itemLabel="ALL" itemValue="ALL" />
+                            <s:selectItems var="r" value="#{reportAction.tmcNodeList}" itemValue="#{r.incon_name}"
+                                         label="#{r.incon_name}"
+                                         />
+                        </h:selectOneMenu>
+                    </h:panelGroup>
+                    
+                  </h:panelGrid>  
+                   
+            </rich:graphValidator>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+                                 
+             <h:commandButton id="submit" value="  Search  " action="#{reportAction.viewETMCRequestLog}" reRender="manageCardFrm">
+            	<rich:componentControl for="panelp" attachTo="submit" operation="show" event="onclick"/>
+            </h:commandButton>                      
+            	
+        </div>
+   </h:form>
+   
+   <rich:spacer width="10px" height="20px"/>
+
+    <h:form id="manageCardFrm">
+
+        <rich:panel style="width:100%">
+
+            <f:facet name="header">Report [ Total Record(s) found :  #{reportAction.tmcRequestLog.size()} ]</f:facet>
+
+            <rich:dataTable id="cardTb" rows="1000" value="#{reportAction.tmcRequestLog}"  var="crd">
+                
+                 <rich:column>
+                    <f:facet name="header">SN</f:facet>
+                    <h:outputText value="#{crd.counter}"/>
+                </rich:column>
+                 
+                <rich:column>
+                    <f:facet name="header">Node</f:facet>
+                    <h:outputText value="#{crd.incon_name}"/>
+                </rich:column>
+                
+                <rich:column style="background-color:#{crd.color_code}">
+                    <f:facet name="header">Status</f:facet>
+                    <h:outputText value="#{crd.status}" style="color:#{crd.text_color_code}"/>
+                </rich:column>
+                
+                
+                <rich:column>
+                    <f:facet name="header">Last Connected</f:facet>
+                    <h:outputText value="#{crd.last_connected}"/>
+                </rich:column>
+
+                <f:facet name="footer">
+                    <rich:datascroller id="cardTableDS" for="cardTb"  renderIfSinglePage="true">
+                        <f:facet name="first">
+                            <h:outputText value="First" />
+                        </f:facet>
+                        <f:facet name="last">
+                            <h:outputText value="Last" />
+                        </f:facet>
+                    </rich:datascroller>
+                </f:facet>
+            </rich:dataTable>
+
+        </rich:panel>
+       
+    </h:form>
+
+</ui:define>
+</ui:composition>

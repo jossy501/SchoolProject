@@ -1,0 +1,73 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="../WEB-INF/layout/basic_layout.xhtml">
+                
+<ui:define name="body">
+
+
+	<!-- processing panel -->
+    
+    <rich:modalPanel id="panelp" width="150" height="50">
+       <h:form id="pFrm">
+        <h:panelGrid columns="1" rowClasses="prop" columnClasses="name2,value">
+           <h:outputText value="Please wait...." styleClass="messagesingle" align="center">
+               <h:graphicImage value="/images/loading_small.gif"/>
+           </h:outputText>
+          </h:panelGrid>  
+         </h:form>
+    </rich:modalPanel>
+
+    <h:form id="cardFrm">
+   
+   		
+        <rich:panel style="width: 50%; height:95px ">
+			  <h4 align="justify">
+	                <p align="justify">On this page</p>
+	                <ul>
+	                    <li>Upload the excel file containing the card holder details</li><br/>
+	                    <li>The excel file to upload must be in the 97-2003 version</li><br/>
+	                </ul>
+	           </h4>
+		</rich:panel>
+    
+        <rich:panel style="width:50%">
+            <f:facet name="header"> Merchant File Uploader  </f:facet>
+            
+           <h:panelGrid columns="2" rowClasses="prop" columnClasses="name2,value">
+            <h:outputLabel value="Card Details List(97-2003 excel only)"/>
+    		<h:panelGroup>
+	    		 <h:panelGrid columns="1">
+	              <rich:fileUpload fileUploadListener="#{cardfileUploadBean.listener3}" id="upload" 
+	               addControlLabel="Upload File"
+				   listHeight="60"
+				   immediateUpload="true"
+	               maxFilesQuantity="1"
+	               onuploadcomplete="document.getElementById('userFrm:submit').disabled=false"
+			       acceptedTypes="xls"  doneLabel="File Successfully Copied To The Server">
+	               <a4j:support event="onclear" reRender="upload" />
+	            </rich:fileUpload>
+	            </h:panelGrid>
+	            	           
+            </h:panelGroup>
+              <h:commandButton id="submit" value="  Submit  " action="#{cardfileUploadBean.createUploadFile}" reRender="cardFrm,manageCardFrm">
+            	<rich:componentControl for="panelp" attachTo="submit" operation="show" event="onclick"/>
+            </h:commandButton>
+     </h:panelGrid>
+                   
+     
+            
+        </rich:panel>
+        		
+      
+   </h:form>
+  
+    
+</ui:define>
+</ui:composition>
