@@ -1,0 +1,102 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="../WEB-INF/layout/basic_layout.xhtml">
+                
+<ui:define name="body">
+
+
+	<!-- processing panel -->
+    
+    <rich:modalPanel id="panelp" width="150" height="50">
+       <h:form id="pFrm">
+        <h:panelGrid columns="1" rowClasses="prop" columnClasses="name2,value">
+           <h:outputText value="Please wait...." styleClass="messagesingle" align="center">
+               <h:graphicImage value="/images/loading_small.gif"/>
+           </h:outputText>
+          </h:panelGrid>  
+         </h:form>
+         
+    </rich:modalPanel>
+   
+   <rich:spacer width="10px" height="20px"/>
+   
+   <h:form id="manageCardFrm">
+
+    <rich:panel style="width:100%" rendered="#{reportAction.uploadList.size() > 0 }">
+
+            <f:facet name="header">  File Upload Report [ Total Record(s) found :  #{reportAction.uploadList.size()} ]</f:facet>
+
+             <rich:dataTable id="uploader" rowKeyVar="rowKey"  rows="1000" value="#{reportAction.uploadList}"  var="crd">
+           
+           	<rich:column>
+						<f:facet name="header">S/N</f:facet>
+						<h:outputText value="#{rowKey+1}"/>
+			</rich:column>
+				
+        
+                 <rich:column>
+                    <f:facet name="header">File Name</f:facet>
+                       <h:outputText value="#{crd.filename}" style="float: left;"/>
+                </rich:column>
+                
+                 <rich:column>
+                    <f:facet name="header">Status</f:facet>
+                    <h:outputText value="#{crd.size}" style="float: left;"/>
+                </rich:column>
+                
+                  <rich:column>
+                    <f:facet name="header"> Uploaded By </f:facet>
+                    <h:outputText value="#{crd.title}" style="float: left;"/>
+                </rich:column>
+              
+                <rich:column>
+                    <f:facet name="header">Date Uploaded </f:facet>
+                    <h:outputText value="#{crd.created}" style="float: left;"/>
+                </rich:column>
+		
+				<rich:column>
+           
+                    <f:facet name="header"></f:facet>
+                      <h:outputText value="Record awaiting Authorization"  styleClass="messagesingle" />
+                      <br/>
+                    <h:commandButton action="#{reportAction.moveToCreditAccount}"   value="Authorize Direct Debit" id="dehotlist">
+		            	<f:setPropertyActionListener target="#{reportAction.card_num}" value="#{crd.filename}" />
+		            	<f:setPropertyActionListener target="#{reportAction.edit_id}" value="#{crd.created}" />
+		            	<f:setPropertyActionListener target="#{reportAction.to_dest}" value="#{crd.size}" />
+		            	<f:setPropertyActionListener target="#{reportAction.filePath}" value="#{crd.filePath}" />
+		            	<rich:componentControl for="panelp" attachTo="dehotlist" operation="show" event="onclick"/>
+		            </h:commandButton>
+       
+                   
+             </rich:column>
+            
+          
+			
+  			</rich:dataTable>
+  			<!-- 
+  			<rich:datascroller id="srADcardTableDS" for="uploader"  renderIfSinglePage="true">
+                <f:facet name="first">
+                    <h:outputText value="First" />
+                </f:facet>
+                <f:facet name="last">
+                    <h:outputText value="Last" />
+                </f:facet>
+             </rich:datascroller> -->
+  		
+        </rich:panel>
+ 				
+		<rich:panel style="width: 100%; height:50px" rendered="#{reportAction.uploadList.size() == 0}">
+			<h:outputText value="&nbsp;No record(s) found. "/>
+		</rich:panel>
+ 
+    </h:form>
+    
+</ui:define>
+</ui:composition>

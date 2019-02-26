@@ -1,0 +1,305 @@
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/supportManager2/!svn/ver/1/WebContent/WEB-INF/lib
+END
+hibernate-search.jar
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/supportManager2/!svn/ver/1/WebContent/WEB-INF/lib/hibernate-search.jar
+END
+jboss-seam-rss.jar
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/supportManager2/!svn/ver/1/WebContent/WEB-INF/lib/jboss-seam-rss.jar
+END
+mvel14.jar
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/supportManager2/!svn/ver/1/WebContent/WEB-INF/lib/mvel14.jar
+END
+darkX.jar
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/supportManager2/!svn/ver/1/WebContent/WEB-INF/lib/darkX.jar
+END
+jboss-seam-pdf.jar
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/supportManager2/!svn/ver/1/WebContent/WEB-INF/lib/jboss-seam-pdf.jar
+END
+dom4j.jar
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/supportManager2/!svn/ver/1/WebContent/WEB-INF/lib/dom4j.jar
+END
+jboss-el.jar
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/supportManager2/!svn/ver/1/WebContent/WEB-INF/lib/jboss-el.jar
+END
+janino.jar
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/supportManager2/!svn/ver/1/WebContent/WEB-INF/lib/janino.jar
+END
+DesEncryptUtil.jar
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/supportManager2/!svn/ver/1/WebContent/WEB-INF/lib/DesEncryptUtil.jar
+END
+jta.jar
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/supportManager2/!svn/ver/1/WebContent/WEB-INF/lib/jta.jar
+END
+jboss-seam-mail.jar
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/supportManager2/!svn/ver/1/WebContent/WEB-INF/lib/jboss-seam-mail.jar
+END
+hibernate-validator.jar
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/supportManager2/!svn/ver/1/WebContent/WEB-INF/lib/hibernate-validator.jar
+END
+commons-codec.jar
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/supportManager2/!svn/ver/1/WebContent/WEB-INF/lib/commons-codec.jar
+END
+jboss-seam-debug.jar
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/supportManager2/!svn/ver/1/WebContent/WEB-INF/lib/jboss-seam-debug.jar
+END
+commons-collections.jar
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/supportManager2/!svn/ver/1/WebContent/WEB-INF/lib/commons-collections.jar
+END
+etzsecure2.0.1.jar
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/supportManager2/!svn/ver/1/WebContent/WEB-INF/lib/etzsecure2.0.1.jar
+END
+core.jar
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/supportManager2/!svn/ver/1/WebContent/WEB-INF/lib/core.jar
+END
+drools-core.jar
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/supportManager2/!svn/ver/1/WebContent/WEB-INF/lib/drools-core.jar
+END
+ecard_esecure.jar
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/supportManager2/!svn/ver/1/WebContent/WEB-INF/lib/ecard_esecure.jar
+END
+commons-lang.jar
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/supportManager2/!svn/ver/1/WebContent/WEB-INF/lib/commons-lang.jar
+END
+persistence-api.jar
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/supportManager2/!svn/ver/1/WebContent/WEB-INF/lib/persistence-api.jar
+END
+hibernate-annotations.jar
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/supportManager2/!svn/ver/1/WebContent/WEB-INF/lib/hibernate-annotations.jar
+END
+richfaces-ui-3.3.3.Final.jar
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/supportManager2/!svn/ver/1/WebContent/WEB-INF/lib/richfaces-ui-3.3.3.Final.jar
+END
+jxl.jar
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/supportManager2/!svn/ver/1/WebContent/WEB-INF/lib/jxl.jar
+END
+glassX.jar
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/supportManager2/!svn/ver/1/WebContent/WEB-INF/lib/glassX.jar
+END
+hibernate-commons-annotations.jar
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/supportManager2/!svn/ver/1/WebContent/WEB-INF/lib/hibernate-commons-annotations.jar
+END
+hibernate-entitymanager.jar
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/supportManager2/!svn/ver/1/WebContent/WEB-INF/lib/hibernate-entitymanager.jar
+END
+jsf-facelets.jar
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/supportManager2/!svn/ver/1/WebContent/WEB-INF/lib/jsf-facelets.jar
+END
+javassist.jar
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/supportManager2/!svn/ver/1/WebContent/WEB-INF/lib/javassist.jar
+END
+autoclient.jar
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/supportManager2/!svn/ver/1/WebContent/WEB-INF/lib/autoclient.jar
+END
+laguna.jar
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/supportManager2/!svn/ver/1/WebContent/WEB-INF/lib/laguna.jar
+END
+drools-compiler.jar
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/supportManager2/!svn/ver/1/WebContent/WEB-INF/lib/drools-compiler.jar
+END
+jboss-seam-ioc.jar
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/supportManager2/!svn/ver/1/WebContent/WEB-INF/lib/jboss-seam-ioc.jar
+END
+jboss-seam-ui.jar
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/supportManager2/!svn/ver/1/WebContent/WEB-INF/lib/jboss-seam-ui.jar
+END
+commons-digester.jar
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/supportManager2/!svn/ver/1/WebContent/WEB-INF/lib/commons-digester.jar
+END
+jbpm-jpdl.jar
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/supportManager2/!svn/ver/1/WebContent/WEB-INF/lib/jbpm-jpdl.jar
+END
+commons-io.jar
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/supportManager2/!svn/ver/1/WebContent/WEB-INF/lib/commons-io.jar
+END
+richfaces-impl-3.3.3.Final.jar
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/supportManager2/!svn/ver/1/WebContent/WEB-INF/lib/richfaces-impl-3.3.3.Final.jar
+END
+javax.xml.bind.jar
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/supportManager2/!svn/ver/1/WebContent/WEB-INF/lib/javax.xml.bind.jar
+END
+jboss-seam-remoting.jar
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/supportManager2/!svn/ver/1/WebContent/WEB-INF/lib/jboss-seam-remoting.jar
+END
+commons-httpclient.jar
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/supportManager2/!svn/ver/1/WebContent/WEB-INF/lib/commons-httpclient.jar
+END
+richfaces-api-3.3.3.Final.jar
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/supportManager2/!svn/ver/1/WebContent/WEB-INF/lib/richfaces-api-3.3.3.Final.jar
+END
+commons-beanutils.jar
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/supportManager2/!svn/ver/1/WebContent/WEB-INF/lib/commons-beanutils.jar
+END
+commons-logging.jar
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/supportManager2/!svn/ver/1/WebContent/WEB-INF/lib/commons-logging.jar
+END
+jboss-seam-excel.jar
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/supportManager2/!svn/ver/1/WebContent/WEB-INF/lib/jboss-seam-excel.jar
+END
+hibernate.jar
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/supportManager2/!svn/ver/1/WebContent/WEB-INF/lib/hibernate.jar
+END
+antlr-runtime.jar
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/supportManager2/!svn/ver/1/WebContent/WEB-INF/lib/antlr-runtime.jar
+END
+mobilesec.jar
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/supportManager2/!svn/ver/1/WebContent/WEB-INF/lib/mobilesec.jar
+END
+jaxws-api.jar
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/supportManager2/!svn/ver/1/WebContent/WEB-INF/lib/jaxws-api.jar
+END
+jboss-seam.jar
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/supportManager2/!svn/ver/1/WebContent/WEB-INF/lib/jboss-seam.jar
+END

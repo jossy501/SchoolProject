@@ -1,0 +1,32 @@
+<m:message xmlns="http://www.w3.org/1999/xhtml"
+            xmlns:m="http://jboss.com/products/seam/mail"
+            xmlns:h="http://java.sun.com/jsf/html"
+            xmlns:f="http://java.sun.com/jsf/core"
+            importance="high">
+            
+    <m:header name="technical.support@etranzact.net" value="Profile Update" />
+    <m:from name="eTranzact" address="technical.support@etranzact.net" />
+    <m:to name="#{adminAction.curUser.lastname} #{adminAction.curUser.firstname}">#{adminAction.curUser.email}</m:to>
+    <m:subject>Profile Update</m:subject>
+    <m:body>
+        <html>
+            <body>
+                <p><b>Dear #{adminAction.curUser.firstname} #{adminAction.curUser.lastname},</b></p>
+                <p>Your personal details have been updated</p>
+                <p>URL : http://support.etranzact.com/XPortal/index.etz</p>
+                <p>
+                	Username : #{adminAction.curUser.username}<br/>
+                	Email : #{adminAction.curUser.email}<br/>
+                	Firstname : #{adminAction.curUser.firstname}<br/>
+                	Lastname : #{adminAction.curUser.lastname}<br/>
+                	Mobile : #{adminAction.curUser.mobile}
+                </p>
+                <p>Best Regards</p>
+                <center><p><font size = "2">Powered by eTranzact International Plc. All rights reserved.</font></p></center>
+            </body>
+        </html>
+        <f:facet name="alternative">
+            <h:outputText>Please contact the eTranzact support desk for any enquiries.</h:outputText>
+        </f:facet>
+    </m:body>
+</m:message>

@@ -1,0 +1,35 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:e="http://jboss.com/products/seam/excel"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:c="http://java.sun.com/jstl/core"
+xmlns:p="http://jboss.com/products/seam/pdf">
+<p:document xmlns:p="http://jboss.com/products/seam/pdf"
+
+            xmlns:ui="http://java.sun.com/jsf/facelets"
+
+            title="Hello">
+
+  <p:table columns="4" headerRows="1" borderWidthBottom="0" alignment="center" widthPercentage ="100" horizontalAlignment="justify">
+        <p:font size="5" color="blue">
+		<p:cell>Merchant Description</p:cell>
+		<p:cell>Merchant Code</p:cell>
+		<p:cell>Transaction Count</p:cell>
+		<p:cell>AMOUNT</p:cell>
+		
+		</p:font>
+  <ui:repeat value="#{reportAction.fundsTransfer}" rowKeyVar="rk" varStatus="status" rows="1000"  var="crd">
+  		<p:font size="4">
+        <p:cell>#{crd.merchant_descr}</p:cell>
+    	<p:cell>#{crd.merchat_code}</p:cell>
+    	<p:cell>#{crd.counter}</p:cell>
+    	<p:cell>#{reportAction.makeDouble(crd.total_amount)}</p:cell>
+    	</p:font>
+  </ui:repeat>
+
+</p:table>
+
+</p:document>
+
+</html>

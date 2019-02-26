@@ -1,0 +1,108 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="../WEB-INF/layout/basic_layout.xhtml">
+                
+<ui:define name="body">
+
+
+	<!-- processing panel -->
+    
+    <rich:modalPanel id="panelp" width="150" height="50">
+       <h:form id="pFrm">
+        <h:panelGrid columns="1" rowClasses="prop" columnClasses="name2,value">
+           <h:outputText value="Please wait...." styleClass="messagesingle" align="center">
+               <h:graphicImage value="/images/loading_small.gif"/>
+           </h:outputText>
+          </h:panelGrid>  
+         </h:form>
+    </rich:modalPanel>
+
+    <a4j:form id="userFrm">
+        <rich:panel style="width:40%">
+            <f:facet name="header">IP Address Restriction</f:facet>
+            <rich:graphValidator>
+                <h:panelGrid columns="2" rowClasses="prop" columnClasses="name2,value">
+
+                    <h:outputLabel id="ip_label" value="IP Address"/>
+                    <h:panelGroup>
+                    	<h:inputText id="ip" value="#{adminAction.menuItem.ip_address}" required="true" requiredMessage="IP Address is required" size="40"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="ip" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+
+                  </h:panelGrid>  
+                   
+            </rich:graphValidator>
+            
+            
+            <div class="actionButtons" >
+            <a4j:commandButton oncomplete="document.getElementById('userFrm:submit').disabled=false"
+                                   onclick="document.getElementById('userFrm:submit').disabled=true"
+                                   id="submit" value="   Submit  " action="#{adminAction.createIPAddressRestriction}" reRender="userFrm, manageUserFrm"/>
+        </div>
+
+        </rich:panel>
+
+   </a4j:form>
+
+   <rich:spacer width="10px" height="10px"/>
+   
+   <a4j:form id="manageUserFrm">
+         <rich:panel style="width:100%" id="displayUserPanel">
+         
+             <f:facet name="header">Manage IP Restriction</f:facet>
+             
+             <rich:dataTable id="userTb" reRender="userTableDS" rows="1000" value="#{adminAction.ipAddressList}"  var="usr">
+				
+				<rich:column>
+					<f:facet name="header">SN</f:facet>
+					<h:outputText value="#{usr.counter}"/>
+				</rich:column>
+				
+				<rich:column>
+					<f:facet name="header">IP Address</f:facet>
+					<h:outputText value="#{usr.ip_address}"/>
+				</rich:column>
+				
+				<rich:column>
+					<f:facet name="header">Created Date</f:facet>
+					<h:outputText value="#{usr.created_dt}"/>
+				</rich:column>
+				
+				<rich:column>
+					
+					<h:commandButton action="#{adminAction.deleteIPAddress}" reRender="manageUserFrm"  image="/images/invalid.png" id="submit">
+		            	<f:setPropertyActionListener target="#{adminAction.operation_id}" value="#{usr.id}" />
+		            	<rich:componentControl for="panelp" attachTo="submit" operation="show" event="onclick"/>
+		            </h:commandButton>
+
+				</rich:column>
+				<f:facet name="footer">
+					<rich:datascroller id="userTableDS" for="userTb"  renderIfSinglePage="true">
+						<f:facet name="first">
+							<h:outputText value="First" />
+						</f:facet>
+						<f:facet name="last">
+							<h:outputText value="Last" />
+						</f:facet>
+					</rich:datascroller>
+				</f:facet>
+			</rich:dataTable>
+
+         </rich:panel>
+         
+         
+     </a4j:form>
+   
+    
+</ui:define>
+</ui:composition>

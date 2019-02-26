@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pages xmlns="http://jboss.com/products/seam/pages"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.1.xsd">
+    
+    <page view-id="/index.xhtml" action= "#{authenticator.validateSession}">
+        <navigation from-action="#{authenticator.signIn}">
+            <rule if="#{authenticator.curUser.loggedIn and authenticator.curUser.first_logon eq 1}">
+                <redirect view-id="/welcome.xhtml"/>
+            </rule>
+            <rule if="#{!authenticator.curUser.loggedIn and authenticator.curUser.first_logon eq 0}">
+                <redirect view-id="/support/changeFirstPassword.xhtml"/>
+            </rule>
+            <rule if="#{!authenticator.curUser.loggedIn}">
+                <redirect view-id="/index.xhtml"/>
+            </rule>
+        </navigation>
+        <navigation from-action="#{authenticator.validateSession}">
+        	<rule if="#{authenticator.curUser.loggedIn}">
+                <redirect view-id="/welcome.xhtml"/>
+            </rule>
+        </navigation>
+    </page>
+    
+    
+    <page view-id="/support/changeFirstPassword.xhtml">
+        <navigation from-action="#{authenticator.changeFirstPassword}">
+            <rule if="#{authenticator.curUser.loggedIn}">
+                <redirect view-id="/welcome.xhtml"/>
+            </rule>
+            
+            <rule if="#{!authenticator.curUser.loggedIn}">
+                <redirect view-id="/support/changeFirstPassword.xhtml"/>
+            </rule>
+        </navigation>
+    </page>
+    
+    <!-- 
+    
+    <page view-id="/support/*" action= "#{adminAction.secondLevelIPValidation}"/>
+    <page view-id="/DRS/*" action= "#{adminAction.secondLevelIPValidation}"/>
+    <page view-id="/PSM/*" action= "#{adminAction.secondLevelIPValidation}"/>
+    
+     -->
+    
+    <page view-id="*">
+        <navigation from-action="#{authenticator.signOut}">
+            <redirect view-id="/signout.xhtml"/>
+        </navigation>
+    </page>
+    
+    <page view-id="/support/viewELog.xhtml" >
+       <param name="id" value="#{reportAction.id}"/>
+    </page>
+    
+    <page view-id="/support/viewWebLog.xhtml" >
+       <param name="id" value="#{reportAction.id}"/>
+    </page>
+    
+    <page view-id="/support/createMenuItem.xhtml" >
+       <param name="id" value="#{adminAction.id}"/>
+    </page>
+    
+    <page view-id="/support/mobileInvestigation.xhtml">
+        <navigation from-action="#{reportAction.drillDown_Log}">
+            <redirect view-id="/support/viewLog.xhtml"/>
+        </navigation>
+    </page>
+    
+    <page view-id="/support/merchantCommisionReport.xhtml">
+        <navigation from-action="#{reportAction.drillDownCommision_Log}">
+            <redirect view-id="/support/merchantSplitReport.xhtml"/>
+        </navigation>
+    </page>
+    
+    <page view-id="/support/merchantReport.xhtml">
+        <navigation from-action="#{reportAction.viewDetailedMerchantReport}">
+            <redirect view-id="/support/merchantViewSettledReport.xhtml"/>
+        </navigation>
+        
+        <navigation from-action="#{reportAction.viewAllReportByBankCode}">
+            <redirect view-id="/support/merchantAllReportByBankCode.xhtml"/>
+        </navigation>
+        
+        <navigation from-action="#{reportAction.viewAllReportByTransCode}">
+            <redirect view-id="/support/merchantAllReportByTransCode.xhtml"/>
+        </navigation>
+		
+		<navigation from-action="#{reportAction.viewReportByAccountCodeGroupByTransCode}">
+            <redirect view-id="/support/merchantAllReportByAccountCode.xhtml"/>
+        </navigation>
+		
+    </page>
+    
+    
+    <page view-id="/support/merchantAllReportByTransCode.xhtml">
+        <navigation from-action="#{reportAction.viewAllReportByChannelAndTransCode}">
+            <redirect view-id="/support/merchantAllReportByChannel_TransCode.xhtml"/>
+        </navigation>
+    </page>
+    
+    <page view-id="/support/merchantAllReportByChannel_TransCode.xhtml">
+        <navigation from-action="#{reportAction.viewDetailedMerchantReport}">
+            <redirect view-id="/support/merchantViewSettledReport.xhtml"/>
+        </navigation>
+    </page>
+    
+    <!-- Search grouped by bank -->
+    <page view-id="/support/merchantAllReportByBankCode.xhtml">
+        <navigation from-action="#{reportAction.viewAllReportByBankAndTransCode}">
+            <redirect view-id="/support/merchantAllReportByBankAndTransCode.xhtml"/>
+        </navigation>
+    </page>
+    
+    <page view-id="/support/merchantAllReportByBankAndTransCode.xhtml">
+        <navigation from-action="#{reportAction.viewAllReportByBankAndTransCodeAndChannel}">
+            <redirect view-id="/support/merchantAllReportByBankAndTranCodeAndChannel.xhtml"/>
+        </navigation>
+    </page>
+
+    
+    <page view-id="/support/merchantAllReportByBankAndTranCodeAndChannel.xhtml">
+        <navigation from-action="#{reportAction.viewDetailedMerchantReport}">
+            <redirect view-id="/support/merchantViewSettledReport.xhtml"/>
+        </navigation>
+    </page>
+    
+    
+    <!-- biz dev -->
+    <page view-id="/support/merchantReport_bizdev.xhtml">
+
+        <navigation from-action="#{reportAction.viewAllReportByBankCode}">
+            <redirect view-id="/support/merchantAllReportByBankCode.xhtml"/>
+        </navigation>
+        
+        <navigation from-action="#{reportAction.viewAllReportByTransCodeAndAccountID}">
+            <redirect view-id="/support/merchantAllReportByTransCodeAndAccountID.xhtml"/>
+        </navigation>
+    </page>
+    
+    <page view-id="/support/merchantAllReportByTransCodeAndAccountID.xhtml">
+        <navigation from-action="#{reportAction.viewAllReportByChannelAndTransCodeAndAccountID}">
+            <redirect view-id="/support/merchantAllReportByChannel_TransCodeAndAccountID.xhtml"/>
+        </navigation>
+    </page>
+    
+    <page view-id="/support/merchantAllReportByChannel_TransCodeAndAccountID.xhtml">
+        <navigation from-action="#{reportAction.viewDetailedMerchantReport}">
+            <redirect view-id="/support/merchantViewSettledReport.xhtml"/>
+        </navigation>
+    </page>
+    
+	
+	 <!-- Search grouped by account code -->
+    <page view-id="/support/merchantAllReportByAccountCode.xhtml">
+        <navigation from-action="#{reportAction.viewAllReportByAccontCodeAndTransCode}">
+            <redirect view-id="/support/merchantAllReportByAccountCodeAndTransCode.xhtml"/>
+        </navigation>
+    </page>
+    
+    <page view-id="/support/merchantAllReportByAccountCodeAndTransCode.xhtml">
+        <navigation from-action="#{reportAction.viewAllReportByAccountCodeAndTransCodeAndChannel}">
+            <redirect view-id="/support/merchantAllReportByAccountCodeAndTranCodeAndChannel.xhtml"/>
+        </navigation>
+    </page>
+    
+    <page view-id="/support/merchantAllReportByAccountCodeAndTranCodeAndChannel.xhtml">
+        <navigation from-action="#{reportAction.viewDetailedMerchantReport}">
+            <redirect view-id="/support/merchantViewSettledReport.xhtml"/>
+        </navigation>
+    </page>
+    
+    
+    
+    <!--  -->
+    
+    <page view-id="/support/settlementReport.xhtml">
+        <navigation from-action="#{reportAction.viewSettlementReportDetails}">
+            <redirect view-id="/support/settlementReportDetails.xhtml"/>
+        </navigation>
+    </page>
+    
+    <page view-id="/support/gtbanktransferreimbursementreport.xhtml">
+        <navigation from-action="#{reportAction.viewSettlementReportDetailsGTB}">
+            <redirect view-id="/support/gtbanktransferreimbursementreportdetails.xhtml"/>
+        </navigation>
+    </page>
+
+    
+    <!-- DSR -->
+    
+    <page view-id="/DRS/DSR_logClaims.xhtml">
+        <navigation from-action="#{claimcontroller.preViewClaim}">
+            <redirect view-id="/DRS/DSR_logClaimsReadOnly.xhtml"/>
+        </navigation>
+    </page>
+    <page view-id="/DRS/DSR_logClaimsReadOnly.xhtml">
+        <navigation from-action="#{claimcontroller.createClaim}">
+            <redirect view-id="/DRS/DRS_submitClaimReturn.xhtml"/>
+        </navigation>
+    </page>
+     <page view-id="/DRS/DSR_logClaimsReadOnly.xhtml">
+        <navigation from-action="#{claimcontroller.backClaim}">
+            <redirect view-id="/DRS/DSR_logClaims.xhtml"/>
+        </navigation>
+    </page>
+     <page view-id="/DRS/DSR_logClaimsReadOnly.xhtml">
+        <navigation from-action="#{claimcontroller.nextClaim}">
+            <redirect view-id="/DRS/DRS_submitClaimReturn.xhtml"/>
+        </navigation>
+    </page>
+    <page view-id="/DRS/DRS_submitClaimReturn.xhtml">
+        <navigation from-action="#{claimcontroller.createClaim}">
+            <redirect view-id="/DRS/DSR_ClaimConfirm.xhtml"/>
+        </navigation>
+    </page>
+     <page view-id="/DRS/DSR_ClaimConfirm.xhtml">
+        <navigation from-action="#{claimcontroller.distroy}">
+            <redirect view-id="/DRS/DSR_logClaims.xhtml"/>
+        </navigation>
+    </page>
+    <page view-id="/DRS/DRS_viewOutClaimsList.xhtml">
+        <navigation from-action="#{claimcontroller.goToClaimEdit}">
+            <redirect view-id="/DRS/DSR_logClaimsModify.xhtml"/>
+        </navigation>
+    </page>
+     
+    <page view-id="/DRS/DSR_logClaimsModify.xhtml">
+        <navigation from-action="#{claimcontroller.distroy}">
+            <redirect view-id="/DRS/DSR_logClaims.xhtml"/>
+        </navigation>
+    </page>
+   
+    <page view-id="/DRS/DSR_logClaimsModify.xhtml">
+        <navigation from-action="#{claimcontroller.editClaim}">
+            <redirect view-id="/DRS/DSR_logClaims.xhtml"/>
+        </navigation>
+    </page>
+    <page view-id="/DRS/DRS_viewClaimsList.xhtml">
+        <navigation from-action="#{claimcontroller.viewClaimAction}">
+            <redirect view-id="/DRS/DSR_viewClaim4Action.xhtml"/>
+        </navigation>
+    </page>
+
+
+
+     <page view-id="/DRS/DSR_viewClaim4Action.xhtml">
+        <navigation from-action="#{claimcontroller.editClaim}">
+            <redirect view-id="/DRS/DSR_viewClaim4Action.xhtml"/>
+        </navigation>
+    </page>
+     <page view-id="/DRS/DSR_viewClaim4Action.xhtml">
+        <navigation from-action="#{claimcontroller.sendMailAction}">
+            <redirect view-id="/DRS/DSR_sendMail.xhtml"/>
+        </navigation>
+    </page>
+   <page view-id="/DRS/DSR_viewClaim4Action.xhtml">
+        <navigation from-action="#{claimcontroller.claimAcceptAction}">
+            <redirect view-id="/DRS/DRS_viewClaimsList.xhtml"/>
+        </navigation>
+    </page>
+    <page view-id="/DRS/DSR_viewClaim4Action.xhtml">
+        <navigation from-action="#{claimcontroller.claimDeclinetAction}">
+            <redirect view-id="/DRS/DRS_viewClaimsList.xhtml"/>
+        </navigation>
+    </page>
+    <page view-id="/DRS/DSR_logClaimsModify.xhtml">
+        <navigation from-action="#{claimcontroller.preViewClaim}">
+            <redirect view-id="/DRS/DSR_logClaimsReadOnly.xhtml"/>
+        </navigation>
+    </page>
+    <page view-id="/DRS/DSR_sendMail.xhtml">
+        <navigation from-action="#{claimcontroller.createMessage}">
+            <redirect view-id="/DRS/DSR_viewClaim4Action.xhtml"/>
+        </navigation>
+    </page>
+    <page view-id="/DRS/DRS_viewMessage.xhtml">
+        <navigation from-action="#{claimcontroller.viewMessage}">
+            <redirect view-id="/DRS/DSR_sendMail3.xhtml"/>
+        </navigation>
+    </page>
+    <page view-id="/DRS/DRS_report.xhtml">
+        <navigation from-action="#{claimcontroller.viewClaimInfo}">
+            <redirect view-id="/DRS/DSR_viewClaimInfo.xhtml"/>
+        </navigation>
+    </page>
+    <page view-id="/DRS/DRS_listUsers.xhtml">
+        <navigation from-action="#{usercontactcontroller.viewUserAction}">
+            <redirect view-id="/DRS/DRS_bankUserContactEdit.xhtml"/>
+        </navigation>
+    </page>
+
+
+
+
+     <page view-id="/PSM/PSM_lisUser.xhtml">
+        <navigation from-action="#{tpsmusercontactcontroller.viewUser4Edit}">
+            <redirect view-id="/PSM/PSM_userContactModify.xhtml"/>
+        </navigation>
+    </page>
+     <page view-id="/PSM/PSM_listvendor.xhtml">
+        <navigation from-action="#{dealercontroller.viewDealer4Modify}">
+            <redirect view-id="/PSM/PSM_vendorSetupModify.xhtml"/>
+        </navigation>
+    </page>
+     <page view-id="/PSM/PSM_lisProvider.xhtml">
+        <navigation from-action="#{networkprovidercontroller.viewProvider4Edit}">
+            <redirect view-id="/PSM/PSM_providerSetupModify.xhtml"/>
+        </navigation>
+    </page>
+     <page view-id="/PSM/PSM_pinReport.xhtml">
+        <navigation from-action="#{tpsmcontroller.setSelectedPinStock}">
+            <redirect view-id="/PSM/PSM_pinStockEdit.xhtml"/>
+        </navigation>
+    </page>
+    
+
+    <exception class="org.jboss.seam.framework.EntityNotFoundException">
+        <redirect view-id="/error.xhtml">
+            <message severity="warn">Record not found</message>
+        </redirect>
+    </exception>
+    
+    <exception class="javax.persistence.EntityNotFoundException">
+        <redirect view-id="/error.xhtml">
+            <message severity="warn">Record not found</message>
+        </redirect>
+    </exception>
+    
+    <exception class="javax.persistence.EntityExistsException">
+        <redirect view-id="/error.xhtml">
+            <message severity="warn">Duplicate record</message>
+        </redirect>
+    </exception>
+    
+    <exception class="javax.persistence.OptimisticLockException">
+        <end-conversation/>
+        <redirect view-id="/error.xhtml">
+            <message severity="warn">Another user changed the same data, please try again</message>
+        </redirect>
+    </exception>
+    
+    <exception class="org.jboss.seam.security.AuthorizationException">
+        <redirect view-id="/error.xhtml">
+            <message severity="error">You don't have permission to access this resource</message>
+        </redirect>
+    </exception>
+    
+    <exception class="org.jboss.seam.security.NotLoggedInException">
+        <redirect view-id="/index.xhtml">
+            <message severity="warn"></message>
+        </redirect>
+    </exception>
+    
+    <exception class="javax.faces.application.ViewExpiredException">
+        <redirect view-id="/error.xhtml">
+            <message severity="warn">Your session has timed out, please re-login and try again.</message>
+        </redirect>
+    </exception>
+    
+    <exception class="org.jboss.seam.ConcurrentRequestTimeoutException" log-level="trace">
+      <http-error error-code="503" />
+    </exception>
+    
+    <exception class="java.lang.IllegalStateException">
+    <redirect view-id="/error.xhtml">
+        <message>Sorry, Server too busy to service this request, please re-login and try again.</message>
+    </redirect>
+	</exception>
+    
+    <!-- -->
+    <exception>
+        <redirect view-id="/error.xhtml">
+            <message severity="error">Unexpected error, please re-login and try again.</message>
+        </redirect>
+    </exception>
+     
+</pages>

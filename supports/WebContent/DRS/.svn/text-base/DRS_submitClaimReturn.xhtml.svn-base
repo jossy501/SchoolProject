@@ -1,0 +1,93 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="../WEB-INF/layout/basic_layout.xhtml">
+
+<ui:define name="body">
+
+   <rich:spacer width="10px" height="20px"/>
+
+    <h:form id="searchClaim">
+
+        <rich:panel style="width:100%">
+
+            <f:facet name="header">Report [ Total Record(s) found :  #{claimcontroller.searchClaimTransaction.size()} ]
+
+
+</f:facet>
+
+            <rich:dataTable id="cardTb" rows="20" value="#{claimcontroller.searchClaimTransaction}" width="50%"  var="tran">
+
+
+                 <rich:column>
+                    <f:facet name="header">Global ID</f:facet>
+                    <h:outputText value="#{tran.stan}"/>
+                </rich:column>
+               
+                <rich:column>
+                    <f:facet name="header">Card Number</f:facet>
+                    <h:outputText value="#{tran.cardNo}"/>
+                </rich:column>
+
+		<rich:column>
+                    <f:facet name="header">Transaction Amount</f:facet>
+                    <h:outputText value="#{tran.transactionAmount}"/>
+                </rich:column>
+
+                <rich:column>
+                    <f:facet name="header">Response Code</f:facet>
+                    <h:outputText value="#{tran.responseCode}"/>
+                </rich:column>
+
+                <rich:column>
+                    <f:facet name="header">Merchant Code</f:facet>
+                    <h:outputText value="#{tran.merchantCode}"/>
+                </rich:column>
+
+                <rich:column>
+                    <f:facet name="header">Transaction Number</f:facet>
+                    <h:outputText value="#{tran.transactionNo}"/>
+                </rich:column>
+
+				<rich:column>
+                    <f:facet name="header">Transaction Date</f:facet>
+                    <h:outputText value="#{tran.transactionDate}"/>
+                </rich:column>
+				<rich:column>
+                    <f:facet name="header">Transaction Description</f:facet>
+                    <h:outputText value="#{tran.transactionDescription}"/>
+                </rich:column>
+
+				<rich:column>
+				<f:facet name="header">Select</f:facet>
+				<a4j:commandButton action="#{claimcontroller.createClaim}" image="/images/accept.png">
+                                    <f:setPropertyActionListener value="#{tran}" target="#{claimcontroller.selectedSearchedTransaction}"/>
+                                </a4j:commandButton>
+				</rich:column>
+
+
+                <f:facet name="footer">
+                    <rich:datascroller id="cardTableDS" for="cardTb"  renderIfSinglePage="true">
+                        <f:facet name="first">
+                            <h:outputText value="First" />
+                        </f:facet>
+                        <f:facet name="last">
+                            <h:outputText value="Last" />
+                        </f:facet>
+                    </rich:datascroller>
+
+                </f:facet>
+            </rich:dataTable>
+
+        </rich:panel>
+
+    </h:form>
+
+</ui:define>
+</ui:composition>

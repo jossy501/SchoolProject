@@ -1,0 +1,75 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="../WEB-INF/layout/basic_layout.xhtml">
+                
+<ui:define name="body">
+	
+	
+    <h:form id="manageCardFrm">
+    
+
+   		<s:link title="Back" view="/support/logSuccessfulSummary.xhtml"  propagation="none">
+            <h:graphicImage alt="Return" value="/images/return.png"/>
+        </s:link>
+    
+        <rich:panel style="width:100%">
+
+            <f:facet name="header">Report [ Total Record(s) found :  #{reportAction.successfulSummaryLog.size()} ]</f:facet>
+			 <s:link  id="srADreplogo" view="/excel-reports-templates/mtnSucessfulSummaryExcelReport.xhtml"  rendered ="#{reportAction.successfulSummaryLog.size() > 0}"  >
+           		<h:graphicImage value="/images/excel5.jpg"/>
+          	</s:link>
+            <rich:dataTable id="cardTb"  rowKeyVar="rkv" rows="500" value="#{reportAction.successfulSummaryLog}"  var="crd">
+                
+                  <rich:column>
+                    <f:facet name="header">SN</f:facet>
+                    <h:outputText value="#{(rkv+1)}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Channel</f:facet>
+                    <h:outputText value="#{crd.summary_name}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Transaction Count Splite</f:facet>
+            		<h:outputText value="#{crd.summary_count}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Transaction Date</f:facet>
+                    <h:outputText value="#{crd.summarydate}"/>
+                </rich:column>
+                
+                 <rich:column>
+                    <f:facet name="header">Transaction Amount</f:facet>
+                     <h:outputText value="#{reportAction.makeDouble(crd.summaryamount)}" style="float: right;">
+				     	<f:convertNumber pattern="#,###,###,###,###.00"/>
+				     </h:outputText>
+                </rich:column>
+                
+               <!--  <rich:column>
+                    <f:facet name="header">Count</f:facet>
+                    
+                    <s:link view="/support/viewSuccessfulSummaryDrillDown.xhtml" value="#{crd.summary_count}" action="#{reportAction.successfulSummaryDrillDown}">
+                            <f:param name="id" value="#{crd.summary_success_status}"/>
+            		</s:link>
+                </rich:column> --> 
+               
+                
+                
+                
+            </rich:dataTable>
+			
+
+        </rich:panel>
+    </h:form>
+    
+</ui:define>
+</ui:composition>

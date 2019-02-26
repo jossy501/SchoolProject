@@ -1,0 +1,108 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="../WEB-INF/layout/basic_layout.xhtml">
+                
+<ui:define name="body">
+
+    <h:form id="manageCardFrm">
+    
+    	<a4j:form>
+	        <a4j:commandButton id="submit"
+	                           value="    Back   " onclick="history.back()">
+	        </a4j:commandButton>
+    	</a4j:form>
+    
+        <rich:panel style="width:100%">
+
+            <f:facet name="header">Merchant Transaction Details</f:facet>
+
+            <rich:dataTable id="reqTb" rows="20" value="#{merchantReportAction.merchantDetails}"  var="crd">
+                
+                 <rich:column>
+                    <f:facet name="header">S/No</f:facet>
+				    <h:outputText value="#{crd.counter}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Trans Date</f:facet>
+                    <h:outputText value="#{crd.trans_date}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Merchant Code</f:facet>
+                    <h:outputText value="#{crd.merchant_code}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Trans Descr</f:facet>
+                    <h:outputText value="#{crd.trans_desc}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Branch Code</f:facet>
+                    <h:outputText value="#{crd.branch_code}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Trans Amount</f:facet>
+                    <h:outputText value="#{merchantReportAction.makeDouble(crd.trans_amount)}"/>
+                </rich:column>
+                
+                
+        <f:facet name="footer">
+                
+                	<rich:columnGroup>
+                        <rich:column>
+                        	<div align="left">
+                        		Total Amount
+                        	</div>
+                        </rich:column>
+                        
+                        <rich:column>
+                        	<div align="right">
+                        	</div>
+                        </rich:column>
+                        
+                        <rich:column>
+                        	<div align="right">
+                        	</div>
+                        </rich:column>
+                        
+                         <rich:column>
+                        	<div align="right">
+                        	</div>
+                        </rich:column>
+                        
+                        <rich:column>
+                        	<div align="right">
+                        	</div>
+                        </rich:column>
+                        <rich:column>
+                            <div align="right">
+                                <h:outputText value="#{merchantReportAction.makeDouble(merchantReportAction.total_amount)}">
+                                    <f:convertNumber pattern="#,###,###,###,###.00"/>
+                                </h:outputText>
+                            </div>
+                        </rich:column>
+                        
+                    </rich:columnGroup>
+                </f:facet>
+                
+            </rich:dataTable>
+
+        </rich:panel>
+        
+        
+        <rich:spacer width="10px" height="30px"/>
+        
+    </h:form>
+    
+</ui:define>
+</ui:composition>

@@ -1,0 +1,106 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:e="http://jboss.com/products/seam/excel"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:c="http://java.sun.com/jstl/core">
+
+<e:workbook type="jxl" ignoreBlanks="false" filename="report.xls">
+<e:worksheet name="Report" value="#{reportAction.fundsTransfer}" var="crd" startRow="0" rendered = "#{reportAction.fundsTransfer.size() > 0 and reportAction.optionType eq 'A'}">
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="SN"/>
+	</f:facet>
+	<e:formula value="ROW()-1"/>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Error Code"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{crd.response_code}" escape="false"/>
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Error Desc"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{crd.response_time}" escape="false"/>
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Count"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{crd.counter}" escape="false"/>
+	</e:cell>
+</e:column>
+
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Amount"/>
+	</f:facet>
+	<e:cell value="#{reportAction.makeDouble(crd.trans_amount)}">
+		
+	</e:cell>
+</e:column>
+
+</e:worksheet>
+
+<e:worksheet name="Report" value="#{reportAction.fundsTransfer}" var="crd" startRow="0" rendered = "#{reportAction.fundsTransfer.size() > 0 and reportAction.optionType eq 'B'}">
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="SN"/>
+	</f:facet>
+	<e:formula value="ROW()-1"/>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Bank Code"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{crd.merchant_code}" escape="false"/>
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Bank Name"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{reportAction.getBankName(crd.merchant_code)}" escape="false"/>
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Count"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{crd.counter}" escape="false"/>
+	</e:cell>
+</e:column>
+
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Amount"/>
+	</f:facet>
+	<e:cell value="#{reportAction.makeDouble(crd.trans_amount)}">
+		
+	</e:cell>
+</e:column>
+
+</e:worksheet>
+
+</e:workbook>
+</html>

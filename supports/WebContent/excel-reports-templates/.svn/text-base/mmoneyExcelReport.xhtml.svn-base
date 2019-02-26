@@ -1,0 +1,121 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:e="http://jboss.com/products/seam/excel"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:c="http://java.sun.com/jstl/core">
+
+<e:workbook type="jxl" ignoreBlanks="false" filename="mmoneyLog.xls">
+<e:worksheet name="Report" value="#{reportAction.mmoneyLog}" var="crd" startRow="0">
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="No"/>
+	</f:facet>
+	<e:formula value="ROW()-1"/>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Card Number"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{crd.card_num}" escape="false"/>
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Type"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{crd.trans_code}" escape="false"/>
+	</e:cell>
+</e:column>
+
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Transaction Date"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{crd.trans_date}" escape="false"/>
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Transaction Time"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{crd.tran_time}" escape="false"/>
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="LastName"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{reportAction.getCardHolderLastName(crd.card_num)}" escape="false"/>
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="FirstName"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{reportAction.getCardHolderFirstName(crd.card_num)}" escape="false"/>
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Street"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{reportAction.getCardHolderStreet(crd.card_num)}" escape="false"/>
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Location"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{reportAction.getCardHolderState(crd.card_num)}" escape="false"/>
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="GSM"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{crd.phone}" escape="false"/>
+	</e:cell>
+</e:column>
+
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Channel"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{reportAction.getChannelName(crd.channelid)}" escape="false"/>
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Amount"/>
+	</f:facet>
+	<e:cell value="#{reportAction.makeDouble(crd.trans_amount)}">
+		
+	</e:cell>
+</e:column>
+
+</e:worksheet>
+</e:workbook>
+</html>

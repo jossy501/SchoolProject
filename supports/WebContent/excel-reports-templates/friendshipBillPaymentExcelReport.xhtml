@@ -1,0 +1,78 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:e="http://jboss.com/products/seam/excel"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:c="http://java.sun.com/jstl/core">
+
+<e:workbook type="jxl" ignoreBlanks="false" filename="report.xls">
+<e:worksheet name="Report" value="#{reportAction.billLog}" var="crd" startRow="0">
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="SN"/>
+	</f:facet>
+	<e:formula value="ROW()-1"/>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Date"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{crd.trans_date}" escape="false"/>
+	</e:cell>
+</e:column>
+
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Trans ID"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{crd.unique_trans_id}" escape="false"/>
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Merchant Alias"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{crd.merchant_id}" escape="false"/>
+	</e:cell>
+</e:column>
+
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Service ID"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{crd.subscriber_id}" escape="false"/>
+	</e:cell>
+</e:column>
+
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Description"/>
+	</f:facet>
+	<e:cell value="#{crd.status_desc}">
+		
+	</e:cell>
+</e:column>
+
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Amount"/>
+	</f:facet>
+	<e:cell value="#{reportAction.makeDouble(crd.trans_amount)}">
+		
+	</e:cell>
+</e:column>
+
+</e:worksheet>
+</e:workbook>
+</html>

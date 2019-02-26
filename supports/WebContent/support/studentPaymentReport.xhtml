@@ -1,0 +1,375 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="../WEB-INF/layout/basic_layout.xhtml">
+                
+<ui:define name="body">
+
+    
+    
+    <h:form id="cardFrm">
+        <rich:panel style="width:50%">
+            <f:facet name="header">Student Payment Report </f:facet>
+            <rich:graphValidator>
+                <h:panelGrid columns="2" rowClasses="prop" columnClasses="name2,value">
+               
+               		
+                	<h:outputLabel id ="start_date" for="start_date" value="Start Date"/>
+                    <h:panelGroup>
+                    	<rich:calendar value="#{reportAction.start_date}" required="true" id="strt_date"
+                                       datePattern="yyyy-MM-dd" styleClass="controls-length2" requiredMessage="Start Date is required"/>
+                        <span style="white-space:nowrap">
+                            &nbsp;
+                        </span>
+                        <h:selectOneMenu id="start_hr" value="#{reportAction.start_hr}">
+                            <f:selectItem itemLabel="00" itemValue="00" />
+                            <f:selectItem itemLabel="01" itemValue="01" />
+                            <f:selectItem itemLabel="02" itemValue="02" />
+                            <f:selectItem itemLabel="03" itemValue="03" />
+                            <f:selectItem itemLabel="04" itemValue="04" />
+                            <f:selectItem itemLabel="05" itemValue="05" />
+                            <f:selectItem itemLabel="06" itemValue="06" />
+                            <f:selectItem itemLabel="07" itemValue="07" />
+                            <f:selectItem itemLabel="08" itemValue="08" />
+                            <f:selectItem itemLabel="09" itemValue="09" />
+                            <f:selectItem itemLabel="10" itemValue="10" />
+                            <f:selectItem itemLabel="11" itemValue="11" />
+                            <f:selectItem itemLabel="12" itemValue="12" />
+                            <f:selectItem itemLabel="13" itemValue="13" />
+                            <f:selectItem itemLabel="14" itemValue="14" />
+                            <f:selectItem itemLabel="15" itemValue="15" />
+                            <f:selectItem itemLabel="16" itemValue="16" />
+                            <f:selectItem itemLabel="17" itemValue="17" />
+                            <f:selectItem itemLabel="18" itemValue="18" />
+                            <f:selectItem itemLabel="19" itemValue="19" />
+                            <f:selectItem itemLabel="20" itemValue="20" />
+                            <f:selectItem itemLabel="21" itemValue="21" />
+                            <f:selectItem itemLabel="22" itemValue="22" />
+                            <f:selectItem itemLabel="23" itemValue="23" />
+
+                        </h:selectOneMenu>
+                        
+                        <br/>
+                        <rich:message for="start_date" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>                              
+                    </h:panelGroup>
+                    
+                    
+                    <h:outputLabel id="end_date" for="end_date" value="End Date"/>
+                    <h:panelGroup>
+                    	<rich:calendar value="#{reportAction.end_date}" required="true" id="ed_date"
+                                       datePattern="yyyy-MM-dd" styleClass="controls-length2" requiredMessage="End Date is required"/>
+                        
+                        <span style="white-space:nowrap">
+                            &nbsp;
+                        </span>
+                        <h:selectOneMenu id="end_hr" value="#{reportAction.end_hr}">
+                            <f:selectItem itemLabel="00" itemValue="00" />
+                            <f:selectItem itemLabel="01" itemValue="01" />
+                            <f:selectItem itemLabel="02" itemValue="02" />
+                            <f:selectItem itemLabel="03" itemValue="03" />
+                            <f:selectItem itemLabel="04" itemValue="04" />
+                            <f:selectItem itemLabel="05" itemValue="05" />
+                            <f:selectItem itemLabel="06" itemValue="06" />
+                            <f:selectItem itemLabel="07" itemValue="07" />
+                            <f:selectItem itemLabel="08" itemValue="08" />
+                            <f:selectItem itemLabel="09" itemValue="09" />
+                            <f:selectItem itemLabel="10" itemValue="10" />
+                            <f:selectItem itemLabel="11" itemValue="11" />
+                            <f:selectItem itemLabel="12" itemValue="12" />
+                            <f:selectItem itemLabel="13" itemValue="13" />
+                            <f:selectItem itemLabel="14" itemValue="14" />
+                            <f:selectItem itemLabel="15" itemValue="15" />
+                            <f:selectItem itemLabel="16" itemValue="16" />
+                            <f:selectItem itemLabel="17" itemValue="17" />
+                            <f:selectItem itemLabel="18" itemValue="18" />
+                            <f:selectItem itemLabel="19" itemValue="19" />
+                            <f:selectItem itemLabel="20" itemValue="20" />
+                            <f:selectItem itemLabel="21" itemValue="21" />
+                            <f:selectItem itemLabel="22" itemValue="22" />
+                            <f:selectItem itemLabel="23" itemValue="23" />
+
+                        </h:selectOneMenu>
+                       
+                        <br/>
+                        <rich:message for="end_date" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>                              
+                    </h:panelGroup>
+                    
+                  </h:panelGrid>  
+                   
+            </rich:graphValidator>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="submit" value="  Search  " action="#{reportAction.getMerchantPayment}" reRender="manageCardFrm">
+            	 <f:setPropertyActionListener target="#{reportAction.optionType2}" value="SR" />
+            	 <rich:componentControl for="panelp" attachTo="submit" operation="show" event="onclick"/>
+            </h:commandButton> 
+            
+        </div>
+   </h:form>
+   
+   <rich:spacer width="10px" height="20px"/>
+   
+   <h:form id="manageCardFrm">
+
+		<!-- e_settle_batch -->
+		
+		<rich:panel style="width:100%" rendered = "#{reportAction.cardholdertranLog.size() > 0 }">
+
+           <f:facet name="header">Transaction Report [ Total Record(s) found :  #{reportAction.cardholdertranLog.size()} ]</f:facet>
+
+            <rich:dataTable id="scardTb" rows="40" rowsKeys="rowKey" value="#{reportAction.cardholdertranLog}"  var="crd">
+                
+                <rich:column>
+                    <f:facet name="header">S/N</f:facet>
+				    <h:outputText value="#{rowKey+1}"/>
+                </rich:column>
+                 
+                <rich:column>
+                    <f:facet name="header">Merchant Code</f:facet>
+				     <h:outputText value="#{crd.merchant_code}"/>
+                </rich:column>
+                
+         
+                <rich:column>
+                    <f:facet name="header">Merchant Name</f:facet>
+				    <h:outputText value="#{crd.merchant_name}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Trans Count</f:facet>
+				    <h:outputText value="#{crd.counter}"/>
+                </rich:column>
+
+                <rich:column>
+                    <f:facet name="header">Amount</f:facet>
+                    <h:outputText value="#{reportAction.makeDouble(crd.transAmount)}" style="float: right;">
+				    	<f:convertNumber pattern="#,###,###,###,###.00"/>
+				    </h:outputText>
+                </rich:column>
+                
+            </rich:dataTable>
+			<rich:datascroller id="scardTableDS" for="scardTb"  renderIfSinglePage="true">
+                <f:facet name="first">
+                    <h:outputText value="First" />
+                </f:facet>
+                <f:facet name="last">
+                    <h:outputText value="Last" />
+                </f:facet>
+            </rich:datascroller>
+
+        </rich:panel>
+
+
+		
+        
+        <!-- Summarized Report for Unsettled -->
+       
+       <!-- <rich:panel style="width:100%" rendered = "#{reportAction.optionType eq 'U' and reportAction.optionType2 eq 'SR'}">  -->
+       <rich:panel style="width:100%" rendered = "#{reportAction.merchantSummaryReportLog.size() > 0 }">    
+           <f:facet name="header">
+
+           <rich:columnGroup>
+		         <rich:column colspan="4">
+			       <h:outputText value="Unsettled Summarized Report [ Total Record(s) found :  #{reportAction.merchantSummaryReportLog.size()} ]" />
+			           <s:link  id="srUreplogo" view="/excel-reports-templates/merchantSummaryExcelReport.xhtml"  styleClass= "menu-button"  rendered ="#{reportAction.merchantSummaryReportLog.size() > 0}"  >
+			            <h:graphicImage value="/images/excel5.jpg"/>
+			           </s:link>
+			        <rich:toolTip  for="slogo"  value="Please Click to Generate Report in View "/>  
+			      </rich:column>
+			 </rich:columnGroup>
+			 
+			 
+           
+           </f:facet>
+
+            <rich:dataTable id="srUcardTb" rows="40" value="#{reportAction.merchantSummaryReportLog}"  var="crd">
+                
+                
+                 <rich:column>
+                    <f:facet name="header">Total Transaction</f:facet>
+                    <h:commandLink value="#{crd.transaction_count}" action="#{reportAction.viewDetailedMerchantReport}">
+				        <f:setPropertyActionListener target="#{reportAction.strParam}" value="#{crd.transaction_count}" />
+				    </h:commandLink>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Total Amount</f:facet>
+                    <h:outputText value="#{reportAction.makeDouble(crd.trans_amount)}">
+				    	<f:convertNumber pattern="#,###,###,###,###.00"/>
+				    </h:outputText>
+                </rich:column>
+            </rich:dataTable>
+
+
+        </rich:panel>
+		
+		<!-- Report for All Option,  Trans_code Stage-->
+       <rich:panel style="width:100%" rendered = "#{reportAction.allMerchantTransReportLog.size() > 0 }">
+           
+           <f:facet name="header">
+
+           <rich:columnGroup>
+		         <rich:column colspan="4">
+			       <h:outputText value="Product Report [ Total Record(s) found :  #{reportAction.allMerchantTransReportLog.size()} ]" />
+			      </rich:column>
+			 </rich:columnGroup>
+			 
+           </f:facet>
+
+            <rich:dataTable id="srATcardTb" rows="40" value="#{reportAction.allMerchantTransReportLog}"  var="crd">
+          
+                <rich:column>
+                    <f:facet name="header">Product Name</f:facet>
+				    <h:commandLink value="#{reportAction.getTransName(crd.trans_code)}" action="#{reportAction.viewAllReportByTransCode}" id="link2">
+				        <f:setPropertyActionListener target="#{reportAction.optionType2}" value="C" />
+				        <f:setPropertyActionListener target="#{reportAction.strParam}" value="#{crd.trans_code}" />
+				        <rich:componentControl for="panelp" attachTo="link2" operation="show" event="onclick"/>
+				    </h:commandLink>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Total Count</f:facet>
+                    <h:outputText value="#{crd.transaction_count}" style="float: right;"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Total Amount</f:facet>
+                    <h:outputText value="#{reportAction.makeDouble(crd.total_amount)}" style="float: right;">
+				    	<f:convertNumber pattern="#,###,###,###,###.00"/>
+				    </h:outputText>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Total eTz Amount</f:facet>
+                   <h:outputText value="#{reportAction.makeDouble(crd.commission_value)}" style="float: right;">
+				    	<f:convertNumber pattern="#,###,###,###,###.00"/>
+				    </h:outputText>
+                </rich:column>
+                
+                <f:facet name="footer">
+                
+                	<rich:columnGroup>
+                        <rich:column>
+                        	<div align="left">
+                        		Total Amount
+                        	</div>
+                        </rich:column>
+                        <rich:column>
+                        	<div align="right">
+                        		<h:outputText value="#{reportAction.total_count}"/>
+                        	</div>
+                        </rich:column>
+                        <rich:column>
+                            <div align="right">
+                                <h:outputText value="#{reportAction.makeDouble(reportAction.total_amount)}">
+                                    <f:convertNumber pattern="#,###,###,###,###.00"/>
+                                </h:outputText>
+                            </div>
+                        </rich:column>
+                        <rich:column>
+                            <div align="right">
+                                <h:outputText value="#{reportAction.makeDouble(reportAction.total_etz_amount)}">
+                                    <f:convertNumber pattern="#,###,###,###,###.00"/>
+                                </h:outputText>
+                            </div>
+                        </rich:column>
+                    </rich:columnGroup>
+                </f:facet>
+                
+            </rich:dataTable>
+
+        </rich:panel>
+        
+        
+        
+        <!-- Report for All Option group by Bank,  Trans_code Stage-->
+       <rich:panel style="width:100%" rendered = "#{reportAction.allMerchantBankReportLog.size() > 0 }">
+           
+           <f:facet name="header">
+
+           <rich:columnGroup>
+		         <rich:column colspan="4">
+			       <h:outputText value="Bank Breakdown Report [ Total Record(s) found :  #{reportAction.allMerchantBankReportLog.size()} ]" />
+			      </rich:column>
+			 </rich:columnGroup>
+			 
+           </f:facet>
+
+            <rich:dataTable id="srBTcardTb" rows="40" value="#{reportAction.allMerchantBankReportLog}"  var="crd">
+          
+                <rich:column>
+                    <f:facet name="header">Bank</f:facet>
+				    <h:commandLink value="#{reportAction.getBankName(crd.bank_code)}" action="#{reportAction.viewAllReportByBankCode}" id="link3">
+				        <f:setPropertyActionListener target="#{reportAction.optionType2}" value="C" />
+				        <f:setPropertyActionListener target="#{reportAction.strParam}" value="#{crd.bank_code}" />
+				        <rich:componentControl for="panelp" attachTo="link3" operation="show" event="onclick"/>
+				    </h:commandLink>
+
+				    
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Total Count</f:facet>
+                    <h:outputText value="#{crd.transaction_count}" style="float: right;"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Total Amount</f:facet>
+                    <h:outputText value="#{reportAction.makeDouble(crd.total_amount)}" style="float: right;">
+				    	<f:convertNumber pattern="#,###,###,###,###.00"/>
+				    </h:outputText>
+                </rich:column>
+                
+                 
+                
+                <f:facet name="footer">
+                
+                	<rich:columnGroup>
+                        <rich:column>
+                        	<div align="left">
+                        		Total Amount
+                        	</div>
+                        </rich:column>
+                        <rich:column>
+                        	<div align="right">
+                        		<h:outputText value="#{reportAction.total_count}"/>
+                        	</div>
+                        </rich:column>
+                        <rich:column>
+                            <div align="right">
+                                <h:outputText value="#{reportAction.makeDouble(reportAction.total_amount)}">
+                                    <f:convertNumber pattern="#,###,###,###,###.00"/>
+                                </h:outputText>
+                            </div>
+                        </rich:column>
+                        
+                    </rich:columnGroup>
+                </f:facet>
+                
+            </rich:dataTable>
+
+
+        </rich:panel>
+
+
+		<rich:panel style="width: 100%; height:50px" rendered="#{reportAction.allMerchantBankReportLog.size() == 0 and reportAction.allMerchantTransReportLog.size() == 0 and reportAction.merchantSummaryReportLog.size() == 0 and reportAction.settle_batch.size() == 0}">
+			<h:outputText value="&nbsp;No record(s) found. "/>
+		</rich:panel>
+
+    </h:form>
+    
+    
+	
+</ui:define>
+</ui:composition>

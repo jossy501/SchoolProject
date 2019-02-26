@@ -1,0 +1,1396 @@
+
+package com.etranzact.supportmanager.utility;
+
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.logging.Logger;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.sql.DataSource;
+
+
+
+/**
+ * Resource object for retrieving database connections from the configurations of the web server through JNDI.
+ * @author Ezeanya Anthony
+ * */
+public class Env
+{
+	/**
+	 * Static variable for getting context configurations.
+	 * Used by all methods to retrieve the environment context.
+	 * */
+	private static Context initCtx;
+	private static Context envCtx;
+	//InitialContext ic;
+	//DataSource ds = null;
+	//Connection con = null;
+	//static Logger logger = Logger.getLogger(ConnectionPool.class);
+	//public static String dbName = "java:comp/env/jdbc/FileArchiveSybaseDB";
+	
+	public static String supportDB = "java:comp/env/jdbc/supportSybaseDB";
+	public static String claimsDB = "java:comp/env/jdbc/claimsDB";
+    public static String drsDB = "java:comp/env/jdbc/drsDB";
+	public static String telcoDB = "java:comp/env/jdbc/telcoSybaseDB";
+	public static String ecardDB = "java:comp/env/jdbc/ecardSybaseDB";
+	public static String etmcDB = "java:comp/env/jdbc/etmcSybaseDB";
+	public static String backup_ecardDB = "java:comp/env/jdbc/backup_ecardSybaseDB";
+	public static String test_ecardDB = "java:comp/env/jdbc/test_ecardSybaseDB";
+	public static String payoutletDB = "java:comp/env/jdbc/payoutletSybaseDB";
+	public static String cpayDB = "java:comp/env/jdbc/cPaySybaseDB";
+	public static String psmDB = "java:comp/env/jdbc/psmDB";
+	public static String settle_ecardDB = "java:comp/env/jdbc/settle_ecardSybaseDB";
+	public static String intnl_ecardDB = "java:comp/env/jdbc/intnl_ecardSybaseDB";
+	public static String psmDBRP = "java:comp/env/jdbc/psmDBRP";
+	public static String mobileDB = "java:comp/env/jdbc/mobileDB";
+	public static String rechargeDB = "java:comp/env/jdbc/recharegDB";
+	public static String pocketMoni_ecardHolderSybaseDB = "java:comp/env/jdbc/pocketMoni_ecardHolderSybaseDB";
+	public static String telcoDBUpdate= "java:comp/env/jdbc/telcoSybaseDBUpdate";
+	public static String ricaDB = "java:comp/env/jdbc/ricaSybaseDB";
+	public static String charmsDB = "java:comp/env/jdbc/charmsDB";
+	public static String pmecardHolderSybaseDB = "java:comp/env/jdbc/pmecardHolderSybaseDB";
+	public static String demoEcardDB = "java:comp/env/jdbc/demoEcardDB";
+	public static String staggingEcardDB = "java:comp/env/jdbc/staggingEcardDB";
+	
+	/**
+	 * Static block for context environment connection.
+	 * */
+	static
+	{
+		try
+		{
+			initCtx = new InitialContext();
+			envCtx = (Context)initCtx.lookup("java:comp/env");
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Error initailizing the context environment...");
+			ex.printStackTrace();
+		}
+	}
+	
+	//================= SUPPORT ===================//
+	
+
+	public static Connection getConnectionSupportLogDB()throws SQLException, ClassNotFoundException
+	{
+		try
+		{
+			DataSource ds = (DataSource)envCtx.lookup("jdbc/supportlog");
+			Connection con = ds.getConnection();
+			con.setAutoCommit(true);
+			con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			
+			//System.out.println("connected to support log db");
+			
+			return con;
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Error retrieving the data source from the context...");
+			ex.printStackTrace();
+			return reconnectSupportLogDB();
+		}
+	}
+	
+
+	public static Connection reconnectSupportLogDB()
+	{
+		try
+		{
+			DataSource ds = (DataSource)envCtx.lookup("jdbc/supportlog");
+			Connection con = ds.getConnection();
+			con.setAutoCommit(false);
+			con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			return con;
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Error retrieving the data source from the context...");
+			ex.printStackTrace();
+			return null;
+		}
+	}
+	
+
+	public static Connection getConnectionTelcoDB()
+	{
+		try
+		{
+			DataSource ds = (DataSource)envCtx.lookup("jdbc/telco");
+			Connection con = ds.getConnection();
+			con.setAutoCommit(false);
+			con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			
+			//System.out.println("connected to telco db");
+			
+			return con;
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Error retrieving the data source from the context...");
+			ex.printStackTrace();
+			return reconnectTelcoDB();
+		}
+	}
+
+	public static Connection reconnectTelcoDB()
+	{
+		try
+		{
+			DataSource ds = (DataSource)envCtx.lookup("jdbc/telco");
+			Connection con = ds.getConnection();
+			con.setAutoCommit(false);
+			con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			return con;
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Error retrieving the data source from the context...");
+			ex.printStackTrace();
+			return null;
+		}
+	}
+
+	public static Connection getConnectionECardDB()
+	{
+		try
+		{
+			DataSource ds = (DataSource)envCtx.lookup("jdbc/ecard");
+			Connection con = ds.getConnection();
+			con.setAutoCommit(true);
+			con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			
+			//System.out.println("connected to ecard db");
+			
+			return con;
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Error retrieving the data source from the context...");
+			ex.printStackTrace();
+			return reconnectECardDB();
+		}
+	}
+	
+
+	public static Connection reconnectECardDB()
+	{
+		try
+		{
+			DataSource ds = (DataSource)envCtx.lookup("jdbc/ecard");
+			Connection con = ds.getConnection();
+			con.setAutoCommit(false);
+			con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			return con;
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Error retrieving the data source from the context...");
+			ex.printStackTrace();
+			return null;
+		}
+	}
+	
+
+	public static Connection getConnectionETMCDB()
+	{
+		try
+		{
+			DataSource ds = (DataSource)envCtx.lookup("jdbc/etmc");
+			Connection con = ds.getConnection();
+			con.setAutoCommit(false);
+			con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			
+			//System.out.println("connected to ecard");
+			
+			return con;
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Error retrieving the data source from the context...");
+			ex.printStackTrace();
+			return reconnectETMCDB();
+		}
+	}
+	
+
+	public static Connection reconnectETMCDB()
+	{
+		try
+		{
+			DataSource ds = (DataSource)envCtx.lookup("jdbc/etmc");
+			Connection con = ds.getConnection();
+			con.setAutoCommit(false);
+			con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			return con;
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Error retrieving the data source from the context...");
+			ex.printStackTrace();
+			return null;
+		}
+	}
+	
+	
+	public static Connection getConnectionBackUpECardDB()
+	{
+		try
+		{
+			DataSource ds = (DataSource)envCtx.lookup("jdbc/backup_ecard");
+			Connection con = ds.getConnection();
+			con.setAutoCommit(false);
+			con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			
+			return con;
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Error retrieving the data source from the context...");
+			ex.printStackTrace();
+			return reconnectETMCDB();
+		}
+	}
+	
+
+	public static Connection reconnectBackUpECardDB()
+	{
+		try
+		{
+			DataSource ds = (DataSource)envCtx.lookup("jdbc/backup_ecard");
+			Connection con = ds.getConnection();
+			con.setAutoCommit(false);
+			con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			return con;
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Error retrieving the data source from the context...");
+			ex.printStackTrace();
+			return null;
+		}
+		
+	}
+	
+	
+	public static Connection getConnectionTestECardDB()
+	{
+		try
+		{
+			DataSource ds = (DataSource)envCtx.lookup("jdbc/test_ecard");
+			Connection con = ds.getConnection();
+			con.setAutoCommit(false);
+			con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			
+			return con;
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Error retrieving the data source from the context...");
+			ex.printStackTrace();
+			return reconnectETMCDB();
+		}
+	}
+	
+
+	public static Connection reconnectTestECardDB()
+	{
+		try
+		{
+			DataSource ds = (DataSource)envCtx.lookup("jdbc/test_ecard");
+			Connection con = ds.getConnection();
+			con.setAutoCommit(false);
+			con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			return con;
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Error retrieving the data source from the context...");
+			ex.printStackTrace();
+			return null;
+		}
+		
+	}
+	
+	public static Connection getConnection4DRSDB()throws SQLException, ClassNotFoundException
+	{
+        try
+        {
+        	DataSource ds = (DataSource)envCtx.lookup("jdbc/drsDB");
+			Connection con = ds.getConnection();
+			con.setAutoCommit(false);
+			con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+        
+            return con;
+        }
+        catch (Exception ce)
+        {
+        	System.out.println("WARNING::Error occured trying to connect to drs database " + ce.getMessage());
+            ce.printStackTrace();
+            return null;
+        }
+
+    }
+    public static Connection getConnectionToClaimsDB() throws SQLException, ClassNotFoundException
+	{
+        try
+        {
+        	DataSource ds = (DataSource)envCtx.lookup("jdbc/claimsDB");
+			Connection con = ds.getConnection();
+			con.setAutoCommit(false);
+			con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+
+            //System.out.println("Successfully connected to database!");
+            return con;
+        }
+        catch (Exception ce)
+        {
+        	System.out.println("WARNING::Error occured trying to connect to support database " + ce.getMessage());
+            ce.printStackTrace();
+            return null;
+        }
+
+    }
+	
+    
+    public static Connection getConnectionPayoutletDB()
+	{
+		try
+		{
+			DataSource ds = (DataSource)envCtx.lookup("jdbc/payoutletDB");
+			Connection con = ds.getConnection();
+			con.setAutoCommit(false);
+			con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			
+			return con;
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Error retrieving the data source from the context...");
+			ex.printStackTrace();
+			return reconnectETMCDB();
+		}
+	}
+	
+
+	public static Connection reconnectPayoutletDB()
+	{
+		try
+		{
+			DataSource ds = (DataSource)envCtx.lookup("jdbc/payoutletDB");
+			Connection con = ds.getConnection();
+			con.setAutoCommit(false);
+			con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			return con;
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Error retrieving the data source from the context...");
+			ex.printStackTrace();
+			return null;
+		}
+		
+	}
+	
+	
+	public static Connection getConnectionCPayDB()
+	{
+		try
+		{
+			DataSource ds = (DataSource)envCtx.lookup("jdbc/cpayDB");
+			Connection con = ds.getConnection();
+			con.setAutoCommit(false);
+			con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			
+			return con;
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Error retrieving the data source from the context...");
+			ex.printStackTrace();
+			return reconnectETMCDB();
+		}
+	}
+	
+
+	public static Connection reconnectCPayDB()
+	{
+		try
+		{
+			DataSource ds = (DataSource)envCtx.lookup("jdbc/cpayDB");
+			Connection con = ds.getConnection();
+			con.setAutoCommit(false);
+			con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			return con;
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Error retrieving the data source from the context...");
+			ex.printStackTrace();
+			return null;
+		}
+		
+	}
+	
+	public static Connection getConnection4psmDB()
+	{
+        try
+        {
+    		DataSource ds = (DataSource)envCtx.lookup("jdbc/psmDB");
+    		Connection con = ds.getConnection();
+			con.setAutoCommit(false);
+			con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+            return con;
+        }
+        catch (Exception ce)
+        {
+        	System.out.println("WARNING::Error occured trying to connect to psm database " + ce.getMessage());
+            ce.printStackTrace();
+            return reconnect4psmDB();
+        }
+    }
+	
+	public static Connection reconnect4psmDB()
+	{
+		try
+		{
+			DataSource ds = (DataSource)envCtx.lookup("jdbc/psmDB");
+			Connection con = ds.getConnection();
+			con.setAutoCommit(false);
+			con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			return con;
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Error retrieving the data source from the context...");
+			ex.printStackTrace();
+			return null;
+		}
+		
+	}
+	
+	
+	public static Connection getConnectionSettleECardDB()
+	{
+		try
+		{
+			DataSource ds = (DataSource)envCtx.lookup("jdbc/settle_ecard");
+			Connection con = ds.getConnection();
+			con.setAutoCommit(false);
+			con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			
+			return con;
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Error retrieving the data source from the context...");
+			ex.printStackTrace();
+			return reconnectSettleECardDB();
+		}
+	}
+	
+
+	public static Connection reconnectSettleECardDB()
+	{
+		try
+		{
+			DataSource ds = (DataSource)envCtx.lookup("jdbc/settle_ecard");
+			Connection con = ds.getConnection();
+			con.setAutoCommit(false);
+			con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			return con;
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Error retrieving the data source from the context...");
+			ex.printStackTrace();
+			return null;
+		}
+		
+	}
+	
+	public static Connection getConnection4PSMRPDB()
+	{
+		try
+		{
+			DataSource ds = (DataSource)envCtx.lookup("jdbc/psmDBRP");
+			Connection con = ds.getConnection();
+			con.setAutoCommit(false);
+			con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			
+			return con;
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Error retrieving the data source from the context...");
+			ex.printStackTrace();
+			return reconnectSettleECardDB();
+		}
+	}
+	
+
+	public static Connection reconnect4PSMRPDB()
+	{
+		try
+		{
+			DataSource ds = (DataSource)envCtx.lookup("jdbc/psmDBRP");
+			Connection con = ds.getConnection();
+			con.setAutoCommit(false);
+			con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			return con;
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Error retrieving the data source from the context...");
+			ex.printStackTrace();
+			return null;
+		}
+		
+	}
+	
+	public static Connection getConnectionIntnlECardDB()
+	{
+		try
+		{
+			DataSource ds = (DataSource)envCtx.lookup("jdbc/international_ecard");
+			Connection con = ds.getConnection();
+			con.setAutoCommit(false);
+			con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			
+			return con;
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Error retrieving the data source from the context...");
+			ex.printStackTrace();
+			return reconnectSettleECardDB();
+		}
+	}
+	
+
+	public static Connection reconnectIntnlECardDB()
+	{
+		try
+		{
+			DataSource ds = (DataSource)envCtx.lookup("jdbc/international_ecard");
+			Connection con = ds.getConnection();
+			con.setAutoCommit(false);
+			con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			return con;
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Error retrieving the data source from the context...");
+			ex.printStackTrace();
+			return null;
+		}
+		
+	}
+	
+
+	public static Connection getConnectionMobileDB()
+	{
+		try
+		{
+			DataSource ds = (DataSource)envCtx.lookup("jdbc/mobileDB");
+			Connection con = ds.getConnection();
+			con.setAutoCommit(false);
+			con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			
+			return con;
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Error retrieving the data source from the context...");
+			ex.printStackTrace();
+			return reconnectMobileDB();
+		}
+	}
+	
+
+	public static Connection reconnectMobileDB()
+	{
+		try
+		{
+			DataSource ds = (DataSource)envCtx.lookup("jdbc/mobileDB");
+			Connection con = ds.getConnection();
+			con.setAutoCommit(false);
+			con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			return con;
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Error retrieving the data source from the context...");
+			ex.printStackTrace();
+			return null;
+		}
+		
+	}
+	
+	
+	public static Connection getConnectionRechargeDB()
+	{
+		try
+		{
+			DataSource ds = (DataSource)envCtx.lookup("jdbc/rechargeDB");
+			Connection con = ds.getConnection();
+			con.setAutoCommit(false);
+			con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			
+			return con;
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Error retrieving the data source from the context...");
+			ex.printStackTrace();
+			return reconnectMobileDB();
+		}
+	}
+	
+
+	public static Connection reconnectRechargeDB()
+	{
+		try
+		{
+			DataSource ds = (DataSource)envCtx.lookup("jdbc/rechargeDB");
+			Connection con = ds.getConnection();
+			con.setAutoCommit(false);
+			con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			return con;
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Error retrieving the data source from the context...");
+			ex.printStackTrace();
+			return null;
+		}
+		
+	}
+	
+	
+	public static Connection getConnectionPocketMoniEcardDB()
+	{
+		try
+		{
+			DataSource ds = (DataSource)envCtx.lookup("jdbc/pocketMoni_ecardHolderDB");
+			Connection con = ds.getConnection();
+			con.setAutoCommit(false);
+			con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			
+			return con;
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Error retrieving the data source from the context...");
+			ex.printStackTrace();
+			return reconnectMobileDB();
+		}
+	}
+	
+
+	public static Connection reconnectPocketMoniEcardsDB()
+	{
+		try
+		{
+			DataSource ds = (DataSource)envCtx.lookup("jdbc/pocketMoni_ecardHolderDB");
+			Connection con = ds.getConnection();
+			con.setAutoCommit(false);
+			con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			return con;
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Error retrieving the data source from the context...");
+			ex.printStackTrace();
+			return null;
+		}
+		
+	}
+	
+	public static Connection getConnectionTelcoDBUpdate()
+	{
+		try
+		{
+			DataSource ds = (DataSource)envCtx.lookup("jdbc/telcoDBUpdate");
+			Connection con = ds.getConnection();
+			con.setAutoCommit(false);
+			con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			return con;
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Error retrieving the data source from the context...");
+			ex.printStackTrace();
+			return reconnectTelcoDB();
+		}
+	}
+
+	public static Connection reconnectTelcoDBUpdate()
+	{
+		try
+		{
+			DataSource ds = (DataSource)envCtx.lookup("jdbc/telcoDBUpdate");
+			Connection con = ds.getConnection();
+			con.setAutoCommit(false);
+			con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			return con;
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Error retrieving the data source from the context...");
+			ex.printStackTrace();
+			return null;
+		}
+	}
+	
+	
+	public static Connection getConnection4ricaDB()
+	{
+		try
+		{
+			DataSource ds = (DataSource)envCtx.lookup("jdbc/ricaDB");
+			Connection con = ds.getConnection();
+			//con.setAutoCommit(false);
+			con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			return con;
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Error retrieving the data source from the context...");
+			ex.printStackTrace();
+			return reconnectTelcoDB();
+		}
+	}
+	
+	public static Connection getConnectionChamsDB()throws SQLException, ClassNotFoundException
+	{
+		try
+		{
+			DataSource ds = (DataSource)envCtx.lookup("jdbc/chamsdb");
+			Connection con = ds.getConnection();
+			con.setAutoCommit(false);
+			con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			
+			System.out.println("connected to chamsdb on remote location ");
+			
+			return con;
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Error retrieving the data source from the context...");
+			ex.printStackTrace();
+			return reconnectChamsDb();
+		}
+	}
+	
+
+	public static Connection reconnectChamsDb()
+	{
+		try
+		{
+			DataSource ds = (DataSource)envCtx.lookup("jdbc/chamsdb");
+			Connection con = ds.getConnection();
+			con.setAutoCommit(false);
+			con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			return con;
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Error retrieving the data source from the context...");
+			ex.printStackTrace();
+			return null;
+		}
+	}
+
+	
+	public static Connection getConnectionPMTDB()throws SQLException, ClassNotFoundException
+	{
+		try
+		{
+			DataSource ds = (DataSource)envCtx.lookup("jdbc/pmtdb");
+			Connection con = ds.getConnection();
+			con.setAutoCommit(true);
+			con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			
+			System.out.println("connected to PMTDB on remote location ");
+			
+			return con;
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Error retrieving the data source from the context...");
+			ex.printStackTrace();
+			return reconnectPMTDb();
+		}
+	}
+	
+
+	public static Connection reconnectPMTDb()
+	{
+		try
+		{
+			DataSource ds = (DataSource)envCtx.lookup("jdbc/pmtdb");
+			Connection con = ds.getConnection();
+			con.setAutoCommit(false);
+			con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			return con;
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Error retrieving the data source from the context...");
+			ex.printStackTrace();
+			return null;
+		}
+	}
+	
+	public static Connection getConnectionCPMTDB()throws SQLException, ClassNotFoundException
+	{
+		try
+		{
+			DataSource ds = (DataSource)envCtx.lookup("jdbc/cpmtdb");
+			Connection con = ds.getConnection();
+			con.setAutoCommit(false);
+			con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			
+			System.out.println("connected to PMTDB on remote location ");
+			
+			return con;
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Error retrieving the data source from the context...");
+			ex.printStackTrace();
+			return reconnectPMTDb();
+		}
+	}
+	
+
+	public static Connection reconnectCPMTDb()
+	{
+		try
+		{
+			DataSource ds = (DataSource)envCtx.lookup("jdbc/cpmtdb");
+			Connection con = ds.getConnection();
+			con.setAutoCommit(false);
+			con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			return con;
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Error retrieving the data source from the context...");
+			ex.printStackTrace();
+			return null;
+		}
+	}
+	
+	public static Connection getConnectionPMEcardHolderSybaseDB()throws SQLException, ClassNotFoundException
+	{
+		try
+		{
+			DataSource ds = (DataSource)envCtx.lookup("jdbc/pmecardHolderSybaseDB");
+			Connection con = ds.getConnection();
+			con.setAutoCommit(true);
+			con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			
+			System.out.println("connected to PMEcardHolder on remote location ");
+			
+			return con;
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Error retrieving the data source from the context...");
+			ex.printStackTrace();
+			return reconnectPMTDb();
+		}
+	}
+
+	public static Connection reconnectPMEcardHolderSybaseDB()
+	{
+		try
+		{
+			DataSource ds = (DataSource)envCtx.lookup("jdbc/pmecardHolderSybaseDB");
+			Connection con = ds.getConnection();
+			con.setAutoCommit(true);
+			con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			return con;
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Error retrieving the data source from the context...");
+			ex.printStackTrace();
+			return null;
+		}
+	}
+	
+	
+	public static Connection getConnectionDemoEcardDB()throws SQLException, ClassNotFoundException
+	{
+		try
+		{
+			DataSource ds = (DataSource)envCtx.lookup("jdbc/demoEcardDB");
+			Connection con = ds.getConnection();
+			con.setAutoCommit(false);
+			con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			
+			System.out.println("connected to DemoEcardDB on remote location ");
+			
+			return con;
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Error retrieving the data source from the context...");
+			ex.printStackTrace();
+			return reconnectPMTDb();
+		}
+	}
+
+	public static Connection reconnectDemoEcardDB()
+	{
+		try
+		{
+			DataSource ds = (DataSource)envCtx.lookup("jdbc/demoEcardDB");
+			Connection con = ds.getConnection();
+			con.setAutoCommit(true);
+			con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			return con;
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Error retrieving the data source from the context...");
+			ex.printStackTrace();
+			return null;
+		}
+	}
+
+	
+	public static Connection getConnectionStaggingEcardDB()throws SQLException, ClassNotFoundException
+	{
+		try
+		{
+			DataSource ds = (DataSource)envCtx.lookup("jdbc/staggingEcardDB");
+			Connection con = ds.getConnection();
+			con.setAutoCommit(false);
+			con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			
+			System.out.println("connected to StaggingEcardDB on remote location ");
+			
+			return con;
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Error retrieving the data source from the context...");
+			ex.printStackTrace();
+			return reconnectPMTDb();
+		}
+	}
+
+	public static Connection reconnectStaggingEcardDB()
+	{
+		try
+		{
+			DataSource ds = (DataSource)envCtx.lookup("jdbc/staggingEcardDB");
+			Connection con = ds.getConnection();
+			con.setAutoCommit(true);
+			con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			return con;
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Error retrieving the data source from the context...");
+			ex.printStackTrace();
+			return null;
+		}
+	}
+
+	
+	
+
+
+	//jboss connection  here
+	 
+	
+	/*public static Connection getConnection4DRSDB() throws SQLException, ClassNotFoundException
+	{
+        try
+        {
+            DataSource ds = (DataSource)initCtx.lookup(drsDB);
+			Connection con = ds.getConnection();
+			con.setAutoCommit(false);
+            //System.out.println("Successfully connected to database!");
+            return con;
+        }
+        catch (Exception ce)
+        {
+        	System.out.println("WARNING::Error occured trying to connect to drs database " + ce.getMessage());
+            ce.printStackTrace();
+            return null;
+        }
+
+    }
+        public static Connection getConnectionToClaimsDB() throws SQLException, ClassNotFoundException
+	{
+        try
+        {
+            DataSource ds = (DataSource)initCtx.lookup(claimsDB);
+			Connection con = ds.getConnection();
+			con.setAutoCommit(false);
+            //System.out.println("Successfully connected to database!");
+            return con;
+        }
+        catch (Exception ce)
+        {
+        	System.out.println("WARNING::Error occured trying to connect to claims database " + ce.getMessage());
+            ce.printStackTrace();
+            return null;
+        }
+
+    }
+
+	public static Connection getConnectionSupportLogDB() throws SQLException, ClassNotFoundException 
+	{
+        try 
+        {
+            DataSource ds = (DataSource)initCtx.lookup(supportDB);
+			Connection con = ds.getConnection();
+			con.setAutoCommit(false);
+            //System.out.println("Successfully connected to database!");
+            return con;
+        }
+        catch (Exception ce)
+        {
+        	System.out.println("WARNING::Error occured trying to connect to support database " + ce.getMessage());
+            ce.printStackTrace();
+            return null;
+        }
+        
+    }
+	
+	public static Connection getConnectionTelcoDB() throws SQLException, ClassNotFoundException 
+	{
+        try 
+        {
+            DataSource ds = (DataSource)initCtx.lookup(telcoDB);
+			Connection con = ds.getConnection();
+            //System.out.println("Successfully connected to telco database!");
+            return con;
+        }
+        catch (Exception ce)
+        {
+        	System.out.println("WARNING::Error occured trying to connect to telco database " + ce.getMessage());
+            ce.printStackTrace();
+            return null;
+        }
+        
+    }
+	
+	
+	public static Connection getConnectionECardDB() throws SQLException, ClassNotFoundException 
+	{
+        try 
+        {
+            DataSource ds = (DataSource)initCtx.lookup(ecardDB);
+			Connection con = ds.getConnection();
+			con.setAutoCommit(false);
+            return con;
+        }
+        catch (Exception ce)
+        {
+        	System.out.println("WARNING::Error occured trying to connect to ecard databse " + ce.getMessage());
+            ce.printStackTrace();
+            return null;
+        }
+        
+    }
+	
+	public static Connection getConnectionETMCDB() throws SQLException, ClassNotFoundException 
+	{
+        try 
+        {
+            DataSource ds = (DataSource)initCtx.lookup(etmcDB);
+			Connection con = ds.getConnection();
+            return con;
+        }
+        catch (Exception ce)
+        {
+        	System.out.println("WARNING::Error occured trying to connect to etmc database " + ce.getMessage());
+            ce.printStackTrace();
+            return null;
+        }
+        
+    }
+    
+    public static Connection getConnectionBackUpECardDB() throws SQLException, ClassNotFoundException 
+	{
+        try 
+        {
+            DataSource ds = (DataSource)initCtx.lookup(backup_ecardDB);
+			Connection con = ds.getConnection();
+            return con;
+        }
+        catch (Exception ce)
+        {
+        	System.out.println("WARNING::Error occured trying to connect to etmc database " + ce.getMessage());
+            ce.printStackTrace();
+            return null;
+        }
+        
+    }
+    
+    public static Connection getConnectionTestECardDB() throws SQLException, ClassNotFoundException 
+	{
+        try 
+        {
+            DataSource ds = (DataSource)initCtx.lookup(test_ecardDB);
+			Connection con = ds.getConnection();
+            return con;
+        }
+        catch (Exception ce)
+        {
+        	System.out.println("WARNING::Error occured trying to connect to etmc database " + ce.getMessage());
+            ce.printStackTrace();
+            return null;
+        }
+        
+    }
+    
+    public static Connection getConnectionPayoutletDB() throws SQLException, ClassNotFoundException 
+	{
+        try 
+        {
+            DataSource ds = (DataSource)initCtx.lookup(payoutletDB);
+			Connection con = ds.getConnection();
+            return con;
+        }
+        catch (Exception ce)
+        {
+        	System.out.println("WARNING::Error occured trying to connect to etmc database " + ce.getMessage());
+            ce.printStackTrace();
+            return null;
+        }
+        
+    }
+    
+    public static Connection getConnectionCPayDB() throws SQLException, ClassNotFoundException 
+	{
+        try 
+        {
+            DataSource ds = (DataSource)initCtx.lookup(cpayDB);
+			Connection con = ds.getConnection();
+            return con;
+        }
+        catch (Exception ce)
+        {
+        	System.out.println("WARNING::Error occurred trying to connect to cpay database " + ce.getMessage());
+            ce.printStackTrace();
+            return null;
+        }
+        
+    }
+    
+    public static Connection getConnection4psmDB() throws SQLException, ClassNotFoundException
+	{
+        try
+        {
+            DataSource ds = (DataSource)initCtx.lookup(psmDB);
+			Connection con = ds.getConnection();
+			con.setAutoCommit(false);
+            return con;
+        }
+        catch (Exception ce)
+        {
+        	System.out.println("WARNING::Error occured trying to connect to psm database " + ce.getMessage());
+            ce.printStackTrace();
+            return null;
+        }
+
+    }
+    
+    
+    public static Connection getConnectionSettleECardDB() throws SQLException, ClassNotFoundException
+	{
+        try
+        {
+            DataSource ds = (DataSource)initCtx.lookup(settle_ecardDB);
+			Connection con = ds.getConnection();
+			con.setAutoCommit(false);
+            return con;
+        }
+        catch (Exception ce)
+        {
+        	System.out.println("WARNING::Error occured trying to connect to settle_ecardDB database " + ce.getMessage());
+            ce.printStackTrace();
+            return null;
+        }
+
+    }
+    
+    public static Connection getConnectionIntnlECardDB() throws SQLException, ClassNotFoundException
+	{
+        try
+        {
+            DataSource ds = (DataSource)initCtx.lookup(intnl_ecardDB);
+			Connection con = ds.getConnection();
+			con.setAutoCommit(false);
+            return con;
+        }
+        catch (Exception ce)
+        {
+        	System.out.println("WARNING::Error occured trying to connect to intnl_ecardDB database " + ce.getMessage());
+            ce.printStackTrace();
+            return null;
+        }
+
+    }
+    
+    public static Connection getConnection4PSMRPDB() throws SQLException, ClassNotFoundException
+    {
+        try
+        {
+            DataSource ds = (DataSource)initCtx.lookup(psmDBRP);
+            Connection con = ds.getConnection();
+            con.setAutoCommit(false);
+            //System.out.println("Successfully connected to database!");
+            return con;
+        }
+        catch (Exception ce)
+        {
+                System.out.println("WARNING::Error occured trying to connect to drs database " + ce.getMessage());
+            ce.printStackTrace();
+            return null;
+        }
+    }
+    
+    
+    public static Connection getConnectionMobileDB() throws SQLException, ClassNotFoundException
+	{
+		try
+		{
+			DataSource ds = (DataSource)envCtx.lookup("jdbc/mobileDB");
+			Connection con = ds.getConnection();
+			con.setAutoCommit(false);
+			
+			return con;
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Error retrieving the data source from the context...");
+			ex.printStackTrace();
+			return null;
+		}
+	}
+	
+	public static Connection getConnectionRechargeDB() throws SQLException, ClassNotFoundException
+	{
+		try
+		{
+			DataSource ds = (DataSource)envCtx.lookup("jdbc/rechargeDB");
+			Connection con = ds.getConnection();
+			con.setAutoCommit(false);
+			
+			return con;
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Error retrieving the data source from the context...");
+			ex.printStackTrace();
+			return null;
+		}
+	}
+	
+	public static Connection getConnectionPocketMoniEcardDB() throws SQLException, ClassNotFoundException
+	{
+		try
+		{
+			DataSource ds = (DataSource)envCtx.lookup("jdbc/pocketMoni_ecardHolderSybaseDB");
+			Connection con = ds.getConnection();
+			con.setAutoCommit(false);
+			return con;
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Error retrieving the data source from the context...");
+			ex.printStackTrace();
+			return null;
+		}
+	}
+	
+	public static Connection getConnectionTelcoDBUpdate()
+	{
+		try
+		{
+			DataSource ds = (DataSource)initCtx.lookup(telcoDBUpdate);
+			Connection con = ds.getConnection();
+			con.setAutoCommit(false);		
+			return con;
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Error retrieving the data source from the context...");
+			ex.printStackTrace();
+			return null;
+		}
+	}
+	
+	
+	public static Connection getConnection4ricaDB()
+	{
+		try
+		{
+			DataSource ds = (DataSource)initCtx.lookup(ricaDB);
+			Connection con = ds.getConnection();
+			//con.setAutoCommit(false);
+			con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			return con;
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Error retrieving the data source from the context...");
+			ex.printStackTrace();
+			return null;
+		}
+	}
+	
+	public static Connection getConnectionPMEcardHolderSybaseDB()
+	{
+		try
+		{
+			DataSource ds = (DataSource)initCtx.lookup(pmecardHolderSybaseDB);
+			Connection con = ds.getConnection();
+			//con.setAutoCommit(false);
+			//con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			return con;
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Error retrieving the data source from the context...");
+			ex.printStackTrace();
+			return null;
+		}
+	}
+	
+	
+	public static Connection getConnectionDemoEcardDB()
+	{
+		try
+		{
+			DataSource ds = (DataSource)initCtx.lookup(demoEcardDB);
+			Connection con = ds.getConnection();
+			con.setAutoCommit(false);
+			//con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			return con;
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Error retrieving the data source from the context...");
+			ex.printStackTrace();
+			return null;
+		}
+	}
+	*/
+	
+
+}

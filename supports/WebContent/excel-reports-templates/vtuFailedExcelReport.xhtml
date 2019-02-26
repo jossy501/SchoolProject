@@ -1,0 +1,147 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:e="http://jboss.com/products/seam/excel"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:c="http://java.sun.com/jstl/core">
+
+<e:workbook type="jxl" ignoreBlanks="false" filename="VTUFAILEDEXCELReport.xls">
+<e:worksheet name="Report" value="#{reportAction.vtuLog}" var="crd" startRow="0">
+
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Sequence"/>
+	</f:facet>
+	<e:cell value="#{crd.sequence}">
+		
+	</e:cell>
+</e:column>
+
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="UniqueTrans ID"/>
+	</f:facet>
+	<e:cell value="#{crd.uniqueTransid}">
+
+	</e:cell>
+</e:column>
+
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Source"/>
+	</f:facet>
+	<e:cell value="#{crd.source}">
+
+	</e:cell>
+
+</e:column>
+
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Destination"/>
+	</f:facet>
+	<e:cell value="#{crd.destAccount}">
+
+	</e:cell>
+</e:column>
+
+
+
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Amount"/>
+	</f:facet>
+	<e:cell value="#{crd.amount}">
+		
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Source Account"/>
+	</f:facet>
+	<e:cell value="#{crd.sourceAccount}">
+		
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Line Type"/>
+	</f:facet>
+	<e:cell value="#{crd.lineType}">
+		
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Response Code"/>
+	</f:facet>
+	<e:cell value="#{crd.responseCode}">
+		
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Response Message"/>
+	</f:facet>
+	<e:cell value="#{crd.responseMessage}">
+		
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Provider"/>
+	</f:facet>
+	<e:cell value="#{crd.provider}">
+		
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Initial Response Code"/>
+	</f:facet>
+	<e:cell value="#{crd.initialResponsecode}">
+		
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Attempts"/>
+	</f:facet>
+	<e:cell value="#{crd.attempts}">
+		
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Trans Date"/>
+	</f:facet>
+	<e:cell value="#{crd.transDate}">
+		
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Response Date"/>
+	</f:facet>
+	<e:cell value="#{crd.responseDate}">
+		
+	</e:cell>
+</e:column>
+
+</e:worksheet>
+</e:workbook>
+</html>

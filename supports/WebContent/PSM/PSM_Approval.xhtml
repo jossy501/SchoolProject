@@ -1,0 +1,281 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="../WEB-INF/layout/basic_layout.xhtml">
+
+    <ui:define name="body">
+        <h:form id="viewClaim">
+
+
+            <rich:panel style="width:100%">
+                <f:facet name="header">PIN Report : Search</f:facet>
+                <rich:graphValidator>
+
+                    <h:panelGrid columns="8" rowClasses="prop" columnClasses="name2,value">
+
+                        <h:outputLabel id ="start_date" for="start_date" value="Start Date"/>
+                        <h:panelGroup>
+                            <rich:calendar value="#{tpsmcontroller.searchBean.startDate}" required="false" id="strt_date"
+                                           datePattern="yyyy-MM-dd" styleClass="controls-length2" requiredMessage="Start Date is required"/>
+                            <span style="white-space:nowrap">
+                                &nbsp;
+                            </span>
+
+                            <h:outputLabel value="        " styleClass="messagesingle" />
+                            <br/>
+                            <rich:message for="start_date" styleClass="messagesingle"
+                                          errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                        </h:panelGroup>
+
+
+                        <h:outputLabel id="end_date" for="end_date" value="End Date"/>
+                        <h:panelGroup>
+                            <rich:calendar value="#{tpsmcontroller.searchBean.endDate}" required="false" id="ed_date"
+                                           datePattern="yyyy-MM-dd" styleClass="controls-length2" requiredMessage="End Date is required"/>
+
+                            <span style="white-space:nowrap">
+                                &nbsp;
+                            </span>
+
+                            <h:outputLabel value="        " styleClass="messagesingle" />
+                            <br/>
+                            <rich:message for="end_date" styleClass="messagesingle"
+                                          errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                        </h:panelGroup>
+
+
+                        <h:outputLabel for="acquirer" value="Dealer:"/>
+                        <h:selectOneMenu styleClass="controls-length2" required="false" requiredMessage="Acquirer is required" id="acquirer"
+                                         value="#{tpsmcontroller.searchBean.dealer}">
+
+                            <s:selectItems var="r" value="#{dealercontroller.dealerList}" itemValue="#{r.dealerId}"
+                                           label="#{r.dealerName}" noSelectionLabel=":: Select ::" />
+                        </h:selectOneMenu>
+                        <h:outputLabel for="level" value="Level"/>
+                        <h:panelGroup>
+                            <h:selectOneMenu styleClass="controls-length2" id="status"
+                                             value="#{tpsmcontroller.searchBean.level}">
+
+                                <f:selectItem itemLabel="1st Level" itemValue="1" />
+                                <f:selectItem itemLabel="2nd Level" itemValue="2" />
+                            </h:selectOneMenu>
+
+                        </h:panelGroup>
+
+                        <h:outputLabel value="PIN Deno:"/>
+                        <h:panelGroup>
+                            <h:inputText value="#{tpsmcontroller.searchBean.pinValue}" required="false" />
+
+                            <span style="white-space:nowrap">
+                                &nbsp;
+                            </span>
+
+                            <h:outputLabel value="        " styleClass="messagesingle" />
+                            <br/>
+                            <rich:message for="end_date" styleClass="messagesingle"
+                                          errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                        </h:panelGroup>
+
+                        <h:outputLabel value="PIN Value:"/>
+                        <h:panelGroup>
+                            <h:inputText value="#{tpsmcontroller.searchBean.pimAmount}" required="false" />
+
+                            <span style="white-space:nowrap">
+                                &nbsp;
+                            </span>
+
+                            <h:outputLabel value="        " styleClass="messagesingle" />
+                            <br/>
+                            <rich:message for="end_date" styleClass="messagesingle"
+                                          errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                        </h:panelGroup>
+                        <h:outputLabel value="PIN Serial Number:"/>
+                        <h:panelGroup>
+                            <h:inputText value="#{tpsmcontroller.searchBean.pinSerialNumber}" required="false" />
+
+                            <span style="white-space:nowrap">
+                                &nbsp;
+                            </span>
+
+                            <h:outputLabel value="        " styleClass="messagesingle" />
+                            <br/>
+                            <rich:message for="end_date" styleClass="messagesingle"
+                                          errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                        </h:panelGroup>
+                        <h:outputLabel for="provider" value="Provider:"/>
+                        <h:selectOneMenu styleClass="controls-length2" required="false" requiredMessage="Acquirer is required" id="provider"
+                                         value="#{tpsmcontroller.searchBean.provider}">
+
+                            <s:selectItems var="r" value="#{networkprovidercontroller.providerList}" itemValue="#{r.providerCode}"
+                                           label="#{r.providerName}" noSelectionLabel=":: Select ::" />
+                        </h:selectOneMenu>
+                        <h:outputLabel value="Batch Number:"/>
+                        <h:panelGroup>
+                            <h:inputText id="batchID" size="50" value="#{tpsmcontroller.searchBean.batchNumber}" required="true" >
+                                <rich:message for="batchID" styleClass="messagesingle"
+                                              errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                            </h:inputText>
+
+                            <span style="white-space:nowrap">
+                                &nbsp;
+                            </span>
+
+                            <h:outputLabel value="        " styleClass="messagesingle" />
+                            <br/>
+                            <rich:message for="end_date" styleClass="messagesingle"
+                                          errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                        </h:panelGroup>
+
+
+                    </h:panelGrid>
+
+                </rich:graphValidator>
+
+            </rich:panel>
+
+            <div class="actionButtons">
+
+                <h:commandButton id="submit" value="  Search  " action="#{tpsmcontroller.listPinsApproval}"
+                                 reRender="manageCardFrm" >
+
+                </h:commandButton>
+
+
+            </div>
+        </h:form>
+        <rich:panel style="width:100%">
+            <h:panelGrid columns="2" rowClasses="prop" columnClasses="value,validatormsg"  >
+                <h:outputLabel   value="Total Valid Record(s):"/>
+                <h:outputLabel   value="#{tpsmcontroller.stock.validCount}"/>
+                <h:outputLabel   value="Total Invalid Record(s):"/>
+                <h:panelGroup>
+                <h:outputLink rendered="#{tpsmcontroller.errorList.size() > 0}" title="View" value="#" id ="link">
+                    <h:outputLabel  rendered="#{tpsmcontroller.errorList.size() > 0}" value="#{tpsmcontroller.errorList.size()}"/>
+                    <h:graphicImage alt="View" value="/images/view.png"/>
+                    <rich:componentControl for="panel2" attachTo="link" operation="show" event="onclick"/>
+                </h:outputLink>
+                </h:panelGroup>
+                <h:outputLabel   value="File Name:"/>
+                <h:outputLabel   value="#{tpsmcontroller.stock.uploadFile}"/>
+
+
+            </h:panelGrid>
+        </rich:panel>
+        <rich:spacer width="10px" height="20px"/>
+
+        <h:form id="manageCardFrm">
+
+            <rich:panel style="width:100%">
+
+                <f:facet name="header"> [ Total Record(s) found :  #{tpsmcontroller.PINList.size()} ]
+
+
+                </f:facet>
+                <rich:dataTable id="viewClaimsSum" rows="20" value="#{tpsmcontroller.PINList}" width="50%"  var="r">
+
+                    <rich:column>
+                        <f:facet name="header">Provider</f:facet>
+                        <h:outputText value="#{r.PROVIDER_ID}"/>
+                    </rich:column>
+
+                    <rich:column>
+                        <f:facet name="header">Dealer</f:facet>
+                        <h:outputText value="#{r.dealer.dealerName}"/>
+                    </rich:column>
+
+                    <rich:column>
+                        <f:facet name="header">PIN Denomination</f:facet>
+                        <h:outputText value="#{r.formatedPinDeno}"/>
+                    </rich:column>
+                    <rich:column>
+                        <f:facet name="header">PIN Value</f:facet>
+                        <h:outputText value="#{r.formatedPinValue}"/>
+                    </rich:column>
+                    <rich:column>
+                        <f:facet name="header">Batch ID</f:facet>
+                        <h:outputText value="#{r.BATCHID}"/>
+                    </rich:column>
+                    <rich:column>
+                        <f:facet name="header">PIN Serial Number</f:facet>
+                        <h:outputText value="#{r.SERIAL}"/>
+                    </rich:column>
+
+
+                    <rich:column>
+                        <f:facet name="header">Pin Expiration</f:facet>
+                        <h:outputText value="#{r.PIN_EXPIRATION}"/>
+                    </rich:column>
+
+                    <f:facet name="footer">
+                        <rich:datascroller id="cardTableDS" for="viewClaimsSum"  renderIfSinglePage="true">
+                            <f:facet name="first">
+                                <h:outputText value="First" />
+                            </f:facet>
+                            <f:facet name="last">
+                                <h:outputText value="Last" />
+                            </f:facet>
+                        </rich:datascroller>
+                    </f:facet>
+                </rich:dataTable>
+                <s:link title="Approve"  rendered="#{tpsmcontroller.PINList.size()>0}" action="#{tpsmcontroller.approve}" id="submit" onclick="document.getElementById('viewClaim:submit').disabled=true"  view="/PSM/PSM_Approval.xhtml"  propagation="none">
+                    <h:graphicImage alt="Approve" value="/images/accept.png"/>
+                </s:link>
+                <s:link title="Reject" rendered="#{tpsmcontroller.PINList.size()>0}" action="#{tpsmcontroller.reject}" id="reject" onclick="document.getElementById('viewClaim:reject').disabled=true"  view="/PSM/PSM_Approval.xhtml"  propagation="none">
+                    <h:graphicImage alt="Reject" value="/images/cross.png"/>
+                </s:link>
+            </rich:panel>
+
+        </h:form>
+
+        <rich:modalPanel id="panel2" width="250" height="400" style="overflow : auto;">
+            <f:facet name="header">
+                <h:panelGroup>
+                    <h:outputText value="Invalid PIN Record"></h:outputText>
+                </h:panelGroup>
+            </f:facet>
+            <f:facet name="controls">
+                <h:panelGroup>
+                    <h:graphicImage value="/images/close.gif" styleClass="hidelink" id="hidelink2"/>
+                    <rich:componentControl for="panel2" attachTo="hidelink2" operation="hide" event="onclick"/>
+                </h:panelGroup>
+            </f:facet>
+            <h:form id="vFrm2">
+                <h:panelGrid columns="2" rowClasses="prop" columnClasses="name2,value" >
+<f:facet name="header"> [ Total Invalid Record(s) :  #{tpsmcontroller.errorList.size()} ]
+
+
+                </f:facet>
+				<rich:dataTable id="viewClaimsSum"  rows="20" value="#{tpsmcontroller.errorList}" width="300%"  var="r">
+
+                    <rich:column>
+                        <f:facet name="header">Line</f:facet>
+                        <h:outputText value="#{r.line}"/>
+                    </rich:column>
+                    <rich:column>
+                        <f:facet name="header">Description</f:facet>
+                        <h:outputText value="#{r.errorDesc}"/>
+                    </rich:column>
+                    <f:facet name="footer">
+                        <rich:datascroller id="cardTableDS" for="viewClaimsSum"  renderIfSinglePage="true">
+                            <f:facet name="first">
+                                <h:outputText value="First" />
+                            </f:facet>
+                            <f:facet name="last">
+                                <h:outputText value="Last" />
+                            </f:facet>
+                        </rich:datascroller>
+                    </f:facet>
+                </rich:dataTable>
+
+                </h:panelGrid>
+
+            </h:form>
+        </rich:modalPanel>
+    </ui:define>
+</ui:composition>

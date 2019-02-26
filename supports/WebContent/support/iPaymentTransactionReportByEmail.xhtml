@@ -1,0 +1,191 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="../WEB-INF/layout/basic_layout.xhtml">
+                
+<ui:define name="body">
+
+
+	<!-- processing panel -->
+    
+    <rich:modalPanel id="panelp" width="150" height="50">
+       <h:form id="pFrm">
+        <h:panelGrid columns="1" rowClasses="prop" columnClasses="name2,value">
+           <h:outputText value="Please wait...." styleClass="messagesingle" align="center">
+               <h:graphicImage value="/images/loading_small.gif"/>
+           </h:outputText>
+          </h:panelGrid>  
+         </h:form>
+    </rich:modalPanel>
+
+   <rich:spacer width="10px" height="20px"/>
+
+    <h:form id="manageCardFrm">
+    
+    
+    <a4j:form>
+	        <a4j:commandButton id="submit"
+	                           value="    Back   " onclick="history.back()">
+	        </a4j:commandButton>
+    	</a4j:form>
+
+		<rich:panel style="width:100%" id="debitP" rendered="#{reportAction.switchReportLog.size() > 0}">
+ 			<f:facet name="header">Personnal Details [ Total Record(s) found :  #{reportAction.switchReportLog.size()} ] </f:facet>
+
+	
+				<rich:dataTable id="debitTb" rowKeyVar = "krv"  rows="1000" value="#{reportAction.switchReportLog}"  var="crd">
+	                <rich:column>
+	                    <f:facet name="header"><h:outputText styleClass="headerText" value="SN" /></f:facet>
+	                    <h:outputText value="#{krv+1}" />
+	                </rich:column>
+	                
+	                
+	                <rich:column>
+	                	<f:facet name="header"><h:outputText styleClass="headerText" value="Firstname" /></f:facet>
+					    <h:outputText value="#{crd.firstName}" style="float: center;"/>
+	                </rich:column>
+	                
+	                <rich:column>
+	                	<f:facet name="header"><h:outputText styleClass="headerText" value="Lastname" /></f:facet>
+					    <h:outputText value="#{crd.lastName}" style="float: left;" />
+	                </rich:column>
+	                
+	                 <rich:column>
+	                	<f:facet name="header"><h:outputText styleClass="headerText" value="Address "/></f:facet>
+					    <h:outputText value="#{crd.address}" style="float: left;" />
+	                </rich:column>
+	                
+
+	                <rich:column>
+	                	<f:facet name="header"><h:outputText styleClass="headerText" value="Phone" /></f:facet>
+	                	 <h:outputText value="#{crd.phoneNumber}" style="float: left;"/>
+	                </rich:column>
+	              
+	          
+	                <rich:column>
+	                	<f:facet name="header"><h:outputText styleClass="headerText" value="Email" /></f:facet>
+	                	 <h:outputText value="#{crd.emailAddress}" style="float: left;"/>
+	                </rich:column>
+	                
+	                 <rich:column>
+	                	<f:facet name="header"><h:outputText styleClass="headerText" value="City" /></f:facet>
+	                	 <h:outputText value="#{crd.city}" style="float: left;"/>
+	                </rich:column>
+	                
+
+	         </rich:dataTable>
+	         
+	          <rich:datascroller id="srADcardTableDS" for="debitTb"  renderIfSinglePage="true">
+                <f:facet name="first">
+                    <h:outputText value="First" />
+                </f:facet>
+                <f:facet name="last">
+                    <h:outputText value="Last" />
+                </f:facet>
+             </rich:datascroller>
+
+ 		</rich:panel>
+ 				
+ 	
+ 
+    </h:form>
+    
+     <rich:spacer width="10px" height="20px"/>
+
+    <h:form id="manageCardFrm1">
+
+		<rich:panel style="width:100%" id="debitP" rendered="#{reportAction.cardholdertranLog.size() > 0}">
+ 			<f:facet name="header">Transaction Report [ Total Record(s) found :  #{reportAction.cardholdertranLog.size()} ] </f:facet>
+
+	
+				<rich:dataTable id="debitTb" rowKeyVar = "krv"  rows="1000" value="#{reportAction.cardholdertranLog}"  var="crd">
+	                <rich:column>
+	                    <f:facet name="header"><h:outputText styleClass="headerText" value="SN" /></f:facet>
+	                    <h:outputText value="#{krv+1}" />
+	                </rich:column>
+	                
+	                
+	                <rich:column>
+	                	<f:facet name="header"><h:outputText styleClass="headerText" value="Terminal Id" /></f:facet>
+					    <h:outputText value="#{crd.terminalId}" style="float: center;"/>
+	                </rich:column>
+	                
+	                <rich:column>
+	                	<f:facet name="header"><h:outputText styleClass="headerText" value="Merchant Desc" /></f:facet>
+					    <h:outputText value="#{crd.merchantId}" style="float: left;" />
+	                </rich:column>
+	                
+	                 <rich:column>
+	                	<f:facet name="header"><h:outputText styleClass="headerText" value="Currency Code "/></f:facet>
+					    <h:outputText value="#{crd.currencyCode}" style="float: left;" />
+	                </rich:column>
+	                
+
+	                <rich:column>
+	                	<f:facet name="header"><h:outputText styleClass="headerText" value="Narration" /></f:facet>
+	                	 <h:outputText value="#{crd.narration}" style="float: left;"/>
+	                </rich:column>
+	              
+	          
+	                
+	      <!--            <rich:column>
+	                	<f:facet name="header"><h:outputText styleClass="headerText" value="Transaction ID" /></f:facet>
+	                	 <h:outputText value="#{crd.transactionId}" style="float: left;"/>
+	                </rich:column>
+	                
+	                 -->
+	                <rich:column>
+	                	<f:facet name="header"><h:outputText styleClass="headerText" value="Payment Ref" /></f:facet>
+	                	 <h:outputText value="#{crd.paymentRef}" style="float: left;"/>
+	                </rich:column>
+	                
+	                   <rich:column>
+	                	<f:facet name="header"><h:outputText styleClass="headerText" value="Response" /></f:facet>
+	                	 <h:outputText  rendered ="#{crd.response eq '0'}"  value="Successful" style="float: Right;"/>
+	                	 <h:outputText  rendered ="#{crd.response ne '0'}"  value=" Failed " style="float: Right;"/>
+	                	 <h:outputText  rendered ="#{crd.response eq 'null' or crd.response eq ''}"  value=" Pending" style="float: Right;"/>	                
+	                </rich:column>
+	                
+
+	                <rich:column>
+	                	<f:facet name="header"><h:outputText styleClass="headerText" value="Trans Date" /></f:facet>
+					    <h:outputText value="#{crd.transDate}" style="float: center;"/>
+	                </rich:column>
+	                
+	                      
+	                <rich:column>
+	                	<f:facet name="header"><h:outputText styleClass="headerText" value="Amount" /></f:facet>
+					    <h:outputText value="#{reportAction.makeDouble(crd.amount)}" style="float: center;"/>
+	                </rich:column>
+	                
+	                   <rich:column>
+	                	<f:facet name="header"><h:outputText styleClass="headerText" value="Net Amount" /></f:facet>
+					    <h:outputText value="#{reportAction.makeDouble(crd.convertedAmount)}" style="float: center;"/>
+	                </rich:column>
+	              
+	              
+
+	         </rich:dataTable>
+	         
+	          <rich:datascroller id="srADcardTableDS" for="debitTb"  renderIfSinglePage="true">
+                <f:facet name="first">
+                    <h:outputText value="First" />
+                </f:facet>
+                <f:facet name="last">
+                    <h:outputText value="Last" />
+                </f:facet>
+             </rich:datascroller>
+
+ 		</rich:panel>
+ 				
+    </h:form>
+    
+    
+</ui:define>
+</ui:composition>

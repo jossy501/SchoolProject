@@ -1,0 +1,244 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="../WEB-INF/layout/basic_layout.xhtml">
+
+<ui:define name="body">
+    <h:form id="viewClaim">
+
+
+        <rich:panel style="width:100%">
+            <f:facet name="header">Claims Report : Search</f:facet>
+            <rich:graphValidator>
+
+                <h:panelGrid columns="8" rowClasses="prop" columnClasses="name2,value">
+
+                    <h:outputLabel id ="start_date" for="start_date" value="Start Date"/>
+                    <h:panelGroup>
+                    	<rich:calendar value="#{claimcontroller.searchBean.startDate}" required="false" id="strt_date"
+                                       datePattern="yyyy-MM-dd" styleClass="controls-length2" requiredMessage="Start Date is required"/>
+                        <span style="white-space:nowrap">
+                            &nbsp;
+                        </span>
+
+                        <h:outputLabel value="        " styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="start_date" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+
+
+                    <h:outputLabel id="end_date" for="end_date" value="End Date"/>
+                    <h:panelGroup>
+                    	<rich:calendar value="#{claimcontroller.searchBean.endDate}" required="false" id="ed_date"
+                                       datePattern="yyyy-MM-dd" styleClass="controls-length2" requiredMessage="End Date is required"/>
+
+                        <span style="white-space:nowrap">
+                            &nbsp;
+                        </span>
+
+                        <h:outputLabel value="        " styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="end_date" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+
+
+			 <h:outputLabel for="acquirer" value="Acquirer:"/>
+                    <h:selectOneMenu styleClass="controls-length2" required="false" requiredMessage="Acquirer is required" id="acquirer"
+                                         value="#{claimcontroller.searchBean.acquirer}">
+
+                               <s:selectItems var="r" value="#{utility.bankList}" itemValue="#{r.bankcode}"
+                                                       label="#{r.bankname}" noSelectionLabel=":: Select ::" />
+                        </h:selectOneMenu>
+
+		<h:outputLabel for="status" value="Status:"/>
+                    <h:panelGroup>
+                        <h:selectOneMenu styleClass="controls-length2" id="status"
+                                         value="#{claimcontroller.searchBean.status}">
+
+                                         <f:selectItem itemLabel=":: Select Status::" itemValue="" />
+                                         <f:selectItem itemLabel="DECLINED" itemValue="D" />
+                                         <f:selectItem itemLabel="ACCEPTED" itemValue="A" />
+					 <f:selectItem itemLabel="OPEN" itemValue="O" />
+                                        <f:selectItem itemLabel="CANCELLED FOR MODIFICATION" itemValue="X" />
+                                        <f:selectItem itemLabel="RE-OPENED" itemValue="RO" />
+                           </h:selectOneMenu>
+
+                    </h:panelGroup>
+
+		<h:outputLabel value="Global ID:"/>
+                    <h:panelGroup>
+                    	<h:inputText value="#{claimcontroller.searchBean.crdNo}" required="false" id="crdNo" />
+
+                        <span style="white-space:nowrap">
+                            &nbsp;
+                        </span>
+
+                        <h:outputLabel value="        " styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="end_date" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+
+					<h:outputLabel value="Claim Sysid:"/>
+                    <h:panelGroup>
+                    	<h:inputText value="#{claimcontroller.searchBean.claimId}" required="false" id="claimId" />
+
+                        <span style="white-space:nowrap">
+                            &nbsp;
+                        </span>
+
+                        <h:outputLabel value="        " styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="end_date" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+
+					<h:outputLabel for="sender" value="Sending Bank:"/>
+                    <h:selectOneMenu styleClass="controls-length2" required="false" requiredMessage="Sender is required" id="sender"
+                                         value="#{claimcontroller.searchBean.sender}">
+
+                               <s:selectItems var="r" value="#{utility.bankList}" itemValue="#{r.bankcode}"
+                                                       label="#{r.bankname}" noSelectionLabel=":: Select ::" />
+                        </h:selectOneMenu>
+
+						<h:outputLabel for="channel_type" value="Channel Type:"/>
+                    <h:panelGroup>
+                       <h:selectOneMenu styleClass="controls-length2" required="false" requiredMessage="Channel Type is required" id="channel_type"
+                                         value="#{claimcontroller.searchBean.channelType}">
+
+                               <s:selectItems var="r" value="#{utility.eChannelList}" itemValue="#{r.channelId}"
+                                                       label="#{r.channelName}" noSelectionLabel=":: Select ::" />
+                        </h:selectOneMenu>
+
+                        <h:outputLabel value=" " styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="channel_type" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+
+
+                  </h:panelGrid>
+
+            </rich:graphValidator>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="submit" value="  Search  " action="#{claimcontroller.listClaim}"
+            	reRender="manageCardFrm" >
+				<f:setPropertyActionListener target="#{claimcontroller.searchype}" value="3" />
+
+				</h:commandButton>
+        </div>
+   </h:form>
+
+   <rich:spacer width="10px" height="20px"/>
+
+    <h:form id="manageCardFrm">
+
+        <rich:panel style="width:100%">
+
+            <f:facet name="header"> [ Total Record(s) found :  #{claimcontroller.claimList.size()} ]
+
+
+</f:facet>
+            <s:link   id="srACreplogo" action="#{claimcontroller.export}"  styleClass= "menu-button"  rendered ="#{claimcontroller.claimList.size() > 0}"  >
+			            <h:graphicImage title="Export" value="/images/excel5.jpg"/>
+			           </s:link>
+            <rich:dataTable id="viewClaimsSum" rows="20" value="#{claimcontroller.claimList}" width="50%"  var="r">
+
+                 <rich:column>
+                    <f:facet name="header">Claim Sysid</f:facet>
+                    <h:outputText value="#{r.sysID}"/>
+                </rich:column>
+
+                <rich:column>
+                    <f:facet name="header">Issuing Bank</f:facet>
+                    <h:outputText value="#{r.decodeSentBank}"/>
+                </rich:column>
+
+                <rich:column>
+                    <f:facet name="header">Channel Type</f:facet>
+                    <h:outputText value="#{r.channel.channelName}"/>
+                </rich:column>
+                <rich:column>
+                    <f:facet name="header">Dispute</f:facet>
+                    <h:outputText value="#{r.clDispute.dispute}"/>
+                </rich:column>
+                <rich:column>
+                    <f:facet name="header">Card Number</f:facet>
+                    <h:outputText value="#{r.cardNo}"/>
+                </rich:column>
+
+                <rich:column>
+                    <f:facet name="header">Amount</f:facet>
+                    <h:outputText value="#{r.formatAmount}"/>
+                </rich:column>
+
+                <rich:column>
+                    <f:facet name="header">Transaction Date</f:facet>
+                    <h:outputText value="#{r.realCreatedDate_2}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Date Logged</f:facet>
+                    <h:outputText value="#{r.dateOfTransaction_2}"/>
+                </rich:column>
+
+
+                <rich:column>
+                    <f:facet name="header">Due Date</f:facet>
+                    <h:outputText value="#{r.dueDate}"/>
+                </rich:column>
+
+                <rich:column>
+                    <f:facet name="header">Status</f:facet>
+                    <h:outputText value="#{r.statusDescription}"/>
+                </rich:column>
+
+                 <rich:column>
+                    <f:facet name="header">Accept/Decline </f:facet>
+                    <h:outputText value="#{r.decodeClosedUser}"/>
+                </rich:column>
+
+                <rich:column>
+                    <f:facet name="header">Global ID</f:facet>
+                    <h:outputText value="#{r.transactionStan}"/>
+                </rich:column>
+				<rich:column>
+				<f:facet name="header">Action</f:facet>
+
+				<a4j:commandButton title="View" action="#{claimcontroller.viewClaimInfo}" image="/images/view.png">
+                                    <f:setPropertyActionListener value="#{r}" target="#{claimcontroller.selectedClaim}"/>
+                                </a4j:commandButton>
+
+				</rich:column>
+
+
+                <f:facet name="footer">
+                    <rich:datascroller id="cardTableDS" for="viewClaimsSum"  renderIfSinglePage="true">
+                        <f:facet name="first">
+                            <h:outputText value="First" />
+                        </f:facet>
+                        <f:facet name="last">
+                            <h:outputText value="Last" />
+                        </f:facet>
+                    </rich:datascroller>
+                </f:facet>
+            </rich:dataTable>
+
+        </rich:panel>
+
+    </h:form>
+
+</ui:define>
+</ui:composition>

@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/supportManager2/!svn/ver/1/src/com/etz/sa/ws/server
+END
+SA.java
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/supportManager2/!svn/ver/1/src/com/etz/sa/ws/server/SA.java
+END
+SAService.java
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/supportManager2/!svn/ver/1/src/com/etz/sa/ws/server/SAService.java
+END
+package-info.java
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/supportManager2/!svn/ver/1/src/com/etz/sa/ws/server/package-info.java
+END
+ValidateTokenResponse.java
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/supportManager2/!svn/ver/1/src/com/etz/sa/ws/server/ValidateTokenResponse.java
+END
+ValidateToken.java
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/supportManager2/!svn/ver/1/src/com/etz/sa/ws/server/ValidateToken.java
+END
+ObjectFactory.java
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/supportManager2/!svn/ver/1/src/com/etz/sa/ws/server/ObjectFactory.java
+END

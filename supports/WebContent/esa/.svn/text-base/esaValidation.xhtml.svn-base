@@ -1,0 +1,121 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="../WEB-INF/layout/basic_layout.xhtml">
+                
+<ui:define name="body">
+
+
+	<!-- processing panel -->
+    
+    <rich:modalPanel id="panelp" width="150" height="50">
+       <h:form id="pFrm">
+        <h:panelGrid columns="1" rowClasses="prop" columnClasses="name2,value">
+           <h:outputText value="Please wait...." styleClass="messagesingle" align="center">
+               <h:graphicImage value="/images/loading_small.gif"/>
+           </h:outputText>
+          </h:panelGrid>  
+         </h:form>
+    </rich:modalPanel>
+
+    <a4j:form id="userFrm">
+    	
+         <rich:panel style="width:40%">
+                <f:facet name="header">
+                    <h:outputText value="Enter ESACode"/>
+                </f:facet>
+
+                
+                <div class="dialog" >
+                    <h:outputLabel value="A code has been sent to your phone and your email address. Kindly open and enter either of the code in the box below. Note that you must select a secret question provided at the time of enrollment and a valid answer if you are to use the code sent to your email for security reason." />
+                    <br/>
+                    <br/>
+                    <script language="JavaScript" type="text/javascript">
+                    
+						document.getElementById('userFrm').autocomplete='off';
+						function showPan(c)
+						{
+							if(c.value=="M")
+							{
+								document.getElementById('1').style.display = "none";
+								document.getElementById('2').style.display = "block";
+								document.getElementById('userFrm:cpde').value = "";
+							} 
+							else if(c.value=="S")
+							{
+								document.getElementById('1').style.display = "block";
+								document.getElementById('2').style.display = "none";
+								document.getElementById('userFrm:cpde2').value = "";
+							}
+						}
+                    </script>
+                    <INPUT TYPE="RADIO" NAME="pizzasize" checked="true" onclick="showPan(this);" VALUE="S"/>SMS
+                    <INPUT TYPE="RADIO" NAME="pizzasize" onclick="showPan(this);" VALUE="M"/>EMail
+
+                    <div id="1">
+                        <h:panelGrid columns="2" rowClasses="prop" columnClasses="name,value,validatormsg">
+
+                            <h:outputLabel for="cpde" code="cardno">ESACode-SMS
+                            </h:outputLabel>
+
+                            <h:inputText id="cpde"  value="#{authenticator.curUser.esa_code}" requiredMessage="ESA Code is required">
+                                <h:outputLabel value=" " styleClass="messagesingle" />
+                                <rich:message for="cpde" styleClass="messagesingle"
+                                              errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                            </h:inputText>
+                        </h:panelGrid>
+                    </div>
+                    <div id = "2" style="display: none">
+                        <h:panelGrid columns="2" rowClasses="prop" columnClasses="name,value,validatormsg">
+                            <h:outputLabel for="cpde2" code="cardno">ESACode-EMail
+                            </h:outputLabel>
+
+                            <h:inputText id="cpde2" value="#{authenticator.curUser.esa_code_email}" requiredMessage="ESA Code is required">
+                                <h:outputLabel value="" styleClass="messagesingle" />
+                                <rich:message for="cpde2" styleClass="messagesingle"
+                                              errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                            </h:inputText>
+
+                            <h:outputLabel for="sq2">Security Question</h:outputLabel>
+
+                            <h:selectOneMenu  id="sq2"  value="#{authenticator.curUser.esa_question}" requiredMessage="Security Question is required">
+                                <f:selectItem itemLabel="#{authenticator.curUser.esa_type}" itemValue="#{authenticator.curUser.esa_question}" />
+                                
+                                <h:outputLabel value=" " styleClass="messagesingle" />
+                                <rich:message for="sq2" styleClass="messagesingle"
+                                              errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                            </h:selectOneMenu>
+
+                            <h:outputLabel for="ans2">Security Answer</h:outputLabel>
+
+                            <h:inputText id="ans2" value="#{authenticator.curUser.esa_answer}"   requiredMessage="Security Answer is required">
+                                <h:outputLabel value="" styleClass="messagesingle" />
+                                <rich:message for="ans2" styleClass="messagesingle"
+                                              errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                            </h:inputText>
+
+
+                        </h:panelGrid>
+                    </div>
+
+                </div>
+
+                <div class="actionButtons">
+                    <a4j:commandButton oncomplete="document.getElementById('userFrm:submit').disabled=false"
+                                   onclick="document.getElementById('userFrm:submit').disabled=true"
+                                   id="submit" value="Login" action="#{authenticator.esaValidation('2')}">
+                    <s:defaultAction/>
+                    </a4j:commandButton>
+                </div>
+            </rich:panel>
+         
+         
+     </a4j:form>
+</ui:define>
+</ui:composition>

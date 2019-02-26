@@ -1,0 +1,86 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="../WEB-INF/layout/basic_layout.xhtml">
+
+<ui:define name="body">
+
+
+    <a4j:form id="logClaimFrm">
+        <rich:panel style="width:60%">
+            <f:facet name="header">Dispute Resolution System : Confirm</f:facet>
+            <rich:graphValidator>
+			                <h:panelGrid columns="2" rowClasses="prop" columnClasses="name2,value">
+
+
+                    <h:outputLabel for="acquirer" styleClass="readonly" value="Acquirer:"/>
+		<h:outputLabel for="acquirer" value="#{claimcontroller.claim.clBank.bankname}"/>
+
+                    <h:outputLabel for="channel_type" styleClass="readonly" value="Channel Type:"/>
+		<h:outputLabel for="channel_type" value="#{claimcontroller.claim.channel.channelName}"/>
+
+                    <h:outputLabel id="card_no" styleClass="readonly" value="Card/Phone No:"/>
+		<h:outputLabel id="Card_no" value="#{claimcontroller.claim.cardNo}"/>
+
+			<h:outputLabel for="stan" styleClass="readonly" value="Global ID:"/>
+		<h:outputLabel for="Stan" value="#{claimcontroller.claim.transactionStan}"/>
+
+                   
+                    <h:outputLabel id="amount" styleClass="readonly" value="Amount:"/>
+		 <h:outputLabel id="Amount" value="#{claimcontroller.claim.formatAmount}"/>
+
+                    <h:outputLabel for="tran_date" styleClass="readonly" value="Date of transaction:"/>
+		<h:outputLabel for="tran_date" value="#{claimcontroller.claim.realCreatedDate_2}"/>
+
+                 <h:outputLabel id="terminal_id" styleClass="readonly" value="Date Logged :"/>
+		<h:outputLabel id="Terminal_id" value="#{claimcontroller.claim.dateOfTransaction_2}"/>
+
+
+                    <h:outputLabel for="Claim" styleClass="readonly" value="Claim:"/>
+		<h:outputLabel for="Claim" value="#{claimcontroller.claim.clDispute.dispute}"/>
+
+                    <h:outputLabel id="comment_journal" styleClass="readonly" value="Comment/Journal:"/>
+		<h:outputLabel id="Aomment_journal" value="#{claimcontroller.claim.comment_Journal}"/>
+
+                    <h:outputLabel  styleClass="readonly" value="Due Date:"/>
+		 <h:outputLabel  value="#{claimcontroller.claim.dueDate_2}"/>
+
+                    
+                    <h:outputLabel  styleClass="readonly" value="Bank:"/>
+		<h:outputLabel  value="#{claimcontroller.claim.complainingBank}"/>
+
+                    <h:outputLabel  styleClass="readonly" value="Status:"/>
+		<h:outputLabel  value="#{claimcontroller.claim.statusDescription}"/>
+
+                    <h:outputLabel  styleClass="readonly" value="Reason For Modification:"/>
+		<h:outputLabel  value="#{claimcontroller.claim.reasonForModify}"/>
+
+                  </h:panelGrid>
+
+            </rich:graphValidator>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+
+
+	<a4j:commandButton oncomplete="document.getElementById('logClaimFrm:submit').disabled=false"
+                                   onclick="document.getElementById('logClaimFrm:submit').disabled=true"
+                                   id="submit" value="   Return  " action="#{claimcontroller.distroy}" reRender="logClaimFrm"/>
+
+        </div>
+
+   </a4j:form>
+
+   <rich:spacer width="10px" height="10px"/>
+
+
+</ui:define>
+</ui:composition>

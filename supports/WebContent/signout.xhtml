@@ -1,0 +1,28 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="WEB-INF/layout/basic_layout.xhtml">
+    
+<f:loadBundle basename="resources.application" var="bundle"/>
+<ui:define name="body">
+	<h:form id="dashboardForm">
+	
+	<rich:panel style="width: 500px" styleClass="tooltip-text" bodyClass="rich-laguna-panel-no-header">
+				
+				<div class="dialog">
+					You have successfully logged out, <rich:spacer width="10px" height="10px"/> 
+					<s:link view="/index.xhtml" value="Click here to login" propagation="none"/>
+				</div>
+			  
+			  <div class="actionButtons">
+					
+			  </div>
+		</rich:panel>
+	</h:form>
+</ui:define>
+</ui:composition>

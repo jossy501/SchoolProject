@@ -1,0 +1,30 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:e="http://jboss.com/products/seam/excel"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:c="http://java.sun.com/jstl/core"
+xmlns:p="http://jboss.com/products/seam/pdf">
+<p:document xmlns:p="http://jboss.com/products/seam/pdf"
+
+            xmlns:ui="http://java.sun.com/jsf/facelets"
+
+            title="Hello">
+
+
+ <p:list style="numbered" align ="justifyAll">
+
+      <ui:repeat value="#{reportAction.billLog}"  var="crd">
+      		<p:cell>ETZ REFERENCE></p:cell><p:listItem>#{crd.unique_trans_id}</p:listItem><p:listItem>#{crd.subscriber_id}</p:listItem><p:listItem>#{crd.card_fullname}</p:listItem>
+			<p:listItem>#{crd.t_address}</p:listItem>
+			<p:listItem>#{crd.trans_amount}</p:listItem>
+			<p:listItem>#{reportAction.getBankName(crd.issuer_code)}</p:listItem>
+			<p:listItem>#{reportAction.getChannelName(crd.trans_channel)}</p:listItem>
+			<p:listItem>#{crd.trans_date}</p:listItem>
+      </ui:repeat>
+
+   </p:list>
+
+</p:document>
+
+</html>

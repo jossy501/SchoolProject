@@ -1,0 +1,204 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="../WEB-INF/layout/basic_layout.xhtml">
+                
+<ui:define name="body">
+
+
+	<!-- processing panel -->
+    
+    <rich:modalPanel id="panelp" width="150" height="50">
+       <h:form id="pFrm">
+        <h:panelGrid columns="1" rowClasses="prop" columnClasses="name2,value">
+           <h:outputText value="Please wait...." styleClass="messagesingle" align="center">
+               <h:graphicImage value="/images/loading_small.gif"/>
+           </h:outputText>
+          </h:panelGrid>  
+         </h:form>
+    </rich:modalPanel>
+
+    <h:form id="cardFrm">
+   
+    
+        <rich:panel style="width:40%">
+            <f:facet name="header"> :: Payment Setup ::</f:facet>
+            <rich:graphValidator>
+                <h:panelGrid columns="2" rowClasses="prop" columnClasses="name2,value">
+			                    
+                     <h:outputLabel for="start_date" value="Payment Date :"/>
+                    <h:panelGroup>
+                    	<rich:calendar value="#{cardManagementAction.start_date}" required="true" id="start_date"
+                                       datePattern="yyyy-MM-dd" styleClass="controls-length2" requiredMessage="Start Date is required"/>
+                        <span style="white-space:nowrap">
+                            &nbsp;
+                        </span>
+                        
+                        <h:outputLabel value=" *" styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="start_date" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>                              
+                    </h:panelGroup>
+                    
+                    <h:outputLabel for="institution" value=" School :  " />
+                    <h:panelGroup>
+                        <h:selectOneMenu required="false" requiredMessage=" Select an School " 
+                                          id="institiutionId" layout="lineDirection" value="#{institutionAction.institutionId}">
+                           
+                           <s:selectItems var="r" value="#{institutionAction.institutionList}" itemValue="#{r.institutionId}"
+                                                       label="#{r.institutionName}" noSelectionLabel="ALL SCHOOL" />
+                           </h:selectOneMenu>
+                            <h:outputLabel value=" * " styleClass="messagesingle" />
+                        <br/>
+                         <rich:message for="institiutionId" styleClass="messagesingle"
+                              errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>  
+                                                                     
+                    </h:panelGroup>
+            
+            		       
+                    <h:outputLabel for="paymentT" value=" Payment Name :  " />
+                    <h:panelGroup>
+                        <h:selectOneMenu required="false" requiredMessage=" Select an PaymentType " 
+                                          id="paymentTypes" layout="lineDirection" value="#{institutionAction.paymentTypeId}">
+                           
+                           <s:selectItems var="r" value="#{institutionAction.paymentTypeList}" itemValue="#{r.paymentTypeId}"
+                                                       label="#{r.paymentName}" noSelectionLabel="ALL PAYMENT-NAME" />
+                           </h:selectOneMenu>
+                            <h:outputLabel value=" * " styleClass="messagesingle" />
+                        <br/>
+                         <rich:message for="paymentTypes" styleClass="messagesingle"
+                              errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>  
+                                                                     
+                    </h:panelGroup>
+                    
+                           
+                    <h:outputLabel for="sessions" value=" Session :  " />
+                    <h:panelGroup>
+                        <h:selectOneMenu required="false" requiredMessage=" Select a Session " 
+                                          id="sessionm" layout="lineDirection" value="#{institutionAction.sessionId}">
+                           
+                           <s:selectItems var="r" value="#{institutionAction.sessionList}" itemValue="#{r.sessionId}"
+                                                       label="#{r.sessionName}" noSelectionLabel="ALL SESSION" />
+                           </h:selectOneMenu>
+                            <h:outputLabel value=" * " styleClass="messagesingle" />
+                        <br/>
+                         <rich:message for="sessionm" styleClass="messagesingle"
+                              errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>  
+                                                                     
+                    </h:panelGroup>
+            
+            
+                      <h:outputLabel id="desc" for="desc" value=" Payment Description :"/>
+                    <h:panelGroup>
+                    	<h:inputTextarea id="descs" value ="#{institutionAction.paydesc}" cols="27" rows="6" required="true" requiredMessage="Payment Description Require"/>
+                        <h:outputLabel value=" * " styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="descs" styleClass="messagesingle"
+                              errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>  
+                    </h:panelGroup>
+
+                  </h:panelGrid>  
+                   
+            </rich:graphValidator>
+
+        </rich:panel>
+	
+        <div class="actionButtons">
+            
+            <h:commandButton id="submit" value="  Create-Setup  " action="#{institutionAction.createPayment}" reRender="manageCardFrm">
+            	<rich:componentControl for="panelp" attachTo="submit" operation="show" event="onclick"/>
+            </h:commandButton>
+            
+        </div>
+   </h:form>
+   
+   <rich:spacer width="10px" height="20px"/>
+
+    <h:form id="manageCardFrm">
+    
+     <rich:panel style="width:100%" id="displayUserPanel">
+     
+     		<f:facet name="header"> Manage Payment </f:facet>
+  
+             <rich:dataTable id="schemeTable" rowKeyVar="rowKey"  reRender="userTableDS" rows="1000" value="#{institutionAction.paymentList}"  var="crd">
+           
+           	<rich:column>
+						<f:facet name="header">S/N</f:facet>
+						<h:outputText value="#{rowKey+1}"/>
+			</rich:column>
+				
+               <rich:column>
+                    <f:facet name="header"> Payment-Type Id</f:facet>
+				     <h:outputText  value="#{crd.paymentTypeId}" style="float: left;"/>
+                </rich:column>
+             
+				
+                <rich:column>
+                    <f:facet name="header">Payment Date</f:facet>
+                    <h:outputText value="#{crd.paymentDate}" style="float: left;"/>
+                </rich:column>
+                
+                 <rich:column>
+                    <f:facet name="header">School</f:facet>
+                    <h:outputText value="#{institutionAction.getSchoolByName(crd.institutionId)}" style="float: left;"/>
+                </rich:column>
+                
+                 <rich:column>
+                    <f:facet name="header">Payment Name</f:facet>
+                    <h:outputText value="#{institutionAction.getPaymentByName(crd.paymentTypeId)}" style="float: left;"/>
+                </rich:column>
+                
+               
+				
+				<rich:column>
+		            <h:commandButton action="#{institutionAction.deletePayment}"  value="       DELETE      "  id="delete">
+		            	<f:setPropertyActionListener target="#{institutionAction.edit_id}" value="#{crd.paymentTypeId}" />
+		            	 <f:param name="id" value="#{crd.paymentTypeId}"/>
+		            	<rich:componentControl for="panelp" attachTo="submit_edit" operation="show" event="onclick"/>
+		            </h:commandButton>  
+				</rich:column>
+				
+				<!-- <rich:column>
+				    <h:commandButton action="#{institutionAction.deleteCourse}"  value="       Edith      "  id="edith">
+		            	<f:setPropertyActionListener target="#{cardManagementAction.edit_id}" value="#{crd.courseId}" />
+		            	 <f:param name="id" value="#{crd.schemeId}"/>
+		            	<rich:componentControl for="panelp" attachTo="submit_edit" operation="show" event="onclick"/>
+		            </h:commandButton>  
+				</rich:column> -->
+			<!-- 	
+				<rich:column>
+		             <s:link view="/cms/scheme_Registeration.xhtml"  action="#{cardManagementAction.deleteScheme}"  value="       DELETE      "  id="delete">
+		            	<f:setPropertyActionListener target="#{cardManagementAction.edit_id}" value="#{crd.schemeId}" />
+		            	 <f:param name="id" value="#{crd.schemeId}"/>
+		            	<rich:componentControl for="panelp" attachTo="submit_edit" operation="show" event="onclick"/>
+		            </s:link>
+				</rich:column> -->
+	
+  			</rich:dataTable>
+  		
+            <rich:datascroller id="userTableDS" for="schemeTable"  renderIfSinglePage="true">
+                <f:facet name="first">
+                    <h:outputText value="First" />
+                </f:facet>
+                <f:facet name="last">
+                    <h:outputText value="Last" />
+                </f:facet>
+            </rich:datascroller>
+            
+            
+        </rich:panel>
+ 				
+ 
+    </h:form>
+    
+    
+   
+    
+</ui:define>
+</ui:composition>

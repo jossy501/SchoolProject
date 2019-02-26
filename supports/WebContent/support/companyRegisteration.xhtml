@@ -1,0 +1,151 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="../WEB-INF/layout/basic_layout.xhtml">
+                
+<ui:define name="body">
+
+
+	<!-- processing panel -->
+    
+    <rich:modalPanel id="panelp" width="150" height="50">
+       <h:form id="pFrm">
+        <h:panelGrid columns="1" rowClasses="prop" columnClasses="name2,value">
+           <h:outputText value="Please wait...." styleClass="messagesingle" align="center">
+               <h:graphicImage value="/images/loading_small.gif"/>
+           </h:outputText>
+          </h:panelGrid>  
+         </h:form>
+    </rich:modalPanel>
+
+    <h:form id="cardFrm">
+   
+    
+        <rich:panel style="width:40%">
+            <f:facet name="header"> :: Company Setup ::</f:facet>
+            <rich:graphValidator>
+                <h:panelGrid columns="2" rowClasses="prop" columnClasses="name2,value">
+				
+                   <h:outputLabel id="company" for="company" value=" Company Name : "/>
+                    <h:panelGroup>
+                        <h:inputText id="companys" value="#{reportAction.companyOb.companyName}" size="33" required="true" requiredMessage="Company Name Is Required" />
+                        <h:outputLabel value=" * " styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="companys" styleClass="messagesingle"
+                              errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>  
+                    </h:panelGroup>
+                    
+                    
+                    <h:outputLabel value=" Company Code : "/>
+                    <h:panelGroup>
+                        <h:inputText id="compcode" value="#{reportAction.companyOb.companyCode}" size="33" required="true" requiredMessage="Company Code Is Required" />
+                        <h:outputLabel value=" * " styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="compcode" styleClass="messagesingle"
+                              errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>  
+                    </h:panelGroup>
+                    
+                                                        
+                    <h:outputLabel value="Bank To Credit"/>
+                    <h:panelGroup>
+                        <h:selectOneMenu styleClass="controls-length2" required="true" requiredMessage="Bank is required" id="bank_code"
+                                         value="#{reportAction.companyOb.bank}">
+                                         
+                               <s:selectItems var="r" value="#{reportAction.bankList}" itemValue="#{r.bank_code}"
+                                                       label="#{r.bank_nm}" noSelectionLabel=".:: Select ::." />
+                        </h:selectOneMenu>
+                        
+                        <h:outputLabel value=" *" styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="bank_code" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                    
+                    <h:outputLabel value="Bank Account : "/>
+                    <h:panelGroup>
+                        <h:inputText id="bankAcct" value="#{reportAction.companyOb.bankAcct}" size="33" required="true" requiredMessage="Bank Account Is Required" />
+                        <h:outputLabel value=" * " styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="bankAcct" styleClass="messagesingle"
+                              errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>  
+                    </h:panelGroup>
+                    
+
+                  </h:panelGrid>  
+                   
+            </rich:graphValidator>
+
+        </rich:panel>
+	
+        <div class="actionButtons">
+            
+            <h:commandButton id="submit" value="  Create-Setup  " action="#{reportAction.createCompanySetup}" reRender="manageCardFrm">
+            	<rich:componentControl for="panelp" attachTo="submit" operation="show" event="onclick"/>
+            </h:commandButton>
+            
+        </div>
+   </h:form>
+   
+   <rich:spacer width="10px" height="20px"/>
+
+    <h:form id="manageCardFrm">
+    
+     <rich:panel style="width:100%" id="displayUserPanel">
+     
+     		<f:facet name="header">Manage Company</f:facet>
+  
+             <rich:dataTable id="schemeTable" rowKeyVar="rowKey"  reRender="userTableDS" rows="1000" value="#{reportAction.companyList}"  var="crd">
+           
+           	<rich:column>
+						<f:facet name="header">S/N</f:facet>
+						<h:outputText value="#{rowKey+1}"/>
+			</rich:column>
+				
+               <rich:column>
+                    <f:facet name="header">Company Id</f:facet>
+				     <h:outputText  value="#{crd.companyId}" style="float: left;"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Company Name</f:facet>
+                    <h:outputText value="#{crd.companyName}" style="float: left;"/>
+                </rich:column>
+               
+				<rich:column>
+				
+		            <h:commandButton action="#{reportAction.deleteCompany}"  value="       DELETE      "  id="delete">
+		            	<f:setPropertyActionListener target="#{reportAction.edit_id}" value="#{crd.companyId}" />
+		            	 <f:param name="id" value="#{crd.companyId}"/>
+		            	<rich:componentControl for="panelp" attachTo="submit_edit" operation="show" event="onclick"/>
+		            </h:commandButton>  
+				</rich:column>
+			
+	
+  			</rich:dataTable>
+  		
+            <rich:datascroller id="userTableDS" for="schemeTable"  renderIfSinglePage="true">
+                <f:facet name="first">
+                    <h:outputText value="First" />
+                </f:facet>
+                <f:facet name="last">
+                    <h:outputText value="Last" />
+                </f:facet>
+            </rich:datascroller>
+            
+            
+        </rich:panel>
+ 				
+ 
+    </h:form>
+    
+    
+   
+    
+</ui:define>
+</ui:composition>

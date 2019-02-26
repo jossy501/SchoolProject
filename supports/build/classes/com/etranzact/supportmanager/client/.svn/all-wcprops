@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/client
+END
+Invokesession.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/client/Invokesession.java
+END
+SecuredsessionService.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/client/SecuredsessionService.java
+END
+package-info.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/client/package-info.java
+END
+ValidatesessionResponse.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/client/ValidatesessionResponse.java
+END
+Validatesession.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/client/Validatesession.java
+END
+InvokesessionResponse.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/client/InvokesessionResponse.java
+END
+ObjectFactory.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/client/ObjectFactory.java
+END
+Securedsession.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/client/Securedsession.java
+END

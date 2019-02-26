@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<components xmlns="http://jboss.com/products/seam/components"
+            xmlns:core="http://jboss.com/products/seam/core"
+            xmlns:persistence="http://jboss.com/products/seam/persistence"
+            xmlns:drools="http://jboss.com/products/seam/drools"
+            xmlns:bpm="http://jboss.com/products/seam/bpm"
+            xmlns:security="http://jboss.com/products/seam/security"
+            xmlns:mail="http://jboss.com/products/seam/mail"
+            xmlns:web="http://jboss.com/products/seam/web"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns:excel="http://jboss.com/products/seam/excel"
+            xmlns:document="http://jboss.com/products/seam/document"
+            xsi:schemaLocation=
+                "http://jboss.com/products/seam/core http://jboss.com/products/seam/core-2.1.xsd
+                 http://jboss.com/products/seam/persistence http://jboss.com/products/seam/persistence-2.1.xsd
+                 http://jboss.com/products/seam/drools http://jboss.com/products/seam/drools-2.1.xsd
+                 http://jboss.com/products/seam/bpm http://jboss.com/products/seam/bpm-2.1.xsd
+                 http://jboss.com/products/seam/security http://jboss.com/products/seam/security-2.1.xsd
+                 http://jboss.com/products/seam/mail http://jboss.com/products/seam/mail-2.1.xsd
+                 http://jboss.com/products/seam/web http://jboss.com/products/seam/web-2.1.xsd
+                 http://jboss.com/products/seam/components http://jboss.com/products/seam/components-2.1.xsd
+                 http://jboss.com/products/seam/document http://jboss.com/products/seam/document-2.2.xsd
+                 http://jboss.com/products/seam/excel http://jboss.com/products/seam/excel-2.2.xsd"
+                 >
+
+	<core:init debug="@debug@" jndi-pattern="@jndiPattern@" transaction-management-enabled="false"/>
+	
+	<!-- If you need to alter the SMTP gateway, comment out this mail-session, -->
+	<mail:mail-session host="smtp.etranzact.net" port="25" username="tony.ezeanya@etranzact.net" password="Ezeant@2003" />
+    
+	 
+	<document:document-store use-extensions="true"></document:document-store> 
+	 
+	<core:manager concurrent-request-timeout="20000"
+                 conversation-timeout="200000"
+                 conversation-id-parameter="cid"/>
+	
+	
+	
+	<!-- Make sure this URL pattern is the same as that used by the Faces Servlet -->
+	<web:hot-deploy-filter url-pattern="*.etz"/>
+	
+</components>

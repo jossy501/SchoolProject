@@ -1,0 +1,80 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="../WEB-INF/layout/basic_layout.xhtml">
+
+<ui:define name="body">
+
+
+    <a4j:form id="logClaimFrm">
+        <rich:panel style="width:60%">
+            <f:facet name="header">Dispute Resolution System : Email View</f:facet>
+            <s:link view="/DRS/DSR_viewClaimInfo.xhtml" value="Linkage To" action="#{claimcontroller.getClaimById}" styleClass="textLink" propagation="none">
+
+             </s:link>
+            <rich:graphValidator>
+
+                <h:panelGrid columns="2" rowClasses="prop" columnClasses="name2,value">
+
+                    <h:outputLabel for="card_no" value="To:"/>
+                    <h:panelGroup>
+                    	<h:inputText id="card_no" size="55" value="#{claimcontroller.claim.clBank.bankname}" required="true" requiredMessage="To is required"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="card_no" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+
+                    <h:outputLabel id="amount_" value="Subject:"/>
+                    <h:panelGroup>
+                    	<h:inputText id="amount" size="55" value="#{claimcontroller.claim.subject}" required="true" requiredMessage="Subject is required"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="amount" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+
+                    <h:outputLabel for="comment_journal" value="Message:"/>
+                    <h:panelGroup>
+                    	<h:inputTextarea id="comment_journal" rows="5" cols="40" value="#{claimcontroller.claim.messageBody}" required="true" requiredMessage="Message is required"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="comment_journal" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+
+                    <h:outputLabel  value="Previous Message:"/>
+                    <h:panelGroup>
+                    	<h:inputTextarea  rows="5" cols="40" value="#{claimcontroller.claim.prevMessageBody}"  />
+
+                    </h:panelGroup>
+
+                  </h:panelGrid>
+
+            </rich:graphValidator>
+
+        </rich:panel>
+	<rich:toolBar style="width:60%">
+<rich:toolBarGroup>
+			<s:link  view="/DRS/DSR_viewClaimInfo.xhtml" title="Return" propagation="none">
+                       <h:graphicImage  value="/images/return.png"/>
+					   </s:link>
+
+</rich:toolBarGroup>
+</rich:toolBar>
+
+   </a4j:form>
+
+   <rich:spacer width="10px" height="10px"/>
+
+
+</ui:define>
+
+
+</ui:composition>

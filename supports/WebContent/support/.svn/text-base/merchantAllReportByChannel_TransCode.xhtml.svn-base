@@ -1,0 +1,180 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="../WEB-INF/layout/basic_layout.xhtml">
+                
+<ui:define name="body">
+
+
+    <h:form id="manageCardFrm">
+ 
+        <!-- Report for All Option,  Channel Stage-->
+        <a4j:commandButton id="submit"
+                         value="    Back   " onclick="history.back()">
+       </a4j:commandButton>
+       
+       <rich:panel style="width: 30%; height:100px">
+       
+			<h:panelGrid columns="4" rowClasses="prop" columnClasses="name2,value">
+           	  
+           	  <h:outputLabel value="Date :" />
+           	  <h:outputLabel value="#{reportAction.start_date}" />
+           	  <h:outputLabel value="#{reportAction.end_date}" />
+           	  <h:outputLabel value="" />
+           	  
+           	  <h:outputLabel value="Product :" />
+           	  <h:outputLabel value="#{reportAction.trans_code}" />
+           	  <h:outputLabel value="" />
+           	  <h:outputLabel value="" />
+           	  
+           	  <h:outputLabel value="Channel :" />
+           	  <h:outputLabel value="#{reportAction.channel_id}" />
+           	  <h:outputLabel value="" />
+           	  <h:outputLabel value="" />
+              
+           </h:panelGrid>
+           
+	   </rich:panel>
+       
+       <rich:panel style="width:100%" rendered = "#{reportAction.allMerchantReportLog.size() > 0 }">
+           
+           <f:facet name="header">
+           <rich:columnGroup>
+		         <rich:column colspan="4">
+			       <h:outputText value="All Summarized Report [ Total Record(s) found :  #{reportAction.allMerchantReportLog.size()} ]" />
+			           <s:link  view="/excel-reports-templates/merchantAllReportChannel_TransCode_ExcelReport.xhtml"  styleClass= "menu-button"  rendered ="#{reportAction.allMerchantReportLog.size() > 0}"  >
+			            <font color = "white">download : </font> <h:graphicImage value="/images/excel5.jpg"/>
+			           </s:link>
+			       	   <rich:toolTip  for="slogo"  value="Please Click to Generate Report in View "/>
+			      </rich:column>
+			 </rich:columnGroup>
+			 
+           </f:facet>
+
+            <rich:dataTable id="srADcardTb" rows="1000" value="#{reportAction.allMerchantReportLog}"  var="crd">
+                
+                
+                 <rich:column>
+                    <f:facet name="header">Merchant Code</f:facet>
+				     <h:commandLink value="#{crd.merchat_code}" action="#{reportAction.viewDetailedMerchantReport}">
+				        <f:setPropertyActionListener target="#{reportAction.merchant_code}" value="#{crd.merchat_code}" />
+				    </h:commandLink>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Merchant Name</f:facet>
+                    <h:outputText value="#{crd.merchant_descr}"/>
+                </rich:column>
+
+                <rich:column>
+                    <f:facet name="header">Total Count</f:facet>
+                    <h:outputText value="#{crd.transaction_count}" style="float: right;"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Total Amount</f:facet>
+                    <h:outputText value="#{reportAction.makeDouble(crd.total_amount)}" style="float: right;">
+				    	<f:convertNumber pattern="#,###,###,###,###.00"/>
+				    </h:outputText>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Split Type</f:facet>
+                    <h:outputText value="#{crd.merchant_split_type}"/>
+                </rich:column>
+                
+                
+                <rich:column>
+                    <f:facet name="header">Commission Value</f:facet>
+                    <h:outputText value="#{crd.commission_value}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">eTranzact Comm Ratio</f:facet>
+                    <h:outputText value="#{crd.etzRatio}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">eTranzact Comm Value</f:facet>
+                    <h:outputText value="#{reportAction.makeDouble(crd.etranzactComm)}" style="float: right;">
+				    	<f:convertNumber pattern="#,###,###,###,###.00"/>
+				    </h:outputText>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Others</f:facet>
+                    <h:outputText value="#{reportAction.makeDouble(crd.otherComm)}" style="float: right;">
+				    	<f:convertNumber pattern="#,###,###,###,###.00"/>
+				    </h:outputText>
+                </rich:column>
+                
+                <f:facet name="footer">
+                
+                	<rich:columnGroup>
+                        <rich:column>
+                        	<div align="left">
+                        		Total
+                        	</div>
+                        </rich:column>
+                        <rich:column>
+                        	<div align="right">
+                        		
+                        	</div>
+                        </rich:column>
+                        <rich:column>
+                        	<div align="right">
+                        		<h:outputText value="#{reportAction.total_count}"/>
+                        	</div>
+                        </rich:column>
+                        <rich:column>
+                        	<div align="right">
+                        		<h:outputText value="#{reportAction.makeDouble(reportAction.total_amount)}">
+                                    <f:convertNumber pattern="#,###,###,###,###.00"/>
+                                </h:outputText>
+                        	</div>
+                        </rich:column>
+                        <rich:column colspan="3">
+                        	<div align="right">
+                        		
+                        	</div>
+                        </rich:column>
+                        <rich:column>
+                            <div align="right">
+                                <h:outputText value="#{reportAction.makeDouble(reportAction.total_etz_amount)}">
+                                    <f:convertNumber pattern="#,###,###,###,###.00"/>
+                                </h:outputText>
+                            </div>
+                        </rich:column>
+                        <rich:column>
+                        	<div align="right">
+                        		<h:outputText value="#{reportAction.makeDouble(reportAction.total_other_amount)}">
+                                    <f:convertNumber pattern="#,###,###,###,###.00"/>
+                                </h:outputText>
+                        	</div>
+                        </rich:column>
+                    </rich:columnGroup>
+                </f:facet>
+                
+            </rich:dataTable>
+			<rich:datascroller id="srADcardTableDS" for="srADcardTb"  renderIfSinglePage="true">
+                <f:facet name="first">
+                    <h:outputText value="First" />
+                </f:facet>
+                <f:facet name="last">
+                    <h:outputText value="Last" />
+                </f:facet>
+            </rich:datascroller>
+
+        </rich:panel>
+       
+
+    </h:form>
+    
+</ui:define>
+</ui:composition>

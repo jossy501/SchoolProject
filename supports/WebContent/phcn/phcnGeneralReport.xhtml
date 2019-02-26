@@ -1,0 +1,351 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="../WEB-INF/layout/basic_layout.xhtml">
+                
+<ui:define name="body">
+
+    <!-- processing panel -->
+    
+    <rich:modalPanel id="panelp" width="150" height="50">
+       <h:form id="pFrm">
+        <h:panelGrid columns="1" rowClasses="prop" columnClasses="name2,value">
+           <h:outputText value="Please wait...." styleClass="messagesingle" >
+               <h:graphicImage value="/images/loading_small.gif"/>
+           </h:outputText>
+          </h:panelGrid>  
+         </h:form>
+    </rich:modalPanel>
+
+    <!-- -->
+    
+    <h:form id="cardFrm">
+        <rich:panel style="width:40%">
+            <f:facet name="header">PHCN:General Report </f:facet>
+            <rich:graphValidator>
+                <h:panelGrid columns="2" rowClasses="prop" columnClasses="name2,value">
+                      <h:outputLabel id="card_subname" value="Card Subname"/>
+                    <h:panelGroup>
+                        <h:inputText id="cardsubname" value="#{reportAction.card_subname}" required="true" requiredMessage="Card Subname is required"/>
+                        <h:outputLabel value=" *" styleClass="messagesingle" />
+                         <br/>
+                        <rich:message for="cardsubname" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>     
+                    </h:panelGroup> 
+               		
+                	<h:outputLabel id ="start_date" for="start_date" value="Start Date"/>
+                    <h:panelGroup>
+                    	<rich:calendar value="#{reportAction.start_date}" required="true" id="strt_date"
+                                       datePattern="yyyy-MM-dd" styleClass="controls-length2" requiredMessage="Start Date is required"/>
+                        <span style="white-space:nowrap">
+                            &nbsp;
+                        </span>
+                        <h:selectOneMenu id="start_hr" value="#{reportAction.start_hr}">
+                            <f:selectItem itemLabel="00" itemValue="00" />
+                            <f:selectItem itemLabel="01" itemValue="01" />
+                            <f:selectItem itemLabel="02" itemValue="02" />
+                            <f:selectItem itemLabel="03" itemValue="03" />
+                            <f:selectItem itemLabel="04" itemValue="04" />
+                            <f:selectItem itemLabel="05" itemValue="05" />
+                            <f:selectItem itemLabel="06" itemValue="06" />
+                            <f:selectItem itemLabel="07" itemValue="07" />
+                            <f:selectItem itemLabel="08" itemValue="08" />
+                            <f:selectItem itemLabel="09" itemValue="09" />
+                            <f:selectItem itemLabel="10" itemValue="10" />
+                            <f:selectItem itemLabel="11" itemValue="11" />
+                            <f:selectItem itemLabel="12" itemValue="12" />
+                            <f:selectItem itemLabel="13" itemValue="13" />
+                            <f:selectItem itemLabel="14" itemValue="14" />
+                            <f:selectItem itemLabel="15" itemValue="15" />
+                            <f:selectItem itemLabel="16" itemValue="16" />
+                            <f:selectItem itemLabel="17" itemValue="17" />
+                            <f:selectItem itemLabel="18" itemValue="18" />
+                            <f:selectItem itemLabel="19" itemValue="19" />
+                            <f:selectItem itemLabel="20" itemValue="20" />
+                            <f:selectItem itemLabel="21" itemValue="21" />
+                            <f:selectItem itemLabel="22" itemValue="22" />
+                            <f:selectItem itemLabel="23" itemValue="23" />
+
+                        </h:selectOneMenu>
+                        
+                        <br/>
+                        <rich:message for="start_date" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>                              
+                    </h:panelGroup>
+                    
+                    
+                    <h:outputLabel id="end_date" for="end_date" value="End Date"/>
+                    <h:panelGroup>
+                    	<rich:calendar value="#{reportAction.end_date}" required="true" id="ed_date"
+                                       datePattern="yyyy-MM-dd" styleClass="controls-length2" requiredMessage="End Date is required"/>
+                        
+                        <span style="white-space:nowrap">
+                            &nbsp;
+                        </span>
+                        <h:selectOneMenu id="end_hr" value="#{reportAction.end_hr}">
+                            <f:selectItem itemLabel="00" itemValue="00" />
+                            <f:selectItem itemLabel="01" itemValue="01" />
+                            <f:selectItem itemLabel="02" itemValue="02" />
+                            <f:selectItem itemLabel="03" itemValue="03" />
+                            <f:selectItem itemLabel="04" itemValue="04" />
+                            <f:selectItem itemLabel="05" itemValue="05" />
+                            <f:selectItem itemLabel="06" itemValue="06" />
+                            <f:selectItem itemLabel="07" itemValue="07" />
+                            <f:selectItem itemLabel="08" itemValue="08" />
+                            <f:selectItem itemLabel="09" itemValue="09" />
+                            <f:selectItem itemLabel="10" itemValue="10" />
+                            <f:selectItem itemLabel="11" itemValue="11" />
+                            <f:selectItem itemLabel="12" itemValue="12" />
+                            <f:selectItem itemLabel="13" itemValue="13" />
+                            <f:selectItem itemLabel="14" itemValue="14" />
+                            <f:selectItem itemLabel="15" itemValue="15" />
+                            <f:selectItem itemLabel="16" itemValue="16" />
+                            <f:selectItem itemLabel="17" itemValue="17" />
+                            <f:selectItem itemLabel="18" itemValue="18" />
+                            <f:selectItem itemLabel="19" itemValue="19" />
+                            <f:selectItem itemLabel="20" itemValue="20" />
+                            <f:selectItem itemLabel="21" itemValue="21" />
+                            <f:selectItem itemLabel="22" itemValue="22" />
+                            <f:selectItem itemLabel="23" itemValue="23" />
+
+                        </h:selectOneMenu>
+
+                        <br/>
+                        <rich:message for="end_date" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>                              
+                    </h:panelGroup>
+                    
+                    
+                    <h:outputLabel for="optionSel" value="Select an option" />
+                    <h:panelGroup>
+                        <h:selectOneMenu required="true" requiredMessage="Select report option"
+                                          id="optionSel" layout="lineDirection" value="#{reportAction.optionType}">
+                            
+                            <f:selectItem id="item_a" itemLabel="ANY" itemValue="ANY"/>
+                           
+                        </h:selectOneMenu>
+                        <br/>
+                        <rich:message for="optionSel" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>                                                            
+                    </h:panelGroup>
+
+                  </h:panelGrid>  
+                   
+            </rich:graphValidator>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="submit" value="  Search  " action="#{reportAction.getPHCNGeneralReport}" reRender="manageCardFrm,manageCardFrm1">
+            	 <rich:componentControl for="panelp" attachTo="submit" operation="show" event="onclick"/>
+            </h:commandButton> 
+            
+        </div>
+   </h:form>
+   
+   <rich:spacer width="10px" height="20px"/>
+   
+   <h:form id="manageCardFrm">
+		
+		<rich:panel style="width:100%">
+
+           <f:facet name="header">PHCN: Posting Report [ Total Record(s) found :  #{reportAction.billLog.size()} ]</f:facet>
+          
+	            
+            <rich:dataTable id="scardTb" rowKeyVar="rk"  rows="1000" value="#{reportAction.billLog}"  var="crd">   
+                <rich:column>
+                    <f:facet name="header">SN</f:facet>
+				    <h:outputText value="#{(rk+1)}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">ETZ REFRENCE</f:facet>
+				    <h:outputText value="#{crd.unique_trans_id}"/>
+                </rich:column>
+                
+                <rich:column rendered = "#{reportAction.optionType eq 'B'}">
+                    <f:facet name="header">PHCN ACCOUNT</f:facet>
+				    <h:outputText value="#{crd.subscriber_id}"/>
+                </rich:column>
+                
+                
+                
+                <rich:column>
+                    <f:facet name="header">CUSTOMER NAME</f:facet>
+				    <h:outputText value="#{crd.card_fullname}"/>
+                </rich:column>
+            
+                
+                
+                <rich:column>
+                    <f:facet name="header">AMOUNT</f:facet>
+				    <h:outputText value="#{crd.trans_amount}"/>
+                </rich:column>
+                
+              
+                <rich:column>
+                    <f:facet name="header">DATE</f:facet>
+				    <h:outputText value="#{crd.trans_date}"/>
+                </rich:column>
+                
+            </rich:dataTable>
+			<rich:datascroller id="scardTableDS" for="scardTb"  renderIfSinglePage="true">
+                <f:facet name="first">
+                    <h:outputText value="First" />
+                </f:facet>
+                <f:facet name="last">
+                    <h:outputText value="Last" />
+                </f:facet>
+            </rich:datascroller>
+
+        </rich:panel>
+</h:form>
+<h:form id="manageCardFrm1">
+		
+		<rich:panel style="width:100%">
+
+           <f:facet name="header">PHCN: Payment Search Report [ Total Record(s) found :  #{reportAction.billLog.size()} ]</f:facet>
+          
+	            
+            <rich:dataTable id="scardTb" rowKeyVar="rk"  rows="1000" value="#{reportAction.billLog}"  var="crd">   
+                <rich:column>
+                    <f:facet name="header">SN</f:facet>
+				    <h:outputText value="#{(rk+1)}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">ETZ REFRENCE</f:facet>
+				    <h:outputText value="#{crd.unique_trans_id}"/>
+                </rich:column>
+                
+                <rich:column rendered = "#{reportAction.optionType eq 'B'}">
+                    <f:facet name="header">PHCN ACCOUNT</f:facet>
+				    <h:outputText value="#{crd.subscriber_id}"/>
+                </rich:column>
+                
+                 <rich:column rendered = "#{reportAction.optionType eq 'A'}">
+                    <f:facet name="header">PREPAID METER NO</f:facet>
+				    <h:outputText value="#{crd.subscriber_id}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">CUSTOMER NAME</f:facet>
+				    <h:outputText value="#{crd.card_fullname}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">CUSTOMER ADDRESS</f:facet>
+				    <h:outputText value="#{crd.t_address}"/>
+                </rich:column>
+                    
+                <rich:column>
+                    <f:facet name="header">BANK CODE</f:facet>
+				    <h:outputText value="#{crd.issuer_code}"/>
+                </rich:column>
+                
+                  <rich:column>
+                    <f:facet name="header">SUBSCRIBER_ID</f:facet>
+				    <h:outputText value="#{crd.subscriber_id}"/>
+                </rich:column>
+              
+ 
+                <rich:column>
+                    <f:facet name="header">DATE</f:facet>
+				    <h:outputText value="#{crd.trans_date}"/>
+                </rich:column>
+                
+            </rich:dataTable>
+			<rich:datascroller id="scardTableDS" for="scardTb"  renderIfSinglePage="true">
+                <f:facet name="first">
+                    <h:outputText value="First" />
+                </f:facet>
+                <f:facet name="last">
+                    <h:outputText value="Last" />
+                </f:facet>
+            </rich:datascroller>
+
+        </rich:panel>
+        </h:form>
+        
+        <h:form id="manageCardFrm2">
+		
+		<rich:panel style="width:100%">
+
+           <f:facet name="header">PHCN: Customer Details [ Total Record(s) found :  #{reportAction.billLog.size()} ]</f:facet>
+          
+	            
+            <rich:dataTable id="scardTb" rowKeyVar="rk"  rows="1000" value="#{reportAction.billLog}"  var="crd">   
+                <rich:column>
+                    <f:facet name="header">SN</f:facet>
+				    <h:outputText value="#{(rk+1)}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">ETZ REFRENCE</f:facet>
+				    <h:outputText value="#{crd.unique_trans_id}"/>
+                </rich:column>
+                
+                <rich:column rendered = "#{reportAction.optionType eq 'B'}">
+                    <f:facet name="header">PHCN ACCOUNT</f:facet>
+				    <h:outputText value="#{crd.subscriber_id}"/>
+                </rich:column>
+                
+                 <rich:column rendered = "#{reportAction.optionType eq 'A'}">
+                    <f:facet name="header">PREPAID METER NO</f:facet>
+				    <h:outputText value="#{crd.subscriber_id}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">CUSTOMER NAME</f:facet>
+				    <h:outputText value="#{crd.card_fullname}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">CUSTOMER ADDRESS</f:facet>
+				    <h:outputText value="#{crd.t_address}"/>
+                </rich:column>
+                    
+                <rich:column>
+                    <f:facet name="header">BANK CODE</f:facet>
+				    <h:outputText value="#{crd.issuer_code}"/>
+                </rich:column>
+                
+                  <rich:column>
+                    <f:facet name="header">SUBSCRIBER_ID</f:facet>
+				    <h:outputText value="#{crd.subscriber_id}"/>
+                </rich:column>
+              
+ 
+                <rich:column>
+                    <f:facet name="header">DATE</f:facet>
+				    <h:outputText value="#{crd.trans_date}"/>
+                </rich:column>
+                
+            </rich:dataTable>
+			<rich:datascroller id="scardTableDS" for="scardTb"  renderIfSinglePage="true">
+                <f:facet name="first">
+                    <h:outputText value="First" />
+                </f:facet>
+                <f:facet name="last">
+                    <h:outputText value="Last" />
+                </f:facet>
+            </rich:datascroller>
+
+        </rich:panel>
+        
+
+
+		<rich:panel style="width: 100%; height:50px" rendered="#{reportAction.billLog.size() == 0 }">
+			<h:outputText value="&nbsp;No record(s) found. "/>
+		</rich:panel>
+
+    </h:form>
+</ui:define>
+</ui:composition>

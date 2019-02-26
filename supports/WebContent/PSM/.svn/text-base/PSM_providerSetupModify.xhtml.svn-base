@@ -1,0 +1,73 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="../WEB-INF/layout/basic_layout.xhtml">
+
+<ui:define name="body">
+
+
+    <a4j:form id="userFrm">
+        <rich:panel style="width:60%">
+            <f:facet name="header">Edit Provider Info</f:facet>
+            <rich:graphValidator>
+			<s:link view="/PSM/PSM_lisProvider.xhtml" value="List All Providers" styleClass="textLink" propagation="none"/>
+                <h:panelGrid columns="2" rowClasses="prop" columnClasses="name2,value">
+                    <h:outputLabel value="Provider Code:"/>
+                    <h:outputLabel value="#{networkprovidercontroller.provider.providerCode}"/>
+                    <h:outputLabel for="name" value="Provider Name:"/>
+                    <h:panelGroup>
+                    	<h:inputText id="name" value="#{networkprovidercontroller.provider.providerName}" required="true" requiredMessage="Provider Name is required"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="name" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+					<h:outputLabel for="email" value="Pin Length"/>
+                    <h:panelGroup>
+                    	<h:inputText id="length" value="#{networkprovidercontroller.provider.pinLength}" required="true" requiredMessage="pin Length is required"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="length" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                   <h:outputLabel for="fileType" value="File Type:"/>
+                    <h:panelGroup>
+                    	<h:inputText id="fileType" value="#{networkprovidercontroller.provider.providerFileType}" required="true" requiredMessage="Provider File type is required"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="fileType" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+
+					
+
+
+                  </h:panelGrid>
+
+            </rich:graphValidator>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+ <rich:toolBar style="width:60%">
+                            <rich:toolBarGroup>
+            <a4j:commandButton oncomplete="document.getElementById('userFrm:submit').disabled=false"
+                                   onclick="document.getElementById('userFrm:submit').disabled=true"
+                                   id="submit" value="   Submit  " action="#{networkprovidercontroller.modifiyProvider}" reRender="userFrm, manageUserFrm"/>
+</rich:toolBarGroup>
+                        </rich:toolBar>
+        </div>
+   </a4j:form>
+
+   <rich:spacer width="10px" height="10px"/>
+
+
+</ui:define>
+</ui:composition>

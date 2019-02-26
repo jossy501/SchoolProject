@@ -1,0 +1,56 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:e="http://jboss.com/products/seam/excel"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:c="http://java.sun.com/jstl/core">
+
+<e:workbook type="jxl" ignoreBlanks="false" filename="WallectReport.xls">
+<e:worksheet name="Report" value="#{reportAction.walletLog}" var="crd" startRow="0">
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="SN"/>
+	</f:facet>
+	<e:formula value="ROW()-1"/>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Merchant Description"/>
+	</f:facet>
+	<e:cell value="#{crd.merchant_descr}">
+
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Merchant Code"/>
+	</f:facet>
+		<h:outputText value="#{crd.merchat_code}" escape="true" rendered= "#{crd.merchat_code.length() == 10 }"/>
+		<e:cell value="#{crd.merchat_code}">
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Transaction Count"/>
+	</f:facet>
+	<e:cell value="#{crd.counter}">
+	</e:cell>
+</e:column>
+
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="AMOUNT"/>
+	</f:facet>
+	<e:cell value="#{reportAction.makeDouble(crd.total_amount)}">
+		
+	</e:cell>
+</e:column>
+
+</e:worksheet>
+</e:workbook>
+</html>

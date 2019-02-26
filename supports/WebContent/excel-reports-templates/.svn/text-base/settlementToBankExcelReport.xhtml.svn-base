@@ -1,0 +1,189 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:e="http://jboss.com/products/seam/excel"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:c="http://java.sun.com/jstl/core">
+
+<e:workbook type="jxl" ignoreBlanks="false" filename="settlementReport.xls">
+<e:worksheet name="Report" value="#{reportAction.merchantReportLog}" var="crd" startRow="0" rendered="#{reportAction.merchantReportLog.size() > 0}">
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="No"/>
+	</f:facet>
+	<e:formula value="ROW()-1"/>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Merchant Name"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{crd.COMPANY_ID}" escape="false"/>
+	</e:cell>
+</e:column>
+
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Name"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{crd.BENEFICIARY_NAME}" escape="false"/>
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Narration"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{crd.DESCRIPTION}" escape="false"/>
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Account No"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{crd.ACCOUNT_NUMBER}" escape="false"/>
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Upload Date"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{crd.UPLOAD_DATE}" escape="false"/>
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Process"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{crd.PROCESS_STATUS}" escape="false"/>
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Process Date"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{crd.PROCESSED_DATE}" escape="false"/>
+	</e:cell>
+</e:column>
+
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Status"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{crd.HOST_ERROR_CODE}" escape="false"/>
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Batch ID"/>
+	</f:facet>
+	<e:cell value="#{crd.BATCH_ID}">
+		
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Reference"/>
+	</f:facet>
+	<e:cell value="#{crd.REFERENCE}">
+		
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Amount"/>
+	</f:facet>
+	<e:cell value="#{reportAction.makeDouble(crd.TRANS_AMOUNT)}">
+		
+	</e:cell>
+</e:column>
+
+</e:worksheet>
+
+<e:worksheet name="Report" value="#{reportAction.failedFundsLog}" var="crd" startRow="0" rendered="#{reportAction.failedFundsLog.size() > 0}">
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="No"/>
+	</f:facet>
+	<e:formula value="ROW()-1"/>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Trans ID"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{crd.transid}" escape="false"/>
+	</e:cell>
+</e:column>
+
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Merchant Code"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{crd.merchant_code}" escape="false"/>
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Trans Code"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{crd.trans_code}" escape="false"/>
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Trans Amount"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{crd.trans_amount}" escape="false"/>
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Trans Descr"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{crd.trans_descr}" escape="false"/>
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Trans Date"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{crd.trans_date}" escape="false"/>
+	</e:cell>
+</e:column>
+
+
+</e:worksheet>
+
+</e:workbook>
+</html>

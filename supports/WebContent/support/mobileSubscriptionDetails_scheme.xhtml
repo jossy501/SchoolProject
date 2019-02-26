@@ -1,0 +1,181 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="../WEB-INF/layout/basic_layout.xhtml">
+                
+<ui:define name="body">
+	
+	<!-- processing panel -->
+    
+    <rich:modalPanel id="panelp" width="150" height="50">
+       <h:form id="pFrm">
+        <h:panelGrid columns="1" rowClasses="prop" columnClasses="name2,value">
+           <h:outputText value="Please wait...." styleClass="messagesingle" >
+               <h:graphicImage value="/images/loading_small.gif"/>
+           </h:outputText>
+          </h:panelGrid>  
+         </h:form>
+    </rich:modalPanel>
+
+    <h:form id="cardFrm">
+    <h:inputHidden value="#{reportAction.line_type}" id="hiddenId" />
+    
+        <rich:panel style="width:50%">
+            <f:facet name="header">Mobile Subscription Report</f:facet>
+            <rich:graphValidator>
+                <h:panelGrid columns="2" rowClasses="prop" columnClasses="name2,value">
+                    <h:outputLabel for="source" value="Mobile :"/>
+                    <h:panelGroup>
+                    	<h:inputText id="source" value="#{reportAction.from_source}" required="true" requiredMessage="Mobile number is required"/>
+                        <rich:spacer width="10px" height="10px"/>   
+                        <h:commandButton id="submit1" value="  Get Apps  " action="#{reportAction.getAppsByMobile}" onclick="document.getElementById('cardFrm:hiddenId').value = 'Version II'" reRender="cardFrm">
+			            	<rich:componentControl for="panelp" attachTo="submit1" operation="show" event="onclick"/>
+			            </h:commandButton>
+                        <h:outputLabel value=" *" styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="source" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>                              
+                    </h:panelGroup>
+                    
+                    <h:outputLabel id="applabel" value="Apps"/>
+                    <h:panelGroup>
+                        <h:selectOneMenu styleClass="controls-length2" id="bank_code"
+                                         value="#{reportAction.bank_code}">
+                                         
+                               <s:selectItems var="r" value="#{reportAction.appList}" itemValue="#{r.appid}"
+                                                       label="#{r.appnm}" noSelectionLabel=".:: Select ::." />
+                        </h:selectOneMenu>
+                        
+                        <h:outputLabel value=" *" styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="bank_code" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                    
+                  </h:panelGrid>  
+                   
+            </rich:graphValidator>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+            <h:commandButton id="submit" value="  Search  " action="#{reportAction.viewMobileSubscriptionDetails_scheme}" reRender="manageCardFrm">
+            	<rich:componentControl for="panelp" attachTo="submit" operation="show" event="onclick"/>
+            </h:commandButton> 
+        </div>
+   </h:form>
+   
+   <rich:spacer width="20px" height="10px"/>
+
+    <h:form id="manageCardFrm">
+    
+        <rich:panel style="width:100%">
+
+            <f:facet name="header">SUBSCRIBER DETAILS [ Total Record(s) found :  #{reportAction.mobileSubscriberLog.size()} ]</f:facet>
+
+            <rich:dataTable id="cardTb" rows="20" value="#{reportAction.mobileSubscriberLog}"  var="crd">
+                
+                
+                
+                <rich:column>
+                    <f:facet name="header">Mobile</f:facet>
+                    <h:outputText value="#{crd.mobile}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Active</f:facet>
+                    <h:outputText value="#{crd.active}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Application</f:facet>
+                    <h:outputText value="#{crd.appid}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Allow Debit</f:facet>
+                    <h:outputText value="#{crd.allow_debit}"/>
+                </rich:column>
+
+                <rich:column>
+                    <f:facet name="header">Modified Date</f:facet>
+                    <h:outputText value="#{crd.modified}"/>
+                </rich:column>
+
+                <f:facet name="footer">
+                    <rich:datascroller id="cardTableDS" for="cardTb"  renderIfSinglePage="true">
+                        <f:facet name="first">
+                            <h:outputText value="First" />
+                        </f:facet>
+                        <f:facet name="last">
+                            <h:outputText value="Last" />
+                        </f:facet>
+                    </rich:datascroller>
+                </f:facet>
+            </rich:dataTable>
+
+        </rich:panel>
+        
+         <rich:spacer width="20px" height="20px"/>
+         
+        <rich:panel style="width:100%">
+
+			<f:facet name="header">SUBSCRIBER CARD ACCOUNT DETAILS [ Total Record(s) found :  #{reportAction.mobileSubscriberCardLog.size()} ]</f:facet>
+
+            <rich:dataTable id="cardAcctTb" rows="20" value="#{reportAction.mobileSubscriberCardLog}"  var="crd">
+                
+                <rich:column>
+                    <f:facet name="header">Card Number</f:facet>
+                    <h:outputText value="#{reportAction.hashData(crd.card_num)}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Alias</f:facet>
+                    <h:outputText value="#{crd.alias}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Expiration</f:facet>
+                    <h:outputText value="#{crd.expiration}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Issuer Code</f:facet>
+                    <h:outputText value="#{crd.issuer_code}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Online Balance</f:facet>
+                    <h:outputText value="#{crd.onlineBalance}"/>
+                </rich:column>
+
+                <rich:column>
+                    <f:facet name="header">Modified Date</f:facet>
+                    <h:outputText value="#{crd.modified}"/>
+                </rich:column>
+
+                <f:facet name="footer">
+                    <rich:datascroller id="cardTableDS" for="cardAcctTb"  renderIfSinglePage="true">
+                        <f:facet name="first">
+                            <h:outputText value="First" />
+                        </f:facet>
+                        <f:facet name="last">
+                            <h:outputText value="Last" />
+                        </f:facet>
+                    </rich:datascroller>
+                </f:facet>
+            </rich:dataTable>
+
+
+        </rich:panel>
+        
+    </h:form>
+    
+</ui:define>
+</ui:composition>

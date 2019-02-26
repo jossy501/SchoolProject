@@ -1,0 +1,244 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="../WEB-INF/layout/basic_layout.xhtml">
+
+    <ui:define name="body">
+        <script language="JavaScript">
+        </script>
+        <a4j:form id="ricaFrm">
+            <rich:panel style="width:60%">
+                <f:facet name="header">Rica: SUB</f:facet>
+                <rich:graphValidator>
+
+                    <h:panelGrid columns="2" rowClasses="prop" columnClasses="name2,value">
+
+
+                        <h:outputLabel for="agentName" value="User First Name"/>
+                        <h:panelGroup>
+
+                            <h:inputText id="agentName" required="true" value="#{ricaetzController.param.userfname}" requiredMessage="User First Name required"/>
+                            <h:outputLabel value=" *" styleClass="messagesingle" />
+                            <br/>
+                            <rich:message for="agentName" styleClass="messagesingle"
+                                          errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                        </h:panelGroup>
+
+                        <h:outputLabel for="agentAddress" value="User Last Name"/>
+                        <h:panelGroup>
+
+                            <h:inputText id="agentAddress"  required="true" value="#{ricaetzController.param.userlname}" requiredMessage="User Last Name is required"/>
+                            <h:outputLabel value=" *" styleClass="messagesingle" />
+                            <br/>
+                            <rich:message for="agentAddress" styleClass="messagesingle"
+                                          errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                        </h:panelGroup>
+
+                        <h:outputLabel for="agentCode" value="City"/>
+                        <h:panelGroup>
+
+                            <h:inputText id="agentCode" required="true" value="#{ricaetzController.param.city}" requiredMessage="City is required"/>
+                            <h:outputLabel value=" *" styleClass="messagesingle" />
+                            <br/>
+                            <rich:message for="agentCode" styleClass="messagesingle"
+                                          errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                        </h:panelGroup>
+
+
+                        <h:outputLabel for="agentCoe" value="Country Code"/>
+						<h:panelGroup>
+                         <h:selectOneMenu  id="countrycode"  value="#{ricaetzController.param.countrycode}" required="true"  requiredMessage="Country Code is required">
+                                <f:selectItem itemLabel=".::Select::." />
+
+                                <f:selectItem itemLabel="SA" itemValue="ZAF" />
+                                <f:selectItem itemLabel="LESOTHO" itemValue="LSO" />
+                                <f:selectItem itemLabel="SWAZILAND" itemValue="SWZ" />
+                                <f:selectItem itemLabel="ZIMBABWE" itemValue="ZWE" />
+                                <f:selectItem itemLabel="MOZAMBIQUE" itemValue="MOZ" />
+                                <f:selectItem itemLabel="NIGERIA" itemValue="NGA" />
+
+                                <h:outputLabel value=" " styleClass="messagesingle" />
+                                <rich:message for="countrycode" styleClass="messagesingle"
+                                              errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                            </h:selectOneMenu>
+                        </h:panelGroup>
+
+                        <h:outputLabel for="agentNamex" value="Postal Code"/>
+                        <h:panelGroup>
+
+                            <h:inputText id="agentNamex" required="true" value="#{ricaetzController.param.postalcode}" requiredMessage="Postal Code required"/>
+                            <h:outputLabel value=" *" styleClass="messagesingle" />
+                            <br/>
+                            <rich:message for="agentNamex" styleClass="messagesingle"
+                                          errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                        </h:panelGroup>
+
+                         <h:outputLabel for="agentCodex" value="Area Code"/>
+                        <h:panelGroup>
+
+                            <h:inputText id="agentCodex" required="true" value="#{ricaetzController.param.areacode}" requiredMessage="Area Code is required"/>
+                            <h:outputLabel value=" *" styleClass="messagesingle" />
+                            <br/>
+                            <rich:message for="agentCodex" styleClass="messagesingle"
+                                          errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                        </h:panelGroup>
+
+                        <h:outputLabel for="agentAddressx" value="User Address"/>
+                        <h:panelGroup>
+
+                            <h:inputText id="agentAddressx"  required="true" value="#{ricaetzController.param.useraddress}" requiredMessage="User Address is required"/>
+                            <h:outputLabel value=" *" styleClass="messagesingle" />
+                            <br/>
+                            <rich:message for="agentAddressx" styleClass="messagesingle"
+                                          errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                        </h:panelGroup>
+
+                        <h:outputLabel for="aagentCoexx" value="Suburb"/>
+                        <h:panelGroup>
+
+                            <h:inputText id="aagentCoex" required="true" value="#{ricaetzController.param.suburb}" requiredMessage="Suburb is required"/>
+                            <h:outputLabel value=" *" styleClass="messagesingle" />
+                            <br/>
+                            <rich:message for="aagentCoex" styleClass="messagesingle"
+                                          errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                        </h:panelGroup>
+
+
+                       
+
+                        <h:outputLabel for="agentCoex" value="Dialing No"/>
+                        <h:panelGroup>
+
+                            <h:inputText id="agentCoex" required="true" value="#{ricaetzController.param.dialingno}" requiredMessage="Dialing No is required"/>
+                            <h:outputLabel value=" *" styleClass="messagesingle" />
+                            <br/>
+                            <rich:message for="agentCoex" styleClass="messagesingle"
+                                          errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                        </h:panelGroup>
+
+                        <h:outputLabel for="xagentNamex" value="Region"/>
+                        <h:panelGroup>
+
+                            <h:inputText id="xagentNamex" required="true" value="#{ricaetzController.param.region}" requiredMessage="Region required"/>
+                            <h:outputLabel value=" *" styleClass="messagesingle" />
+                            <br/>
+                            <rich:message for="xagentNamex" styleClass="messagesingle"
+                                          errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                        </h:panelGroup>
+
+
+
+                        <h:outputLabel for="xagentCodex" value="Country"/>
+                        <h:panelGroup>
+
+                            <h:inputText id="xagentCodex" required="true" value="#{ricaetzController.param.country}" requiredMessage="Country is required"/>
+                            <h:outputLabel value=" *" styleClass="messagesingle" />
+                            <br/>
+                            <rich:message for="xagentCodex" styleClass="messagesingle"
+                                          errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                        </h:panelGroup>
+
+                         <h:outputLabel for="agentAddressxx" value="Id Type"/>
+
+                         <h:selectOneMenu  id="agentAddressxx"  value="#{ricaetzController.param.idtype}" required="true"  requiredMessage="Id Type is required">
+                                <f:selectItem itemLabel=".::Select::." />
+                                <f:selectItem itemLabel="SA ID" itemValue="2" />
+                                <f:selectItem itemLabel="Passport" itemValue="1" />
+                                <f:selectItem itemLabel="Business Reg. No" itemValue="3" />
+
+                                <h:outputLabel value=" " styleClass="messagesingle" />
+                                <rich:message for="agentAddressxx" styleClass="messagesingle"
+                                              errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                            </h:selectOneMenu>
+
+
+                        <h:outputLabel for="xagentCoex" value="Id Number"/>
+                        <h:panelGroup>
+
+                            <h:inputText id="xagentCoex" required="true" value="#{ricaetzController.param.idnumber}" requiredMessage="Id Number is required"/>
+                            <h:outputLabel value=" *" styleClass="messagesingle" />
+                            <br/>
+                            <rich:message for="xagentCoex" styleClass="messagesingle"
+                                          errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                        </h:panelGroup>
+
+                        <h:outputLabel for="agentNamexx" value="Sim Identifier Type"/>
+
+                        <h:selectOneMenu  id="agentNamexx"  value="#{ricaetzController.param.sim}" required="true"  requiredMessage="Sim Identifier is required">
+                                <f:selectItem itemLabel=".::Select::." />
+                                <f:selectItem itemLabel="MSISDN" itemValue="1" />
+                                <f:selectItem itemLabel="SIM NUMBER" itemValue="2" />
+                                <f:selectItem itemLabel="STARTER PACK REF" itemValue="3" />
+
+                                <h:outputLabel value=" " styleClass="messagesingle" />
+                                <rich:message for="agentNamexx" styleClass="messagesingle"
+                                              errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                            </h:selectOneMenu>
+
+
+                        <h:outputLabel for="xagentAddressx" value="Sim Identifier"/>
+                        <h:panelGroup>
+
+                            <h:inputText id="xagentAddressx"  required="true" value="#{ricaetzController.param.simidentifier}" requiredMessage="Sim Identifier is required"/>
+                            <h:outputLabel value=" *" styleClass="messagesingle" />
+                            <br/>
+                            <rich:message for="xagentAddressx" styleClass="messagesingle"
+                                          errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                        </h:panelGroup>
+
+
+                        <h:outputLabel for="agentCodexx" value="Network"/>
+                        <h:panelGroup>
+                        <h:selectOneMenu styleClass="controls-length2" required="true" requiredMessage="Network is required" id="channel_type"
+                                             value="#{ricaetzController.param.agentNetwork}">
+
+                                <s:selectItems var="r" value="#{ricaetzController.rRicaNetworks}" itemValue="#{r.networkCode}"
+                                               label="#{r.networkFullname}" noSelectionLabel=":: Select ::" />
+
+
+                            </h:selectOneMenu>
+
+                        </h:panelGroup>
+
+                        <h:outputLabel for="agentCoexx" value="Last 4 Digits Of SIM No"/>
+                        <h:panelGroup>
+
+                            <h:inputText id="agentCoexx" required="true" value="#{ricaetzController.param.last4SIM}" requiredMessage="Last 4 Digits Of SIM No is required"/>
+                            <h:outputLabel value=" *" styleClass="messagesingle" />
+                            <br/>
+                            <rich:message for="agentCoexx" styleClass="messagesingle"
+                                          errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                        </h:panelGroup>
+
+                        
+
+                    </h:panelGrid>
+                </rich:graphValidator>
+
+            </rich:panel>
+
+            <div class="actionButtons">
+
+
+                <h:commandButton   id="submit" value="   Submit  " action="#{ricaetzController.ricaUser}" />
+
+
+
+            </div>
+        </a4j:form>
+
+        <rich:spacer width="10px" height="10px"/>
+
+
+
+
+    </ui:define>
+
+
+</ui:composition>

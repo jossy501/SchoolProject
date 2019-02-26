@@ -1,0 +1,77 @@
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/supportManager2/!svn/ver/1/WebContent/excel-reports-templates
+END
+phcnExcelReport.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/supportManager2/!svn/ver/1/WebContent/excel-reports-templates/phcnExcelReport.xhtml
+END
+merchantAllReportBankCode_ExcelReport.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/supportManager2/!svn/ver/1/WebContent/excel-reports-templates/merchantAllReportBankCode_ExcelReport.xhtml
+END
+merchantDetailedExcelReport.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/supportManager2/!svn/ver/1/WebContent/excel-reports-templates/merchantDetailedExcelReport.xhtml
+END
+merchantSplitExcelReport.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/supportManager2/!svn/ver/1/WebContent/excel-reports-templates/merchantSplitExcelReport.xhtml
+END
+merchantSummaryExcelReport.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/supportManager2/!svn/ver/1/WebContent/excel-reports-templates/merchantSummaryExcelReport.xhtml
+END
+claimReport_ExcelReport.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/supportManager2/!svn/ver/1/WebContent/excel-reports-templates/claimReport_ExcelReport.xhtml
+END
+merchantAllReportChannel_TransCode_ExcelReport.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svn/supportManager2/!svn/ver/1/WebContent/excel-reports-templates/merchantAllReportChannel_TransCode_ExcelReport.xhtml
+END
+switch_ExcelReport.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/supportManager2/!svn/ver/1/WebContent/excel-reports-templates/switch_ExcelReport.xhtml
+END
+mmoneySummaryExcelReport.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/supportManager2/!svn/ver/1/WebContent/excel-reports-templates/mmoneySummaryExcelReport.xhtml
+END
+merchantAllReportByTransCode_ExcelReport.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svn/supportManager2/!svn/ver/1/WebContent/excel-reports-templates/merchantAllReportByTransCode_ExcelReport.xhtml
+END
+settlementToBankExcelReport.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/supportManager2/!svn/ver/1/WebContent/excel-reports-templates/settlementToBankExcelReport.xhtml
+END
+mmoneyExcelReport.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/supportManager2/!svn/ver/1/WebContent/excel-reports-templates/mmoneyExcelReport.xhtml
+END

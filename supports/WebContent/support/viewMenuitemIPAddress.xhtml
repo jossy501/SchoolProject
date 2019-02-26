@@ -1,0 +1,94 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="../WEB-INF/layout/basic_layout.xhtml">
+                
+<ui:define name="body">
+
+    <h:form id="manageUserFrm">
+        
+        
+        <!-- processing panel -->
+    
+	    <rich:modalPanel id="panelp" width="150" height="50">
+	       <h:form id="pFrm">
+	        <h:panelGrid columns="1" rowClasses="prop" columnClasses="name2,value">
+	           <h:outputText value="Please wait...." styleClass="messagesingle" align="center">
+	               <h:graphicImage value="/images/loading_small.gif"/>
+	           </h:outputText>
+	          </h:panelGrid>  
+	         </h:form>
+	    </rich:modalPanel>
+        
+        
+        
+        <rich:panel style="width:40%" id="ipPanel">
+       		
+       		<f:facet name="header"></f:facet>
+       		<h:panelGrid columns="2" rowClasses="prop" columnClasses="name2,value">
+	       		<h:outputLabel id="email_label" styleClass="vertical-align:top;" value="IP Address" />
+	               <h:panelGroup>
+	               	<rich:pickList value = "#{adminAction.menuItemToIpAddressList}" id ="modalPanel" >
+	               		<s:selectItems value="#{adminAction.ipAddressList}" var = "r" itemValue="#{r.id}" label = "#{r.ip_address}"/>
+	      			</rich:pickList>
+	          	</h:panelGroup>
+          	</h:panelGrid>
+          	
+          	 <div class="actionButtons" >                    
+		            <h:commandButton id="addToQueue" value="  Map  " action="#{adminAction.addIPToMenuItem}">
+		            	<rich:componentControl for="panelp" attachTo="addToQueue" operation="show" event="onclick"/>
+		            </h:commandButton>                                                  
+		     </div>
+          	
+         </rich:panel>
+        
+        <rich:panel style="width:100%">
+
+            <f:facet name="header">Allowed IP Address(es)</f:facet>
+
+            <rich:dataTable id="rcardTb" rows="20" value="#{adminAction.mappedMenuItemipAddressList}"  var="crd">
+                
+                
+                <rich:column>
+                    <f:facet name="header">SN</f:facet>
+            		<h:outputText value="#{crd.counter}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">MenuItem</f:facet>
+                    <h:outputText value="#{crd.menuitem_nm}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">IP Address</f:facet>
+                    <h:outputText value="#{crd.ipaddress_nm}"/>
+                </rich:column>
+
+                <rich:column>
+                    <f:facet name="header">Date</f:facet>
+                    <h:outputText value="#{crd.created_dt}"/>
+                </rich:column>
+                
+                <rich:column>
+					<h:commandButton action="#{adminAction.deleteMenuitemIPAddress}" reRender="manageUserFrm"  image="/images/invalid.png" id="submit">
+		            	<f:setPropertyActionListener target="#{adminAction.operation_id}" value="#{crd.id}" />
+		            	<rich:componentControl for="panelp" attachTo="submit" operation="show" event="onclick"/>
+		            </h:commandButton>
+				</rich:column>
+                
+            </rich:dataTable>
+
+        </rich:panel>
+        
+        
+        
+    </h:form>
+    
+</ui:define>
+</ui:composition>

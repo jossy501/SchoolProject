@@ -1,0 +1,35 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:e="http://jboss.com/products/seam/excel"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:c="http://java.sun.com/jstl/core">
+
+<e:workbook type="jxl" ignoreBlanks="false" filename="merchantSplit.xls">
+<e:worksheet name="Report" value="#{reportAction.merchantSplitLog}" var="crd" startRow="0">
+
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Description"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{crd.split_descr}" escape="false"/>
+	</e:cell>
+</e:column>
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Total Amount"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{reportAction.makeDouble(crd.svalue)}" escape="false">
+              <f:convertNumber pattern="#,###,###,###,###.00"/>
+        </h:outputText>
+	</e:cell>
+</e:column>
+
+
+</e:worksheet>
+</e:workbook>
+</html>

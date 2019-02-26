@@ -1,0 +1,275 @@
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/dto
+END
+E_TMCREQUEST.java
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/dto/E_TMCREQUEST.java
+END
+R_pins_bought.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/dto/R_pins_bought.java
+END
+E_MERCHANT.java
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/dto/E_MERCHANT.java
+END
+MenuItemToRole.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/dto/MenuItemToRole.java
+END
+Channel.java
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/dto/Channel.java
+END
+MenuItemToMenu.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/dto/MenuItemToMenu.java
+END
+MappedMerchants.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/dto/MappedMerchants.java
+END
+Bank.java
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/dto/Bank.java
+END
+E_POSREQUEST.java
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/dto/E_POSREQUEST.java
+END
+User.java
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/dto/User.java
+END
+E_STANDARD_SPLIT.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/dto/E_STANDARD_SPLIT.java
+END
+VTU_LOG.java
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/dto/VTU_LOG.java
+END
+E_MERCHANT_SPLIT.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/dto/E_MERCHANT_SPLIT.java
+END
+MenuItem.java
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/dto/MenuItem.java
+END
+E_CATSCALE.java
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/dto/E_CATSCALE.java
+END
+REVERSAL.java
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/dto/REVERSAL.java
+END
+C_TRANSACTION.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/dto/C_TRANSACTION.java
+END
+E_TRANSACTION.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/dto/E_TRANSACTION.java
+END
+E_TMCEVENT.java
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/dto/E_TMCEVENT.java
+END
+MenuToRole.java
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/dto/MenuToRole.java
+END
+REQUEST_LOG.java
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/dto/REQUEST_LOG.java
+END
+E_SETTLEMENTDOWNLOAD_BK.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/dto/E_SETTLEMENTDOWNLOAD_BK.java
+END
+M_Outgoing_Messages.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/dto/M_Outgoing_Messages.java
+END
+E_MOBILE_SUBSCRIBER.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/dto/E_MOBILE_SUBSCRIBER.java
+END
+COP_FUNDGATE_LOG.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/dto/COP_FUNDGATE_LOG.java
+END
+E_FEE_DETAIL_BK.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/dto/E_FEE_DETAIL_BK.java
+END
+PAYTRANS.java
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/dto/PAYTRANS.java
+END
+ProfileMenuOptions.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/dto/ProfileMenuOptions.java
+END
+LOTTO_LOG.java
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/dto/LOTTO_LOG.java
+END
+E_EXCEPTION.java
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/dto/E_EXCEPTION.java
+END
+SMS_LOG.java
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/dto/SMS_LOG.java
+END
+Menu.java
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/dto/Menu.java
+END
+E_SETTLE_BATCH.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/dto/E_SETTLE_BATCH.java
+END
+M_Incoming_Messages.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/dto/M_Incoming_Messages.java
+END
+CardHolder.java
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/dto/CardHolder.java
+END
+IPAddress.java
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/dto/IPAddress.java
+END
+UserType.java
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/dto/UserType.java
+END
+MenuItemToIPAddress.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/dto/MenuItemToIPAddress.java
+END
+E_TRANSCODE.java
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/dto/E_TRANSCODE.java
+END
+E_MOBILE_SUBSCRIBER_CARD.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/dto/E_MOBILE_SUBSCRIBER_CARD.java
+END
+T_SMS_RECEIVE.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/dto/T_SMS_RECEIVE.java
+END
+E_TMCNODE.java
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/dto/E_TMCNODE.java
+END
+Summary.java
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/dto/Summary.java
+END
+E_CARDSERVICE.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/dto/E_CARDSERVICE.java
+END
+T_SMS_SEND.java
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/supportManager2/!svn/ver/1/src/com/etranzact/supportmanager/dto/T_SMS_SEND.java
+END

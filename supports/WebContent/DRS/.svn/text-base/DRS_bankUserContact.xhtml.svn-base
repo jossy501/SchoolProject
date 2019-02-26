@@ -1,0 +1,86 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="../WEB-INF/layout/basic_layout.xhtml">
+
+<ui:define name="body">
+
+
+    <a4j:form id="userFrm">
+        <rich:panel style="width:60%">
+            <f:facet name="header">Create User</f:facet>
+            <rich:graphValidator>
+			<s:link view="/DRS/DRS_listUsers.xhtml" value="List All Users" styleClass="textLink" propagation="none"/>
+                <h:panelGrid columns="2" rowClasses="prop" columnClasses="name2,value">
+                  <h:outputLabel for="bank" value="Bank: "/>
+                    <h:panelGroup>
+                        <h:selectOneMenu styleClass="controls-length2" required="true" requiredMessage="Acquirer is required" id="bank"
+                                         value="#{usercontactcontroller.clUser.bankCode}">
+
+                               <s:selectItems var="r" value="#{utility.bankList}" itemValue="#{r.bankcode}"
+                                                       label="#{r.bankname}" noSelectionLabel=":: Select ::" />
+                        </h:selectOneMenu>
+
+
+                        <h:outputLabel value=" *" styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="bank" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+
+					<h:outputLabel for="name" value="Full Name:"/>
+                    <h:panelGroup>
+                    	<h:inputText id="name" value="#{usercontactcontroller.clUser.fullname}" required="true" requiredMessage="Full Name is required"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="name" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+					<h:outputLabel for="email" value="Email:"/>
+                    <h:panelGroup>
+                    	<h:inputText id="email" value="#{usercontactcontroller.clUser.email}" required="true" requiredMessage="Email is required"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="email" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+
+					<h:outputLabel for="mobile" value="Mobile Number:"/>
+                    <h:panelGroup>
+                    	<h:inputText id="mobile" value="#{usercontactcontroller.clUser.mobile}" required="true" requiredMessage="Mobile Number is required"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="mobile" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+
+
+
+
+                  </h:panelGrid>
+
+            </rich:graphValidator>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+
+            <a4j:commandButton oncomplete="document.getElementById('userFrm:submit').disabled=false"
+                                   onclick="document.getElementById('userFrm:submit').disabled=true"
+                                   id="submit" value="   Submit  " action="#{usercontactcontroller.createUser}" reRender="userFrm, manageUserFrm"/>
+
+        </div>
+   </a4j:form>
+
+   <rich:spacer width="10px" height="10px"/>
+
+
+</ui:define>
+</ui:composition>

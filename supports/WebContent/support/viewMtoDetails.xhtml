@@ -1,0 +1,102 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="../WEB-INF/layout/basic_layout.xhtml">
+                
+<ui:define name="body">
+
+	<!-- processing panel -->
+    
+    <rich:modalPanel id="panelp" width="150" height="50">
+       <h:form id="pFrm">
+        <h:panelGrid columns="1" rowClasses="prop" columnClasses="name2,value">
+           <h:outputText value="Please wait...." styleClass="messagesingle" align="center">
+               <h:graphicImage value="/images/loading_small.gif"/>
+           </h:outputText>
+          </h:panelGrid>  
+         </h:form>
+    </rich:modalPanel>
+
+    <h:form id="manageCardFrm">
+        <h:inputHidden value="#{reportAction.mobileno}" id="hiddenId" />
+
+    	<a4j:form>
+	        <a4j:commandButton id="submit"
+	                           value="    Back   " onclick="history.back()">
+	        </a4j:commandButton>
+    	</a4j:form>
+        
+        <rich:panel style="width:100%">
+
+            <f:facet name="header">MTO Details</f:facet>
+
+            <rich:dataTable id="rcardTb" rowKeyVar="rk" rows="1000" value="#{reportAction.fundsTransfer}"  var="crd">
+                
+                
+                <rich:column>
+                    <f:facet name="header">S/N</f:facet>
+            		<h:outputText value="#{(rk+1)}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Trans Date</f:facet>
+            		<h:outputText value="#{crd.trans_date}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Commission</f:facet>
+                    <h:outputText value="#{crd.fee}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Trans Amount</f:facet>
+                    <h:outputText value="#{crd.trans_amount}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Card Number</f:facet>
+                    <h:outputText value="#{reportAction.hashData(crd.card_num)}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Merchant Code</f:facet>
+                    <h:outputText value="#{crd.merchat_code}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Reference No</f:facet>
+                    <h:outputText value="#{crd.trans_ref}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Time</f:facet>
+                    <h:outputText value="#{crd.tran_time}"/>
+                </rich:column>
+                
+                <f:facet name="footer">
+                    <rich:datascroller id="incomingDS" for="rcardTb"  renderIfSinglePage="true">
+                        <f:facet name="first">
+                            <h:outputText value="First" />
+                        </f:facet>
+                        <f:facet name="last">
+                            <h:outputText value="Last" />
+                        </f:facet>
+                    </rich:datascroller>
+                </f:facet>
+                
+            </rich:dataTable>
+
+        </rich:panel>
+        
+        
+        
+    </h:form>
+    
+</ui:define>
+</ui:composition>

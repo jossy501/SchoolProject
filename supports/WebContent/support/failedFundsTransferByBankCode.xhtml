@@ -1,0 +1,81 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="../WEB-INF/layout/basic_layout.xhtml">
+                
+<ui:define name="body">
+
+
+    <h:form id="manageCardFrm">
+    
+    	<s:link title="Back" view="/support/failedFundsTransfer.xhtml"  propagation="none">
+            <h:graphicImage alt="Return" value="/images/return.png"/>
+        </s:link>
+    
+        <rich:panel style="width:100%" rendered = "#{reportAction.failedSummaryLog.size() > 0 }">
+
+            <f:facet name="header">Failed Funds Transfer Report By Receiving Bank Grouped By Error Codes [ Total Record(s) found :  #{reportAction.failedSummaryLog.size()} ]</f:facet>
+
+            <rich:dataTable id="cardTb" rows="1000" rowKeyVar="rowKey" value="#{reportAction.failedSummaryLog}"  var="crd">
+                
+                <rich:column>
+                    <f:facet name="header">SN</f:facet>
+                     <h:outputText value="#{rowKey+1}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Bank Code</f:facet>
+                     <h:outputText value="#{crd.merchant_code}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Error Code</f:facet>
+				    <s:link view="/support/failedFundsTransferByBankAndErrorCode.xhtml" value="#{crd.response_code}" action="#{reportAction.viewFailedFundsTransferByBankCodeAndErrorCode}">
+                            <f:param name="id" value="#{crd.response_code}:#{crd.merchant_code}"/>
+            		</s:link>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Error Desc</f:facet>
+                     <h:outputText value="#{crd.response_time}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Count</f:facet>
+                    <h:outputText value="#{crd.counter}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Amount</f:facet>
+                    <h:outputText value="#{reportAction.makeDouble(crd.trans_amount)}" style="float: right;">
+				    	<f:convertNumber pattern="#,###,###,###,###.00"/>
+				    </h:outputText>
+                </rich:column>
+
+                
+                
+                <f:facet name="footer">
+                    <rich:datascroller id="cardTableDS" for="cardTb"  renderIfSinglePage="true">
+                        <f:facet name="first">
+                            <h:outputText value="First" />
+                        </f:facet>
+                        <f:facet name="last">
+                            <h:outputText value="Last" />
+                        </f:facet>
+                    </rich:datascroller>
+                </f:facet>
+            </rich:dataTable>
+
+
+        </rich:panel>
+
+    </h:form>
+    
+</ui:define>
+</ui:composition>

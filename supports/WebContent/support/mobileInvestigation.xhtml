@@ -1,0 +1,357 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="../WEB-INF/layout/basic_layout.xhtml">
+                
+<ui:define name="body">
+
+
+	<!-- processing panel -->
+    
+    <rich:modalPanel id="panelp" width="150" height="50">
+       <h:form id="pFrm">
+        <h:panelGrid columns="1" rowClasses="prop" columnClasses="name2,value">
+           <h:outputText value="Please wait...." styleClass="messagesingle" align="center">
+               <h:graphicImage value="/images/loading_small.gif"/>
+           </h:outputText>
+          </h:panelGrid>  
+         </h:form>
+    </rich:modalPanel>
+
+    <h:form id="cardFrm">
+    <h:inputHidden value="#{reportAction.channel_id}" id="hiddenId" />
+    
+    
+        <rich:panel style="width:40%">
+            <f:facet name="header">MOBILE Report</f:facet>
+            <rich:graphValidator>
+                <h:panelGrid columns="2" rowClasses="prop" columnClasses="name2,value">
+
+                    <h:outputLabel id="mobileno" for="mobileno" value="Mobile No"/>
+                    <h:panelGroup>
+                        <h:inputText id="mobile" value="#{reportAction.card_num}" required="false"/>
+                    </h:panelGroup>
+                    
+                    <h:outputLabel id ="start_date" for="start_date" value="Start Date"/>
+                    <h:panelGroup>
+                    	<rich:calendar value="#{reportAction.start_date}" required="true" id="strt_date"
+                                       datePattern="yyyy-MM-dd" styleClass="controls-length2" requiredMessage="Start Date is required"/>
+                        <span style="white-space:nowrap">
+                            &nbsp;
+                        </span>
+                        <h:selectOneMenu id="start_hr" value="#{reportAction.start_hr}">
+                            <f:selectItem itemLabel="00" itemValue="00" />
+                            <f:selectItem itemLabel="01" itemValue="01" />
+                            <f:selectItem itemLabel="02" itemValue="02" />
+                            <f:selectItem itemLabel="03" itemValue="03" />
+                            <f:selectItem itemLabel="04" itemValue="04" />
+                            <f:selectItem itemLabel="05" itemValue="05" />
+                            <f:selectItem itemLabel="06" itemValue="06" />
+                            <f:selectItem itemLabel="07" itemValue="07" />
+                            <f:selectItem itemLabel="08" itemValue="08" />
+                            <f:selectItem itemLabel="09" itemValue="09" />
+                            <f:selectItem itemLabel="10" itemValue="10" />
+                            <f:selectItem itemLabel="11" itemValue="11" />
+                            <f:selectItem itemLabel="12" itemValue="12" />
+                            <f:selectItem itemLabel="13" itemValue="13" />
+                            <f:selectItem itemLabel="14" itemValue="14" />
+                            <f:selectItem itemLabel="15" itemValue="15" />
+                            <f:selectItem itemLabel="16" itemValue="16" />
+                            <f:selectItem itemLabel="17" itemValue="17" />
+                            <f:selectItem itemLabel="18" itemValue="18" />
+                            <f:selectItem itemLabel="19" itemValue="19" />
+                            <f:selectItem itemLabel="20" itemValue="20" />
+                            <f:selectItem itemLabel="21" itemValue="21" />
+                            <f:selectItem itemLabel="22" itemValue="22" />
+                            <f:selectItem itemLabel="23" itemValue="23" />
+
+                        </h:selectOneMenu>
+                        <h:outputLabel value=" *" styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="start_date" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>                              
+                    </h:panelGroup>
+                    
+                    
+                    <h:outputLabel id="end_date" for="end_date" value="End Date"/>
+                    <h:panelGroup>
+                    	<rich:calendar value="#{reportAction.end_date}" required="true" id="ed_date"
+                                       datePattern="yyyy-MM-dd" styleClass="controls-length2" requiredMessage="End Date is required"/>
+                        
+                        <span style="white-space:nowrap">
+                            &nbsp;
+                        </span>
+                        <h:selectOneMenu id="end_hr" value="#{reportAction.end_hr}">
+                            <f:selectItem itemLabel="00" itemValue="00" />
+                            <f:selectItem itemLabel="01" itemValue="01" />
+                            <f:selectItem itemLabel="02" itemValue="02" />
+                            <f:selectItem itemLabel="03" itemValue="03" />
+                            <f:selectItem itemLabel="04" itemValue="04" />
+                            <f:selectItem itemLabel="05" itemValue="05" />
+                            <f:selectItem itemLabel="06" itemValue="06" />
+                            <f:selectItem itemLabel="07" itemValue="07" />
+                            <f:selectItem itemLabel="08" itemValue="08" />
+                            <f:selectItem itemLabel="09" itemValue="09" />
+                            <f:selectItem itemLabel="10" itemValue="10" />
+                            <f:selectItem itemLabel="11" itemValue="11" />
+                            <f:selectItem itemLabel="12" itemValue="12" />
+                            <f:selectItem itemLabel="13" itemValue="13" />
+                            <f:selectItem itemLabel="14" itemValue="14" />
+                            <f:selectItem itemLabel="15" itemValue="15" />
+                            <f:selectItem itemLabel="16" itemValue="16" />
+                            <f:selectItem itemLabel="17" itemValue="17" />
+                            <f:selectItem itemLabel="18" itemValue="18" />
+                            <f:selectItem itemLabel="19" itemValue="19" />
+                            <f:selectItem itemLabel="20" itemValue="20" />
+                            <f:selectItem itemLabel="21" itemValue="21" />
+                            <f:selectItem itemLabel="22" itemValue="22" />
+                            <f:selectItem itemLabel="23" itemValue="23" />
+
+                        </h:selectOneMenu>
+                        <h:outputLabel value=" *" styleClass="messagesingle" />
+                        <br/>
+                        <rich:message for="end_date" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>                              
+                    </h:panelGroup>
+                    
+                    <h:outputLabel id="status" for="status" value="Status"/>
+                    <h:panelGroup>
+                        <h:selectOneMenu styleClass="controls-length2" id="selStatus"
+                                         value="#{reportAction.status_id}">
+                                         
+                            <f:selectItem itemLabel="ALL" itemValue="ALL" />
+                            <f:selectItem itemLabel="ONLY SMS LOG" itemValue="ONLY SMS LOG" />   
+                        </h:selectOneMenu>
+                    </h:panelGroup>
+                    
+                    
+                    <h:outputLabel value="Mobile Type"/>
+                    <h:panelGroup>
+                        <h:selectOneMenu styleClass="controls-length2" id="selType"
+                                         value="#{reportAction.line_type}">
+                                         
+                            <f:selectItem itemLabel="Version I" itemValue="Version I" />
+                            <f:selectItem itemLabel="Version II" itemValue="Version II" />   
+                        </h:selectOneMenu>
+                    </h:panelGroup>
+                    
+                    
+                    
+                  </h:panelGrid>  
+                   
+            </rich:graphValidator>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+            
+            <h:commandButton id="submit" value="  Search  " action="#{reportAction.viewSupportLog}" onclick="document.getElementById('cardFrm:hiddenId').value = '2'" reRender="manageCardFrm">
+            	<rich:componentControl for="panelp" attachTo="submit" operation="show" event="onclick"/>
+            </h:commandButton>
+            
+        </div>
+   </h:form>
+   
+   <rich:spacer width="10px" height="20px"/>
+
+    <h:form id="manageCardFrm">
+
+    	<!-- Mobile -->
+        <rich:panel style="width:100%" rendered = "#{reportAction.status_id eq 'ALL' and reportAction.line_type eq 'Version I'}">
+
+           <f:facet name="header">Report [ Total Record(s) found :  #{reportAction.supportLog.size()} ]</f:facet>
+
+            <rich:dataTable id="mcardTb" rows="1000" value="#{reportAction.supportLog}"  var="crd">
+                
+                 <rich:column>
+                    <f:facet name="header">SN</f:facet>
+                    <h:outputText value="#{crd.counter}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Sms Key</f:facet>
+                     
+            		<s:link view="/support/viewLog.xhtml" value="#{crd.sms_key}" action="#{reportAction.drillDown_Log}" id="link3">
+                            <f:param name="id" value="#{crd.sms_key}:#{reportAction.card_num}"/>
+                            <rich:componentControl for="panelp" attachTo="link3" operation="show" event="onclick"/>
+            		</s:link>
+				    
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Sms Destination</f:facet>
+                    <h:outputText value="#{crd.sms_dest}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Sms Originator</f:facet>
+                    <h:outputText value="#{crd.sms_originator}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Sms Status</f:facet>
+                    <h:outputText value="#{crd.sms_status}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Sms Message</f:facet>
+                    <h:outputText value="#{crd.sms_message}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Trans Date</f:facet>
+                    <h:outputText value="#{crd.trans_dt}"/>
+                </rich:column>
+                
+                <rich:column><!-- pin type -->
+                	<f:facet name="header">Action</f:facet>
+	            	<h:commandButton action="#{reportAction.resendPin}" reRender="manageCardFrm"  value="Resend PIN" id="submit1" rendered = "#{crd.transType eq 'V'}">
+	            		<f:setPropertyActionListener target="#{reportAction.mobileno}" value="#{crd.sms_key}:#{crd.sms_originator}" />
+	            		<rich:componentControl for="panelp" attachTo="submit1" operation="show" event="onclick"/>
+	            	</h:commandButton>
+                </rich:column>
+
+                <f:facet name="footer">
+                    <rich:datascroller id="cardTableDS" for="mcardTb"  renderIfSinglePage="true">
+                        <f:facet name="first">
+                            <h:outputText value="First" />
+                        </f:facet>
+                        <f:facet name="last">
+                            <h:outputText value="Last" />
+                        </f:facet>
+                    </rich:datascroller>
+                </f:facet>
+            </rich:dataTable>
+
+
+        </rich:panel>
+        
+        <rich:panel style="width:100%" rendered = "#{reportAction.status_id eq 'ONLY SMS LOG' and reportAction.line_type eq 'Version I'}">
+
+            <f:facet name="header">DATA FROM SMS LOG</f:facet>
+
+            <rich:dataTable id="smsLogTb" rows="20" value="#{reportAction.supportLog}"  var="crd">
+                
+                <rich:column>
+                    <f:facet name="header">Unique TransID</f:facet>
+                    <h:outputText value="#{crd.unique_transid}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Mobile</f:facet>
+                    <h:outputText value="#{crd.mobile}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Trans Type</f:facet>
+                    <h:outputText value="#{crd.trans_type}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Response Message</f:facet>
+                    <h:outputText value="#{crd.response_message}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Response Code</f:facet>
+                    <h:outputText value="#{crd.response_code}"/>
+                </rich:column>
+                
+                
+                <rich:column>
+                    <f:facet name="header">Date</f:facet>
+                    <h:outputText value="#{crd.message_date}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Delay Time(In secs)</f:facet>
+                    <h:outputText value="#{crd.response_time_in_secs}"/>
+                </rich:column>
+                
+
+            </rich:dataTable>
+
+        </rich:panel>
+              
+       <rich:panel style="width:100%" rendered = "#{reportAction.line_type eq 'Version II'}">
+
+            <f:facet name="header">DATA FROM INCOMING MESSAGES [ Total Record(s) found :  #{reportAction.supportLog.size()} ]</f:facet>
+
+            <rich:dataTable id="incomingTb" rowKeyVar="rowKey" rows="1000" value="#{reportAction.supportLog}"  var="crd">
+                
+                <rich:column>
+						<f:facet name="header">S/N</f:facet>
+						<h:outputText value="#{rowKey+1}"/>
+				</rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Unique TransID</f:facet>
+                    <s:link view="/support/viewPocketMoniDrillDown.xhtml" value="#{crd.unique_transid}" action="#{reportAction.drillDownPocketMoni}" id="link4">
+                            <f:param name="id" value="#{crd.unique_transid}:#{crd.id}"/>
+                            <rich:componentControl for="panelp" attachTo="link4" operation="show" event="onclick"/>
+            		</s:link>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Mobile No</f:facet>
+                    <h:outputText value="#{crd.mobile_no}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Destination No</f:facet>
+                    <h:outputText value="#{crd.destination_no}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Channel</f:facet>
+                    <h:outputText value="#{crd.channel}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Message</f:facet>
+                    <h:outputText value="#{crd.message}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Ticket ID</f:facet>
+                    <h:outputText value="#{crd.ticket_id}"/>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Date</f:facet>
+                    <h:outputText value="#{crd.msg_date}"/>
+                </rich:column>
+                
+                <rich:column><!-- pin type -->
+                	<f:facet name="header">Action</f:facet>
+	            	<h:commandButton action="#{reportAction.resendPinVersionII}" reRender="manageCardFrm"  value="Resend PIN" id="submit1" rendered = "#{crd.transType eq 'V'}">
+	            		<f:setPropertyActionListener target="#{reportAction.mobileno}" value="#{crd.id}:#{crd.mobile_no}" />
+	            		<rich:componentControl for="panelp" attachTo="submit1" operation="show" event="onclick"/>
+	            	</h:commandButton>
+                </rich:column>
+                
+                <f:facet name="footer">
+                    <rich:datascroller id="incomingDS" for="incomingTb"  renderIfSinglePage="true">
+                        <f:facet name="first">
+                            <h:outputText value="First" />
+                        </f:facet>
+                        <f:facet name="last">
+                            <h:outputText value="Last" />
+                        </f:facet>
+                    </rich:datascroller>
+                </f:facet>
+                
+            </rich:dataTable>
+
+        </rich:panel>
+        
+    </h:form>
+    
+</ui:define>
+</ui:composition>

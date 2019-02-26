@@ -1,0 +1,68 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:e="http://jboss.com/products/seam/excel"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:c="http://java.sun.com/jstl/core">
+
+<e:workbook type="jxl" ignoreBlanks="false" filename="bankCommissionLog.xls">
+<e:worksheet name="Report" value="#{merchantReportAction.merchantBankComm}" var="crd" startRow="0">
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="No"/>
+	</f:facet>
+	<e:formula value="ROW()-1"/>
+</e:column>
+
+<e:column rendered = "#{merchantReportAction.channel_id eq 'Branch'}">
+	<f:facet name="header">
+		<e:cell value="Branch Code"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{crd.merchant_code}" escape="false"/>
+	</e:cell>
+</e:column>
+
+
+<e:column rendered = "#{merchantReportAction.channel_id eq 'Branch'}">
+	<f:facet name="header">
+		<e:cell value="Branch Name"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{crd.bank_code}" escape="false"/>
+	</e:cell>
+</e:column>
+
+<e:column rendered = "#{merchantReportAction.channel_id eq 'Channel'}">
+	<f:facet name="header">
+		<e:cell value="Channel ID"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{crd.merchant_code}" escape="false"/>
+	</e:cell>
+</e:column>
+
+
+<e:column rendered = "#{merchantReportAction.channel_id eq 'Channel'}">
+	<f:facet name="header">
+		<e:cell value="Channel Name"/>
+	</f:facet>
+	<e:cell>
+		<h:outputText value="#{crd.bank_code}" escape="false"/>
+	</e:cell>
+</e:column>
+
+
+<e:column>
+	<f:facet name="header">
+		<e:cell value="Amount"/>
+	</f:facet>
+	<e:cell value="#{reportAction.makeDouble(crd.total_amount)}">
+		
+	</e:cell>
+</e:column>
+
+</e:worksheet>
+</e:workbook>
+</html>
