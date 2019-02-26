@@ -1,0 +1,170 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="../WEB-INF/layout/basic_layout.xhtml">
+                
+<ui:define name="body">
+
+
+	<!-- processing panel -->
+    
+    <rich:modalPanel id="panelp" width="150" height="50">
+       <h:form id="pFrm">
+        <h:panelGrid columns="1" rowClasses="prop" columnClasses="name2,value">
+           <h:outputText value="Please wait...." styleClass="messagesingle" align="center">
+               <h:graphicImage value="/images/loading_small.gif"/>
+           </h:outputText>
+          </h:panelGrid>  
+         </h:form>
+    </rich:modalPanel>
+
+    <a4j:form id="userFrm">
+        <rich:panel style="width:40%" rendered = "#{adminAction.edit_id eq null}">
+            <f:facet name="header">Create Menu</f:facet>
+            <rich:graphValidator>
+                <h:panelGrid columns="2" rowClasses="prop" columnClasses="name2,value">
+                    
+                    <h:outputLabel id="menu_label" value="Menu Name"/>
+                    <h:panelGroup>
+                    	<h:inputText id="menu" value="#{adminAction.menu.menu_nm}" required="true" requiredMessage="Menu name is required" size="40"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="menu" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+
+                    <h:outputLabel id="comments_label" value="Comments"/>
+                    <h:panelGroup>
+                    	<h:inputTextarea id="comments" rows="5" cols="30" value="#{adminAction.menu.menu_comments}" required="true" requiredMessage="Menu Comments is required" size="40"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="comments" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                    
+                    
+                  </h:panelGrid>  
+                   
+            </rich:graphValidator>
+            
+            
+            <div class="actionButtons" >
+            <a4j:commandButton oncomplete="document.getElementById('userFrm:submit').disabled=false"
+                                   onclick="document.getElementById('userFrm:submit').disabled=true"
+                                   id="submit" value="   Submit  " action="#{adminAction.createMenu}" reRender="userFrm, manageUserFrm"/>
+        </div>
+
+        </rich:panel>
+        
+        <!-- update -->
+        
+        <rich:panel style="width:40%" rendered = "#{adminAction.edit_id ne null}">
+            <f:facet name="header">Update Menu</f:facet>
+            <rich:graphValidator>
+                <h:panelGrid columns="2" rowClasses="prop" columnClasses="name2,value">
+                    
+                    <h:outputLabel id="menu_label1" value="Menu Name"/>
+                    <h:panelGroup>
+                    	<h:inputText id="menu1" value="#{adminAction.menu.menu_nm}" required="true" requiredMessage="Menu name is required" size="40"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="menu1" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+
+                    <h:outputLabel id="comments_label1" value="Comments"/>
+                    <h:panelGroup>
+                    	<h:inputTextarea id="comments1" rows="5" cols="30" value="#{adminAction.menu.menu_comments}" required="true" requiredMessage="Menu Comments is required" size="40"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="comments1" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                    
+                    
+                  </h:panelGrid>  
+                   
+            </rich:graphValidator>
+            
+            
+            <div class="actionButtons" >
+            	<a4j:commandButton oncomplete="document.getElementById('userFrm:submit1').disabled=false"
+                                   onclick="document.getElementById('userFrm:submit1').disabled=true"
+                                   id="submit1" value="   Update  " action="#{adminAction.updateMenu}" reRender="userFrm, manageUserFrm"/>
+               
+                <a4j:commandButton oncomplete="document.getElementById('userFrm:submit2').disabled=false"
+                                   onclick="document.getElementById('userFrm:submit2').disabled=true"
+                                   id="submit2" value="   New Menu  " action="#{adminAction.resetValues}" reRender="userFrm, manageUserFrm"/>                    
+                                   
+        	</div>
+
+        </rich:panel>
+
+        
+        
+   </a4j:form>
+
+   <rich:spacer width="10px" height="10px"/>
+   
+   <a4j:form id="manageUserFrm">
+         <rich:panel style="width:100%" id="displayUserPanel">
+         
+             <f:facet name="header">Manage Menus</f:facet>
+             
+             <rich:dataTable id="userTb" reRender="userTableDS" rows="1000" value="#{adminAction.menuList}"  var="usr">
+				
+				<rich:column>
+					<f:facet name="header">SN</f:facet>
+					<h:outputText value="#{usr.counter}"/>
+				</rich:column>
+				
+				<rich:column>
+					<f:facet name="header">Menu Name</f:facet>
+					<h:outputText value="#{usr.menu_nm}"/>
+				</rich:column>
+				
+				<rich:column>
+					<f:facet name="header">Comments</f:facet>
+					<h:outputText value="#{usr.menu_comments}"/>
+				</rich:column>
+				<rich:column>
+					
+					<h:commandButton action="#{adminAction.setMenuToEdit}" reRender="manageUserFrm"  image="/images/edit.png" id="submit_edit">
+		            	<f:setPropertyActionListener target="#{adminAction.edit_id}" value="#{usr.menu_id}" />
+		            	<rich:componentControl for="panelp" attachTo="submit_edit" operation="show" event="onclick"/>
+		            </h:commandButton>
+					
+					<rich:spacer width="10px" height="10px"/>
+					
+					<h:commandButton action="#{adminAction.deleteMenu}" reRender="manageUserFrm"  image="/images/invalid.png" id="submit_delete">
+		            	<f:setPropertyActionListener target="#{adminAction.operation_id}" value="#{usr.menu_id}" />
+		            	<rich:componentControl for="panelp" attachTo="submit_delete" operation="show" event="onclick"/>
+		            </h:commandButton>
+
+				</rich:column>
+				<f:facet name="footer">
+					<rich:datascroller id="userTableDS" for="userTb"  renderIfSinglePage="true">
+						<f:facet name="first">
+							<h:outputText value="First" />
+						</f:facet>
+						<f:facet name="last">
+							<h:outputText value="Last" />
+						</f:facet>
+					</rich:datascroller>
+				</f:facet>
+			</rich:dataTable>
+
+         </rich:panel>
+         
+         
+     </a4j:form>
+   
+    
+</ui:define>
+</ui:composition>

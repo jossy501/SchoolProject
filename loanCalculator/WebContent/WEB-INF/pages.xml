@@ -1,0 +1,87 @@
+
+<pages xmlns="http://jboss.com/products/seam/pages"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.1.xsd">
+	<page view-id="/index.xhtml" action= "#{authenticator.validateSession}">
+        <navigation from-action="#{authenticator.signIn}">
+            <rule if="#{authenticator.curUser.loggedIn and authenticator.curUser.first_logon eq 1}">
+                <redirect view-id="/welcome.xhtml"/>
+            </rule>
+            <rule if="#{!authenticator.curUser.loggedIn and authenticator.curUser.first_logon eq 0}">
+                <redirect view-id="/support/changeFirstPassword.xhtml"/>
+            </rule>
+            <rule if="#{!authenticator.curUser.loggedIn}">
+                <redirect view-id="/index.xhtml"/>
+            </rule>
+        </navigation>
+        <navigation from-action="#{authenticator.validateSession}">
+        	<rule if="#{authenticator.curUser.loggedIn}">
+                <redirect view-id="/welcome.xhtml"/>
+            </rule>
+        </navigation>
+    </page>
+    <page view-id="/support/changeFirstPassword.xhtml">
+        <navigation from-action="#{authenticator.changeFirstPassword}">
+            <rule if="#{authenticator.curUser.loggedIn}">
+                <redirect view-id="/welcome.xhtml"/>
+            </rule>
+            <rule if="#{!authenticator.curUser.loggedIn}">
+                <redirect view-id="/support/changeFirstPassword.xhtml"/>
+            </rule>
+        </navigation>
+    </page>
+    <page view-id="*">
+        <navigation from-action="#{authenticator.signOut}">
+            <redirect view-id="/signout.xhtml"/>
+        </navigation>
+    </page>
+    <exception class="org.jboss.seam.framework.EntityNotFoundException">
+        <redirect view-id="/error.xhtml">
+            <message severity="warn">Record not found</message>
+        </redirect>
+    </exception>
+    <exception class="javax.persistence.EntityNotFoundException">
+        <redirect view-id="/error.xhtml">
+            <message severity="warn">Record not found</message>
+        </redirect>
+    </exception>
+    <exception class="javax.persistence.EntityExistsException">
+        <redirect view-id="/error.xhtml">
+            <message severity="warn">Duplicate record</message>
+        </redirect>
+    </exception>
+    <exception class="javax.persistence.OptimisticLockException">
+        <end-conversation/>
+        <redirect view-id="/error.xhtml">
+            <message severity="warn">Another user changed the same data, please try again</message>
+        </redirect>
+    </exception>
+    <exception class="org.jboss.seam.security.AuthorizationException">
+        <redirect view-id="/error.xhtml">
+            <message severity="error">You don't have permission to access this resource</message>
+        </redirect>
+    </exception>
+    <exception class="org.jboss.seam.security.NotLoggedInException">
+        <redirect view-id="/index.xhtml">
+            <message severity="warn"></message>
+        </redirect>
+    </exception>
+    <exception class="javax.faces.application.ViewExpiredException">
+        <redirect view-id="/error.xhtml">
+            <message severity="warn">Your session has timed out, please re-login and try again.</message>
+        </redirect>
+    </exception>
+    <exception class="org.jboss.seam.ConcurrentRequestTimeoutException" log-level="trace">
+      <http-error error-code="503" />
+    </exception>
+    <exception class="java.lang.IllegalStateException">
+    <redirect view-id="/error.xhtml">
+        <message>Sorry, Server too busy to service this request, please re-login and try again.</message>
+    </redirect>
+	</exception>
+    <exception>
+        <redirect view-id="/error.xhtml">
+            <message severity="error">Unexpected error, please re-login and try again.</message>
+        </redirect>
+    </exception>
+</pages>

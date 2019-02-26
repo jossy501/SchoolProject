@@ -1,0 +1,320 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="../WEB-INF/layout/basic_layout.xhtml">
+                
+<ui:define name="body">
+
+	<!-- javascript -->
+	
+	<script language="JavaScript" type="text/javascript">
+
+        function showip()
+        {
+        	var c = document.getElementById('userFrm:selStatus').value;
+	        if(c == "RESTRICTED ACCESS")
+	        {
+	        	document.getElementById('ipAddressInfo').style.display = "block";
+	        }
+	        else if(c == "ANYWHERE")
+	        {
+		        document.getElementById('ipAddressInfo').style.display = "none";
+	        }
+        }
+        
+        function showip1()
+        {
+        	var c = document.getElementById('userFrm:selStatus1').value;
+	        if(c == "RESTRICTED ACCESS")
+	        {
+	        	document.getElementById('ipAddressInfo1').style.display = "block";
+	        }
+	        else if(c == "ANYWHERE")
+	        {
+		        document.getElementById('ipAddressInfo1').style.display = "none";
+	        }
+        }
+        
+      </script>
+
+
+	
+	<!-- processing panel -->
+    
+    <rich:modalPanel id="panelp" width="150" height="50">
+       <h:form id="pFrm">
+        <h:panelGrid columns="1" rowClasses="prop" columnClasses="name2,value">
+           <h:outputText value="Please wait...." styleClass="messagesingle" align="center">
+               <h:graphicImage value="/images/loading_small.gif"/>
+           </h:outputText>
+          </h:panelGrid>  
+         </h:form>
+    </rich:modalPanel>
+    
+    <!--  -->
+
+    <a4j:form id="userFrm">
+        <rich:panel style="width:40%" rendered = "#{adminAction.edit_id eq null}">
+            <f:facet name="header">Create MenuItem</f:facet>
+            <rich:graphValidator>
+                <h:panelGrid columns="2" rowClasses="prop" columnClasses="name2,value">
+                    
+                    <h:outputLabel id="menu_label" value="MenuItem Name"/>
+                    <h:panelGroup>
+                    	<h:inputText id="menu" value="#{adminAction.menuItem.menuitem_nm}" required="true" requiredMessage="Menu name is required" size="40"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="menu" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+
+					<h:outputLabel id="menuitem_label" value="MenuItem Link"/>
+                    <h:panelGroup>
+                    	<h:inputText id="menu_item" value="#{adminAction.menuItem.menuitem_link}" required="true" requiredMessage="MenuItem Link is required" size="40"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="menu_item" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+
+                    <h:outputLabel id="comments_label" value="Comments"/>
+                    <h:panelGroup>
+                    	<h:inputTextarea id="comments" rows="5" cols="30" styleClass="vertical-align:top;" value="#{adminAction.menuItem.menuitem_comments}" required="true" requiredMessage="Comments is required" size="40"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="comments" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                    
+                    <h:outputLabel id="extraparam_label" value="Access Level"/>
+                    <h:panelGroup>
+                    	<h:selectOneMenu styleClass="controls-length2" id="selStatus"
+                                         value="#{adminAction.menuItem.extraParam}" onchange="showip();" required="true">
+                                         
+                            <f:selectItem itemLabel="ANYWHERE" itemValue="ANYWHERE" />
+                            <f:selectItem itemLabel="RESTRICTED ACCESS" itemValue="RESTRICTED ACCESS" />   
+                        </h:selectOneMenu>
+                    </h:panelGroup>
+                    
+                  </h:panelGrid>  
+                   
+            </rich:graphValidator>
+            
+        </rich:panel>
+        
+        <rich:spacer width="10px" height="10px"/>
+        
+        <div id="ipAddressInfo" style="display: none">
+         <rich:panel style="width:40%" id="ipPanel" rendered = "#{adminAction.edit_id eq null}">
+       		
+       		<f:facet name="header"></f:facet>
+       		<h:panelGrid columns="2" rowClasses="prop" columnClasses="name2,value">
+	       		<h:outputLabel id="email_label" styleClass="vertical-align:top;" value="IP Address" />
+	               <h:panelGroup>
+	               	<rich:pickList value = "#{adminAction.menuItemToIpAddressList}" id ="modalPanel" >
+	               		<s:selectItems value="#{adminAction.ipAddressList}" var = "r" itemValue="#{r.id}" label = "#{r.ip_address}"/>
+	      			</rich:pickList>
+	          	</h:panelGroup>
+          	</h:panelGrid>
+          	
+         </rich:panel>
+		 </div>
+		 
+         <rich:panel style="width:40%" rendered = "#{adminAction.edit_id eq null}">
+       		
+       		<f:facet name="header"></f:facet>
+       		<div class="actionButtons" >
+            	<a4j:commandButton oncomplete="javascript:showip()"
+                                   id="submit" value="   Submit  " action="#{adminAction.createMenuItem}" reRender="userFrm, manageUserFrm"/>
+        	</div>
+          	
+         </rich:panel>
+		 
+   <!-- update -->
+
+        <rich:panel style="width:40%" rendered = "#{adminAction.edit_id ne null}">
+            <f:facet name="header">Update MenuItem</f:facet>
+            <rich:graphValidator>
+                <h:panelGrid columns="2" rowClasses="prop" columnClasses="name2,value">
+                    
+                    <h:outputLabel id="menu_label1" value="MenuItem Name"/>
+                    <h:panelGroup>
+                    	<h:inputText id="menu1" value="#{adminAction.menuItem.menuitem_nm}" required="true" requiredMessage="Menu name is required" size="40"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="menu1" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+
+					<h:outputLabel id="menuitem_label1" value="MenuItem Link"/>
+                    <h:panelGroup>
+                    	<h:inputText id="menu_item1" value="#{adminAction.menuItem.menuitem_link}" required="true" requiredMessage="MenuItem Link is required" size="40"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="menu_item1" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+
+                    <h:outputLabel id="comments_label1" value="Comments"/>
+                    <h:panelGroup>
+                    	<h:inputTextarea id="comments1" rows="5" cols="30" styleClass="vertical-align:top;" value="#{adminAction.menuItem.menuitem_comments}" required="true" requiredMessage="Comments is required" size="40"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="comments1" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                    
+                    <h:outputLabel id="extraparam_label1" value="Access Level"/>
+                    <h:panelGroup>
+                    	<h:selectOneMenu styleClass="controls-length2" id="selStatus1"
+                                         value="#{adminAction.menuItem.extraParam}" onchange="showip1();" required="true">
+                                         
+                            <f:selectItem itemLabel="ANYWHERE" itemValue="ANYWHERE" />
+                            <f:selectItem itemLabel="RESTRICTED ACCESS" itemValue="RESTRICTED ACCESS" />   
+                        </h:selectOneMenu>
+                    </h:panelGroup>
+                    
+                  </h:panelGrid>  
+                   
+            </rich:graphValidator>
+            
+        </rich:panel>
+        
+        <rich:spacer width="10px" height="10px"/>
+        
+        <div id="ipAddressInfo1" style="display: none">
+         <rich:panel style="width:40%" id="ipPanel1" rendered = "#{adminAction.edit_id ne null}">
+       		
+       		<f:facet name="header"></f:facet>
+       		<h:panelGrid columns="2" rowClasses="prop" columnClasses="name2,value">
+	       		<h:outputLabel id="email_label1" styleClass="vertical-align:top;" value="IP Address" />
+	               <h:panelGroup>
+	               	<rich:pickList value = "#{adminAction.menuItemToIpAddressList}" id ="modalPanel1" >
+	               		<s:selectItems value="#{adminAction.ipAddressList}" var = "r" itemValue="#{r.id}" label = "#{r.ip_address}"/>
+	      			</rich:pickList>
+	          	</h:panelGroup>
+          	</h:panelGrid>
+          	
+         </rich:panel>
+		 </div>
+		 
+         <rich:panel style="width:40%" rendered = "#{adminAction.edit_id ne null}">
+       		
+       		<f:facet name="header"></f:facet>
+       		<div class="actionButtons" >
+            	<a4j:commandButton oncomplete="javascript:showip1()"
+                                   id="submit1" value="   Update  " action="#{adminAction.updateMenuitem}" reRender="userFrm, manageUserFrm"/>
+                
+                <a4j:commandButton oncomplete="javascript:showip1()"
+                                   id="submit2" value="   New MenuItem  " action="#{adminAction.resetValues}" reRender="userFrm, manageUserFrm"/>
+                                   
+                                   
+        	</div>
+          	
+         </rich:panel>
+         
+        <script language="JavaScript" type="text/javascript">
+
+			var load_timer; 
+	        function showip2()
+	        {
+	        	var c = document.getElementById('userFrm:selStatus1').value;
+		        if(c == "RESTRICTED ACCESS")
+		        {
+		        	document.getElementById('ipAddressInfo1').style.display = "block";
+		        }
+		        else if(c == "ANYWHERE")
+		        {
+			        document.getElementById('ipAddressInfo1').style.display = "none";
+		        }
+		        window.clearInterval(load_timer);
+	        }
+	        load_timer = window.setInterval("showip2()", 10);
+        </script> 
+		 
+   </a4j:form>
+
+   <rich:spacer width="10px" height="10px"/>
+   
+   <a4j:form id="manageUserFrm">
+         <rich:panel style="width:100%" id="displayUserPanel">
+         
+             <f:facet name="header">Manage MenuItems</f:facet>
+             
+             <rich:dataTable id="userTb" reRender="userTableDS" rows="1000" value="#{adminAction.menuItemList}"  var="usr">
+				
+				<rich:column>
+					<f:facet name="header">SN</f:facet>
+					<h:outputText value="#{usr.counter}"/>
+				</rich:column>
+				
+				<rich:column>
+					<f:facet name="header">MenuItem Name</f:facet>
+					<h:outputText value="#{usr.menuitem_nm}"/>
+				</rich:column>
+				
+				<rich:column>
+					<f:facet name="header">MenuItem Link</f:facet>
+					<h:outputText value="#{usr.menuitem_link}"/>
+				</rich:column>
+				
+				<rich:column>
+					<f:facet name="header">Comments</f:facet>
+					<h:outputText value="#{usr.menuitem_comments}"/>
+				</rich:column>
+				
+				<rich:column rendered = "#{usr.extraParam eq 'ANYWHERE'}">
+					<f:facet name="header">Access Level</f:facet>
+					<h:outputText value="#{usr.extraParam}"/>
+				</rich:column>
+				
+				<rich:column rendered = "#{usr.extraParam eq 'RESTRICTED ACCESS'}">
+					<f:facet name="header">Access Level</f:facet>
+				    <s:link view="/support/viewMenuitemIPAddress.xhtml" value="#{usr.extraParam}" action="#{adminAction.getMenuItemIPAddress}" id="link">
+                            <f:param name="id" value="#{usr.menuitem_id}"/>
+                            <rich:componentControl for="panelp" attachTo="link" operation="show" event="onclick"/>
+            		</s:link>
+				</rich:column>
+				
+				<rich:column>
+				
+					<h:commandButton action="#{adminAction.setMenuitemToEdit}" reRender="manageUserFrm"  image="/images/edit.png" id="submit_edit">
+		            	<f:setPropertyActionListener target="#{adminAction.edit_id}" value="#{usr.menuitem_id}" />
+		            	<rich:componentControl for="panelp" attachTo="submit_edit" operation="show" event="onclick"/>
+		            </h:commandButton>
+					
+					<rich:spacer width="10px" height="10px"/>
+				
+					<h:commandButton action="#{adminAction.deleteMenuItem}" reRender="manageUserFrm"  image="/images/invalid.png" id="submit_delete">
+		            	<f:setPropertyActionListener target="#{adminAction.operation_id}" value="#{usr.menuitem_id}" />
+		            	<rich:componentControl for="panelp" attachTo="submit_delete" operation="show" event="onclick"/>
+		            </h:commandButton>
+				</rich:column>
+				<f:facet name="footer">
+					<rich:datascroller id="userTableDS" for="userTb"  renderIfSinglePage="true">
+						<f:facet name="first">
+							<h:outputText value="First" />
+						</f:facet>
+						<f:facet name="last">
+							<h:outputText value="Last" />
+						</f:facet>
+					</rich:datascroller>
+				</f:facet>
+			</rich:dataTable>
+
+         </rich:panel>
+         
+         
+     </a4j:form>
+   
+    
+</ui:define>
+
+
+</ui:composition>

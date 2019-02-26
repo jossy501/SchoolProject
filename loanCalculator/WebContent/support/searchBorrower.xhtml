@@ -1,0 +1,194 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="../WEB-INF/layout/basic_layout.xhtml">
+                
+<ui:define name="body">
+
+
+	<!-- processing panel -->
+    
+    <rich:modalPanel id="panelp" width="150" height="50">
+       <h:form id="pFrm">
+        <h:panelGrid columns="1" rowClasses="prop" columnClasses="name2,value">
+           <h:outputText value="Please wait...." styleClass="messagesingle" align="center">
+               <h:graphicImage value="/images/loading_small.gif"/>
+           </h:outputText>
+          </h:panelGrid>  
+         </h:form>
+    </rich:modalPanel>
+
+    <h:form id="cardFrm">
+        <rich:panel style="width:40%">
+            <f:facet name="header">Investigate Borrower</f:facet>
+            <rich:graphValidator>
+                <h:panelGrid columns="2" rowClasses="prop" columnClasses="name2,value">
+                    
+                    <h:outputLabel value="Mobile No"/>
+                    <h:panelGroup>
+                        <h:inputText id="mno" value="#{reportAction.borrower.mobile}" required="false" requiredMessage="Mobile number is required"/>
+                        <br/>
+                        <rich:message for="mno" styleClass="messagesingle" errorClass="errormsg"
+							infoClass="infomsg" warnClass="warnmsg">
+						</rich:message>
+                    </h:panelGroup>
+                    
+                    <h:outputLabel value="National ID"/>
+                    <h:panelGroup>
+                        <h:inputText id="nid" value="#{reportAction.borrower.nationalID}" required="false" requiredMessage="National ID is required"/>
+                        <br/>
+                        <rich:message for="nid" styleClass="messagesingle" errorClass="errormsg"
+							infoClass="infomsg" warnClass="warnmsg">
+						</rich:message>
+                    </h:panelGroup>
+                    
+                  </h:panelGrid>  
+                   
+            </rich:graphValidator>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="search" value="  Search  " action="#{reportAction.getBorrowerTrasactionHistory}" reRender="manageCardFrm">
+            	<rich:componentControl for="panelp" attachTo="search" operation="show" event="onclick"/>
+            </h:commandButton>
+            
+        </div>
+   </h:form>
+   
+   <rich:spacer width="10px" height="10px"/>
+   
+
+   <h:form id="manageCardFrm">
+   
+   		<rich:panel style="width: 30%; height:140px" rendered = "#{reportAction.borrowerInfoList.size() > 0}">
+			 <h:panelGrid columns="2" rowClasses="prop" columnClasses="name2,value">
+			 	<h:outputText value="Lastname"/>
+			 	<h:outputText value="#{reportAction.borrower.lastname}"/>
+			 	<h:outputText value="Firstname"/>
+			 	<h:outputText value="#{reportAction.borrower.firstname}"/>
+			 	<h:outputText value="National ID"/>
+			 	<h:outputText value="#{reportAction.borrower.nationalID}"/>
+			 	<h:outputText value="Monthly Income"/>
+			 	<h:outputText value="#{adminAction.makeDouble(reportAction.borrower.monthlyIncome)}">
+			    	<f:convertNumber pattern="#,###,###,###,###.00"/>
+			    </h:outputText>
+			    <h:outputText value="Company"/>
+			 	<h:outputText value="#{reportAction.borrower.companyName}"/>
+			 </h:panelGrid>
+		</rich:panel>
+		
+		
+   
+         <rich:panel style="width:100%" rendered = "#{reportAction.borrowerTranList.size() > 0}">
+         
+             <f:facet name="header">Loan History</f:facet>
+             
+             <rich:dataTable id="userTb" reRender="userTableDS" rowKeyVar="rowKey" rows="1000" value="#{reportAction.borrowerTranList}"  var="usr">
+				
+				<rich:column>
+						<f:facet name="header">S/N</f:facet>
+						<h:outputText value="#{rowKey+1}"/>
+				</rich:column>
+				
+				<rich:column>
+					<f:facet name="header">Lending Institution</f:facet>
+					<h:outputText value="#{usr.lendingHouseName}"/>
+				</rich:column>
+				
+				<rich:column>
+					<f:facet name="header">Total Amount Borrowed</f:facet>
+					<h:outputText value="#{adminAction.makeDouble(usr.totalAmountBorrowed)}">
+				    	<f:convertNumber pattern="#,###,###,###,###.00"/>
+				    </h:outputText>
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">Total Amount Paid</f:facet>
+					<s:link view="/support/borrowerTranBreakDown.xhtml" value="#{adminAction.makeDouble(usr.totalAmountPaid)}" action="#{reportAction.getBorrowerTransactionBreakDown}" id="link3">
+                            <f:param name="id" value="#{usr.borrowerId}:#{usr.lendingHouseId}"/>
+                            <rich:componentControl for="panelp" attachTo="link3" operation="show" event="onclick"/>
+                            <f:convertNumber pattern="#,###,###,###,###.00"/>
+            		</s:link>
+				</rich:column>
+				
+				<rich:column>
+					<f:facet name="header">Duration</f:facet>
+					<h:outputText value="#{usr.duration} Months"/>
+				</rich:column>
+				
+				<rich:column>
+					<f:facet name="header">Estimated Monthly PayBack</f:facet>
+					<h:outputText value="#{adminAction.makeDouble(usr.monthlyPayBack)}">
+				    	<f:convertNumber pattern="#,###,###,###,###.00"/>
+				    </h:outputText>
+				</rich:column>
+				
+				<rich:column>
+					<f:facet name="header">Date Borrowed</f:facet>
+					<h:outputText value="#{usr.dateBorrowed}"/>
+				</rich:column>
+				
+				<f:facet name="footer">
+					<rich:columnGroup>
+                        <rich:column colspan="7">
+                        	<div align="left">
+                        		Total Monthly PayBack : <rich:spacer width="20px"/>
+                        			<h:outputText value="#{adminAction.makeDouble(reportAction.totalMonthlyPayBack)}">
+				    					<f:convertNumber pattern="#,###,###,###,###.00"/>
+				    				</h:outputText>
+                        		<br/>
+                        		Institution Exposure : <rich:spacer width="32px"/>
+                        			<h:outputText value="#{authenticator.curUser.exposure} %"/>
+                        		<br/>
+                        		Balance Amount  :  <rich:spacer width="50px"/>
+                        			<h:outputText value="#{adminAction.makeDouble(reportAction.totalLeftOver)}">
+				    					<f:convertNumber pattern="#,###,###,###,###.00"/>
+				    				</h:outputText>
+                        		<br/>
+                        		
+                        		Amount To Borrow  :  <rich:spacer width="40px"/>
+                        			<h:inputText id="amtT" value="#{reportAction.borrower.amountToBorrow}">
+                        				<a4j:support event="onchange" action="#{reportAction.doCalc}" ajaxSingle="true" reRender="manageCardFrm"/>
+                        			</h:inputText>
+                        		<br/>
+								
+								Duration  :  <rich:spacer width="92px"/>
+                        			<h:inputText id="dur" value="#{reportAction.borrower.duration}" size="5">
+                        				<a4j:support event="onchange" action="#{reportAction.doCalc}" ajaxSingle="true" reRender="manageCardFrm"/>
+                        			</h:inputText>
+                        		<br/>
+                        		System Advice : <rich:spacer width="20px"/>
+                        		<h:outputText value="#{reportAction.systemAdvice}"/>
+                        		<rich:spacer width="10px"/>
+                        		<h:commandButton id="submit" value="  Approve  " action="#{reportAction.approveLoan}" reRender="manageCardFrm" rendered = "#{reportAction.systemAdvice ne null}">
+            						<rich:componentControl for="panelp" attachTo="submit" operation="show" event="onclick"/>
+            					</h:commandButton>
+                        	</div>
+                        </rich:column>
+                    </rich:columnGroup>
+				</f:facet>
+			</rich:dataTable>
+			
+			<rich:datascroller id="userTableDS" for="userTb"  renderIfSinglePage="true">
+				<f:facet name="first">
+					<h:outputText value="First" />
+				</f:facet>
+				<f:facet name="last">
+					<h:outputText value="Last" />
+				</f:facet>
+			</rich:datascroller>
+
+         </rich:panel>
+         
+         
+     </h:form>
+   
+</ui:define>
+</ui:composition>

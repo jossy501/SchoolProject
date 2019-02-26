@@ -1,0 +1,160 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="../WEB-INF/layout/basic_layout.xhtml">
+
+<ui:define name="body">
+
+
+	<!-- processing panel -->
+
+    <rich:modalPanel id="panelp" width="150" height="50">
+       <h:form id="pFrm">
+        <h:panelGrid columns="1" rowClasses="prop" columnClasses="name2,value">
+           <h:outputText value="Please wait...." styleClass="messagesingle" align="center">
+               <h:graphicImage value="/images/loading_small.gif"/>
+           </h:outputText>
+          </h:panelGrid>
+         </h:form>
+    </rich:modalPanel>
+
+    <a4j:form id="userFrm">
+    
+    	<rich:panel style="width: 25%; height:20px" rendered = "#{adminAction.operation_id ne null}">
+		 	click <rich:spacer width="2px"/><s:link view="/support/searchBorrower.xhtml" value="here" id="link3">
+               <rich:componentControl for="panelp" attachTo="link3" operation="show" event="onclick"/>
+       		</s:link>
+       		<rich:spacer width="2px"/> to investigate this account
+		</rich:panel>
+    
+    	<rich:spacer width="10px" height="10px"/>
+    
+        <rich:panel style="width:40%" rendered = "#{adminAction.edit_id eq null}">
+            <f:facet name="header">Create Borrower</f:facet>
+            <rich:graphValidator>
+                <h:panelGrid columns="2" rowClasses="prop" columnClasses="name2,value">
+
+
+                    <h:outputLabel value="Surname"/>
+                    <h:panelGroup>
+                    	<h:inputText id="lastname" value="#{adminAction.borrower.lastname}" required="true" requiredMessage="Lastname is required"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="lastname" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+
+                    <h:outputLabel value="Firstname"/>
+                    <h:panelGroup>
+                    	<h:inputText id="firstname" value="#{adminAction.borrower.firstname}" required="true" requiredMessage="Firstname is required"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="firstname" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+
+                    <h:outputLabel value="Mobile No."/>
+                    <h:panelGroup>
+                    	<h:inputText id="mobile" value="#{adminAction.borrower.mobile}" required="true" requiredMessage="Mobile No. is required"/>
+                        <h:outputLabel value=" *" styleClass="messagesingle" />
+						<br/>
+                        <rich:message for="mobile" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+
+                    <h:outputLabel value="Email"/>
+                    <h:panelGroup>
+                    	<h:inputText id="email" value="#{adminAction.borrower.email}" required="true" requiredMessage="Email is required" size="40"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="email" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+
+                    <h:outputLabel value="Date Of Birth"/>
+                    <h:panelGroup>
+                    	<rich:calendar size="10" enableManualInput="false"  datePattern="dd/MM/yyyy"   id="dob" value="#{adminAction.borrower.dob}" required="true" requiredMessage="Date of birth is required"/>
+                        click on the icon (dd/mm/yyyy)
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="dob" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+
+
+                    <h:outputLabel value="Address"/>
+                    <h:panelGroup>
+                    	<h:inputTextarea rows="5" cols="40" id="address" value="#{adminAction.borrower.address}"
+                                     style="overflow-y: scroll;" styleClass="controls-length2" required="true" requiredMessage="Address is required"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="addr" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                    
+
+
+                    <h:outputLabel value="National ID"/>
+                    <h:panelGroup>
+                    	<h:inputText id="nid" value="#{adminAction.borrower.nationalID}" required="true" requiredMessage="National ID is required"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="nid" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+
+                    <h:outputLabel value="Company Name"/>
+                    <h:panelGroup>
+                    	<h:inputText id="cmp" value="#{adminAction.borrower.companyName}" required="true" requiredMessage="Company Name is required"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="cmp" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                    
+                    <h:outputLabel value="Staff ID"/>
+                    <h:panelGroup>
+                    	<h:inputText id="sid" value="#{adminAction.borrower.staffID}" required="true" requiredMessage="Staff ID is required"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="sid" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                    
+                    <h:outputLabel value="Monthly Income"/>
+                    <h:panelGroup>
+                    	<h:inputText id="minc" value="#{adminAction.borrower.monthlyIncome}" required="true" requiredMessage="Monthly Income is required"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="minc" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+
+                  </h:panelGrid>
+
+            </rich:graphValidator>
+
+
+            <div class="actionButtons" >
+            <a4j:commandButton oncomplete="document.getElementById('userFrm:submit').disabled=false"
+                                   onclick="document.getElementById('userFrm:submit').disabled=true"
+                                   id="submit" value="   Submit  " action="#{adminAction.createBorrower}" reRender="userFrm, manageUserFrm"/>
+        </div>
+
+        </rich:panel>
+
+
+
+   </a4j:form>
+   <rich:spacer width="10px" height="10px"/>
+
+
+
+</ui:define>
+</ui:composition>

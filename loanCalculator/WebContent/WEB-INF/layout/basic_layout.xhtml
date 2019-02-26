@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:a="http://richfaces.org/a4j"
+   xmlns:rich="http://richfaces.org/rich"
+   xmlns:s="http://jboss.com/products/seam/taglib"
+   contentType="text/html">
+<f:loadBundle basename="resources.messages_en" var="bundle"/>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+		<title><h:outputText value="#{bundle['welcome.title']}" /></title>
+		<link rel="shortcut icon" href="#{request.contextPath}/favicon.ico"/>
+		<a:loadStyle src="resource:///stylesheet/theme.xcss"/>
+		<a:loadStyle src="/stylesheet/theme.css"/>
+		<ui:insert name="head"/>
+	</head>
+	<body>
+		<div class="body">
+			<ui:include src="header.xhtml"/>
+            
+			
+            <div id="content_container1">
+            
+				<rich:spacer height="15" />
+				
+				<rich:messages styleClass="messagesingle" errorClass="errormsg" errorLabelClass="errormsg"
+	                                   infoClass="infomsg" infoLabelClass="infomsg"
+	                                   warnClass="warnmsg" warnLabelClass="warnmsg"
+	                                   rendered="#{showGlobalMessages != 'false'}" globalOnly="true" layout="list">
+	            </rich:messages>
+			<a:status id="actionStatus">
+                <f:facet name="start">
+                    <h:outputText value="Processing, Please wait...." styleClass="messagesingle" >
+                        <h:graphicImage value="/images/loading_small.gif"/>
+                    </h:outputText>
+                </f:facet>
+            </a:status>			
+			<ui:insert name="body"/>
+			</div>
+		</div>
+		<div class="footer">
+			<p>&nbsp;</p>
+			<p>Powered by <a href="http://www.etranzact.com" ><h:graphicImage value="/images/logo.jpg" alt="Etranzact logo"/> </a></p><br/>
+			Copyright &#169; 2012. All rights reserved.
+		</div>
+	</body>
+</html>
+
+</f:view>

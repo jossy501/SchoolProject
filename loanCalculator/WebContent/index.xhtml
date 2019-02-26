@@ -1,0 +1,49 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    xmlns:a4j="http://richfaces.org/a4j"
+    template="WEB-INF/layout/basic_layout.xhtml">
+    
+<f:loadBundle basename="resources.application" var="bundle"/>
+<ui:param name="showGlobalMessages" value="true"/>
+<ui:define name="body">
+	<h:form id="loginForm">
+		<rich:panel style="width: 450px">
+		      <f:facet name="header">
+		            <h:outputText value="#{bundle['panel.header']}"/>
+		      </f:facet>
+			<div class="dialog">
+					<h:panelGrid columns="3" rowClasses="prop" columnClasses="name,value,validatormsg">
+						<h:outputLabel for="username">Username</h:outputLabel>
+						<h:inputText id="username" value="#{authenticator.curUser.username}">
+							<rich:beanValidator/>
+						</h:inputText>
+						<rich:message for="username" style="color: red;"/>
+						
+						<h:outputLabel for="password">Password</h:outputLabel>
+						<h:inputSecret id="password" value="#{authenticator.curUser.password}">
+							<rich:beanValidator/>
+						</h:inputSecret>
+						<rich:message for="password" style="color: red;"/>
+					
+					</h:panelGrid>
+				</div>
+			  
+			  <div class="actionButtons">
+					<a4j:commandButton oncomplete="document.getElementById('loginForm:submit').disabled=false"
+                                   onclick="document.getElementById('loginForm:submit').disabled=true"
+                                   id="submit" value="Login" action="#{authenticator.signIn}">
+                    <s:defaultAction/>
+                    </a4j:commandButton>
+			  </div>
+		</rich:panel>
+	</h:form>
+</ui:define>
+
+</ui:composition>
+	
