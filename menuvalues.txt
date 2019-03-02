@@ -1,0 +1,1720 @@
+
+CREATE TABLE telcodb.dbo.support_menu (
+	menu_id numeric identity NOT NULL,
+	menu_nm varchar(25) NULL,
+	created_dt datetime NULL,
+	createdBy int NOT NULL,
+	menu_comments varchar(100) NOT NULL,
+	PRIMARY KEY (menu_id)
+);
+
+CREATE TABLE telcodb.dbo.support_menuitem (
+	menuitem_id numeric identity NOT NULL,
+	menuitem_nm varchar(100) NOT NULL,
+	menuitem_link varchar(100) NOT NULL,
+	menuitem_comments varchar(100) NOT NULL,
+	createdBy int NOT NULL,
+	created_dt datetime NOT NULL,
+	extraParam varchar(100) NOT NULL,
+	PRIMARY KEY (menuitem_id)
+);
+
+CREATE TABLE telcodb.dbo.support_menuitemToIPAddress (
+	id numeric identity NOT NULL,
+	menuitem_id int NOT NULL,
+	ipaddress_id int NOT NULL,
+	createdBy int NOT NULL,
+	created_dt datetime NOT NULL,
+	PRIMARY KEY (id)
+);
+
+CREATE TABLE telcodb.dbo.support_menuitemToMenu (
+	id numeric identity NOT NULL,
+	menuitem_id int NOT NULL,
+	menu_id int NOT NULL,
+	createdBy int NOT NULL,
+	created_dt datetime NOT NULL,
+	PRIMARY KEY (id)
+);
+
+CREATE TABLE telcodb.dbo.support_menuitemToRole (
+	id numeric identity NOT NULL,
+	menuitemToMenu_id int NOT NULL,
+	userType_id int NOT NULL,
+	createdBy int NOT NULL,
+	created_dt datetime NOT NULL,
+	PRIMARY KEY (id)
+);
+
+CREATE TABLE telcodb.dbo.support_menuToRole (
+	id numeric identity NOT NULL,
+	menu_id int NOT NULL,
+	userType_id int NOT NULL,
+	createdBy int NOT NULL,
+	created_dt datetime NOT NULL,
+	PRIMARY KEY (id)
+);
+
+
+INSERT INTO telcodb.dbo.support_menu(menu_nm, created_dt, createdBy, menu_comments) VALUES ( 'Report', '2011-07-29 09:13:59.186', 1, 'This menu is used to hold the menu items of the investigation/reports.');
+
+INSERT INTO telcodb.dbo.support_menu(menu_nm, created_dt, createdBy, menu_comments) VALUES ( 'DRS', '2011-07-29 09:14:14.513', 1, 'Dispute Resolution System Menu');
+
+INSERT INTO telcodb.dbo.support_menu(menu_nm, created_dt, createdBy, menu_comments) VALUES ( 'PIN Stock Manager', '2011-07-29 09:14:32.03', 1, 'PIN Stock Manager Menu');
+
+INSERT INTO telcodb.dbo.support_menu(menu_nm, created_dt, createdBy, menu_comments) VALUES ('Investigation', '2011-07-29 10:51:37.53', 1, 'This menu is used to hold the menu items of the investigation.');
+
+INSERT INTO telcodb.dbo.support_menu(menu_nm, created_dt, createdBy, menu_comments) VALUES ('RICA', '2011-10-19 11:12:20.47', 1, 'RICA Function for SA');
+
+INSERT INTO telcodb.dbo.support_menu(menu_nm, created_dt, createdBy, menu_comments) VALUES ( 'RICA', '2011-10-19 11:12:20.47', 1, 'RICA Function for SA');
+
+INSERT INTO telcodb.dbo.support_menu( menu_nm, created_dt, createdBy, menu_comments) VALUES ( 'PocketMoni Report', '2012-01-20 12:32:35.0', 1, 'Menu for pocket moni reports');
+
+INSERT INTO telcodb.dbo.support_menu(menu_nm, created_dt, createdBy, menu_comments) VALUES ( 'RICA', '2012-01-24 11:01:14.793', 1, 'RICA Administrative Function');
+
+INSERT INTO telcodb.dbo.support_menu( menu_nm, created_dt, createdBy, menu_comments) VALUES ( 'PHCN', '2012-02-24 12:55:18.56', 1, 'This is used to hold the menu items of PHCH report');
+
+INSERT INTO telcodb.dbo.support_menu(menu_nm, created_dt, createdBy, menu_comments) VALUES ( 'Report', '2012-04-23 17:13:22.356', 1, 'Report for SimplePay');
+
+INSERT INTO telcodb.dbo.support_menu( menu_nm, created_dt, createdBy, menu_comments) VALUES ('CMS', '2012-05-22 15:07:27.84', 1, 'Card management System menu');
+
+INSERT INTO telcodb.dbo.support_menu(menu_nm, created_dt, createdBy, menu_comments) VALUES ( 'Parallex', '2012-07-05 15:45:55.153', 1, 'Parallex MFB');
+
+INSERT INTO telcodb.dbo.support_menu(menu_nm, created_dt, createdBy, menu_comments) VALUES ('School', '2012-07-17 00:49:47.483', 1, 'done');
+
+INSERT INTO telcodb.dbo.support_menu( menu_nm, created_dt, createdBy, menu_comments) VALUES ('Authorization', '2012-09-10 10:14:50.856', 1, 'Done');
+
+INSERT INTO telcodb.dbo.support_menu( menu_nm, created_dt, createdBy, menu_comments) VALUES ( 'Payoutlet', '2013-01-04 12:59:44.966', 1, 'Payoutlet');
+
+INSERT INTO telcodb.dbo.support_menu( menu_nm, created_dt, createdBy, menu_comments) VALUES ( 'Card Enquiry', '2013-01-10 20:12:45.733', 110000051, 'CMS Portal Menu');
+
+INSERT INTO telcodb.dbo.support_menu( menu_nm, created_dt, createdBy, menu_comments) VALUES ( 'Personalization', '2013-01-10 20:15:03.356', 110000051, 'CMS Portal Menu');
+
+INSERT INTO telcodb.dbo.support_menu( menu_nm, created_dt, createdBy, menu_comments) VALUES ( 'Risk Profile', '2013-01-10 20:15:41.14', 110000051, 'CMS Portal Menu');
+
+INSERT INTO telcodb.dbo.support_menu( menu_nm, created_dt, createdBy, menu_comments) VALUES ( 'Pin Process', '2013-01-10 20:16:34.78', 110000051, 'CMS Portal Menu');
+
+INSERT INTO telcodb.dbo.support_menu( menu_nm, created_dt, createdBy, menu_comments) VALUES ( 'Perso Bureau', '2013-01-10 20:17:06.153', 110000051, 'CMS Portal Menu');
+
+INSERT INTO telcodb.dbo.support_menu( menu_nm, created_dt, createdBy, menu_comments) VALUES ('Card Scheme', '2013-01-10 20:17:30.576', 110000051, 'CMS Portal Menu');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Create User', '/support/createUser.xhtml', 'Done', 1, '2011-07-29 09:52:06.59', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Create Menus', '/support/createMenu.xhtml', 'Done', 1, '2011-07-29 09:52:06.606', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Create MenuItems', '/support/createMenuItem.xhtml', 'Done', 1, '2011-07-29 09:52:06.606', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Map MenuItems To Menus', '/support/menuitemToMenuMapping.xhtml', 'Done', 1, '2011-07-29 09:52:06.623', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem(menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Map MenuItems To Roles', '/support/menuitemToRoleMapping.xhtml', 'Done', 1, '2011-07-29 09:52:06.623', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Web Investigation', '/support/webInvestigation.xhtml', 'This report is used to investigate web transactions', 1, '2011-07-29 09:52:22.5', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Mobile Investigation', '/support/mobileInvestigation.xhtml', 'This report is used to investigate mobile transactions.', 1, '2011-07-29 09:52:22.513', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('ATM/POS Investigation', '/support/etmcInvestigation.xhtml', 'This report is used to investigate ATM/POS transactions from etmc.', 1, '2011-07-29 09:52:22.513', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('VTU Investigation', '/support/vtuInvestigation.xhtml', 'This report is used to investigate vtu transactions.', 1, '2011-07-29 09:52:22.53', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Bill Payment Investigation', '/support/billInvestigation.xhtml', 'This report is used to investigate bill payment transactions.', 1, '2011-07-29 09:52:22.53', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Pin Investigation', '/support/pinInvestigation.xhtml', 'This report is used to investigate pin transactions.', 1, '2011-07-29 09:52:22.53', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'POS Bridge Investigation', '/support/posReport.xhtml', 'This report is used to investigate ATM/POS transactions from pos bridge.', 1, '2011-07-29 09:52:22.543', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Exception Investigation', '/support/exceptionInvestigation.xhtml', 'This report is used to investigate exception reports.', 1, '2011-07-29 09:52:22.543', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Failed Funds Transfer', '/support/failedFundsTransfer.xhtml', 'This report is used to investigate the failed funds transfers.', 1, '2011-07-29 09:52:22.56', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Mobile Subscription Details', '/support/mobileSubscriptionDetails.xhtml', 'This report is used to get the mobile subscription details.', 1, '2011-07-29 09:52:22.56', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Summary', '/support/logSummary.xhtml', 'This report is used to get the summary information of web, mobile, atm and pos transactions.', 1, '2011-07-29 09:52:22.576', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'TMC Event Monitor', '/support/tmcEvent.xhtml', 'This report is used to get the event monitor of tmc.', 1, '2011-07-29 09:52:22.576', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Bank Monitor', '/support/bankEvent.xhtml', 'This report is a bank monitor.', 1, '2011-07-29 09:52:22.576', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'POS Transaction', '/support/posTransactions.xhtml', 'This report is used to get the pos transaction reports.', 1, '2011-07-29 09:52:22.59', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Switch Performance Report', '/support/switchReport.xhtml', 'This report is used to get the switch perfomance reports.', 1, '2011-07-29 09:52:22.59', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Merchant Commission Report', '/support/merchantReport.xhtml', 'This report is used to generate commissions for merchants.', 1, '2011-07-29 09:52:22.606', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Commission/Special Split Formula', '/support/merchantSplitFormula.xhtml', 'This report is used to get split formula of the setups of the merchant.', 1, '2011-07-29 09:52:22.606', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Standard Split Formula', '/support/standardSplitFormula.xhtml', 'This report is used to get the standard split formula of the setups of the merchant.', 1, '2011-07-29 09:52:22.623', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Mobile Money Summary Report', '/support/mmoneySummaryReport.xhtml', 'This report is used to generate summary transactions for mobile money scheme', 1, '2011-07-29 09:58:16.7', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Mobile Money Transaction Report', '/support/mmoneyReport.xhtml', 'This report is used to generate transactions for mobile money scheme', 1, '2011-07-29 09:58:16.716', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Mobile Money Card Holder Report', '/support/mmoneyCardHolders.xhtml', 'This report is used to generate card holder reports for mobile money scheme', 1, '2011-07-29 09:58:16.733', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Mobile Money Card Balance Report', '/support/mmoneyCardBalance.xhtml', 'This report is used to generate card balance reports for mobile money scheme', 1, '2011-07-29 09:58:16.733', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Mobile Money New Subscribers Report', '/support/mmoneyNewSubscribers.xhtml', 'This report is used to generate new subscribers reports for mobile money scheme', 1, '2011-07-29 09:58:16.75', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Log Claims', '/DRS/DSR_logClaims.xhtml', 'DRS Log Claims', 1, '2011-07-29 10:07:34.106', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('View Claims', '/DRS/DRS_viewClaims.xhtml', 'DRS View Claims.', 1, '2011-07-29 10:07:34.123', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'View Report', '/DRS/DRS_report.xhtml', 'DRS Report', 1, '2011-07-29 10:07:34.123', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Claim Download', '/DRS/DRS_downloadClaim.xhtml', 'DRS Claim Download', 1, '2011-07-29 10:07:34.123', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'View Message', '/DRS/DRS_viewMessage.xhtml', 'DRS View Message', 1, '2011-07-29 10:07:34.14', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Bank User Contacts', '/DRS/DRS_bankUserContact.xhtml', 'DRS Bank User Contact', 1, '2011-07-29 10:07:34.14', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'PIN Upload', '/PSM/PSM_uploadPin.xhtml', 'PSM PIN Upload', 1, '2011-07-29 10:16:39.186', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'PIN Approval', '/PSM/PSM_Approval.xhtml', 'PSM PIN Approval', 1, '2011-07-29 10:16:39.2', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'PIN Report', '/PSM/PSM_pinReport.xhtml', 'PSM PIN Report', 1, '2011-07-29 10:16:39.216', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('User Contact', '/PSM/PSM_userContact.xhtml', 'PSM User Contact', 1, '2011-07-29 10:16:39.216', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Dealer Setup', '/PSM/PSM_vendorSetup.xhtml', 'PSM Dealer Setup', 1, '2011-07-29 10:16:39.216', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Provider Setup', '/PSM/PSM_providerSetup.xhtml', 'PSM Provider Setup', 1, '2011-07-29 10:16:39.233', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Approved IP Address List', '/support/ipAddressRestriction.xhtml', 'This is used to create ip addresses to be allowed to certain menuitems', 1, '2011-07-29 18:27:11.84', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Merchant Transactions', '/support/merchantTransactionDetailsOnly.xhtml', 'Transaction', 1, '2011-09-05 15:38:53.56', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Card Holder Report', '/support/cardDetails_Tran.xhtml', 'Card Holder Report', 1, '2011-09-05 15:55:41.903', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Winners Transactions', '/support/merchantTransactionDetails.xhtml', 'M', 1, '2011-09-12 14:23:05.293', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Transaction Details', '/support/eTransactionDetails.xhtml', 'eTransaction Details', 1, '2011-09-13 14:26:05.716', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Lotto Transaction', '/support/lottoTransaction.xhtml', 'Lotto Transaction', 1, '2011-09-22 16:03:18.543', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Merchant Commission Report', '/support/merchantReport_bizdev.xhtml', 'Merchant Commission Report', 1, '2011-09-26 14:01:41.606', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'My Merchants', '/support/myMerchants.xhtml', 'Report showing all my mapped merchants', 1, '2011-09-26 14:49:45.81', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Map My Merchants', '/support/mapAccountCodes.xhtml', 'Mapping', 1, '2011-09-26 16:09:23.403', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Funds Transfer Log', '/support/fundsTransferTransaction.xhtml', 'Funds Transaction', 1, '2011-09-28 10:33:20.513', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Settlement Report', '/support/gtbanktransferreimbursementreport.xhtml', 'Settlement Report', 1, '2011-10-07 18:47:51.903', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'MTO Transaction', '/support/MTOTransaction.xhtml', 'MTO Transaction', 1, '2011-10-07 20:33:55.686', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Client Setup', '/RICA/clientSetup.xhtml', 'Client Setup', 1, '2011-07-29 10:07:34.106', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('De-RICA', '/RICA/derica.xhtml', 'De-RICA.', 1, '2011-07-29 10:07:34.123', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Device Setup', '/RICA/deviceSetup.xhtml', 'Device Setup', 1, '2011-07-29 10:07:34.123', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Register Agent', '/RICA/registerAgent.xhtml', 'Register Agent', 1, '2011-07-29 10:07:34.123', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Client Setup', '/RICA/clientSetup.xhtml', 'Client Setup', 1, '2011-07-29 10:07:34.106', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'De-RICA', '/RICA/derica.xhtml', 'De-RICA.', 1, '2011-07-29 10:07:34.123', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Device Setup', '/RICA/deviceSetup.xhtml', 'Device Setup', 1, '2011-07-29 10:07:34.123', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Register Agent', '/RICA/registerAgent.xhtml', 'Register Agent', 1, '2011-07-29 10:07:34.123', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'RICA', '/RICA/rica.xhtml', 'DRS RICA', 1, '2011-07-29 10:07:34.14', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Data Comparator', '/support/viewLogData.xhtml', 'View Log Data', 1, '2011-10-27 20:12:30.233', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Settlement Transaction  Report', '/support/settlementTransactionsToBank.xhtml', 'Settlement Transaction Reports', 1, '2011-11-17 13:22:30.25', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'POS Debit Report', '/support/posDebitReport.xhtml', 'Pos Debit Report', 1, '2011-11-23 11:51:52.576', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Chamms Settlement Report', '/support/chammsSettlement.xhtml', 'Chamms Settlement Report', 1, '2011-11-24 10:53:50.03', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('ETMC Settlement', '/support/settlementTransactions_atm_pos.xhtml', 'ATM / POS Settlement', 1, '2011-11-24 10:55:32.356', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Recharge PIN Investigation', '/support/rechargePinInvestigation.xhtml', 'Recharge PIN Investigation', 1, '2011-12-08 14:12:31.403', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Airtime Sales', '/support/airtimeSalesReport.xhtml', 'Airtime Sales', 1, '2011-12-12 16:13:05.123', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Authorize Card Deletion', '/support/pendingCardDeletion.xhtml', 'Pending Card Deletion', 1, '2012-01-18 12:12:21.263', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Total Number Of Subscribers', '/support/pocketMoniTotalSubscribers.xhtml', 'Menuitem for getting the total number of pm subscribers', 1, '2012-01-20 12:33:42.543', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'PocketMoni Summary Report', '/support/pocketMoniSummaryReport.xhtml', 'pocketMoni Summary Report', 1, '2012-01-20 12:49:27.733', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Network Map Setup', '/RICA/networkMapsetup.xhtml', 'Done', 1, '2012-01-24 11:05:21.34', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'AppSetup', '/RICA/clientSetup.xhtml', 'Done', 1, '2012-01-24 11:06:39.123', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Master Setup', '/RICA/agentMasterSetup.xhtml', 'Done', 1, '2012-01-24 11:07:38.75', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'RICA Phone Number', '/RICA/rica.xhtml', 'Done', 1, '2012-01-24 11:09:05.03', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'De-Rica Phone Number', '/RICA/derica.xhtml', 'Done', 1, '2012-01-24 11:09:35.793', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Agent Setup', '/RICA/registerAgent.xhtml', 'Agent Setup', 1, '2012-01-24 15:19:46.89', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Network Setup', '/RICA/networkSetup.xhtml', 'Network Setup', 1, '2012-01-25 10:44:19.89', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Bank Switch Report', '/support/switchReportForBank.xhtml', 'Switch Report given to banks', 1, '2012-01-26 13:24:41.716', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('MTO Transaction Summary', '/support/MTOSummary.xhtml', 'Page to display the sumamry of MTO Transactions', 1, '2012-02-02 13:17:40.013', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('PHCN Report', '/support/phcnMerchantReport.xhtml', 'PHCN Report', 1, '2012-02-09 11:32:14.403', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Scheme - Mobile Investigation', '/support/mobileInvestigation_scheme.xhtml', 'Mobile Investigation for card schemes', 1, '2012-02-15 12:37:49.293', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Scheme  - Web Investigation', '/support/webInvestigation_scheme.xhtml', 'Web Investigation for card schemes', 1, '2012-02-15 12:51:01.153', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Scheme  - ATM/POS Investigation', '/support/etmcInvestigation_scheme.xhtml', 'Atm/Pos Investigation for card schemes', 1, '2012-02-15 13:01:58.89', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Scheme  - Bill Payment Investigation', '/support/billInvestigation_scheme.xhtml', 'Bill payment scheme for investigation', 1, '2012-02-15 13:09:52.28', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Scheme - Mobile Subscription Details', '/support/mobileSubscriptionDetails_scheme.xhtml', 'Mobile Subscription Scheme', 1, '2012-02-16 12:41:22.81', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Scheme - Card Activity Report', '/support/switchReportForScheme.xhtml', 'Card Report', 1, '2012-02-16 12:43:15.983', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Scheme - Card Transactions Report', '/support/cardDetails_Tran_scheme.xhtml', 'Scheme', 1, '2012-02-16 12:44:23.983', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Scheme - Card Details Enquiry', '/support/cardHolderDetails_Scheme.xhtml', 'Card Holder Details for a scheme', 1, '2012-02-17 09:59:53.436', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Create User', '/support/createSchemeUser.xhtml', 'Scheme Administrator to create user', 1, '2012-02-17 18:53:27.5', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('VAS Transactions', '/support/vasTransactions_Atm.xhtml', 'This report is used to capture VAS Transactions done on the ATM (EasyPay)', 1, '2012-02-22 13:59:34.28', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'PHCN: Customer Account Report', '/phcn/phcnMerchantExceptionsReport.xhtml', 'This is used to display phcn customer account report', 1, '2012-02-24 17:08:47.216', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'PHCH:Customer Exceptions Report', '/phcn/phcnMerchantcustomerExceptionsReport.xhtml', 'This report is to display  phcn  customer report', 1, '2012-02-25 09:26:30.03', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('PHCN: Duplicate Postings Report', '/phcn/phcnDuplicatePostingReport.xhtml', 'it is used to create duplicate posting report', 1, '2012-02-25 11:51:02.856', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('PHCN: Payments Search Report', '/phcn/phcnPaymentSearchReport.xhtml', 'this is to display Payment Search', 1, '2012-02-25 11:55:54.873', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('PHCN:Customer Details', '/phcn/phcnCustomerDetailsReport.xhtml', 'this is to display list of Phcn Customer details', 1, '2012-02-25 12:01:28.92', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('PHCN: Payments Report', '/phcn/phcnPaymentReport.xhtml', 'This is to display the list of Phcn Payment', 1, '2012-02-25 12:40:06.936', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('PHCN: Cheque Payments Report', '/phcn/phcnChequePayementReport.xhtml', 'to display phcn cheque payment report', 1, '2012-02-25 12:46:17.733', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'PHCN: Payments By Branches Summary', '/phcn/phcnPayementbyBranchSumaryReport.xhtml', 'this is display Phch Branch Sumary Report', 1, '2012-02-25 12:51:50.0', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('PHCN: Payments By Districts', '/phcn/phcnDistrictTransactionReport.xhtml', 'to display district report', 1, '2012-02-25 12:57:27.28', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'PHCN: Payments By Zones Summary', '/phcn/phcnPayementbyZoneSummaryReport.xhtml', 'This report is used to display Phcn Payment by zone summary', 1, '2012-02-25 13:02:03.043', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('PHCN: Lead Bank Setup', '/phcn/phcnLeadBankReport.xhtml', 'this report is used to display Phcn Lead Bank', 1, '2012-02-25 13:08:02.263', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('PHCN: Settlement Details', '/phcn/phcnSettlementdetailsReport.xhtml', 'To display list of Settlement details', 1, '2012-02-25 13:16:36.733', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('PHCN: Settlement Positions Breakdown', '/phcn/phcnSettlementPositionBreakdownReport.xhtml', 'this is to display phcn Settlement postion breakdown', 1, '2012-02-25 13:20:55.966', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('PHCN: Settlement Positions For Banks', '/phcn/phcnSettlementPosition4bankReport.xhtml', 'this report is used to display Phcn Settlement Postion for bank', 1, '2012-02-25 13:27:26.09', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'PHCN:  Remittance Summary', '/phcn/phcnRemmittanceSummaryReport.xhtml', 'PHCN Remittance Summary', 1, '2012-02-25 13:33:35.076', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('PHCN: Payments By Banks Summary', '/phcn/phcnPaymentByBankSummaryReport.xhtml', 'this report is used to display phcn payment by bank Summary', 1, '2012-02-25 14:02:07.263', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('PHCN: Settlement Positions', '/phcn/phcnSettlementPostionReport.xhtml', 'this report is to display Phcn Settlement Positions', 1, '2012-02-25 14:13:24.983', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Abia Lotto Transaction', '/support/lottoTransaction_4_Abia_liberation.xhtml', 'This to display report on lotto transaction for abia', 1, '2012-02-27 14:09:07.856', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Bill Payment Subscriber Details', '/support/billPayment_Transaction_SubscriberId.xhtml', 'This report is used to display detail transaction on bill payment base on there subscriber id', 1, '2012-02-28 09:47:53.826', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Bill Payment GT Assure', '/support/billPayment_Transaction_SubscriberId_gt.xhtml', 'This is to view bill payment for Gt Assure', 1, '2012-03-01 13:22:10.903', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('PHCN Payments Report', '/phcn/phcnTransactionReport.xhtml', 'Payment report for phcn', 1, '2012-03-02 19:18:19.84', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('PHCN:Payment By District Summary Repport', '/phcn/phcnPaymentByDistrictSummaryReport.xhtml', 'This report is to view payment by district summary', 1, '2012-03-02 21:34:38.14', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'PHCH:Payment By Bank Summary', '/phcn/phcnPaymentByBanknSummaryReport.xhtml', 'This report is t view Phcn Payment by bank summary', 1, '2012-03-03 02:53:19.5', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'PHCN: Bank Branch Payments By Bank Branches Summary', '/phcn/phcnBankBranchSummaryReport.xhtml', 'This report is to view PHCN Bank Branch summary report', 1, '2012-03-03 03:41:08.733', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Daily Transaction Report', '/support/viewDailyTransactionReport.xhtml', 'This report display  daily transaction report both success and failure', 1, '2012-03-03 11:11:26.89', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Card Transaction Report - Transfer To', '/support/requestLogInvestigation.xhtml', 'Transfer To', 1, '2012-03-07 17:29:36.233', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Merchant Service Report', '/support/merchantTransactionServiceReport.xhtml', 'This report is to diplay merchant Transaction Report', 1, '2012-03-09 19:01:48.403', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Bank Commission Report', '/support/bankCommissionReport.xhtml', 'This is the merchant commission report', 1, '2012-03-15 14:02:53.983', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Successful Summary Report', '/support/logSuccessfulSummary.xhtml', 'This is to display a successful summary report', 1, '2012-03-19 11:34:28.17', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Transaction URL Process', '/support/cTransactionURLProcess.xhtml', 'Process to monitor C transaction', 1, '2012-03-29 16:36:27.03', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Friendship Center Transaction', '/support/airtelbillPayment.xhtml', 'Friendship', 1, '2012-04-04 11:11:15.153', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Bank- Merchant Commission Report', '/support/bankCommissionMerchantReport.xhtml', 'dd', 1, '2012-04-04 11:49:43.81', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Create User', '/support/createPhcnUser.xhtml', 'Create Phcn User', 1, '2012-04-17 19:53:51.25', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Payment Advice', '/support/paymentAdvice.xhtml', 'Payment Advice', 1, '2012-04-18 16:46:06.543', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Card Details Enquiry', '/support/cardHolderDetails_Ordinary_Scheme.xhtml', 'This page is to unblcok ordinary scheme user not to be able to reset pin', 1, '2012-04-19 15:49:03.2', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('SimplePay Merchant Transaction Report', '/support/merchantTransactionDetailsSimplePay.xhtml', 'for commission implementation', 1, '2012-04-23 17:19:59.14', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('CardHolder Transactions', '/support/cardHolder_Transaction.xhtml', 'This report is used to view cardholder transaction', 1, '2012-04-24 11:24:12.42', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Merchant Transaction Summary', '/support/merchantTransactionSummary.xhtml', 'This report is used to view Merchant Transaction Summary', 1, '2012-04-24 16:35:57.2', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Merchant Outlet Report', '/support/merchantOutletReport.xhtml', 'this is report is to view merchant outlet report', 1, '2012-04-25 10:52:43.716', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Student Payment Report', '/support/studentPaymentReport.xhtml', 'This is menu is to display student payment report', 1, '2012-04-26 20:45:10.466', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Settlement Report Details', '/support/merchant_setttlement_range.xhtml', 'This report is to veiew merchant setttlement', 1, '2012-04-26 21:33:31.606', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Card Enquiry', '/support/cardHolder_Transaction_Enquiry.xhtml', 'This report is to view card transaction', 1, '2012-04-26 21:40:52.25', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Merchant Statement of Account', '/support/merchant_Statement_account.xhtml', 'this is report is to view merchant statment of account', 1, '2012-04-26 21:45:50.123', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Settlement Report By Bank', '/support/settlementReportByBank.xhtml', 'This report is to view Settlement By Bannk', 1, '2012-04-26 21:52:17.59', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Settlement Report By Revenue', '/support/settlementReportByRevenue.xhtml', 'This report is to view Settlement by Revenue', 1, '2012-04-26 21:55:13.576', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'View Report By Faculty', '/support/settlementReportByFaculty.xhtml', 'This is to view report by Faculty', 1, '2012-04-26 21:58:38.403', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Collection By Payment Type', '/support/collectionByPaymentType.xhtml', 'This is to view report base on payment type', 1, '2012-04-26 22:01:36.403', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('View Report By Programme', '/support/viewReportByPrograme.xhtml', 'This is to view Report by Programe', 1, '2012-04-26 22:05:11.2', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Student Payment By Class', '/support/studentPaymentByClass.xhtml', 'this is to view Studnet Payment', 1, '2012-04-26 22:12:04.233', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Create PHCN Users', '/support/createPhcnUser.xhtml', 'This is to create phcn Users', 1, '2012-05-04 12:36:28.81', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Create Merchant Ext Commission Split', '/support/createMerchantExtSplit.xhtml', 'Merchant Ext Split', 1, '2012-05-10 20:03:14.5', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Scheme : CardHolder Enquiry  Report', '/cms/cardHolderEnquires.xhtml', 'This menu is to view card information and the scheme it belong to', 1, '2012-05-16 14:50:09.31', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Bulk Card Creation', '/cms/cardCreation.xhtml', 'Bulk Card Creation', 1, '2012-05-21 10:16:21.983', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Scheme : Card Transaction Report', '/cms/cardTransactionReport.xhtml', 'this menu is to view card transaction', 1, '2012-05-22 12:35:19.7', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Scheme : Card Update Details', '/cms/cardUpdateDetails.xhtml', 'done', 1, '2012-05-22 18:02:06.733', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Settlement Transaction Report', '/support/settlementTransactionSummaryReport.xhtml', 'Settlement Report', 1, '2012-05-23 15:04:48.28', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('BizDev Settlement Transaction Summary Report', '/support/bizDevSettlementSummaryReport.xhtml', 'Bizdev settlement summary report', 1, '2012-05-23 16:37:18.31', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'BizDev Settlement Transaction Report', '/support/bizDevSettlementSummaryReport2.xhtml', 'Biz dev report for the unit', 1, '2012-05-23 16:57:00.543', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'CorporatePay Commission Report', '/support/cPayCommissionReport.xhtml', 'Corporate Pay Commission Report', 1, '2012-05-25 19:38:33.826', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('PocketMoni Funding Log', '/support/fundpocketmonilog.xhtml', 'pocket', 1, '2012-05-28 20:09:29.56', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Authorize Hotlist Card', '/cms/authorization_Hotlist_Card.xhtml', 'This menu is to authorised a card for hotlist', 1, '2012-05-31 15:51:59.06', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'e_Exceptional Report', '/support/e_ExceptionReport.xhtml', 'done', 1, '2012-06-01 17:37:11.763', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Authorize Blocked Card', '/cms/authorization_Block_Card.xhtml', 'this menu is to authorized card block', 1, '2012-06-04 13:07:42.483', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Wallet Report', '/support/WalletReport.xhtml', 'Done', 1, '2012-06-05 13:56:41.543', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Card Update - Upload', '/support/cardSchemeCardUpload.xhtml', 'Card Update - Upload', 1, '2012-06-06 19:05:59.263', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Authorize De-Hotlist Card', '/cms/authorization_DeHotlist_Card.xhtml', 'done', 1, '2012-06-07 14:45:12.873', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Authorize UNBlocked Card', '/cms/authorization_unblocked_Card.xhtml', 'Done', 1, '2012-06-07 15:16:05.293', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Fund Transfer for Charms', '/cms/fundsTransferTransaction.xhtml', 'done', 1, '2012-06-18 17:50:53.466', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Prepaid Card Scheme Registration', '/support/scheme_Registeration.xhtml', 'done', 1, '2012-06-22 13:52:28.92', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Prepaid Card Scheme Report', '/support/schemeReport.xhtml', 'Done', 1, '2012-06-25 10:24:56.17', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Reset Daily Bound Work', '/cms/resetDailyBoundWork.xhtml', 'done', 1, '2012-07-02 12:10:49.043', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Authorize Bound Work', '/cms/authorization_Reset_Bound_work.xhtml', 'Done', 1, '2012-07-02 16:35:23.59', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Authorize Bound Limit', '/cms/authorization_Reset_Bound_Limit.xhtml', 'Done', 1, '2012-07-03 11:50:50.606', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Extend Card Expiration', '/cms/extendCardExpiration.xhtml', 'done', 1, '2012-07-03 13:05:39.043', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Authorize Extend Card Expiration', '/cms/authorization_CardExpiration.xhtml', 'done', 1, '2012-07-03 15:56:25.95', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Member Registration', '/Parallex/home.xhtml', 'Member Registration', 1, '2012-07-05 15:48:31.106', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('FundGate Reports', '/cms/fundGateReports.xhtml', 'done', 1, '2012-07-09 17:52:50.75', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Course Registration', '/institution/courseRegisteration.xhtml', 'Done', 1, '2012-07-17 00:51:32.09', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Department Registration', '/institution/departmentRegisteration.xhtml', 'Done', 1, '2012-07-17 02:19:37.5', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Faculty Registration', '/institution/facultyRegisteration.xhtml', 'Done', 1, '2012-07-17 03:41:31.06', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'School Registration', '/institution/instituteRegisteration.xhtml', 'Done', 1, '2012-07-17 04:33:54.31', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Level Registration', '/institution/levelRegisteration.xhtml', 'Done', 1, '2012-07-17 07:55:28.14', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Payment-Type Registration', '/institution/PaymentTypeReg.xhtml', 'Done', 1, '2012-07-17 08:57:00.25', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Session Registration', '/institution/sessionRegistration.xhtml', 'Done', 1, '2012-07-17 09:30:28.856', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( '::Payment Setup ::', '/institution/paymentSetup.xhtml', 'done', 1, '2012-07-17 16:29:27.653', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('FundGate Setup', '/cms/fungateSetup.xhtml', 'Done', 1, '2012-07-18 10:29:36.653', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Create Agents', '/ETZRICA/agentMasterSetup.xhtml', 'Create Agents', 1, '2012-07-18 13:05:20.39', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Create Agent Admin', '/support/createAgentAdmin.xhtml', 'Create Agent Admin', 1, '2012-07-18 18:49:49.576', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Create Rica Officer', '/ETZRICA/agentSub.xhtml', 'Create Rica Officer', 1, '2012-07-18 19:28:48.25', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('View Rica Report', '/ETZRICA/ricaReport.xhtml', 'View Rica Report', 1, '2012-07-18 19:29:31.56', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Register Sub', '/ETZRICA/ricaSub.xhtml', 'Register Sub', 1, '2012-07-18 19:30:16.25', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'De-Register Sub', '/ETZRICA/derica.xhtml', 'De-Register Sub', 1, '2012-07-18 19:30:44.013', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Change Ownership', '/ETZRICA/ricaSub.xhtml', 'Change Ownership', 1, '2012-07-18 19:31:35.42', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Program-Type Registration', '/institution/programmType_Registeration.xhtml', 'Done', 1, '2012-07-19 18:14:57.7', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Student Registration', '/institution/studentRegistration.xhtml', 'Done', 1, '2012-07-19 20:05:21.576', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Failed Transaction Report', '/support/failedTransactionReportByBank.xhtml', 'Done', 1, '2012-07-24 09:42:33.03', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Failed Transaction Report By Selected Bank', '/support/failedTransactionReportBySelectedBank.xhtml', 'Done', 1, '2012-07-25 14:38:04.293', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Create Van Sales Man  Users', '/support/createVcmDriverUser.xhtml', 'Done', 1, '2012-07-30 12:00:53.733', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Van Sales Man Account Report', '/support/bcmTransactionSummaryReport.xhtml', 'Done', 1, '2012-07-30 20:44:54.733', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES (':::Company Setup:::', '/support/companyRegisteration.xhtml', 'done', 1, '2012-08-01 19:43:27.293', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Depot Pool Account Report', '/support/depotPoolAccountTransactionSummaryReport.xhtml', 'Done', 1, '2012-08-03 05:49:52.233', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('VSM Transaction Summary Report', '/support/vsmTransactionSummaryReport.xhtml', 'Done', 1, '2012-08-06 14:16:51.28', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Pool Account Setup', '/support/poolAccountSetup.xhtml', 'Done', 1, '2012-08-09 20:00:29.31', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Account Info Setup', '/support/accountInfoSetup.xhtml', 'Done', 1, '2012-08-10 11:50:15.75', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Card Scheme Status  Report', '/cms/cardSchemeStatusReport.xhtml', 'done', 1, '2012-08-30 17:49:28.67', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Blocked Card / Hotlist', '/cms/blocked_hotllisted_card.xhtml', 'Done', 1, '2012-09-03 10:12:01.39', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('De-hotlist Card', '/cms/card_deHotlistReport.xhtml', 'Done', 1, '2012-09-07 20:30:23.28', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Reset Daily Bound Limit', '/cms/resetDailyBoundLimit.xhtml', 'Done', 1, '2012-09-11 17:38:05.92', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('VSM Supervisor Report', '/support/vsmSupervisorReport.xhtml', 'Done', 1, '2012-09-12 11:02:15.856', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Depot Supervisor Report', '/support/depotSupervisorReport.xhtml', 'Done', 1, '2012-09-12 11:02:51.216', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Pin Re-Generation', '/cms/pinReset.xhtml', 'Done', 1, '2012-09-14 11:56:27.216', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Authorize Pin Re-Generation', '/cms/authorization_Pin_Regeneration.xhtml', 'Done', 1, '2012-09-26 14:47:45.5', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Registration Report', '/support/gloRegistrationReport.xhtml', 'Registration Report', 1, '2012-09-26 19:46:36.28', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Transaction Report', '/support/gloTransactionReport.xhtml', 'XPortal', 1, '2012-09-26 19:47:51.216', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Successful Transaction Report', '/support/successfulFundTransactionReportBySelectedBank.xhtml', 'Done', 1, '2012-10-09 15:13:10.716', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('VTU / PIN Transactions Report', '/support/vtuTransactionSummary.xhtml', 'Done', 1, '2012-10-16 12:37:19.763', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Authorize Fundgate Upate Details', '/cms/authorization_update_qeued.xhtml', 'Done', 1, '2012-10-19 17:46:37.123', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Card Report', '/support/activationDebitCardReport.xhtml', 'Done', 1, '2012-10-22 13:45:00.06', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'MTN Collection Report', '/support/mtnCollectionReport.xhtml', 'MTN Collection Report', 1, '2012-10-24 17:52:46.84', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Switch Report for Bank', '/support/switchReportForBank.xhtml', 'Done', 1, '2012-10-29 19:00:42.34', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('District Payment Report', '/phcn/phcnDistrictTransactionReport.xhtml', 'Done', 1, '2012-11-01 17:31:22.5', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Merchant International Report', '/support/merchantTransactionDetailsRedeem.xhtml', 'Done', 1, '2012-11-01 18:10:26.576', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('MTO Transaction Report', '/support/mtocardDetails_tran.xhtml', 'Done', 1, '2012-11-06 16:15:03.686', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('MTN Transaction Report', '/support/mtnTransactionReport.xhtml', 'Done', 1, '2012-11-08 11:48:45.14', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('File Upload', '/support/fileuploader.xhtml', 'Done', 1, '2012-11-20 16:12:46.013', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('File Upload Report', '/support/fileUploderReport.xhtml', 'Done', 1, '2012-11-21 11:28:35.576', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'masterBank Setup', '/support/masterBankSetup.xhtml', 'Done', 1, '2012-11-27 19:44:19.06', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Customer/Bank Staff Setup', '/support/staff_cust_BankSetup.xhtml', 'Done', 1, '2012-11-29 14:53:12.983', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Settle Failed Vtu Transaction Report', '/support/settledFailedVtuTransactionReport.xhtml', 'getSettledFailedVtuTransactionReport', 1, '2012-11-30 17:11:10.75', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Airtime Pin Report', '/support/airtimeReport.xhtml', 'Done', 1, '2012-12-03 13:04:52.06', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Airtime Pinless Report', '/support/airtimePinlessReport.xhtml', 'Done', 1, '2012-12-03 13:52:12.17', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Trip Mart Merchant Transaction Report', '/support/merchantTransactionDetailsTripMart.xhtml', 'DONE', 1, '2012-12-03 19:12:47.653', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Track 2', '/cms/cardHolderEnquires_track2.xhtml', 'Done', 1, '2012-12-12 14:55:50.2', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Switch Log Report', '/support/switchlogReport.xhtml', 'Done', 1, '2012-12-18 12:56:27.95', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Reverse Transaction Report', '/support/reverseTransactionReport.xhtml', 'Reverse Transaction Report', 1, '2013-01-04 09:57:02.983', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Authorize Reversal', '/support/reversalAuthorisation.xhtml', 'Authorize Reversal', 1, '2013-01-04 10:49:59.903', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Agency Registration', '/Payoutlet/CAgentRegisteration.xhtml', 'Agency Registration', 1, '2013-01-04 13:01:57.686', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Issuer Merchant Registration', '/Payoutlet/CIssuerMerchantRegistration.xhtml', 'Issuer Merchant Registration', 1, '2013-01-04 13:50:03.216', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Trans Type Registration', '/Payoutlet/CTransTypeRegistration.xhtml', 'Trans Type Registration', 1, '2013-01-04 15:28:09.5', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Merchant Registration', '/Payoutlet/CMerchantRegistration.xhtml', 'Merchant Registration', 1, '2013-01-04 16:30:06.84', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Pay Merchant', '/payoutlet/payMerchant.xhtml', 'Pay Merchant', 1, '2013-01-08 11:52:19.326', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Salvation Ministry Transaction Report', '/support/merchantTransactionDetailsSalvationMinistry2.xhtml', 'Salvation Ministry Transaction Report', 1, '2013-01-08 17:45:33.31', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Merchant File Upload', '/support/merchantfileuploader.xhtml', 'Merchant File Upload', 1, '2013-01-15 16:33:47.623', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Authorize Direct Debit', '/support/authorisedmerchantfileuploader.xhtml', 'Authorize Direct Debit', 1, '2013-01-16 13:46:52.623', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Card -  Enquiry', '/cms/cardHolderEnquires.xhtml', 'Card Enquiry', 1, '2013-01-23 11:53:09.576', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'Fundgate Transaction Report', '/cms/fundGateReports.xhtml', 'Done', 1, '2013-01-25 14:25:13.326', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Merchant IPayment Report', '/support/iPaymentTransactionReportByMerchant.xhtml', 'Merchant IPayment Report', 1, '2013-01-28 13:29:50.14', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('IPayment Transaction Report', '/support/iPaymentTransactionReport.xhtml', 'IPayment Transaction Report', 1, '2013-01-28 14:20:31.653', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Winners Merchant Transaction Report', '/support/merchantTransactionDetailsWinners.xhtml', 'Done', 1, '2013-01-29 12:30:07.03', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Victory Intl Church Merchant Transaction Report', '/support/merchantTransactionDetailsVictory.xhtml', 'Done', 1, '2013-01-29 12:54:42.326', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Users IPayment Transaction Report', '/support/iPaymentTransactionReportByUsers.xhtml', 'Done', 1, '2013-01-29 14:29:42.966', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('Pos Terminal Request', '/support/posTerminalInvestigation.xhtml', 'Pos Terminal Request', 1, '2013-02-08 12:33:29.903', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ( 'TMC Request', '/support/etmcInvestigation.xhtml', 'TMC Request', 1, '2013-02-21 11:33:46.326', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('WebConnect Transaction Report', '/support/webConnectLogReport.xhtml', 'WebConnect Transaction Report', 1, '2013-02-26 17:10:50.233', 'ANYWHERE');
+
+INSERT INTO telcodb.dbo.support_menuitem( menuitem_nm, menuitem_link, menuitem_comments, createdBy, created_dt, extraParam) VALUES ('PHCN Agents Airtime Report', '/support/airtimePhcnSalesReport.xhtml', 'PHCN Airtime Report', 1, '2013-03-18 11:24:59.826', 'ANYWHERE');
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 1, 1, 1, '2011-07-29 11:27:19.92');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 2, 1, 1, '2011-07-29 11:27:19.92');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 3, 1, 1, '2011-07-29 11:27:19.936');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 4, 1, 1, '2011-07-29 11:27:19.936');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 5, 1, 1, '2011-07-29 11:27:19.95');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 6, 5, 1, '2011-07-29 11:29:29.28');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 7, 5, 1, '2011-07-29 11:29:29.34');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 8, 5, 1, '2011-07-29 11:29:29.356');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 9, 5, 1, '2011-07-29 11:29:29.373');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 10, 5, 1, '2011-07-29 11:29:29.373');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 11, 5, 1, '2011-07-29 11:29:29.39');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 12, 5, 1, '2011-07-29 11:29:29.39');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 13, 5, 1, '2011-07-29 11:29:29.403');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 14, 5, 1, '2011-07-29 11:29:29.42');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 15, 5, 1, '2011-07-29 11:29:29.45');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES (16, 5, 1, '2011-07-29 11:29:29.483');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 17, 2, 1, '2011-07-29 11:30:12.06');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES (18, 2, 1, '2011-07-29 11:30:12.076');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 19, 2, 1, '2011-07-29 11:30:12.186');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 20, 2, 1, '2011-07-29 11:30:12.39');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 21, 2, 1, '2011-07-29 11:30:12.39');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 22, 2, 1, '2011-07-29 11:30:12.403');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 23, 2, 1, '2011-07-29 11:30:12.42');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES (24, 2, 1, '2011-07-29 11:30:12.436');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 25, 2, 1, '2011-07-29 11:30:12.45');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 26, 2, 1, '2011-07-29 11:30:12.45');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 27, 2, 1, '2011-07-29 11:30:12.466');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 28, 2, 1, '2011-07-29 11:30:12.53');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 29, 3, 1, '2011-07-29 11:30:43.78');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 30, 3, 1, '2011-07-29 11:30:43.793');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 31, 3, 1, '2011-07-29 11:30:43.81');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES (32, 3, 1, '2011-07-29 11:30:43.873');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 33, 3, 1, '2011-07-29 11:30:43.92');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 34, 3, 1, '2011-07-29 11:30:43.936');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES (5000002, 2, 1, '2011-09-05 15:39:24.733');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 5000003, 2, 1, '2011-09-05 15:56:04.34');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 10000003, 2, 1, '2011-09-12 14:23:22.263');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 10000004, 2, 1, '2011-09-13 14:26:40.67');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 15000004, 2, 1, '2011-09-22 16:03:34.95');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 15000006, 2, 1, '2011-09-26 14:02:04.5');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 15000007, 2, 1, '2011-09-26 14:50:02.92');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES (15000008, 1, 1, '2011-09-26 16:09:45.356');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 15000009, 5, 1, '2011-09-28 10:34:54.67');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES (20000005, 2, 1, '2011-10-07 18:48:12.903');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES (20000006, 2, 1, '2011-10-07 20:34:06.84');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 35, 4, 1, '2011-10-14 16:59:42.78');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES (36, 4, 1, '2011-10-14 16:59:42.81');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES (37, 4, 1, '2011-10-14 16:59:42.826');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 38, 4, 1, '2011-10-14 16:59:42.826');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 39, 4, 1, '2011-10-14 16:59:42.84');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES (40, 4, 1, '2011-10-14 16:59:42.856');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 30000007, 2, 1, '2011-10-27 20:12:46.216');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES (30000008, 2, 1, '2011-11-17 13:32:05.64');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 35000008, 2, 1, '2011-11-23 11:52:04.903');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES (35000009, 2, 1, '2011-11-24 10:55:53.356');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 35000010, 2, 1, '2011-11-24 10:55:53.59');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES (40000009, 5, 1, '2011-12-08 14:13:02.233');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 45000010, 2, 1, '2011-12-12 16:13:52.216');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 50000011, 5, 1, '2012-01-18 12:12:44.373');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 50000012, 10000003, 1, '2012-01-20 12:34:20.653');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES (50000013, 10000003, 1, '2012-01-20 12:49:43.56');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES (55000013, 15000004, 1, '2012-01-24 11:10:34.513');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES (55000017, 15000004, 1, '2012-01-24 11:10:34.513');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES (55000014, 15000004, 1, '2012-01-24 11:10:34.53');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES (55000015, 15000004, 1, '2012-01-24 11:10:34.53');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES (55000016, 15000004, 1, '2012-01-24 11:10:34.53');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES (55000018, 15000004, 1, '2012-01-24 15:21:27.373');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES (60000014, 15000004, 1, '2012-01-25 10:45:14.373');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 60000015, 2, 1, '2012-01-26 13:25:08.14');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES (65000015, 2, 1, '2012-02-02 13:17:57.06');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 24, 10000003, 1, '2012-02-02 13:32:34.436');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 25, 10000003, 1, '2012-02-02 13:32:34.45');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 26, 10000003, 1, '2012-02-02 13:32:34.45');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 27, 10000003, 1, '2012-02-02 13:32:34.5');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 28, 10000003, 1, '2012-02-02 13:32:34.513');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 70000016, 2, 1, '2012-02-09 11:36:48.06');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES (75000017, 5, 1, '2012-02-15 12:39:51.356');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES (75000018, 5, 1, '2012-02-15 12:52:20.153');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 75000019, 5, 1, '2012-02-15 13:03:07.186');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES (75000020, 5, 1, '2012-02-15 13:11:19.373');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES (80000019, 2, 1, '2012-02-16 12:44:54.623');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 80000020, 2, 1, '2012-02-16 12:44:55.186');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES (80000018, 5, 1, '2012-02-16 12:45:17.84');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES (80000021, 2, 1, '2012-02-17 10:01:12.06');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES (80000022, 1, 1, '2012-02-17 18:53:53.25');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 80000023, 2, 1, '2012-02-22 14:00:22.356');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES (70000016, 20000005, 1, '2012-02-24 12:56:37.826');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 85000019, 1, 1, '2012-02-24 17:09:49.89');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 85000019, 20000005, 1, '2012-02-24 17:13:51.09');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES (85000020, 1, 1, '2012-02-25 09:26:55.356');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 85000020, 20000005, 1, '2012-02-25 09:27:25.733');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 85000021, 20000005, 1, '2012-02-25 11:51:25.106');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES (85000022, 20000005, 1, '2012-02-25 11:56:14.123');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 85000023, 20000005, 1, '2012-02-25 12:01:46.733');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 85000024, 20000005, 1, '2012-02-25 12:40:25.7');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES (85000025, 20000005, 1, '2012-02-25 12:46:31.356');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES (85000026, 20000005, 1, '2012-02-25 12:52:07.0');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 85000027, 20000005, 1, '2012-02-25 12:57:43.17');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 85000028, 20000005, 1, '2012-02-25 13:02:20.53');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 85000029, 15000004, 1, '2012-02-25 13:08:16.653');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES (85000029, 20000005, 1, '2012-02-25 13:10:24.903');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES (85000030, 20000005, 1, '2012-02-25 13:16:53.09');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 85000031, 20000005, 1, '2012-02-25 13:22:37.92');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 85000032, 20000005, 1, '2012-02-25 13:27:43.216');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 85000033, 20000005, 1, '2012-02-25 13:33:48.42');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 85000034, 20000005, 1, '2012-02-25 14:02:50.076');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 85000035, 20000005, 1, '2012-02-25 14:13:41.763');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 85000036, 2, 1, '2012-02-27 14:09:35.826');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES (85000037, 5, 1, '2012-02-28 09:53:54.606');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES (85000038, 5, 1, '2012-03-01 13:22:56.186');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES (85000039, 20000005, 1, '2012-03-02 19:19:13.84');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES (85000040, 20000005, 1, '2012-03-02 21:35:00.78');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES (85000041, 20000005, 1, '2012-03-03 02:53:56.966');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES (85000042, 20000005, 1, '2012-03-03 03:41:37.84');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 85000043, 2, 1, '2012-03-03 11:11:55.293');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 90000040, 2, 1, '2012-03-07 17:30:19.78');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES (90000041, 1, 1, '2012-03-09 19:02:10.483');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES (90000041, 2, 1, '2012-03-09 19:04:46.653');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES (100000043, 2, 1, '2012-03-15 14:03:48.09');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES (105000044, 5, 1, '2012-03-19 11:34:49.106');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES (105000045, 2, 1, '2012-03-29 16:37:16.356');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 110000046, 2, 1, '2012-04-04 11:11:28.84');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 110000047, 2, 1, '2012-04-04 11:50:04.606');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES (115000047, 1, 1, '2012-04-17 19:55:10.0');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES (120000048, 2, 1, '2012-04-18 16:46:20.013');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 120000049, 2, 1, '2012-04-19 15:52:23.78');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES (120000050, 20000006, 1, '2012-04-23 17:20:26.09');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 120000051, 2, 1, '2012-04-24 11:26:58.483');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 120000052, 20000006, 1, '2012-04-24 17:13:13.873');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 120000051, 20000006, 1, '2012-04-24 17:13:23.436');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES (120000053, 20000006, 1, '2012-04-25 10:54:36.5');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES (120000054, 20000006, 1, '2012-04-26 20:45:41.513');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES (120000055, 20000006, 1, '2012-04-26 21:34:00.356');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES (120000056, 20000006, 1, '2012-04-26 21:41:12.31');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 120000057, 20000006, 1, '2012-04-26 21:46:06.39');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 120000058, 20000006, 1, '2012-04-26 21:52:38.92');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 120000059, 20000006, 1, '2012-04-26 21:55:29.983');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 120000060, 20000006, 1, '2012-04-26 21:59:02.826');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 120000061, 20000006, 1, '2012-04-26 22:01:51.106');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 120000062, 20000006, 1, '2012-04-26 22:05:24.81');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES (120000063, 20000006, 1, '2012-04-26 22:12:16.106');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES (120000064, 20000005, 1, '2012-05-04 12:37:41.373');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES (125000065, 1, 1, '2012-05-10 20:04:11.34');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 130000066, 20000006, 1, '2012-05-16 15:00:41.59');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES (130000066, 2, 1, '2012-05-16 15:04:56.356');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 135000067, 1, 1, '2012-05-21 10:16:44.67');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 135000068, 20000006, 1, '2012-05-22 12:36:32.34');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 135000068, 2, 1, '2012-05-22 12:55:39.966');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES (130000066, 20000007, 1, '2012-05-22 15:08:13.966');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 135000068, 20000007, 1, '2012-05-22 15:08:13.966');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 135000069, 20000007, 1, '2012-05-22 18:03:36.28');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 135000070, 2, 1, '2012-05-23 15:05:28.326');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 135000071, 2, 1, '2012-05-23 16:37:32.856');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 135000072, 2, 1, '2012-05-23 16:57:13.28');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES (135000073, 2, 1, '2012-05-25 19:38:47.356');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 140000074, 2, 1, '2012-05-28 20:10:32.966');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 140000076, 5, 1, '2012-06-01 17:38:32.903');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 145000078, 5, 1, '2012-06-05 13:57:27.733');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 145000079, 1, 1, '2012-06-06 19:06:22.233');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES (145000080, 20000007, 1, '2012-06-07 14:45:36.95');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 155000081, 5, 1, '2012-06-26 14:52:42.466');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES (155000082, 5, 1, '2012-06-26 14:52:42.5');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 155000083, 20000007, 1, '2012-07-02 12:11:14.67');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 155000084, 20000007, 1, '2012-07-02 16:35:58.466');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 155000085, 20000007, 1, '2012-07-03 11:51:16.856');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 155000086, 20000007, 1, '2012-07-03 13:06:01.0');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES (155000087, 20000007, 1, '2012-07-03 15:57:32.716');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 160000084, 20000008, 1, '2012-07-05 15:49:38.89');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 165000085, 25000009, 1, '2012-07-17 00:53:00.42');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 165000086, 25000009, 1, '2012-07-17 02:19:58.623');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 165000087, 25000009, 1, '2012-07-17 03:43:22.53');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 165000088, 25000009, 1, '2012-07-17 04:34:10.403');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 165000089, 25000009, 1, '2012-07-17 07:55:45.153');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 165000090, 25000009, 1, '2012-07-17 08:57:24.543');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES (165000091, 25000009, 1, '2012-07-17 09:30:41.56');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 165000092, 25000009, 1, '2012-07-17 16:29:47.326');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 165000094, 15000004, 1, '2012-07-18 14:22:05.936');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 165000095, 1, 1, '2012-07-18 18:51:13.56');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES (165000095, 15000004, 1, '2012-07-18 19:33:16.606');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES (165000096, 15000004, 1, '2012-07-18 19:33:16.623');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 165000097, 15000004, 1, '2012-07-18 19:33:16.623');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 165000098, 15000004, 1, '2012-07-18 19:33:16.653');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES (165000099, 15000004, 1, '2012-07-18 19:33:16.686');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES (165000100, 15000004, 1, '2012-07-18 19:33:16.716');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES (165000101, 25000009, 1, '2012-07-19 18:15:37.653');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES (165000102, 25000009, 1, '2012-07-19 20:06:44.983');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 165000103, 2, 1, '2012-07-24 09:43:30.293');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES (165000104, 2, 1, '2012-07-25 14:38:17.39');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 170000105, 1, 1, '2012-07-30 12:01:15.936');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 170000106, 2, 1, '2012-07-30 20:45:40.153');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 175000106, 1, 1, '2012-08-01 19:44:12.84');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu (menuitem_id, menu_id, createdBy, created_dt) VALUES ( 175000107, 2, 1, '2012-08-03 05:50:19.81');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 175000108, 2, 1, '2012-08-06 14:18:11.653');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 180000107, 1, 1, '2012-08-09 20:01:16.576');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 180000108, 1, 1, '2012-08-10 11:50:44.84');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 190000110, 20000007, 1, '2012-09-03 10:12:48.856');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 190000111, 20000007, 1, '2012-09-07 20:30:58.856');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 155000084, 25000010, 1, '2012-09-10 10:17:13.186');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES (155000085, 25000010, 1, '2012-09-10 10:17:13.216');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 155000087, 25000010, 1, '2012-09-10 10:17:13.25');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 145000080, 25000010, 1, '2012-09-10 10:17:13.28');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 145000081, 25000010, 1, '2012-09-10 10:17:13.31');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 145000077, 25000010, 1, '2012-09-10 10:17:13.34');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 140000075, 25000010, 1, '2012-09-10 10:17:13.373');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 190000112, 20000007, 1, '2012-09-11 17:38:43.92');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 195000113, 20000006, 1, '2012-09-12 11:05:52.013');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 195000114, 20000006, 1, '2012-09-12 11:05:52.03');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 195000115, 20000007, 1, '2012-09-14 11:57:02.543');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES (200000114, 25000010, 1, '2012-09-26 14:49:12.763');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 200000115, 2, 1, '2012-09-26 19:46:56.17');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 200000116, 2, 1, '2012-09-26 19:48:03.75');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 200000114, 20000007, 1, '2012-10-03 13:05:41.89');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 205000115, 20000006, 1, '2012-10-09 15:13:30.106');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 210000116, 20000006, 1, '2012-10-16 12:42:38.81');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 160000085, 20000006, 1, '2012-10-19 11:25:08.373');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES (165000093, 20000006, 1, '2012-10-19 11:26:42.216');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 210000117, 25000010, 1, '2012-10-19 17:46:55.233');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES (215000118, 20000006, 1, '2012-10-22 13:46:04.356');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES (220000119, 20000006, 1, '2012-10-24 17:53:13.983');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES (220000120, 2, 1, '2012-10-29 19:03:31.0');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES (220000121, 20000006, 1, '2012-11-01 17:32:06.216');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES (21500122, 20000006, 1, '2012-11-01 18:11:01.483');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 220000123, 20000006, 1, '2012-11-06 16:15:20.75');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 220000124, 20000006, 1, '2012-11-08 11:52:19.06');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 225000120, 20000006, 1, '2012-11-20 16:16:26.716');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 225000121, 20000006, 1, '2012-11-21 11:29:23.2');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES (230000121, 20000006, 1, '2012-11-27 19:45:01.043');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 230000122, 20000006, 1, '2012-11-29 14:54:02.686');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 230000123, 20000006, 1, '2012-11-30 17:11:32.763');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 230000124, 20000006, 1, '2012-12-03 13:08:56.31');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 230000125, 20000006, 1, '2012-12-03 13:53:00.623');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 230000126, 20000006, 1, '2012-12-03 19:17:01.436');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 235000122, 20000007, 1, '2012-12-12 15:00:00.436');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 240000123, 20000006, 1, '2012-12-18 12:57:00.89');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 245000124, 20000006, 1, '2013-01-04 09:57:40.216');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES (245000125, 25000010, 1, '2013-01-04 10:50:40.856');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES (245000126, 25000011, 1, '2013-01-04 13:02:21.013');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 245000127, 25000011, 1, '2013-01-04 13:50:23.623');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 245000128, 25000011, 1, '2013-01-04 15:28:23.653');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 245000129, 25000011, 1, '2013-01-04 16:30:27.28');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 245000130, 25000011, 1, '2013-01-08 11:53:11.873');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES (245000131, 20000006, 1, '2013-01-08 17:45:50.28');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 245000126, 25000014, 110000051, '2013-01-10 20:31:00.0');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 175000106, 25000015, 110000051, '2013-01-10 20:51:51.123');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 165000085, 25000016, 110000051, '2013-01-10 20:53:24.59');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES (200000115, 25000017, 110000051, '2013-01-10 20:54:56.59');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 165000102, 25000018, 110000051, '2013-01-10 20:56:05.2');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 245000125, 2, 1, '2013-01-11 11:14:44.076');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES ( 250000131, 20000006, 1, '2013-01-15 16:40:23.92');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES (250000132, 25000010, 1, '2013-01-16 13:47:19.403');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 120000056, 25000013, 1, '2013-01-23 11:58:54.25');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES (250000133, 25000013, 1, '2013-01-23 12:01:29.5');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu( menuitem_id, menu_id, createdBy, created_dt) VALUES (250000134, 20000006, 1, '2013-01-25 14:27:02.293');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 250000135, 20000006, 1, '2013-01-28 13:30:17.03');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 250000136, 20000006, 1, '2013-01-28 14:21:43.45');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 250000137, 20000006, 1, '2013-01-29 12:30:24.56');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 250000138, 20000006, 1, '2013-01-29 12:55:07.17');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES (250000139, 20000006, 1, '2013-01-29 14:30:09.263');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES ( 255000132, 20000007, 1, '2013-02-08 12:33:47.78');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(menuitem_id, menu_id, createdBy, created_dt) VALUES (260000133, 5, 1, '2013-02-21 11:34:27.123');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(id, menuitem_id, menu_id, createdBy, created_dt) VALUES ( 265000134, 5, 1, '2013-02-26 17:11:15.436');
+
+INSERT INTO telcodb.dbo.support_menuitemToMenu(id, menuitem_id, menu_id, createdBy, created_dt) VALUES ( 265000135, 2, 1, '2013-03-18 11:26:21.95');
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 2, 1, 1, '2011-07-29 11:27:26.78');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 3, 1, 1, '2011-07-29 11:27:26.793');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 4, 1, 1, '2011-07-29 11:27:26.793');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 5, 1, 1, '2011-07-29 11:27:26.81');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 6, 1, 1, '2011-07-29 11:31:48.75');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 7, 1, 1, '2011-07-29 11:31:48.75');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (8, 1, 1, '2011-07-29 11:31:48.763');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 9, 1, 1, '2011-07-29 11:31:48.81');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (10, 1, 1, '2011-07-29 11:31:48.84');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 11, 1, 1, '2011-07-29 11:31:48.84');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 12, 1, 1, '2011-07-29 11:31:48.856');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (13, 1, 1, '2011-07-29 11:31:48.873');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 14, 1, 1, '2011-07-29 11:31:48.89');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 15, 1, 1, '2011-07-29 11:31:48.903');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (16, 1, 1, '2011-07-29 11:31:48.92');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 17, 1, 1, '2011-07-29 11:31:48.92');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (18, 1, 1, '2011-07-29 11:31:48.936');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (19, 1, 1, '2011-07-29 11:31:48.95');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (20, 1, 1, '2011-07-29 11:31:48.966');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (21, 1, 1, '2011-07-29 11:31:48.983');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (22, 1, 1, '2011-07-29 11:31:48.983');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 23, 1, 1, '2011-07-29 11:31:49.0');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 30, 1, 1, '2011-07-29 11:31:49.076');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 1, 1, 1, '2011-07-29 11:27:26.78');
+
+
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (31, 1, 1, '2011-07-29 11:31:49.123');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 32, 1, 1, '2011-07-29 11:31:49.123');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (33, 1, 1, '2011-07-29 11:31:49.14');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 34, 1, 1, '2011-07-29 11:31:49.153');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (6, 2, 1, '2011-07-29 11:32:27.873');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 7, 2, 1, '2011-07-29 11:32:27.903');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 8, 2, 1, '2011-07-29 11:32:27.903');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 9, 2, 1, '2011-07-29 11:32:27.936');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 10, 2, 1, '2011-07-29 11:32:27.936');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (11, 2, 1, '2011-07-29 11:32:27.95');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (12, 2, 1, '2011-07-29 11:32:27.966');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 13, 2, 1, '2011-07-29 11:32:27.983');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 14, 2, 1, '2011-07-29 11:32:28.06');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 15, 2, 1, '2011-07-29 11:32:28.076');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 16, 2, 1, '2011-07-29 11:32:28.09');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 17, 2, 1, '2011-07-29 11:32:28.106');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (18, 2, 1, '2011-07-29 11:32:28.123');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 19, 2, 1, '2011-07-29 11:32:28.14');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (20, 2, 1, '2011-07-29 11:32:28.153');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 21, 2, 1, '2011-07-29 11:32:28.153');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (22, 2, 1, '2011-07-29 11:32:28.17');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (23, 2, 1, '2011-07-29 11:32:28.17');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 29, 2, 1, '2011-07-29 11:32:28.293');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 30, 2, 1, '2011-07-29 11:32:28.31');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 31, 2, 1, '2011-07-29 11:32:28.34');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 32, 2, 1, '2011-07-29 11:32:28.34');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 33, 2, 1, '2011-07-29 11:32:28.356');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (34, 2, 1, '2011-07-29 11:32:28.373');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 6, 3, 1, '2011-07-29 11:33:46.043');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 7, 3, 1, '2011-07-29 11:33:46.06');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (9, 3, 1, '2011-07-29 11:33:46.123');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 10, 3, 1, '2011-07-29 11:33:46.14');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 11, 3, 1, '2011-07-29 11:33:46.293');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 29, 3, 1, '2011-07-29 11:33:46.436');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 30, 3, 1, '2011-07-29 11:33:46.543');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 31, 3, 1, '2011-07-29 11:33:46.59');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 33, 3, 1, '2011-07-29 11:33:46.59');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 6, 5, 1, '2011-07-29 11:34:29.873');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 7, 5, 1, '2011-07-29 11:34:30.543');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 9, 5, 1, '2011-07-29 11:34:30.903');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 10, 5, 1, '2011-07-29 11:34:30.966');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (11, 5, 1, '2011-07-29 11:34:31.0');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 29, 5, 1, '2011-07-29 11:34:31.14');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 30, 5, 1, '2011-07-29 11:34:31.17');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 31, 5, 1, '2011-07-29 11:34:31.216');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (33, 5, 1, '2011-07-29 11:34:31.233');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 5000003, 1, 1, '2011-09-05 15:39:39.373');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 5000004, 1, 1, '2011-09-05 15:56:16.373');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 10000003, 1, 1, '2011-09-12 14:23:34.623');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (15000004, 1, 1, '2011-09-22 16:04:20.53');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 15000010, 1, 1, '2011-09-28 10:35:06.606');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (20000006, 1, 1, '2011-10-07 20:34:16.186');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (25000006, 5000002, 1, '2011-10-14 17:00:24.233');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (25000007, 5000002, 1, '2011-10-14 17:00:24.25');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 25000008, 5000002, 1, '2011-10-14 17:00:24.263');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (25000008, 1, 1, '2011-10-14 17:01:00.7');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 25000009, 1, 1, '2011-10-14 17:01:00.733');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (30000007, 1, 1, '2011-10-27 20:13:13.31');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (20000005, 1, 1, '2011-10-28 14:22:03.513');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (30000008, 1, 1, '2011-11-17 13:32:21.92');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (35000008, 1, 1, '2011-11-23 11:52:16.5');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (7, 15000004, 1, '2011-11-23 17:06:12.42');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (8, 15000004, 1, '2011-11-23 17:06:12.45');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 6, 15000004, 1, '2011-11-23 17:06:12.466');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (30000008, 15000004, 1, '2011-11-23 17:06:27.64');
+
+
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 25000010, 1, 1, '2011-10-14 17:01:00.716');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (25000011, 1, 1, '2011-10-14 17:01:00.716');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 35000009, 15000004, 1, '2011-11-24 10:56:15.7');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 35000010, 15000004, 1, '2011-11-24 10:56:15.75');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (35000010, 1, 1, '2011-11-30 13:26:55.013');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 40000009, 1, 1, '2011-12-08 14:13:35.233');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (45000010, 1, 1, '2011-12-12 16:14:07.106');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 50000011, 1, 1, '2012-01-18 12:13:58.403');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 15, 3, 1, '2012-01-19 12:44:16.856');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (50000011, 20000005, 1, '2012-01-19 12:44:25.186');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 50000012, 1, 1, '2012-01-20 12:34:32.31');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 50000013, 1, 1, '2012-01-20 12:50:04.826');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 55000013, 1, 1, '2012-01-24 11:11:03.373');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 55000014, 1, 1, '2012-01-24 11:11:03.373');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 55000015, 1, 1, '2012-01-24 11:11:03.373');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (55000016, 1, 1, '2012-01-24 11:11:03.373');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 55000017, 1, 1, '2012-01-24 11:11:03.373');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 55000018, 1, 1, '2012-01-24 15:22:48.293');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 55000013, 2, 1, '2012-01-24 16:26:24.09');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 55000014, 2, 1, '2012-01-24 16:26:24.106');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 55000015, 2, 1, '2012-01-24 16:26:24.106');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 55000016, 2, 1, '2012-01-24 16:26:24.106');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (55000017, 2, 1, '2012-01-24 16:26:24.123');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (55000018, 2, 1, '2012-01-24 16:26:24.123');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 60000015, 3, 1, '2012-01-26 13:25:45.216');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 65000016, 1, 1, '2012-02-02 13:32:51.123');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 65000017, 1, 1, '2012-02-02 13:32:51.14');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 65000018, 1, 1, '2012-02-02 13:32:51.153');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 65000019, 1, 1, '2012-02-02 13:32:51.17');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 65000020, 1, 1, '2012-02-02 13:32:51.17');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (70000016, 1, 1, '2012-02-09 11:38:18.28');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 75000017, 1, 1, '2012-02-15 12:40:33.17');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 75000018, 1, 1, '2012-02-15 12:53:55.716');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (75000019, 1, 1, '2012-02-15 13:04:04.123');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(id, menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (75000021, 75000020, 1, 1, '2012-02-15 13:12:02.873');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 60000014, 2, 1, '2012-01-25 10:45:30.34');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 75000017, 25000007, 1, '2012-02-15 16:41:15.606');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 75000018, 25000007, 1, '2012-02-15 16:41:15.623');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 75000019, 25000007, 1, '2012-02-15 16:41:15.64');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 75000020, 25000007, 1, '2012-02-15 16:41:15.67');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 80000018, 25000007, 1, '2012-02-16 12:46:18.326');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 80000019, 25000007, 1, '2012-02-16 12:46:18.716');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 80000020, 25000007, 1, '2012-02-16 12:46:20.653');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 80000021, 25000007, 1, '2012-02-17 10:01:59.793');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (80000022, 30000008, 1, '2012-02-17 18:54:18.17');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 80000022, 14, 1, '2012-02-17 19:38:20.403');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 80000023, 1, 1, '2012-02-22 14:01:48.793');
+
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 85000040, 1, 1, '2012-02-27 14:14:38.653');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 85000041, 1, 1, '2012-02-28 10:00:11.216');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 85000042, 1, 1, '2012-03-01 13:23:17.733');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 85000043, 25000006, 1, '2012-03-03 09:08:26.233');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 85000044, 25000006, 1, '2012-03-03 09:08:26.28');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 85000045, 25000006, 1, '2012-03-03 09:08:26.28');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 85000046, 25000006, 1, '2012-03-03 09:08:26.28');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 85000047, 1, 1, '2012-03-03 11:12:16.84');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 90000044, 1, 1, '2012-03-07 17:31:47.966');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 90000045, 1, 1, '2012-03-09 19:02:53.076');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 95000046, 3, 1, '2012-03-15 14:04:31.17');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 100000047, 1, 1, '2012-03-19 11:35:20.53');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 100000048, 1, 1, '2012-03-29 16:38:20.84');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 105000049, 1, 1, '2012-04-04 11:11:47.653');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 105000050, 3, 1, '2012-04-04 11:50:26.983');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (110000050, 35000009, 1, '2012-04-17 19:55:22.763');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 85000043, 35000009, 1, '2012-04-17 19:55:34.09');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 115000051, 1, 1, '2012-04-18 16:47:45.2');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 80000021, 1, 1, '2012-04-19 12:15:01.793');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 80000021, 14, 1, '2012-04-19 13:24:16.233');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (115000052, 25000007, 1, '2012-04-19 15:53:02.59');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 115000053, 6, 1, '2012-04-23 17:43:10.14');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 115000058, 10000003, 1, '2012-04-24 17:14:34.903');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 115000057, 10000003, 1, '2012-04-24 17:16:07.873');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (115000059, 10000003, 1, '2012-04-25 10:55:14.34');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 115000060, 10000003, 1, '2012-04-26 20:46:00.076');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 115000061, 10000003, 1, '2012-04-26 21:34:33.233');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 115000062, 10000003, 1, '2012-04-26 21:41:36.513');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 115000063, 10000003, 1, '2012-04-26 21:46:23.856');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (115000064, 10000003, 1, '2012-04-26 21:52:55.733');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (115000065, 10000003, 1, '2012-04-26 21:55:59.076');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 115000066, 10000003, 1, '2012-04-26 21:59:25.043');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (85000030, 35000010, 1, '2012-05-08 15:11:51.95');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 110000050, 10000018, 1, '2012-05-08 15:17:33.2');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 85000043, 10000018, 1, '2012-05-08 15:58:03.043');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 115000070, 10000018, 1, '2012-05-08 17:38:18.983');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (115000070, 35000010, 1, '2012-05-08 17:38:44.653');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 120000071, 1, 1, '2012-05-10 20:04:28.78');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 15000007, 10000003, 1, '2012-05-11 11:59:26.25');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 15000006, 10000003, 1, '2012-05-11 11:59:26.28');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 15000008, 10000003, 1, '2012-05-11 11:59:26.31');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 120000071, 10000003, 1, '2012-05-11 11:59:26.34');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 125000073, 14, 1, '2012-05-16 15:12:37.903');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 130000073, 1, 1, '2012-05-21 10:16:59.293');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (130000074, 14, 1, '2012-05-22 12:58:45.623');
+
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 130000075, 14, 1, '2012-05-22 12:58:45.623');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 130000076, 30000008, 1, '2012-05-22 15:15:16.076');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 130000079, 1, 1, '2012-05-23 15:05:57.67');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 130000080, 1, 1, '2012-05-23 16:37:45.92');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 130000081, 10000003, 1, '2012-05-23 16:57:37.59');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (130000082, 1, 1, '2012-05-25 19:39:06.42');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 135000083, 1, 1, '2012-05-28 20:11:29.89');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (130000078, 30000008, 1, '2012-05-31 21:01:40.64');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 135000085, 1, 1, '2012-06-01 17:40:00.013');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 140000087, 1, 1, '2012-06-05 13:59:08.483');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (140000088, 14, 1, '2012-06-06 19:06:53.0');
+
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 140000088, 30000008, 1, '2012-06-06 19:09:26.216');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 150000092, 1, 1, '2012-06-26 14:53:39.513');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 150000093, 1, 1, '2012-06-26 14:53:39.56');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (150000094, 30000008, 1, '2012-07-02 12:11:39.326');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (150000097, 30000008, 1, '2012-07-03 13:06:26.153');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 160000103, 45000012, 1, '2012-07-18 14:37:30.873');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (160000104, 45000012, 1, '2012-07-18 18:53:21.793');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (160000105, 45000013, 1, '2012-07-18 19:39:17.89');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (160000106, 45000013, 1, '2012-07-18 19:39:17.89');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (160000107, 45000013, 1, '2012-07-18 19:39:17.89');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (160000108, 45000013, 1, '2012-07-18 19:39:17.89');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 160000109, 45000013, 1, '2012-07-18 19:39:17.89');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 160000110, 45000013, 1, '2012-07-18 19:39:17.89');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 160000113, 1, 1, '2012-07-24 09:43:42.89');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 160000114, 1, 1, '2012-07-25 14:39:15.7');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (165000115, 45000014, 1, '2012-07-30 12:01:33.153');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 165000116, 45000014, 1, '2012-07-30 20:46:24.293');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 170000116, 45000014, 1, '2012-08-01 19:44:39.28');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 170000117, 45000014, 1, '2012-08-03 05:50:49.733');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 170000118, 45000016, 1, '2012-08-06 14:52:00.153');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 175000117, 45000014, 1, '2012-08-09 20:02:01.28');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 175000118, 45000014, 1, '2012-08-10 11:51:18.31');
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (215000143, 30000008, 1, '2012-11-06 16:15:44.513');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 215000144, 30000008, 1, '2012-11-08 12:00:19.903');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (220000140, 30000008, 1, '2012-11-20 16:17:02.03');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 220000141, 30000008, 1, '2012-11-21 11:29:48.436');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 225000140, 30000008, 1, '2012-11-27 19:45:24.216');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 225000141, 30000008, 1, '2012-11-29 14:56:14.81');
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 130000076, 1, 1, '2012-10-03 13:16:55.763');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 130000077, 1, 1, '2012-10-03 13:16:55.763');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (130000078, 1, 1, '2012-10-03 13:16:55.81');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 200000134, 30000008, 1, '2012-10-09 15:14:08.936');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (205000135, 30000008, 1, '2012-10-16 12:43:00.873');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (205000137, 30000008, 1, '2012-10-19 11:27:16.293');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (205000138, 30000008, 1, '2012-10-19 17:47:11.81');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 210000137, 30000008, 1, '2012-10-22 13:46:47.34');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 215000138, 30000008, 1, '2012-10-24 17:53:33.34');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 215000140, 1, 1, '2012-10-29 19:03:49.186');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (215000142, 6, 1, '2012-11-01 18:11:18.543');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 195000133, 1, 1, '2012-09-26 19:47:15.09');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 195000134, 1, 1, '2012-09-26 19:48:15.53');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 140000089, 1, 1, '2012-10-03 12:42:32.28');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 150000094, 1, 1, '2012-10-03 12:42:32.28');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 150000095, 1, 1, '2012-10-03 12:42:32.28');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 150000096, 1, 1, '2012-10-03 12:42:32.293');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 150000097, 1, 1, '2012-10-03 12:42:32.293');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES( 150000098, 1, 1, '2012-10-03 12:42:32.293');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 185000120, 1, 1, '2012-10-03 12:42:32.293');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (185000121, 1, 1, '2012-10-03 12:42:32.293');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 190000133, 1, 1, '2012-10-03 12:42:32.293');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (200000133, 1, 1, '2012-10-03 13:16:55.75');
+
+
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (185000120, 30000008, 1, '2012-09-03 10:14:08.56');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (185000121, 30000008, 1, '2012-09-07 20:31:44.043');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (185000122, 30000008, 1, '2012-09-10 10:20:20.81');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 185000123, 30000008, 1, '2012-09-10 10:20:20.84');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 185000124, 30000008, 1, '2012-09-10 10:20:20.903');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 185000125, 30000008, 1, '2012-09-10 10:20:20.936');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 130000074, 30000008, 1, '2012-09-10 11:01:11.686');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 185000130, 30000008, 1, '2012-09-11 17:39:28.186');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 190000131, 50000015, 1, '2012-09-12 11:06:18.14');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 190000132, 50000015, 1, '2012-09-12 11:06:18.153');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 190000133, 30000008, 1, '2012-09-14 11:57:39.903');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (195000132, 30000008, 1, '2012-09-26 14:49:40.14');
+
+
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 225000142, 30000008, 1, '2012-11-30 17:11:52.2');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 225000143, 30000008, 1, '2012-12-03 13:13:52.856');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 225000144, 30000008, 1, '2012-12-03 13:54:35.763');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 225000145, 30000008, 1, '2012-12-03 19:19:06.356');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 230000142, 30000008, 1, '2012-12-12 15:06:05.17');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 235000142, 30000008, 1, '2012-12-18 12:57:42.326');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 240000143, 30000008, 1, '2013-01-04 09:58:08.436');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 240000144, 30000008, 1, '2013-01-04 10:51:03.763');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 240000145, 30000008, 1, '2013-01-04 13:02:39.153');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (240000146, 30000008, 1, '2013-01-04 13:50:49.216');
+
+
+
+
+
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (2400001, 30000008, 1, '2013-01-04 15:28:50.373');
+
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 240000148, 30000008, 1, '2013-01-04 16:30:50.623');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 240000150, 30000008, 1, '2013-01-08 17:46:15.39');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (240000145, 1, 1, '2013-01-10 19:56:00.936');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 240000146, 1, 1, '2013-01-10 19:56:00.936');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 240000147, 1, 1, '2013-01-10 19:56:00.95');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 240000148, 1, 1, '2013-01-10 19:56:00.983');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 240000149, 1, 1, '2013-01-10 19:56:01.013');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (1, 55000016, 1, '2013-01-10 20:09:36.716');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 2, 55000016, 1, '2013-01-10 20:09:36.733');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (3, 55000016, 1, '2013-01-10 20:09:36.75');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (4, 55000016, 1, '2013-01-10 20:09:36.75');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (5, 55000016, 1, '2013-01-10 20:09:36.78');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 240000154, 55000016, 110000051, '2013-01-10 20:52:07.903');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 240000155, 55000016, 110000051, '2013-01-10 20:54:06.543');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 240000156, 55000016, 110000051, '2013-01-10 20:55:13.67');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 240000157, 55000016, 110000051, '2013-01-10 20:56:20.09');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (240000159, 1, 1, '2013-01-11 11:14:57.793');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 245000151, 30000008, 1, '2013-01-15 16:41:08.89');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (245000152, 30000008, 1, '2013-01-16 13:47:45.483');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 245000154, 55000016, 1, '2013-01-23 12:14:17.936');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (245000155, 30000008, 1, '2013-01-25 14:28:13.7');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 245000156, 30000008, 1, '2013-01-28 13:30:39.106');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 245000157, 30000008, 1, '2013-01-28 14:22:18.123');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 245000158, 30000008, 1, '2013-01-29 12:30:46.106');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 245000159, 30000008, 1, '2013-01-29 12:55:19.31');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole(menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 245000160, 30000008, 1, '2013-01-29 14:32:08.936');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 250000151, 30000008, 1, '2013-02-08 12:33:59.123');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (255000152, 30000008, 1, '2013-02-21 11:34:41.56');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES (260000153, 30000008, 1, '2013-02-26 17:11:45.75');
+
+INSERT INTO telcodb.dbo.support_menuitemToRole( menuitemToMenu_id, userType_id, createdBy, created_dt) VALUES ( 260000154, 1, 1, '2013-03-18 11:26:41.84');
