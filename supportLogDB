@@ -1,0 +1,142 @@
+CREATE TABLE supportLogdb.dbo.SUPPORT_STATUS (
+	STATUS_ID numeric identity(10) NOT NULL,
+	STATUS_DESCR varchar(100) NULL,
+	PRIMARY KEY (STATUS_ID)
+);
+
+CREATE TABLE supportLogdb.dbo.SUPPORT_TYPE (
+	TYPE_ID numeric identity(10) NOT NULL,
+	TYPE_DESRC varchar(100) NULL,
+	PRIMARY KEY (TYPE_ID)
+);
+
+CREATE TABLE supportLogdb.dbo.SUPPORT_USER (
+	USER_ID numeric identity(10) NOT NULL,
+	EMAIL varchar(50) NULL,
+	PASSWORD varchar(25) NULL,
+	LASTNAME varchar(25) NULL,
+	FIRSTNAME varchar(25) NULL,
+	MOBILE varchar(25) NULL,
+	TYPE_ID int NULL,
+	STATUS_ID int NULL,
+	CREATE_DATE datetime NULL,
+	MODIFIED_DATE datetime NULL,
+	IP_ADDRESS varchar(25) NULL,
+	PRIMARY KEY (USER_ID)
+);
+
+INSERT INTO supportLogdb.dbo.SUPPORT_STATUS(STATUS_ID, STATUS_DESCR) VALUES (1, 'ACTIVE');
+
+INSERT INTO supportLogdb.dbo.SUPPORT_STATUS(STATUS_ID, STATUS_DESCR) VALUES (2, 'NON ACTIVE');
+
+INSERT INTO supportLogdb.dbo.SUPPORT_TYPE(TYPE_ID, TYPE_DESRC) VALUES (1, 'ADMIN');
+
+INSERT INTO supportLogdb.dbo.SUPPORT_TYPE(TYPE_ID, TYPE_DESRC) VALUES (2, 'SUPPORT LEVEL');
+
+INSERT INTO supportLogdb.dbo.SUPPORT_TYPE(TYPE_ID, TYPE_DESRC) VALUES (5000002, 'BANK');
+
+INSERT INTO supportLogdb.dbo.SUPPORT_USER(USER_ID, EMAIL, PASSWORD, LASTNAME, FIRSTNAME, MOBILE, TYPE_ID, STATUS_ID, CREATE_DATE, MODIFIED_DATE, IP_ADDRESS) VALUES (3, 'admin', 'admin', 'ADMIN', 'ADMIN', '00001', 1, 1, '2011-01-14 00:00:00.0', '2011-01-14 00:00:00.0', '0000');
+
+INSERT INTO supportLogdb.dbo.SUPPORT_USER(USER_ID, EMAIL, PASSWORD, LASTNAME, FIRSTNAME, MOBILE, TYPE_ID, STATUS_ID, CREATE_DATE, MODIFIED_DATE, IP_ADDRESS) VALUES (4, 'level1', 'level1', 'LEVEL 1', 'LEVEL 1', '0900', 2, 1, null, null, 'Etrantact-HP');
+
+INSERT INTO supportLogdb.dbo.SUPPORT_USER(USER_ID, EMAIL, PASSWORD, LASTNAME, FIRSTNAME, MOBILE, TYPE_ID, STATUS_ID, CREATE_DATE, MODIFIED_DATE, IP_ADDRESS) VALUES (6, 'tony.ezeanya@etranzact.net', 'arrays', 'Ezeanya', 'Tony', '08033758035', 1, 1, null, null, '192.168.16.105');
+
+INSERT INTO supportLogdb.dbo.SUPPORT_USER(USER_ID, EMAIL, PASSWORD, LASTNAME, FIRSTNAME, MOBILE, TYPE_ID, STATUS_ID, CREATE_DATE, MODIFIED_DATE, IP_ADDRESS) VALUES (7, 'val@yahoo.com', 'password', 'Obi', 'Valentine', '00000', 2, 2, null, null, '172.16.10.31');
+
+INSERT INTO supportLogdb.dbo.SUPPORT_USER(USER_ID, EMAIL, PASSWORD, LASTNAME, FIRSTNAME, MOBILE, TYPE_ID, STATUS_ID, CREATE_DATE, MODIFIED_DATE, IP_ADDRESS) VALUES (8, 'val@etranzact.net', 'password', 'Obi', 'Valentine', '00000', 2, 1, null, null, '172.16.10.31');
+
+INSERT INTO supportLogdb.dbo.SUPPORT_USER(USER_ID, EMAIL, PASSWORD, LASTNAME, FIRSTNAME, MOBILE, TYPE_ID, STATUS_ID, CREATE_DATE, MODIFIED_DATE, IP_ADDRESS) VALUES (5000002, 'lastb2002@yahoo.co.uk', 'password', 'Tunde', 'Tunde', '00000', 2, 1, null, null, '172.16.10.31');
+
+INSERT INTO supportLogdb.dbo.SUPPORT_USER(USER_ID, EMAIL, PASSWORD, LASTNAME, FIRSTNAME, MOBILE, TYPE_ID, STATUS_ID, CREATE_DATE, MODIFIED_DATE, IP_ADDRESS) VALUES (5000003, 'patrick.eregie@etranzact.net', 'password', 'Eregie', 'Patrick', '00000', 2, 1, null, null, '172.16.10.31');
+
+INSERT INTO supportLogdb.dbo.SUPPORT_USER(USER_ID, EMAIL, PASSWORD, LASTNAME, FIRSTNAME, MOBILE, TYPE_ID, STATUS_ID, CREATE_DATE, MODIFIED_DATE, IP_ADDRESS) VALUES (10000004, 'demo@yahoo.com', '123456', 'DEMO', 'DEMO', '00000', 5000002, 1, null, '2011-03-21 17:34:46.14', '192.168.16.121');
+
+INSERT INTO supportLogdb.dbo.SUPPORT_USER(USER_ID, EMAIL, PASSWORD, LASTNAME, FIRSTNAME, MOBILE, TYPE_ID, STATUS_ID, CREATE_DATE, MODIFIED_DATE, IP_ADDRESS) VALUES (10000005, '1222s@dsfds.com', 's', 's', 's', 's', 1, 2, '2011-03-17 13:49:55.623', null, '192.168.16.121');
+
+ALTER TABLE supportLogdb.dbo.SUPPORT_USER
+	ADD FOREIGN KEY (STATUS_ID) 
+	REFERENCES SUPPORT_STATUS (STATUS_ID);
+
+
+ALTER TABLE supportLogdb.dbo.SUPPORT_USER
+	ADD FOREIGN KEY (TYPE_ID) 
+	REFERENCES SUPPORT_TYPE (TYPE_ID);
+
+
+
+CREATE UNIQUE CLUSTERED INDEX csysattributes ON sysattributes (class,attribute,object_type,object,object_info1,object_info2,object_info3,object_cinfo);
+
+CREATE CLUSTERED INDEX csysconstraints ON sysconstraints (tableid);
+
+CREATE UNIQUE CLUSTERED INDEX csysjars ON sysjars (jid);
+
+CREATE UNIQUE CLUSTERED INDEX csyspartitions ON syspartitions (id,partitionid);
+
+CREATE UNIQUE CLUSTERED INDEX csysqueryplans ON sysqueryplans (uid,gid,hashkey,id,type,sequence);
+
+CREATE CLUSTERED INDEX csysreferences ON sysreferences (tableid,frgndbname);
+
+CREATE UNIQUE CLUSTERED INDEX csysroles ON sysroles (lrid);
+
+CREATE UNIQUE CLUSTERED INDEX csysstatistics ON sysstatistics (id,statid,colidarray,formatid,sequence);
+
+CREATE UNIQUE CLUSTERED INDEX csystabstats ON systabstats (id,indid);
+
+CREATE CLUSTERED INDEX csysthresholds ON systhresholds (segment,free_space);
+
+CREATE CLUSTERED INDEX csysusermessages ON sysusermessages (error);
+
+CREATE UNIQUE CLUSTERED INDEX csysxtypes ON sysxtypes (xtid);
+
+CREATE INDEX nc2sysreferences ON sysreferences (reftabid,indexid,pmrydbname);
+
+CREATE INDEX ncsysattributes ON sysattributes (object_type,object,object_info1,object_info2,object_info3,object_cinfo);
+
+CREATE UNIQUE INDEX ncsysconstraints ON sysconstraints (constrid);
+
+CREATE UNIQUE INDEX ncsysjars ON sysjars (jname);
+
+CREATE UNIQUE INDEX ncsysobjects ON sysobjects (name,uid);
+
+CREATE UNIQUE INDEX ncsysqueryplans ON sysqueryplans (id,type,sequence);
+
+CREATE INDEX ncsysreferences ON sysreferences (constrid,frgndbname);
+
+CREATE UNIQUE INDEX ncsystypes ON systypes (usertype);
+
+CREATE UNIQUE INDEX ncsysusermessages ON sysusermessages (error,langid);
+
+CREATE UNIQUE INDEX ncsysusers1 ON sysusers (name);
+
+CREATE UNIQUE INDEX ncsysusers2 ON sysusers (uid);
+
+CREATE UNIQUE INDEX ncsysxtypes ON sysxtypes (xtname);
+
+CREATE UNIQUE CLUSTERED INDEX SUPPORT_ST_6560023371 ON SUPPORT_STATUS (STATUS_ID);
+
+CREATE UNIQUE CLUSTERED INDEX SUPPORT_TY_6880024511 ON SUPPORT_TYPE (TYPE_ID);
+
+CREATE UNIQUE CLUSTERED INDEX SUPPORT_US_5600019951 ON SUPPORT_USER (USER_ID);
+
+CREATE UNIQUE CLUSTERED INDEX sysalternates ON sysalternates (suid);
+
+CREATE UNIQUE CLUSTERED INDEX syscolumns ON syscolumns (id,number,colid);
+
+CREATE UNIQUE CLUSTERED INDEX syscomments ON syscomments (id,number,colid2,colid,texttype);
+
+CREATE UNIQUE CLUSTERED INDEX sysdepends ON sysdepends (id,number,depid,depnumber);
+
+CREATE UNIQUE CLUSTERED INDEX sysindexes ON sysindexes (id,indid);
+
+CREATE CLUSTERED INDEX syskeys ON syskeys (id);
+
+CREATE UNIQUE CLUSTERED INDEX sysobjects ON sysobjects (id);
+
+CREATE UNIQUE CLUSTERED INDEX sysprocedures ON sysprocedures (id,number,type,sequence);
+
+CREATE UNIQUE CLUSTERED INDEX sysprotects ON sysprotects (id,action,grantor,uid,protecttype);
+
+CREATE UNIQUE CLUSTERED INDEX systypes ON systypes (name);
+
+CREATE CLUSTERED INDEX sysusers ON sysusers (suid);
+
