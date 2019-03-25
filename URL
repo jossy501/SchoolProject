@@ -6,3 +6,147 @@ https://openliberty.io/guides/rest-client-java.html#creating-additional-rest-res
 https://openliberty.io/guides/rest-client-java.html#testing-deserialization
 Advanced JAX-RS 14 - Writing a JAX-RS client
 https://dzone.com/articles/how-to-parse-json-data-from-a-rest-api-using-simpl
+{
+    "Data": {
+        "Customer": [
+            {
+                "GUID": null,
+                "lstNme": "VUXTA",
+                "frstNme": "NICOLE",
+                "midInit": "",
+                "dteOfBrth": "12291983",
+                "gender": "F"
+            }
+        ],
+        "Address": [
+            {
+                "ID": "1",
+                "addr1": "DSGSDAGAAC",
+                "addr2": "GVSDGHASDGSDAFGG",
+                "cty": "ETTERS",
+                "st": "ME",
+                "zipCde": 173190000,
+                "postalCde": "",
+                "country": "US"
+            },
+            {
+                "ID": "2",
+                "addr1": "200 NEWBERRY COMMONS",
+                "addr2": "CUBICLE",
+                "cty": "MECHANICSBURG",
+                "st": "PA",
+                "zipCde": 170553515,
+                "postalCde": "",
+                "country": "US"
+            },
+            {
+                "ID": "3",
+                "addr1": "200 NEWBERRY COMMONS",
+                "addr2": "",
+                "cty": "ETTERS",
+                "st": "PA",
+                "zipCde": 173199363,
+                "postalCde": "",
+                "country": "US"
+            }
+        ],
+        "Allergy": [
+            {
+                "ID": "1",
+                "type": "CLASS",
+                "desc": "Sulfa Antibiotics"
+            },
+            {
+                "ID": "2",
+                "type": "CLASS",
+                "desc": "Dacarbazine and Related"
+            },
+            {
+                "ID": "3",
+                "type": "GENERIC",
+                "desc": "Colistimethate"
+            },
+            {
+                "ID": "4",
+                "type": "GENERIC",
+                "desc": "Penicillin V"
+            },
+            {
+                "ID": "5",
+                "type": "GENERIC",
+                "desc": "Abacavir"
+            }
+        ],
+        "Condition": [
+            {
+                "ID": "1",
+                "name": "DIABETES MELLITUS",
+                "desc": "Diabetes, Sugar Diabetes"
+            },
+            {
+                "ID": "2",
+                "name": "DIABETES M, NON-INS DEP, TYPE 2 DIABETES MELLITUS, TYPE 2 DIABETES MELLITUS TREATMENT ADJUNCT",
+                "desc": "Type 2 Diabetes Mellitus, Non-Insulin-Dependent Diabetes"
+            },
+            {
+                "ID": "3",
+                "name": "ASTHMA, BRONCHIAL ASTHMA, ASTHMA UNSPECIFIED, ACUTELY DETERIORATING ASTHMA",
+                "desc": "Asthma"
+            },
+            {
+                "ID": "4",
+                "name": "HEMOPHILIA, BLEEDING PREVENTION IN HEMOPHILIA",
+                "desc": "Hemophilia"
+            },
+            {
+                "ID": "5",
+                "name": "CEREBROVASCULAR DISEASE, CEREBROVASCULAR DISORDER",
+                "desc": "Disorder of the Blood Vessels of the Brain, Cerebrovascular Disease"
+            },
+            {
+                "ID": "6",
+                "name": "ATHEROSCLEROSIS",
+                "desc": "Disease involving Cholesterol Deposits in the Arteries"
+            },
+            {
+                "ID": "7",
+                "name": "SMALL BOWEL DISORDERS",
+                "desc": "Disease of the Intestines"
+            },
+            {
+                "ID": "8",
+                "name": "RESPIRATORY PROBLEMS",
+                "desc": "Disease of the Respiratory Tract"
+            },
+            {
+                "ID": "9",
+                "name": "CORNEAL DISEASE",
+                "desc": "Disease of the Cornea of the Eye"
+            },
+            {
+                "ID": "10",
+                "name": "BROKEN ANKLE",
+                "desc": "Ankle Fracture"
+            },
+            {
+                "ID": "11",
+                "name": "SPINE DISORDERS",
+                "desc": "Disorder of Vertebrae"
+            },
+            {
+                "ID": "12",
+                "name": "VESTIBULAR DISTURBANCE",
+                "desc": "Disturbance of the Vestibule of the Ear"
+            },
+            {
+                "ID": "13",
+                "name": "DIAB INSIPIDUS, CENTRAL",
+                "desc": "Central Diabetes Insipidus"
+            }
+        ]
+    },
+    "Status": "Success",
+    "ErrCde": "",
+    "ErrTyp": "",
+    "ErrMsg": ""
+}
