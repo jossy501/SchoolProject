@@ -1,3 +1,75 @@
+package com.etranzact.restfulclient;
+
+import java.util.Stack;
+
+public class InterviewTest {
+
+	public static void main(String[] args) {
+	
+		int[] a = {1};
+		InterviewTest t = new InterviewTest();
+		t.increment(a);
+		System.out.println(a[a.length - 1]);
+
+	}
+	
+	void increment(int[] i){
+		i[i.length - 1]++;
+	}
+	/*static int doStuff(String[] args){
+		return Integer.parseInt(args[0]);
+	}*/
+	
+	static boolean isExpressionBalanced(String input)  {
+		   Stack stack = new Stack();
+		   for (int i=0; i<input.length(); i++) {
+		    if (input.charAt(i) == '(' || input.charAt(i) == '{'|| input.charAt(i) == '[') {
+		     stack.push(input.charAt(i));
+		    }
+		    if (input.charAt(i) == ')' || input.charAt(i) == '}'|| input.charAt(i) == ']') {
+		     if (stack.empty()) {
+		      return false;
+		     }
+		     char top_char = (char) stack.pop();
+		     
+		     if ( (top_char == '(' && input.charAt(i) != ')') || (top_char == '{' && input.charAt(i) != '}') || (top_char == '[' && input.charAt(i) != ']') ) {
+		      return false;
+		     } 
+		     
+		    }
+		   }
+		   return stack.empty();
+		  }
+	
+		 
+	
+	
+
+
+	
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 http://portal.car.riteaid.com/webservices/ph/phmedhistsrvcs/api/customer/?customerIdentifier=625001779
 http://portal.car.riteaid.com/webservices/ph/phmedhistsrvcs/api/customer/?customerIdentifier=625001779
 https://openliberty.io/guides/rest-client-java.html
