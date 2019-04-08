@@ -317,6 +317,769 @@ public class ReportModel
 	}
 	
 	
+	/*Method to create the ip address restriction*/
+	public String createCustomer(String firstname, String lastname, String interest_in_what_car, String email, String phone_number, String customer_address, String sales_person)
+	{
+		int output = -1;
+		String message = "";
+		Connection con = null;
+		Statement stat = null;
+		ResultSet result = null;
+		
+		try
+		{
+			
+			con = connectToSupportLog();
+			stat = con.createStatement();
+	
+			String query = "insert into telcodb.dbo.customer(firstname, lastname,interested_in_what_car,email,phone_number,customer_address,Sales_person,date_of_transaction)" +
+					" values('"+firstname+"','"+lastname+"','"+interest_in_what_car+"','"+email+"','"+phone_number+"','"+customer_address+"','"+sales_person+"',getDate())";
+			System.out.println("query " + query);
+			output = stat.executeUpdate(query);
+			
+			if(output > 0)
+			{
+				con.commit();
+				message = "Records successfully inserted";
+			}
+			else
+			{
+				con.rollback();
+				message = "Records not inserted";
+			}
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+			try
+			{
+				con.rollback();
+				message = "Error occured while creating bill of sale";
+			}
+			catch(Exception e){}
+			closeConnectionSupportLogDB(con, result);
+		}
+		finally
+		{
+			closeConnectionSupportLogDB(con, result);
+		}
+		return message;
+	}
+	
+	/*Method to create the ip address restriction*/
+	public String updateCustomer(String customer_id, String firstname, String lastname, String buyers, String interest_in_what_car, String email, String phone_number, String customer_address, String sales_person)
+	{
+		int output = -1;
+		String message = "";
+		Connection con = null;
+		Statement stat = null;
+		ResultSet result = null;
+		
+		try
+		{
+			
+			con = connectToSupportLog();
+			stat = con.createStatement();
+			
+			output = stat.executeUpdate("update telcodb.dbo.customer set firstname= '"+firstname+"', lastname = '"+lastname+"', buyers ='"+buyers+"'"
+					+ ", interested_in_what_car = '"+interest_in_what_car+"', email = '"+email+"', phone_number = '"+phone_number+"', customer_address = '"+customer_address+"', Sales_person = '"+sales_person+"' where customer_id = '"+customer_id+"'");
+			System.out.println("query " + query);
+			//output = stat.executeUpdate(query);
+			
+			if(output > 0)
+			{
+				con.commit();
+				message = "Records successfully updated";
+			}
+			else
+			{
+				con.rollback();
+				message = "Records not updated";
+			}
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+			try
+			{
+				con.rollback();
+				message = "Error occured while updating bill of sale";
+			}
+			catch(Exception e){}
+			closeConnectionSupportLogDB(con, result);
+		}
+		finally
+		{
+			closeConnectionSupportLogDB(con, result);
+		}
+		return message;
+	}
+	
+	public ArrayList getCustomerLists()
+	{
+		String query = "";
+		ArrayList arr = new ArrayList();
+		Bill_Of_Sale billOfSale = null;
+		Customer customer = null;
+		int counter = 0;
+		Connection con = null;
+		Statement stat = null;
+		ResultSet result = null;
+
+		try
+		{
+			con = connectToSupportLog();
+			stat = con.createStatement();
+			
+			query = "select customer_id, "
+					+ "firstname, "
+					+ "lastname, "
+					+ "date_of_transaction,"
+					+ " interested_in_what_car,"
+					+ "email,"
+					+ "phone_number,"
+					+ "customer_address,"
+					+ " Sales_person from telcodb.dbo.customer";
+			
+			System.out.println("getMenuItems " + query);
+			result = stat.executeQuery(query);
+			while(result.next())
+			{
+				counter++;
+				customer = new Customer();
+				customer.setCounter(""+counter);
+				customer.setFirstname(""+result.getObject(1));
+				customer.setLastname(""+result.getObject(2));
+				customer.setDate_of_transaction(""+result.getObject(3));
+				customer.setInterested_in_what_cars(""+result.getObject(4));
+				customer.setEmail(""+result.getObject(5));
+				customer.setPhone_number(""+result.getObject(6));
+				customer.setCustomer_address(""+result.getObject(7));
+				customer.setSales_person(""+result.getObject(8));
+				arr.add(customer);
+			}
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+			closeConnectionSupportLogDB(con, result);
+		}
+		finally
+		{
+			closeConnectionSupportLogDB(con, result);
+		}
+		return arr;
+	}
+	
+	public ArrayList getCustomerByCustomerId(String customerId)
+	{
+		ArrayList arr = new ArrayList();
+		Car_Inventory carInventory;
+		Bill_Of_Sale billOfSale;
+		String empty = "";
+		String query = "";
+		Connection con = null;
+		Statement stat = null;
+		ResultSet result = null;
+		
+		try
+		{
+			con = connectToSupportLog();
+			stat = con.createStatement();
+			
+			query = "select customer_id, "
+					+ "firstname, "
+					+ "lastname, "
+					+ "date_of_transaction,"
+					+ " interested_in_what_car,"
+					+ "email,"
+					+ "phone_number,"
+					+ "customer_address,"
+					+ " Sales_person from telcodb.dbo.customer where customer_id ='"+customerId+"' ";
+			
+			System.out.println("getMenuItems " + query);
+			result = stat.executeQuery(query);
+			while(result.next())
+			{
+				customer = new Customer();
+				customer.setFirstname(""+result.getObject(1));
+				customer.setLastname(""+result.getObject(2));
+				customer.setDate_of_transaction(""+result.getObject(3));
+				customer.setInterested_in_what_cars(""+result.getObject(4));
+				customer.setEmail(""+result.getObject(5));
+				customer.setPhone_number(""+result.getObject(6));
+				customer.setCustomer_address(""+result.getObject(7));
+				customer.setSales_person(""+result.getObject(8));
+				arr.add(customer);
+			}
+		}
+		catch(SQLException sq)
+		{
+			System.out.println("error " + sq.getMessage());
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+			closeConnectionSupportLogDB(con, result);
+		}
+		finally
+		{
+			closeConnectionSupportLogDB(con, result);
+		}
+		return arr;
+	}
+	
+	public String deleteCustomer(String customerId)
+	{
+		int output = -1;
+		String message = "";
+		Connection con = null;
+		Statement stat = null;
+		ResultSet result = null;
+		
+		try
+		{
+			
+			con = connectToSupportLog();
+			stat = con.createStatement();
+			
+			String query = "delete from telcodb.dbo.customer where customer_id ='"+customerId+"' ";
+
+			output = stat.executeUpdate(query);
+			
+			if(output > 0){
+				con.commit();
+				message = "Records successfully deleted";
+			}
+			else{
+				con.rollback();
+				message = "Records not deleted";
+			}
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+			try
+			{
+				con.rollback();
+				message = "Error occured while deleting menuitem";
+			}
+			catch(Exception e){}
+			closeConnectionSupportLogDB(con, result);
+		}
+		finally
+		{
+			closeConnectionSupportLogDB(con, result);
+		}
+		return message;
+	}
+	
+	/*Method to create the ip address restriction*/
+	public String createCarRoadAssistance(String road_assistance_service, String price, String insurance_company,String phone_number, String email, String coverage)
+	{
+		int output = -1;
+		String message = "";
+		Connection con = null;
+		Statement stat = null;
+		ResultSet result = null;
+		
+		try
+		{
+			
+			con = connectToSupportLog();
+			stat = con.createStatement();
+	
+			String query = "insert into telcodb.dbo.car_road_assistance(road_assistance_service, price,insurance_company,phone_number,email,coverage,date_of_transaction)" +
+					" values('"+road_assistance_service+"','"+price+"','"+insurance_company+"','"+phone_number+"','"+email+"','"+coverage+"',getDate())";
+			System.out.println("query " + query);
+			output = stat.executeUpdate(query);
+			
+			if(output > 0)
+			{
+				con.commit();
+				message = "Records successfully inserted";
+			}
+			else
+			{
+				con.rollback();
+				message = "Records not inserted";
+			}
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+			try
+			{
+				con.rollback();
+				message = "Error occured while creating bill of sale";
+			}
+			catch(Exception e){}
+			closeConnectionSupportLogDB(con, result);
+		}
+		finally
+		{
+			closeConnectionSupportLogDB(con, result);
+		}
+		return message;
+	}
+	
+	public String updateCarRoadAssistance(String rank_id, String road_assistance_service, String price, String insurance_company,String phone_number, String email, String coverage)
+	{
+		int output = -1;
+		String message = "";
+		Connection con = null;
+		Statement stat = null;
+		ResultSet result = null;
+		
+		try
+		{
+			
+			con = connectToSupportLog();
+			stat = con.createStatement();
+			
+			output = stat.executeUpdate("update telcodb.dbo.car_road_assistance set road_assistance_service= '"+road_assistance_service+"', price = '"+price+"', insurance_company ='"+insurance_company+"'"
+					+ ", phone_number = '"+phone_number+"', email = '"+email+"', coverage = '"+coverage+"' where rank_id = '"+rank_id+"'");
+			System.out.println("query " + query);
+			//output = stat.executeUpdate(query);
+			
+			if(output > 0)
+			{
+				con.commit();
+				message = "Records successfully updated";
+			}
+			else
+			{
+				con.rollback();
+				message = "Records not updated";
+			}
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+			try
+			{
+				con.rollback();
+				message = "Error occured while updating bill of sale";
+			}
+			catch(Exception e){}
+			closeConnectionSupportLogDB(con, result);
+		}
+		finally
+		{
+			closeConnectionSupportLogDB(con, result);
+		}
+		return message;
+	}
+	
+	public ArrayList getCarRoadAssistanceList()
+	{
+		String query = "";
+		ArrayList arr = new ArrayList();
+		Car_Road_Assistance carRoadAssistance = null;
+		int counter = 0;
+		Connection con = null;
+		Statement stat = null;
+		ResultSet result = null;
+
+		try
+		{
+			con = connectToSupportLog();
+			stat = con.createStatement();
+			
+			query = "select rank_id, "
+					+ "road_assistance_service, "
+					+ "price, "
+					+ "date_of_transaction,"
+					+ " insurance_company,"
+					+ "phone_number,"
+					+ "email,"
+					+ " coverage from telcodb.dbo.car_road_assistance";
+			System.out.println("getMenuItems " + query);
+			result = stat.executeQuery(query);
+			while(result.next())
+			{
+				counter++;
+				carRoadAssistance = new Car_Road_Assistance();
+				carRoadAssistance.setCounter(""+counter);
+				carRoadAssistance.setRank_id(""+result.getObject(1));
+				carRoadAssistance.setRoad_assistance_id(""+result.getObject(2));
+				carRoadAssistance.setPrice(""+result.getObject(3));
+				carRoadAssistance.setDate_of_transaction(""+result.getObject(4));
+				carRoadAssistance.setInsurance_company(""+result.getObject(5));
+				carRoadAssistance.setPhone_number(""+result.getObject(6));
+				carRoadAssistance.setEmail(""+result.getObject(7));
+				carRoadAssistance.setCoverage(""+result.getObject(8));
+				arr.add(carRoadAssistance);
+			}
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+			closeConnectionSupportLogDB(con, result);
+		}
+		finally
+		{
+			closeConnectionSupportLogDB(con, result);
+		}
+		return arr;
+	}
+	
+	public ArrayList getCarRoadAssistanceByRankId(String rankId)
+	{
+		ArrayList arr = new ArrayList();
+		Car_Road_Assistance carRoadAssistance;
+		String empty = "";
+		String query = "";
+		Connection con = null;
+		Statement stat = null;
+		ResultSet result = null;
+		
+		try
+		{
+			con = connectToSupportLog();
+			stat = con.createStatement();
+			
+		
+			query = "select rank_id, "
+					+ "road_assistance_service, "
+					+ "price, "
+					+ "date_of_transaction,"
+					+ " insurance_company,"
+					+ "phone_number,"
+					+ "email,"
+					+ " coverage from telcodb.dbo.car_road_assistance where rank_id = '"+rankId+"' ";
+			
+			System.out.println("getMenuItems " + query);
+			result = stat.executeQuery(query);
+			while(result.next())
+			{
+				carRoadAssistance = new Car_Road_Assistance();
+				carRoadAssistance.setRank_id(""+result.getObject(1));
+				carRoadAssistance.setRoad_assistance_id(""+result.getObject(2));
+				carRoadAssistance.setPrice(""+result.getObject(3));
+				carRoadAssistance.setDate_of_transaction(""+result.getObject(4));
+				carRoadAssistance.setInsurance_company(""+result.getObject(5));
+				carRoadAssistance.setPhone_number(""+result.getObject(6));
+				carRoadAssistance.setEmail(""+result.getObject(7));
+				carRoadAssistance.setCoverage(""+result.getObject(8));
+				arr.add(carRoadAssistance);
+			}
+		}
+		catch(SQLException sq)
+		{
+			System.out.println("error " + sq.getMessage());
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+			closeConnectionSupportLogDB(con, result);
+		}
+		finally
+		{
+			closeConnectionSupportLogDB(con, result);
+		}
+		return arr;
+	}
+	
+	public String deleteCarRoadAssistance(String rankId)
+	{
+		int output = -1;
+		String message = "";
+		Connection con = null;
+		Statement stat = null;
+		ResultSet result = null;
+		
+		try
+		{
+			
+			con = connectToSupportLog();
+			stat = con.createStatement();
+			
+			String query = "delete from telcodb.dbo.car_road_assistance where rank_id = '"+rankId+"' ";
+
+			output = stat.executeUpdate(query);
+			
+			if(output > 0){
+				con.commit();
+				message = "Records successfully deleted";
+			}
+			else{
+				con.rollback();
+				message = "Records not deleted";
+			}
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+			try
+			{
+				con.rollback();
+				message = "Error occured while deleting menuitem";
+			}
+			catch(Exception e){}
+			closeConnectionSupportLogDB(con, result);
+		}
+		finally
+		{
+			closeConnectionSupportLogDB(con, result);
+		}
+		return message;
+	}
+	
+	public String createCarBodyRepairService(String vehicle_make, String vehicle_model, String vehicle_year,String vehicle_color, String repair_description, String vehicle_damage,String insurance_company_paying_for_repair)
+	{
+		int output = -1;
+		String message = "";
+		Connection con = null;
+		Statement stat = null;
+		ResultSet result = null;
+		
+		try
+		{
+			
+			con = connectToSupportLog();
+			stat = con.createStatement();
+	
+			String query = "insert into telcodb.dbo.car_body_repair_services(vehicle_make, vehicle_model,vehicle_year,vehicle_color,repair_description,vehicle_damage,insurance_company_paying_for_repair,date_of_transaction)" +
+					" values('"+vehicle_make+"','"+vehicle_model+"','"+vehicle_year+"','"+vehicle_color+"','"+repair_description+"','"+vehicle_damage+"','"+insurance_company_paying_for_repair+"',getDate())";
+			System.out.println("query " + query);
+			output = stat.executeUpdate(query);
+			
+			if(output > 0)
+			{
+				con.commit();
+				message = "Records successfully inserted";
+			}
+			else
+			{
+				con.rollback();
+				message = "Records not inserted";
+			}
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+			try
+			{
+				con.rollback();
+				message = "Error occured while creating bill of sale";
+			}
+			catch(Exception e){}
+			closeConnectionSupportLogDB(con, result);
+		}
+		finally
+		{
+			closeConnectionSupportLogDB(con, result);
+		}
+		return message;
+	}
+	public String updateCarBodyRepairService(String repair_id,String vehicle_make, String vehicle_model, String vehicle_year,String vehicle_color, String repair_description, String vehicle_damage,String insurance_company_paying_for_repair)
+	{
+		int output = -1;
+		String message = "";
+		Connection con = null;
+		Statement stat = null;
+		ResultSet result = null;
+		
+		try
+		{
+			
+			con = connectToSupportLog();
+			stat = con.createStatement();
+			
+			output = stat.executeUpdate("update telcodb.dbo.car_body_repair_services set vehicle_make= '"+vehicle_make+"', vehicle_model = '"+vehicle_model+"', vehicle_year ='"+vehicle_year+"'"
+					+ ", vehicle_color = '"+vehicle_color+"', repair_description = '"+repair_description+"', vehicle_damage = '"+vehicle_damage+"', insurance_company_paying_for_repair='"+insurance_company_paying_for_repair+"' where repair_id = '"+repair_id+"'");
+			System.out.println("query " + query);
+			//output = stat.executeUpdate(query);
+			
+			if(output > 0)
+			{
+				con.commit();
+				message = "Records successfully updated";
+			}
+			else
+			{
+				con.rollback();
+				message = "Records not updated";
+			}
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+			try
+			{
+				con.rollback();
+				message = "Error occured while updating bill of sale";
+			}
+			catch(Exception e){}
+			closeConnectionSupportLogDB(con, result);
+		}
+		finally
+		{
+			closeConnectionSupportLogDB(con, result);
+		}
+		return message;
+	}
+	
+	public ArrayList getCarBodyRepairServiceList()
+	{
+		String query = "";
+		ArrayList arr = new ArrayList();
+		Car_body_repair_service carBodyRepairService = null;
+		int counter = 0;
+		Connection con = null;
+		Statement stat = null;
+		ResultSet result = null;
+
+		try
+		{
+			con = connectToSupportLog();
+			stat = con.createStatement();
+			
+			query = "select repair_id, "
+					+ "vehicle_make, "
+					+ "vehicle_model, "
+					+ "vehicle_year,"
+					+ "vehicle_color,"
+					+ "repair_description,"
+					+ "vehicle_damage,"
+					+ "created_date,"
+					+ " insurance_company_paying_for_repair from telcodb.dbo.car_body_repair_services";
+			System.out.println("getMenuItems " + query);
+			result = stat.executeQuery(query);
+			while(result.next())
+			{
+				counter++;
+				carBodyRepairService = new Car_body_repair_service();
+				carBodyRepairService.setCounter(""+counter);
+				carBodyRepairService.setRepair_id(""+result.getObject(1));
+				carBodyRepairService.setVehicle_make(""+result.getObject(2));
+				carBodyRepairService.setVehicle_model(""+result.getObject(3));
+				carBodyRepairService.setVehicle_year(""+result.getObject(4));
+				carBodyRepairService.setVehicle_color(""+result.getObject(5));
+				carBodyRepairService.setRepair_description(""+result.getObject(6));
+				carBodyRepairService.setVehicle_demage(""+result.getObject(7));
+				carBodyRepairService.setCreated_date(""+result.getObject(8));
+				carBodyRepairService.setInsurance_company_paying_for_repair(""+result.getObject(9));
+				arr.add(carBodyRepairService);
+			}
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+			closeConnectionSupportLogDB(con, result);
+		}
+		finally
+		{
+			closeConnectionSupportLogDB(con, result);
+		}
+		return arr;
+	}
+	
+	public ArrayList getCarBodyRepairServiceByRepairId(String repairId)
+	{
+		ArrayList arr = new ArrayList();
+		Car_body_repair_service carBodyRepairService;
+		String empty = "";
+		String query = "";
+		Connection con = null;
+		Statement stat = null;
+		ResultSet result = null;
+		
+		try
+		{
+			con = connectToSupportLog();
+			stat = con.createStatement();
+			
+			query = "select repair_id, "
+					+ "vehicle_make, "
+					+ "vehicle_model, "
+					+ "vehicle_year,"
+					+ "vehicle_color,"
+					+ "repair_description,"
+					+ "vehicle_damage,"
+					+ "created_date,"
+					+ " insurance_company_paying_for_repair from telcodb.dbo.car_body_repair_services where repair_id = '"+repairId+"'";
+			
+			
+			System.out.println("getMenuItems " + query);
+			result = stat.executeQuery(query);
+			while(result.next())
+			{
+				carBodyRepairService = new Car_body_repair_service();
+				carBodyRepairService.setCounter(""+counter);
+				carBodyRepairService.setRepair_id(""+result.getObject(1));
+				carBodyRepairService.setVehicle_make(""+result.getObject(2));
+				carBodyRepairService.setVehicle_model(""+result.getObject(3));
+				carBodyRepairService.setVehicle_year(""+result.getObject(4));
+				carBodyRepairService.setVehicle_color(""+result.getObject(5));
+				carBodyRepairService.setRepair_description(""+result.getObject(6));
+				carBodyRepairService.setVehicle_demage(""+result.getObject(7));
+				carBodyRepairService.setCreated_date(""+result.getObject(8));
+				carBodyRepairService.setInsurance_company_paying_for_repair(""+result.getObject(9));
+				arr.add(carBodyRepairService);
+			}
+		}
+		catch(SQLException sq)
+		{
+			System.out.println("error " + sq.getMessage());
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+			closeConnectionSupportLogDB(con, result);
+		}
+		finally
+		{
+			closeConnectionSupportLogDB(con, result);
+		}
+		return arr;
+	}
+	
+	public String deleteCarBodyRepairService(String repair_id)
+	{
+		int output = -1;
+		String message = "";
+		Connection con = null;
+		Statement stat = null;
+		ResultSet result = null;
+		
+		try
+		{
+			
+			con = connectToSupportLog();
+			stat = con.createStatement();
+			
+			String query = "delete from telcodb.dbo.car_body_repair_services where repair_id = '"+repair_id+"' ";
+
+			output = stat.executeUpdate(query);
+			
+			if(output > 0){
+				con.commit();
+				message = "Records successfully deleted";
+			}
+			else{
+				con.rollback();
+				message = "Records not deleted";
+			}
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+			try
+			{
+				con.rollback();
+				message = "Error occured while deleting menuitem";
+			}
+			catch(Exception e){}
+			closeConnectionSupportLogDB(con, result);
+		}
+		finally
+		{
+			closeConnectionSupportLogDB(con, result);
+		}
+		return message;
+	}
 	/*Method to get air time sales*/
 	public ArrayList airTimeSales(String start_dt, String end_dt)
 	{

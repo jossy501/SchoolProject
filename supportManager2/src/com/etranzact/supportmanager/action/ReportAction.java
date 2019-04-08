@@ -75,7 +75,7 @@ import com.etz.security.util.Cryptographer;
 import com.etz.security.util.PBEncryptor;
 
 /**
- * @author tony.ezeanya
+ * @author Joshua.Aruno
  *
  */
 @Restrict("#{authenticator.curUser.loggedIn}")
@@ -279,6 +279,16 @@ public class ReportAction implements Serializable
 	private ArrayList<Bill_Of_Sale> billOfSaleLists = new ArrayList();
 	private List billOfSaleList = new ArrayList();
 	
+	private Customer customer;
+	private List customerList = new ArrayList();
+	
+	private Car_Road_Assistance carRoadAssistance;
+	private List carRoadAssistanceList = new ArrayList();
+	
+	private Car_body_repair_service carBodyRepairService;
+	private List carBodyRepairServiceList = new ArrayList();
+	
+	
 	@In
     FacesMessages facesMessages;
 	
@@ -460,6 +470,421 @@ public class ReportAction implements Serializable
 		
 	}
 
+	public void createCustomer()
+	{
+		try
+		{
+			ReportModel reportModel = new ReportModel();
+			
+			ArrayList arr = new ArrayList();
+			
+			String firstName = getCustomer().getFirstname().trim();
+			String lastName = getCustomer().getLastname().trim();
+			String interested_in_what_car = getCustomer().getInterested_in_what_cars().trim();
+			String email = getCustomer().getEmail().trim();
+			String phone = getCustomer().getPhone_number().trim();
+			String customerAddress = getCustomer().getCustomer_address().trim();
+			String salesPerson = getCustomer().getSales_person().trim();
+			System.out.println(amountOfSale+"Amount of sales");
+			String message = reportModel.createCustomer(firstname,lastname,interested_in_what_car,email,phone,customerAddress,salesPerson);
+				
+			
+			if(message.equals("Records successfully inserted"))
+			{
+				getCustomer.setFirstname(null);
+				getCustomer.setLastname(null);
+				getCustomer.setDate_of_transaction(null);
+				getCustomer.setInterested_in_what_cars(null);
+				getCustomer.setEmail(null);
+				getCustomer.setPhone_number(null);
+				getCustomer.setCustomer_address(null);
+				getCustomer.setSales_person(null);
+			}
+			facesMessages.add(Severity.INFO, message);
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+		}
+	}
+	
+	public void updateCustomer()
+	{
+		try
+		{
+			ReportModel reportModel = new ReportModel();
+			
+			ArrayList arr = new ArrayList();
+		
+			
+			String firstName = getCustomer().getFirstname().trim();
+			String lastName = getCustomer().getLastname().trim();
+			String interested_in_what_car = getCustomer().getInterested_in_what_cars().trim();
+			String email = getCustomer().getEmail().trim();
+			String phone = getCustomer().getPhone_number().trim();
+			String customerAddress = getCustomer().getCustomer_address().trim();
+			String salesPerson = getCustomer().getSales_person().trim();
+			
+			System.out.println(amountOfSale+"Amount of sales");
+			String message = reportModel.updateCustomer(edit_id, firstName, lastName, interested_in_what_car, email, phone, customer_address, salesPerson);
+			
+			if(message.equals("Records successfully inserted"))
+			{
+				getCustomer.setFirstname(null);
+				getCustomer.setLastname(null);
+				getCustomer.setDate_of_transaction(null);
+				getCustomer.setInterested_in_what_cars(null);
+				getCustomer.setEmail(null);
+				getCustomer.setPhone_number(null);
+				getCustomer.setCustomer_address(null);
+				getCustomer.setSales_person(null);
+				
+			}
+			facesMessages.add(Severity.INFO, message);
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+		}
+	}
+	
+	public List getCustomerLists() 
+	{
+		try
+		{
+			ReportModel reportModel = new ReportModel();
+			customerList = reportModel.getCustomerLists();
+		
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+		}
+		return customerList;
+	}
+	
+	public void setCustomerToEdit()
+	{
+		try
+		{
+			ReportModel reportModel = new ReportModel();
+			
+			
+			String customerId = getEdit_id();
+			System.out.println("menuitem_id " + sales_id);
+			
+			ArrayList customerList  = reportModel.getCustomerByCustomerId(customerId);
+			if(customerList.size()>0)
+			{
+				Customer customer = (Customer)customerList.get(0);
+				getCustomer().setFirstname(customer.getFirstname().trim());
+				getCustomer().setLastname(customer.getLastname().trim());
+				getCustomer().setInterested_in_what_cars(customer.getInterested_in_what_cars().trim());
+				getCustomer().setEmail(customer.getEmail().trim());
+				getCustomer().setPhone_number(customer.getPhone_number().trim());
+				getCustomer().setCustomer_address(customer.getCustomer_address().trim());
+				getCustomer().setSales_person(customer.getSales_person().trim());
+		
+			}
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+		}
+	}
+	
+	public void deleteCustomer()
+	{
+		try
+		{
+			ReportModel reportModel = new ReportModel();
+			String customer_Id = getOperation_id().trim();
+			//System.out.println("menuitem_id " + menuitem_id);
+			String message  = reportModel.deleteCustomer(customer_Id);
+			setEdit_id(null);
+			facesMessages.add(Severity.INFO, message);
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+		}
+		
+	}
+	public void createCarRoadAssistance()
+	{
+		try
+		{
+			ReportModel reportModel = new ReportModel();
+			
+			ArrayList arr = new ArrayList();
+			
+			String road_assistance_service = getCarRoadAssistance().getRoad_assistance__service().trim();
+			String price = getCarRoadAssistance().getPrice().trim();
+			String insurance_company = getCarRoadAssistance().getInsurance_company().trim();
+			String phone = getCarRoadAssistance().getPhone_number().trim();
+			String email = getCarRoadAssistance().getEmail().trim();
+			String coverage = getCarRoadAssistance().getCustomer_address().trim();
+			System.out.println(coverage+"Coverage");
+		
+			String message = reportModel.createCarRoadAssistance(road_assistance_service,price, insurance_company,phone, email, coverage);
+		
+			if(message.equals("Records successfully inserted"))
+			{
+				getCarRoadAssistance.setRoad_assistance__service(null);
+				getCarRoadAssistance.setPrice(null);
+				getCarRoadAssistance.setInsurance_company(null);
+				getCarRoadAssistance.setPhone_number(null);
+				getCarRoadAssistance.setEmail(null);
+				getCarRoadAssistance.setCoverage(null);
+
+			}
+			facesMessages.add(Severity.INFO, message);
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+		}
+	}
+	public void updateCarRoadAssistance()
+	{
+		try
+		{
+			ReportModel reportModel = new ReportModel();
+			
+			ArrayList arr = new ArrayList();
+		
+			String road_assistance_service = getCarRoadAssistance().getRoad_assistance__service().trim();
+			String price = getCarRoadAssistance().getPrice().trim();
+			String insurance_company = getCarRoadAssistance().getInsurance_company().trim();
+			String phone = getCarRoadAssistance().getPhone_number().trim();
+			String email = getCarRoadAssistance().getEmail().trim();
+			String coverage = getCarRoadAssistance().getCustomer_address().trim();
+			System.out.println(coverage+"Coverage");
+			
+			System.out.println(amountOfSale+"Amount of sales");
+			
+			String message = reportModel.updateCarRoadAssistance(edit_id, road_assistance_service,price, insurance_company,phone, email, coverage);
+			
+			if(message.equals("Records successfully updated"))
+			{
+				getCarRoadAssistance.setRoad_assistance__service(null);
+				getCarRoadAssistance.setPrice(null);
+				getCarRoadAssistance.setInsurance_company(null);
+				getCarRoadAssistance.setPhone_number(null);
+				getCarRoadAssistance.setEmail(null);
+				getCarRoadAssistance.setCoverage(null);
+				
+			}
+			facesMessages.add(Severity.INFO, message);
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+		}
+	}
+	
+	public List getCarRoadAssistanceList() 
+	{
+		try
+		{
+			ReportModel reportModel = new ReportModel();
+			carRoadAssistanceList = reportModel.getCarRoadAssistanceList();
+		
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+		}
+		return customerList;
+	}
+	
+	public void setCarRoadAssistanceToEdit()
+	{
+		try
+		{
+			ReportModel reportModel = new ReportModel();
+			
+			
+			String rank_id = getEdit_id();
+			System.out.println("menuitem_id " + sales_id);
+			
+			ArrayList carRoadAssistanceList  = reportModel.getCarRoadAssistanceByRankId(rank_id);
+			if(carRoadAssistanceList.size()>0)
+			{
+				Car_Road_Assistance carRoadAssistance = (Car_Road_Assistance)carRoadAssistanceList.get(0);
+				getCarRoadAssistance().setRoad_assistance__service(carRoadAssistance.getCarRoadAssistance().trim());
+				getCarRoadAssistance().setPrice(carRoadAssistance.getPrice().trim());
+				getCarRoadAssistance().setDate_of_transaction(carRoadAssistance.getDate_of_transaction().trim());
+				getCarRoadAssistance().setInsurance_company(carRoadAssistance.getInsurance_company().trim());
+				getCarRoadAssistance().setEmail(carRoadAssistance.getEmail().trim());
+				getCarRoadAssistance().setPhone_number(carRoadAssistance.getPhone_number().trim());
+				getCarRoadAssistance().setCoverage(carRoadAssistance.getCoverage().trim());
+
+			}
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+		}
+	}
+	
+	public void deleteCarRoadAssistance()
+	{
+		try
+		{
+			ReportModel reportModel = new ReportModel();
+			String rank_id = getOperation_id().trim();
+			//System.out.println("menuitem_id " + menuitem_id);
+			String message  = reportModel.deleteCarRoadAssistance(rank_id);
+			setEdit_id(null);
+			facesMessages.add(Severity.INFO, message);
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+		}
+		
+	}
+	
+	public void createCarBodyRepairService()
+	{
+		try
+		{
+			ReportModel reportModel = new ReportModel();
+			
+			ArrayList arr = new ArrayList();
+			String vehicle_make = getCarBodyRepairService().getVehicle_make().trim();
+			String vehicle_model = getCarBodyRepairService().getVehicle_model.trim();
+			String vehicle_year = getCarBodyRepairService().getVehicle_year().trim();
+			String vehicle_color = getCarBodyRepairService().getVehicle_color().trim();
+			String repair_description = getCarBodyRepairService().getRepair_description().trim();
+			String vehicle_damage = getCarBodyRepairService().getVehicle_demage().trim();
+			String insurance_company_paying_for_repair = getCarBodyRepairService().getInsurance_company_paying_for_repair().trim();
+			
+			System.out.println(amountOfSale+"Amount of sales");
+		
+			
+			String message = reportModel.createCarBodyRepairService(vehicle_make, vehicle_model, vehicle_year, vehicle_color, repair_description, vehicle_damage,insurance_company_paying_for_repair);
+			
+			if(message.equals("Records successfully inserted"))
+			{
+				getCarBodyRepairService().setVehicle_make(null);
+				getCarBodyRepairService().setVehicle_model(null);
+				getCarBodyRepairService().setVehicle_year(null);
+				getCarBodyRepairService().setVehicle_color(null);
+				getCarBodyRepairService().setRepair_description(null);
+				getCarBodyRepairService().setVehicle_demage(null);
+				getCarBodyRepairService().setInsurance_company_paying_for_repair(null);
+			}
+			facesMessages.add(Severity.INFO, message);
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+		}
+	}
+
+	public void updateCarBodyRepairService()
+	{
+		try
+		{
+			ReportModel reportModel = new ReportModel();
+			
+			ArrayList arr = new ArrayList();
+		
+			String vehicle_make = getCarBodyRepairService().getVehicle_make().trim();
+			String vehicle_model = getCarBodyRepairService().getVehicle_model.trim();
+			String vehicle_year = getCarBodyRepairService().getVehicle_year().trim();
+			String vehicle_color = getCarBodyRepairService().getVehicle_color().trim();
+			String repair_description = getCarBodyRepairService().getRepair_description().trim();
+			String vehicle_damage = getCarBodyRepairService().getVehicle_demage().trim();
+			
+			System.out.println(vehicle_damage+"vehicle_damage");
+			
+			String message = reportModel.updateCarBodyRepairService(edit_id,vehicle_make,vehicle_model, vehicle_year,vehicle_color, repair_description, vehicle_damage,insurance_company_paying_for_repair);
+			
+			if(message.equals("Records successfully updated"))
+			{
+				getCarBodyRepairService().setVehicle_make(null);
+				getCarBodyRepairService().setVehicle_model(null);
+				getCarBodyRepairService().setVehicle_year(null);
+				getCarBodyRepairService().setVehicle_color(null);
+				getCarBodyRepairService().setRepair_description(null);
+				getCarBodyRepairService().setVehicle_demage(null);
+				getCarBodyRepairService().setInsurance_company_paying_for_repair(null);
+				
+			}
+			facesMessages.add(Severity.INFO, message);
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+		}
+	}
+	
+	public List getCarBodyRepairServiceList() 
+	{
+		try
+		{
+			ReportModel reportModel = new ReportModel();
+			carBodyRepairServiceList = reportModel.getCarBodyRepairServiceList();
+		
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+		}
+		return customerList;
+	}
+	
+	public void setCarBodyRepairServiceToEdit()
+	{
+		try
+		{
+			ReportModel reportModel = new ReportModel();
+			
+			
+			String repairId = getEdit_id();
+			System.out.println("menuitem_id " + sales_id);
+			
+			ArrayList carBodyRepairServiceList  = reportModel.getCarBodyRepairServiceByRepairId(repairId);
+			if(carBodyRepairServiceList.size()>0)
+			{
+				Car_body_repair_service carBodyRepairService = (Car_body_repair_service)carBodyRepairServiceList.get(0);
+				getCarBodyRepairService().setRepair_id(carBodyRepairService.getCarRoadAssistance().trim());
+				getCarBodyRepairService().setVehicle_make(carBodyRepairService.getVehicle_make().trim());
+				getCarBodyRepairService().setVehicle_model(carBodyRepairService.getVehicle_model().trim());
+				getCarBodyRepairService().setVehicle_year(carBodyRepairService.getVehicle_year().trim());
+				getCarBodyRepairService().setVehicle_color(carBodyRepairService.getVehicle_color().trim());
+				getCarBodyRepairService().setRepair_description(carBodyRepairService.getRepair_description().trim());
+				getCarBodyRepairService().setVehicle_demage(carBodyRepairService.getVehicle_demage().trim());
+				getCarBodyRepairService().setInsurance_company_paying_for_repair(carBodyRepairService.getInsurance_company_paying_for_repair().trim());
+				
+			}
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+		}
+	}
+	
+	public void deleteCarBodyRepairService()
+	{
+		try
+		{
+			ReportModel reportModel = new ReportModel();
+			String repair_id = getOperation_id().trim();
+			//System.out.println("menuitem_id " + menuitem_id);
+			String message  = reportModel.deleteCarBodyRepairService(rank_id);
+			setEdit_id(null);
+			facesMessages.add(Severity.INFO, message);
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+		}
+		
+	}
 	/*Created Card Service*/
 	public void createCardService()
 	{
@@ -7468,6 +7893,113 @@ public class ReportAction implements Serializable
 	}
 
 
+	/**
+	 * @return the customer
+	 */
+	public Customer getCustomer() {
+		if(customer == null) {
+			customer = new Customer();
+		}
+		return customer;
+	}
+
+
+	/**
+	 * @param customer the customer to set
+	 */
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
+
+
+	/**
+	 * @return the customerList
+	 */
+	public List getCustomerList() {
+		return customerList;
+	}
+
+
+	/**
+	 * @param customerList the customerList to set
+	 */
+	public void setCustomerList(List customerList) {
+		this.customerList = customerList;
+	}
+
+
+	/**
+	 * @return the carRoadAssistance
+	 */
+	public Car_Road_Assistance getCarRoadAssistance() {
+		if(carRoadAssistance == null) {
+			carRoadAssistance = new Car_Road_Assistance();
+		}
+		return carRoadAssistance;
+	}
+
+
+	/**
+	 * @param carRoadAssistance the carRoadAssistance to set
+	 */
+	public void setCarRoadAssistance(Car_Road_Assistance carRoadAssistance) {
+		this.carRoadAssistance = carRoadAssistance;
+	}
+
+
+	/**
+	 * @return the carRoadAssistanceList
+	 */
+	public List getCarRoadAssistanceList() {
+		return carRoadAssistanceList;
+	}
+
+
+	/**
+	 * @param carRoadAssistanceList the carRoadAssistanceList to set
+	 */
+	public void setCarRoadAssistanceList(List carRoadAssistanceList) {
+		this.carRoadAssistanceList = carRoadAssistanceList;
+	}
+
+
+	/**
+	 * @return the carBodyRepairService
+	 */
+	public Car_body_repair_service getCarBodyRepairService() {
+		if(carBodyRepairService ==  null) {
+			carBodyRepairService = new Car_body_repair_service();
+		}
+		return carBodyRepairService;
+	}
+
+
+	/**
+	 * @param carBodyRepairService the carBodyRepairService to set
+	 */
+	public void setCarBodyRepairService(Car_body_repair_service carBodyRepairService) {
+		this.carBodyRepairService = carBodyRepairService;
+	}
+
+
+	/**
+	 * @return the carBodyRepairServiceList
+	 */
+	public List getCarBodyRepairServiceList() {
+		return carBodyRepairServiceList;
+	}
+
+
+	/**
+	 * @param carBodyRepairServiceList the carBodyRepairServiceList to set
+	 */
+	public void setCarBodyRepairServiceList(List carBodyRepairServiceList) {
+		this.carBodyRepairServiceList = carBodyRepairServiceList;
+	}
+	
+	
+
+	
 	
 	
 	
