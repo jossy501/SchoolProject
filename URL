@@ -152,3 +152,92 @@ https://dzone.com/articles/how-to-parse-json-data-from-a-rest-api-using-simpl
     "ErrTyp": "",
     "ErrMsg": ""
 }
+
+Tables
+=====
+
+USE [telcodb]
+GO
+
+INSERT INTO [dbo].[customer]
+           ([firstname]
+           ,[lastname]
+           ,[date_of_transaction]
+           ,[buyers]
+           ,[interested_in_what_car]
+           ,[email]
+           ,[phone_number]
+           ,[customer_address]
+           ,[Sales_person])
+     VALUES
+           (<firstname, varchar(50),>
+           ,<lastname, varchar(50),>
+           ,<date_of_transaction, date,>
+           ,<buyers, varchar(50),>
+           ,<interested_in_what_car, varchar(250),>
+           ,<email, varchar(100),>
+           ,<phone_number, varchar(50),>
+           ,<customer_address, varchar(250),>
+           ,<Sales_person, varchar(100),>)
+GO
+
+================================================
+table 2
+
+USE [telcodb]
+GO
+
+INSERT INTO [dbo].[car_road_assistance]
+           ([rank_id]
+           ,[road_assistance_service]
+           ,[price]
+           ,[date_of_transaction]
+           ,[insurance_company]
+           ,[phone_number]
+           ,[interested_in_what_car]
+           ,[email]
+           ,[coverage])
+     VALUES
+           (<rank_id, varchar(50),>
+           ,<road_assistance_service, varchar(250),>
+           ,<price, decimal(10,2),>
+           ,<date_of_transaction, date,>
+           ,<insurance_company, varchar(200),>
+           ,<phone_number, varchar(50),>
+           ,<interested_in_what_car, varchar(250),>
+           ,<email, varchar(100),>
+           ,<coverage, varchar(250),>)
+GO
+
+
+========================================
+Table 3
+
+USE [telcodb]
+GO
+
+INSERT INTO [dbo].[car_body_repair_services]
+           ([vehicle_make]
+           ,[vehicle_model]
+           ,[vehicle_year]
+           ,[vehicle_color]
+           ,[repair_description]
+           ,[vehicle_damage]
+           ,[created_date]
+           ,[insurance_company_paying_for_repair])
+     VALUES
+           (<vehicle_make, varchar(50),>
+           ,<vehicle_model, varchar(250),>
+           ,<vehicle_year, varchar(250),>
+           ,<vehicle_color, varchar(100),>
+           ,<repair_description, varchar(200),>
+           ,<vehicle_damage, varchar(200),>
+           ,<created_date, varchar(150),>
+           ,<insurance_company_paying_for_repair, varchar(200),>)
+GO
+
+
+
+
+
+
