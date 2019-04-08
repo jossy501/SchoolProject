@@ -45,11 +45,11 @@
 	</servlet>
 	
 	<!-- -->
-	<servlet>
+<!-- 	<servlet>
         <servlet-name>PinStockWebService</servlet-name>
         <servlet-class>com.etranzact.psm.ws.PinStockWebService</servlet-class>
         <load-on-startup>1</load-on-startup>
-    </servlet>
+    </servlet> -->
  	
 	<servlet-mapping>
 		<servlet-name>Seam Resource Servlet</servlet-name>
@@ -71,16 +71,6 @@
 		<servlet-name>Excel Document Store Servlet</servlet-name>
 		<url-pattern>*.xls</url-pattern>
 	</servlet-mapping>
-	
-	 <servlet>
-		 <servlet-name>PDF Document Store Servlet</servlet-name>
- 		 <servlet-class>org.jboss.seam.pdf.DocumentStoreServlet</servlet-class>
- 	</servlet>
- 	
-	 <servlet-mapping>
- 		<servlet-name>PDF Document Store Servlet</servlet-name>
- 		<url-pattern>*.pdf</url-pattern>
- 	</servlet-mapping>
 
 	<!-- Facelets development mode (disable in production) -->
 
@@ -131,12 +121,12 @@
 		<welcome-file>index.etz</welcome-file>
 	</welcome-file-list>
 	
-	<!-- -->
+	<!-- 
 	<servlet-mapping>
         <servlet-name>PinStockWebService</servlet-name>
         <url-pattern>/PinStockWebService</url-pattern>
     </servlet-mapping>
-	 
+	 -->
 	<session-config>
         <session-timeout>60</session-timeout> 
     </session-config>

@@ -1,0 +1,488 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="../WEB-INF/layout/basic_layout.xhtml">
+                
+<ui:define name="body">
+
+	<!-- javascript -->
+	
+	<script language="JavaScript" type="text/javascript">
+
+        function showip()
+        {
+        	var c = document.getElementById('userFrm:selStatus').value;
+	        if(c == "RESTRICTED ACCESS")
+	        {
+	        	document.getElementById('ipAddressInfo').style.display = "block";
+	        }
+	        else if(c == "ANYWHERE")
+	        {
+		        document.getElementById('ipAddressInfo').style.display = "none";
+	        }
+        }
+        
+        function showip1()
+        {
+        	var c = document.getElementById('userFrm:selStatus1').value;
+	        if(c == "RESTRICTED ACCESS")
+	        {
+	        	document.getElementById('ipAddressInfo1').style.display = "block";
+	        }
+	        else if(c == "ANYWHERE")
+	        {
+		        document.getElementById('ipAddressInfo1').style.display = "none";
+	        }
+        }
+        
+      </script>
+	
+	<!-- processing panel -->
+    
+    <rich:modalPanel id="panelp" width="150" height="50">
+       <h:form id="pFrm">
+        <h:panelGrid columns="1" rowClasses="prop" columnClasses="name2,value">
+           <h:outputText value="Please wait...." styleClass="messagesingle" align="center">
+               <h:graphicImage value="/images/loading_small.gif"/>
+           </h:outputText>
+          </h:panelGrid>  
+         </h:form>
+    </rich:modalPanel>
+    
+    <!--  -->
+
+    <a4j:form id="userFrm">
+        <rich:panel style="width:40%" rendered = "#{adminAction.edit_id eq null}">
+            <f:facet name="header">Create Car Inventory</f:facet>
+            <rich:graphValidator>
+                <h:panelGrid columns="2" rowClasses="prop" columnClasses="name2,value">
+                    
+                    <h:outputLabel id="car_make_label" value="Car Make"/>
+                    <h:panelGroup>
+                    	<h:inputText id="make" value="#{adminAction.carInventory.all_makes}" required="true" requiredMessage="Car make is required" size="40"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="make" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+
+					<h:outputLabel id="model_label" value="Car Model"/>
+                    <h:panelGroup>
+                    	<h:inputText id="model" value="#{adminAction.carInventory.all_model}" required="true" requiredMessage="Car Model  is required" size="40"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="model" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                    
+                    <h:outputLabel id="car_yer_label" value="Car Year"/>
+                    <h:panelGroup>
+                    	<h:inputText id="caryear" value="#{adminAction.carInventory.car_year}" required="true" requiredMessage="Car Year  is required" size="40"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="caryear" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                    
+                     <h:outputLabel id="car_engine_label" value="Car Engine"/>
+                    <h:panelGroup>
+                    	<h:inputText id="engine" value="#{adminAction.carInventory.engine}" required="true" requiredMessage="Car Engine  is required" size="40"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="engine" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                    
+                    
+                      <h:outputLabel id="car_transmission_label" value="Car Transmission"/>
+                    <h:panelGroup>
+                    	<h:inputText id="cartransmission" value="#{adminAction.carInventory.transmission}" required="true" requiredMessage="Car Transmission  is required" size="40"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="cartransmission" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                    
+                     <h:outputLabel id="car_color_label" value="Car Color"/>
+                    <h:panelGroup>
+                    	<h:inputText id="carcolor" value="#{adminAction.carInventory.car_color}" required="true" requiredMessage="Car Color  is required" size="40"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="carcolor" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                    
+                     <h:outputLabel id="car_fuel_type_label" value="Car Fuel Type"/>
+                    <h:panelGroup>
+                    	<h:inputText id="carfueltype" value="#{adminAction.carInventory.fuel_type}" required="true" requiredMessage="Fuel Type  is required" size="40"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="carfueltype" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                    
+                    <h:outputLabel id="car_mileage_label" value="Car Mileage"/>
+                    <h:panelGroup>
+                    	<h:inputText id="carmileage" value="#{adminAction.carInventory.mileage}" required="true" requiredMessage="Mileage  is required" size="40"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="carmileage" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                    
+                     <h:outputLabel id="car_vin_label" value="Car Vin"/>
+                    <h:panelGroup>
+                    	<h:inputText id="carvin" value="#{adminAction.carInventory.vin}" required="true" requiredMessage="Vin number  is required" size="40"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="carvin" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                    
+                       <h:outputLabel id="car_stocknumber_label" value="Stock Number"/>
+                    <h:panelGroup>
+                    	<h:inputText id="carstocknumber" value="#{adminAction.carInventory.stock_number}" required="true" requiredMessage="Stock number  is required" size="40"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="carstocknumber" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                    
+                     <h:outputLabel id="car_sales_label" value="Sales Amount"/>
+                    <h:panelGroup>
+                    	<h:inputText id="carsalesamount" value="#{adminAction.carInventory.target_price}" required="true" requiredMessage="Sales Amount  is required" size="40"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="carsalesamount" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                    
+                  </h:panelGrid>
+            </rich:graphValidator>
+            
+        </rich:panel>
+        
+        <rich:spacer width="10px" height="10px"/>
+        
+        <div id="ipAddressInfo" style="display: none">
+         <rich:panel style="width:40%" id="ipPanel" rendered = "#{adminAction.edit_id eq null}">
+       		
+       		<f:facet name="header"></f:facet>
+       		<h:panelGrid columns="2" rowClasses="prop" columnClasses="name2,value">
+	       		<h:outputLabel id="email_label" styleClass="vertical-align:top;" value="IP Address" />
+	               <h:panelGroup>
+	               	<rich:pickList value = "#{adminAction.menuItemToIpAddressList}" id ="modalPanel" >
+	               		<s:selectItems value="#{adminAction.ipAddressList}" var = "r" itemValue="#{r.id}" label = "#{r.ip_address}"/>
+	      			</rich:pickList>
+	          	</h:panelGroup>
+          	</h:panelGrid>
+          	
+         </rich:panel>
+		 </div>
+		 
+         <rich:panel style="width:40%" rendered = "#{adminAction.edit_id eq null}">
+       		
+       		<f:facet name="header"></f:facet>
+       		<div class="actionButtons" >
+            	<a4j:commandButton oncomplete=""
+                                   id="submit" value="   Submit  " action="#{adminAction.createCarInventory}" reRender="userFrm, manageUserFrm"/>
+        	</div>
+          	
+         </rich:panel>
+		 
+   <!-- update -->
+
+        <rich:panel style="width:40%" rendered = "#{adminAction.edit_id ne null}">
+            <f:facet name="header">Update Car Inventory</f:facet>
+            <rich:graphValidator>
+                <h:panelGrid columns="2" rowClasses="prop" columnClasses="name2,value">
+                    <h:outputLabel id="car_make_label_update" value="Car Make"/>
+                    <h:panelGroup>
+                    	<h:inputText id="makes" value="#{adminAction.carInventory.all_makes}" required="true" requiredMessage="Car make is required" size="40"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="makes" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+
+					<h:outputLabel id="model_label_update" value="Car Model"/>
+                    <h:panelGroup>
+                    	<h:inputText id="models" value="#{adminAction.carInventory.all_model}" required="true" requiredMessage="Car Model  is required" size="40"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="models" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                    
+                    <h:outputLabel id="car_yer_label_update" value="Car Year"/>
+                    <h:panelGroup>
+                    	<h:inputText id="caryears" value="#{adminAction.carInventory.car_year}" required="true" requiredMessage="Car Year  is required" size="40"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="caryears" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                    
+                     <h:outputLabel id="car_engine_label_update" value="Car Engine"/>
+                    <h:panelGroup>
+                    	<h:inputText id="engines" value="#{adminAction.carInventory.engine}" required="true" requiredMessage="Car Engine  is required" size="40"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="engines" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                    
+                    
+                      <h:outputLabel id="car_transmission_label_update" value="Car Transmission"/>
+                    <h:panelGroup>
+                    	<h:inputText id="cartransmissions" value="#{adminAction.carInventory.transmission}" required="true" requiredMessage="Car Transmission  is required" size="40"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="cartransmissions" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                    
+                     <h:outputLabel id="car_color_label_update" value="Car Color"/>
+                    <h:panelGroup>
+                    	<h:inputText id="carcolors" value="#{adminAction.carInventory.car_color}" required="true" requiredMessage="Car Color  is required" size="40"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="carcolors" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                    
+                     <h:outputLabel id="car_fuel_type_label_update" value="Car Fuel Type"/>
+                    <h:panelGroup>
+                    	<h:inputText id="carfueltypes" value="#{adminAction.carInventory.fuel_type}" required="true" requiredMessage="Fuel Type  is required" size="40"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="carfueltypes" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                    
+                    <h:outputLabel id="car_mileage_label_update" value="Car Mileage"/>
+                    <h:panelGroup>
+                    	<h:inputText id="carmileages" value="#{adminAction.carInventory.mileage}" required="true" requiredMessage="Mileage  is required" size="40"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="carmileages" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                    
+                     <h:outputLabel id="car_vin_label_update" value="Car Vin"/>
+                    <h:panelGroup>
+                    	<h:inputText id="carvins" value="#{adminAction.carInventory.vin}" required="true" requiredMessage="Vin number  is required" size="40"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="carvins" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                    
+                       <h:outputLabel id="car_stocknumber_label_update" value="Stock Number"/>
+                    <h:panelGroup>
+                    	<h:inputText id="carstocknumbers" value="#{adminAction.carInventory.stock_number}" required="true" requiredMessage="Stock number  is required" size="40"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="carstocknumbers" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                    
+                     <h:outputLabel id="car_sales_label_update" value="Sales Amount"/>
+                    <h:panelGroup>
+                    	<h:inputText id="carsalesamounts" value="#{adminAction.carInventory.target_price}" required="true" requiredMessage="Sales Amount  is required" size="40"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="carsalesamounts" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                    
+                  </h:panelGrid>
+                   
+            </rich:graphValidator>
+            
+        </rich:panel>
+        
+        <rich:spacer width="10px" height="10px"/>
+        
+        <div id="ipAddressInfo1" style="display: none">
+         <rich:panel style="width:40%" id="ipPanel1" rendered = "#{adminAction.edit_id ne null}">
+       		
+       		<f:facet name="header"></f:facet>
+       		<h:panelGrid columns="2" rowClasses="prop" columnClasses="name2,value">
+	       		<h:outputLabel id="email_label1" styleClass="vertical-align:top;" value="IP Address" />
+	               <h:panelGroup>
+	               	<rich:pickList value = "#{adminAction.menuItemToIpAddressList}" id ="modalPanel1" >
+	               		<s:selectItems value="#{adminAction.ipAddressList}" var = "r" itemValue="#{r.id}" label = "#{r.ip_address}"/>
+	      			</rich:pickList>
+	          	</h:panelGroup>
+          	</h:panelGrid>
+          	
+         </rich:panel>
+		 </div>
+		 
+         <rich:panel style="width:40%" rendered = "#{adminAction.edit_id ne null}">
+       		
+       		<f:facet name="header"></f:facet>
+       		<div class="actionButtons" >
+            	<a4j:commandButton oncomplete="javascript:showip1()"
+                                   id="submit1" value="   Update  " action="#{adminAction.updateCarInventory}" reRender="userFrm, manageUserFrm"/>
+                
+                <a4j:commandButton oncomplete="javascript:showip1()"
+                                   id="submit2" value="   New Car Inventory  " action="#{adminAction.resetValues}" reRender="userFrm, manageUserFrm"/>
+                                   
+                                   
+        	</div>
+          	
+         </rich:panel>
+         
+        <script language="JavaScript" type="text/javascript">
+
+			var load_timer; 
+	        function showip2()
+	        {
+	        	var c = document.getElementById('userFrm:selStatus1').value;
+		        if(c == "RESTRICTED ACCESS")
+		        {
+		        	document.getElementById('ipAddressInfo1').style.display = "block";
+		        }
+		        else if(c == "ANYWHERE")
+		        {
+			        document.getElementById('ipAddressInfo1').style.display = "none";
+		        }
+		        window.clearInterval(load_timer);
+	        }
+	        load_timer = window.setInterval("showip2()", 10);
+        </script> 
+		 
+   </a4j:form>
+
+   <rich:spacer width="10px" height="10px"/>
+   
+   <a4j:form id="manageUserFrm">
+         <rich:panel style="width:100%" id="displayUserPanel">
+         
+             <f:facet name="header">Manage Car Inventory </f:facet>
+             
+             <rich:dataTable id="userTb" reRender="userTableDS" rows="1000" value="#{adminAction.carInventoryList}"  var="usr">
+				
+				<rich:column>
+					<f:facet name="header">SN</f:facet>
+					<h:outputText value="#{usr.counter}"/>
+				</rich:column>
+				
+				<rich:column>
+					<f:facet name="header">Car Makes</f:facet>
+					<h:outputText value="#{usr.all_makes}"/>
+				</rich:column>
+				
+				<rich:column>
+					<f:facet name="header">Car Model</f:facet>
+					<h:outputText value="#{usr.all_model}"/>
+				</rich:column>
+				
+				<rich:column>
+					<f:facet name="header">Car Year</f:facet>
+					<h:outputText value="#{usr.car_year}"/>
+				</rich:column>
+				
+				<rich:column>
+					<f:facet name="header">Car Engine</f:facet>
+					<h:outputText value="#{usr.engine}"/>
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">Car Transmission</f:facet>
+					<h:outputText value="#{usr.transmission}"/>
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">Car Color</f:facet>
+					<h:outputText value="#{usr.car_color}"/>
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">Car Fuel Type</f:facet>
+					<h:outputText value="#{usr.fuel_type}"/>
+				</rich:column>
+				<!-- <rich:column>
+					<f:facet name="header">Minimum Price</f:facet>
+					<h:outputText value="#{usr.car_price}"/>
+				</rich:column> -->
+				<rich:column>
+					<f:facet name="header">Created Date</f:facet>
+					<h:outputText value="#{usr.created_date}"/>
+				</rich:column>
+				<!-- <rich:column>
+					<f:facet name="header">File Location </f:facet>
+					<h:outputText value="#{usr.image_location}"/>
+				</rich:column> -->
+				<rich:column>
+					<f:facet name="header">Mileage</f:facet>
+					<h:outputText value="#{usr.mileage}"/>
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">Vin Number</f:facet>
+					<h:outputText value="#{usr.vin}"/>
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">Stock Number</f:facet>
+					<h:outputText value="#{usr.stock_number}"/>
+				</rich:column>
+				<!-- <rich:column>
+					<f:facet name="header">Sales Amount</f:facet>
+					<h:outputText value="#{usr.target_price}"/>
+				</rich:column> -->
+				<rich:column>
+						<f:facet name="header">Sales Amount</f:facet>
+                        	<div align="right">
+                        		<h:outputText value="#{reportAction.makeDouble(usr.target_price)}">
+                                    <f:convertNumber pattern="#,###,###,###,###.00"/>
+                                </h:outputText>
+                        	</div>
+                        </rich:column>
+				
+				
+				
+				
+				
+				
+				
+				<rich:column>
+				
+					<h:commandButton action="#{adminAction.setCarInventoryToEdit}" reRender="manageUserFrm"  image="/images/edit.png" id="submit_edit">
+		            	<f:setPropertyActionListener target="#{adminAction.edit_id}" value="#{usr.counter}" />
+		            	<rich:componentControl for="panelp" attachTo="submit_edit" operation="show" event="onclick"/>
+		            </h:commandButton>
+					
+					<rich:spacer width="10px" height="10px"/>
+				
+					<h:commandButton action="#{adminAction.deleteCarInventory}" reRender="manageUserFrm"  image="/images/invalid.png" id="submit_delete">
+		            	<f:setPropertyActionListener target="#{adminAction.operation_id}" value="#{usr.counter}" />
+		            	<rich:componentControl for="panelp" attachTo="submit_delete" operation="show" event="onclick"/>
+		            </h:commandButton>
+				</rich:column>
+				<f:facet name="footer">
+					<rich:datascroller id="userTableDS" for="userTb"  renderIfSinglePage="true">
+						<f:facet name="first">
+							<h:outputText value="First" />
+						</f:facet>
+						<f:facet name="last">
+							<h:outputText value="Last" />
+						</f:facet>
+					</rich:datascroller>
+				</f:facet>
+			</rich:dataTable>
+
+         </rich:panel>
+         
+         
+     </a4j:form>
+   
+    
+</ui:define>
+
+
+</ui:composition>

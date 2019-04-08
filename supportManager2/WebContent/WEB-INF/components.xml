@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <components xmlns="http://jboss.com/products/seam/components"
             xmlns:core="http://jboss.com/products/seam/core"
-            xmlns:pdf="http://jboss.com/products/seam/pdf"
             xmlns:persistence="http://jboss.com/products/seam/persistence"
             xmlns:drools="http://jboss.com/products/seam/drools"
             xmlns:bpm="http://jboss.com/products/seam/bpm"
@@ -21,15 +20,15 @@
                  http://jboss.com/products/seam/web http://jboss.com/products/seam/web-2.1.xsd
                  http://jboss.com/products/seam/components http://jboss.com/products/seam/components-2.1.xsd
                  http://jboss.com/products/seam/document http://jboss.com/products/seam/document-2.2.xsd
-                 http://jboss.com/products/seam/excel http://jboss.com/products/seam/excel-2.2.xsd "
+                 http://jboss.com/products/seam/excel http://jboss.com/products/seam/excel-2.2.xsd"
                  >
 
 	<core:init debug="@debug@" jndi-pattern="@jndiPattern@" transaction-management-enabled="false"/>
 	
-	
 	<!-- If you need to alter the SMTP gateway, comment out this mail-session, -->
-	<mail:mail-session host="smtp.etranzact.net" port="25" username="tony.ezeanya@etranzact.net" password="Ezeant@2003" />
+	<mail:mail-session host="smtp.gmail.com" port="587" username="jossy501@gmail.com" password="Sled164@hook110@" />
 	
+    
 	 
 	<document:document-store use-extensions="true"></document:document-store> 
 	 
@@ -42,5 +41,4 @@
 	<!-- Make sure this URL pattern is the same as that used by the Faces Servlet -->
 	<web:hot-deploy-filter url-pattern="*.etz"/>
 	
-
 </components>

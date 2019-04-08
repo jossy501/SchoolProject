@@ -26,7 +26,26 @@
 
     <a4j:form id="userFrm">
 
-		
+		<rich:panel style="width: 20%; height:45px">
+			<h:outputText value="&nbsp;Click on the Refresh Icon"/><br/>		            
+			<h:commandButton action="#{reportAction.getInternationalMerchantBalance}" reRender="cardFrm" image="/images/refresh.png" id="submit1">
+            	<rich:componentControl for="panelp" attachTo="submit1" operation="show" event="onclick"/>
+            </h:commandButton>
+		</rich:panel>
+        
+        <rich:panel style="width: 60%;">
+        	
+			<rich:dataTable id="act" rowKeyVar="rowKey" rows="1000" value="#{reportAction.mmoneyLog}"  var="usr">
+				<rich:column>
+						 <f:facet name="header">Online Balance</f:facet>
+						 
+						 <h:outputText value="#{reportAction.makeDouble(usr[0])}">
+	                           <f:convertNumber pattern="#,###,###,###,###"/>
+	                        </h:outputText>
+				</rich:column>
+			</rich:dataTable>
+		</rich:panel>
+
 
         <rich:panel style="width:40%">
             <f:facet name="header">Payment Advice</f:facet>

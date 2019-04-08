@@ -39,7 +39,7 @@
                                <s:selectItems var="r" value="#{adminAction.userTypeList}" itemValue="#{r.type_descr}"
                                                        label="#{r.type_descr}" noSelectionLabel=".:: Select ::." />          
                                                                                  
-                           <a4j:support event="onchange" action="#{adminAction.getBanks}" ajaxSingle="true" onchange="document.getElementById('userFrm:submit').disabled=true" oncomplete="document.getElementById('userFrm:submit').disabled=false" reRender="userFrm, displayUserPanel"/>
+                           <a4j:support event="onchange" action="#{adminAction.getBanks}" ajaxSingle="true" onchange="document.getElementById('userFrm:submit').disabled=true" oncomplete="document.getElementById('userFrm:submit').disabled=false" reRender="userFrm"/>
                         </h:selectOneMenu>
                         
                         <h:outputLabel value=" *" styleClass="messagesingle" />
@@ -79,22 +79,6 @@
                         <h:outputLabel value=" *" styleClass="messagesingle" />
                         <br/>
                         <rich:message for="dealer_code" styleClass="messagesingle"
-                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
-                    </h:panelGroup>
-                    
-                    <h:outputLabel for="ricaAdmin" value="RICA Agents" rendered = "#{adminAction.curUser.type_id eq 'RICA AGENT DMINISTRATOR'}"/>
-                    <h:panelGroup rendered = "#{adminAction.curUser.type_id eq 'DEALER'}"><!-- if the dealer type is selected, that is when this drop down should show -->
-                        
-                        <h:selectOneMenu styleClass="controls-length2" required="true" requiredMessage="Dealer is required" id="ricaAdmin"
-                                         value="#{adminAction.curUser.user_code}">
-                                         
-                               <s:selectItems var="r" value="#{adminAction.dealerList}" itemValue="#{r.dealerName} "
-                                                       label="#{r.dealerAddress}" noSelectionLabel=".:: Select ::." />
-                        </h:selectOneMenu>
-                        
-                        <h:outputLabel value=" *" styleClass="messagesingle" />
-                        <br/>
-                        <rich:message for="ricaAdmin" styleClass="messagesingle"
                                       errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
                     </h:panelGroup>
                     
@@ -143,56 +127,15 @@
                                       errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
                     </h:panelGroup>
                     
-                    
-                    
-                    <h:outputLabel id="vsm_moible_no" value="VSM Mobile No."  rendered = "#{adminAction.curUser.type_id eq 'DEPOT SUPERVISOR'}" />
-                    <h:panelGroup rendered = "#{adminAction.curUser.type_id eq 'DEPOT SUPERVISOR'}" >
-                    	<h:inputText id="vsmmoible" value="#{adminAction.curUser.service_id}"  rendered = "#{adminAction.curUser.type_id eq 'DEPOT SUPERVISOR'}" required="true" requiredMessage ="VSM Mobile is required"/>
-                        <h:outputLabel value=" *" styleClass="messagesingle" />
-                        <br/>
-                        <rich:message for="vsmmoible" styleClass="messagesingle"
-                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
-                    </h:panelGroup>
-                   
-                    <h:outputLabel value="Depot Card Number" rendered = "#{adminAction.curUser.type_id eq 'DEPOT SUPERVISOR'}"/>
-                    <h:panelGroup rendered = "#{adminAction.curUser.type_id eq 'DEPOT SUPERVISOR'}"><!-- if the user type selected is depot admin, that is when this drop down should show with the companies -->
-                        
-                        <h:inputText id="deportCardnumber" value="#{adminAction.curUser.cardNumber}"  rendered = "#{adminAction.curUser.type_id eq 'DEPOT SUPERVISOR'}" required="true" requiredMessage = "Deport Card number is required"/>
-                        <h:outputLabel value=" *" styleClass="messagesingle" />
-                        <br/>
-                        <rich:message for="deportCardnumber" styleClass="messagesingle"
-                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
-                    </h:panelGroup>
-                    
-                    <h:outputLabel  value="Service ID" rendered = "#{adminAction.curUser.type_id ne 'DEPOT ADMINISTRATOR' and adminAction.curUser.type_id ne 'DEPOT SUPERVISOR'}"/>
-                    <h:panelGroup rendered = "#{adminAction.curUser.type_id ne 'DEPOT ADMINISTRATOR' and  adminAction.curUser.type_id ne 'DEPOT SUPERVISOR'}">
+                    <h:outputLabel  value="Service ID"/>
+                    <h:panelGroup>
                     	<h:inputText id="serviceid" value="#{adminAction.curUser.service_id}" required="false"/>
                         <br/>
                         <rich:message for="serviceid" styleClass="messagesingle"
                                       errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
                     </h:panelGroup>
-                    
-                    <h:outputLabel  value="Card Scheme"/>
+                    <h:outputLabel  value="ESA Authentication"/>
                     <h:panelGroup>
-                    	<h:inputText id="cardschemenum" value="#{adminAction.curUser.cardSchemeNumbers}" required="false" requiredMessage="cardscheme is required "/>
-                        <br/>
-                        <rich:message for="cardschemenum" styleClass="messagesingle"
-                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
-                    </h:panelGroup>
-                    
-                    
-                    <h:outputLabel  value="CMS Server "/>
-                    <h:panelGroup>
-                        <h:selectOneMenu styleClass="controls-length2" required="false" id="cmsServers" requiredMessage="Server is required "
-                                     value="#{adminAction.curUser.cardScheme}" noSelectionLabel=".:: Select ::." >
-                                     <f:selectItem itemLabel="ALL" itemValue="ALL" />
-                                     <s:selectItems var="r" value="#{cardManagementAction.cmsServerlist}" itemValue="#{r.serveName}"
-                                                   label="#{r.serveName}" /> 
-                        </h:selectOneMenu>
-                   </h:panelGroup>  
-                    
-                    <h:outputLabel  value="ESA Authentication" rendered = "#{adminAction.curUser.type_id ne 'DEPOT ADMINISTRATOR'}"/>
-                    <h:panelGroup rendered = "#{adminAction.curUser.type_id ne 'DEPOT ADMINISTRATOR'}">
                     	<h:selectOneMenu styleClass="controls-length2" id="selStatus"
                                          value="#{adminAction.curUser.esa_type}">
                             <f:selectItem itemLabel="NO" itemValue="1" />
@@ -202,50 +145,6 @@
                         <h:outputLabel value=" *" styleClass="messagesingle" />
                         <br/>
                         <rich:message for="selStatus" styleClass="messagesingle"
-                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
-                    </h:panelGroup>
-                    
-                    
-                    <h:outputLabel value="Company" rendered = "#{adminAction.curUser.type_id eq 'DEPOT ADMINISTRATOR'}"/>
-                    <h:panelGroup rendered = "#{adminAction.curUser.type_id eq 'DEPOT ADMINISTRATOR'}"><!-- if the user type selected is depot admin, that is when this drop down should show with the companies -->
-                        
-                        <h:selectOneMenu styleClass="controls-length2" required="true" requiredMessage="Company is required" id="comp"
-                                         value="#{adminAction.curUser.service_id}">
-                                         
-                               <s:selectItems var="r" value="#{reportAction.companyList}" itemValue="#{r.companyCode}"
-                                                       label="#{r.companyName}" noSelectionLabel=".:: Select ::." />
-                        </h:selectOneMenu>
-                        
-                        <h:outputLabel value=" *" styleClass="messagesingle" />
-                        <br/>
-                        <rich:message for="comp" styleClass="messagesingle"
-                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
-                    </h:panelGroup>
-                    
-                    
-                           
-                    <h:outputLabel value="Card Number" rendered = "#{adminAction.curUser.type_id eq 'DEPOT ADMINISTRATOR'}"/>
-                    <h:panelGroup rendered = "#{adminAction.curUser.type_id eq 'DEPOT ADMINISTRATOR'}"><!-- if the user type selected is depot admin, that is when this drop down should show with the companies -->
-                        
-                        <h:inputText id="cardnumber" value="#{adminAction.curUser.cardNumber}" required="true" requiredMessage = "Card number is required"/>
-                        <h:outputLabel value=" *" styleClass="messagesingle" />
-                        <br/>
-                        <rich:message for="cardnumber" styleClass="messagesingle"
-                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
-                    </h:panelGroup>
-                    
-                      
-                    <h:outputLabel  value="ESA Authentication" rendered = "#{adminAction.curUser.type_id eq 'DEPOT ADMINISTRATOR'}"/>
-                    <h:panelGroup rendered = "#{adminAction.curUser.type_id eq 'DEPOT ADMINISTRATOR'}">
-                    	<h:selectOneMenu styleClass="controls-length2" id="dselStatus"
-                                         value="#{adminAction.curUser.esa_type}">
-                            <f:selectItem itemLabel="NO" itemValue="1" />
-                            <f:selectItem itemLabel="YES" itemValue="0" />
-                        </h:selectOneMenu>
-                        
-                        <h:outputLabel value=" *" styleClass="messagesingle" />
-                        <br/>
-                        <rich:message for="dselStatus" styleClass="messagesingle"
                                       errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
                     </h:panelGroup>
                     
@@ -278,7 +177,7 @@
                                          <s:selectItems var="r" value="#{adminAction.userTypeList}" itemValue="#{r.type_descr}"
                                                        label="#{r.type_descr}" noSelectionLabel=".:: Select ::." />
                                                                                                 
-                           <a4j:support event="onchange" action="#{adminAction.getBanks}" ajaxSingle="true" onchange="document.getElementById('userFrm:submit1').disabled=true" oncomplete="document.getElementById('userFrm:submit1').disabled=false" reRender="userFrm, displayUserPanel"/>
+                           <a4j:support event="onchange" action="#{adminAction.getBanks}" ajaxSingle="true" onchange="document.getElementById('userFrm:submit1').disabled=true" oncomplete="document.getElementById('userFrm:submit1').disabled=false" reRender="userFrm"/>
                         </h:selectOneMenu>
                         
                         <h:outputLabel value=" *" styleClass="messagesingle" />
@@ -365,54 +264,16 @@
                                       errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
                     </h:panelGroup>
                     
-                    
-                    <h:outputLabel id="vsm_moible_no1" value="VSM Mobile No."  rendered = "#{adminAction.curUser.type_id eq 'DEPOT SUPERVISOR'}" />
-                    <h:panelGroup rendered = "#{adminAction.curUser.type_id eq 'DEPOT SUPERVISOR'}" >
-                    	<h:inputText id="vsmmoible1" value="#{adminAction.curUser.service_id}"  rendered = "#{adminAction.curUser.type_id eq 'DEPOT SUPERVISOR'}" required="true" requiredMessage ="VSM Mobile is required"/>
-                        <h:outputLabel value=" *" styleClass="messagesingle" />
-                        <br/>
-                        <rich:message for="vsmmoible1" styleClass="messagesingle"
-                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
-                    </h:panelGroup>
-                   
-                    <h:outputLabel value="Depot Card Number" rendered = "#{adminAction.curUser.type_id eq 'DEPOT SUPERVISOR'}"/>
-                    <h:panelGroup rendered = "#{adminAction.curUser.type_id eq 'DEPOT SUPERVISOR'}"><!-- if the user type selected is depot admin, that is when this drop down should show with the companies -->
-                        
-                        <h:inputText id="deportCardnumber1" value="#{adminAction.curUser.cardNumber}"  rendered = "#{adminAction.curUser.type_id eq 'DEPOT SUPERVISOR'}" required="true" requiredMessage = "Deport Card number is required"/>
-                        <h:outputLabel value=" *" styleClass="messagesingle" />
-                        <br/>
-                        <rich:message for="deportCardnumber1" styleClass="messagesingle"
-                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
-                    </h:panelGroup>
-                    
-                    <h:outputLabel  value="Service ID" rendered = "#{adminAction.curUser.type_id ne 'DEPOT ADMINISTRATOR' and  adminAction.curUser.type_id ne 'DEPOT SUPERVISOR'}"/>
-                    <h:panelGroup rendered = "#{adminAction.curUser.type_id ne 'DEPOT ADMINISTRATOR' and  adminAction.curUser.type_id ne 'DEPOT SUPERVISOR'}">
+                    <h:outputLabel  value="Service ID"/>
+                    <h:panelGroup>
                     	<h:inputText id="serviceid1" value="#{adminAction.curUser.service_id}" required="false"/>
                         <br/>
                         <rich:message for="serviceid1" styleClass="messagesingle"
                                       errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
                     </h:panelGroup>
-
-                    <h:outputLabel  value="Card Scheme"/>
-                    <h:panelGroup>
-                    	<h:inputText id="cardschemenum1" value="#{adminAction.curUser.cardSchemeNumbers}" required="false" requiredMessage="cardscheme is required "/>
-                        <br/>
-                        <rich:message for="cardschemenum1" styleClass="messagesingle"
-                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
-                    </h:panelGroup>
                     
-      
-                    <h:outputLabel  value="CMS Server "/>
+                    <h:outputLabel  value="ESA Authentication"/>
                     <h:panelGroup>
-                      	<h:selectOneMenu styleClass="controls-length2" required="false" id="cmsServer" value="#{adminAction.curUser.cardScheme}">
-                                         <f:selectItem itemLabel="ALL" itemValue="ALL" noSelectionLabel=".:: Select ::." />
-                                         <s:selectItems var="r" value="#{cardManagementAction.cmsServerlist}" itemValue="#{r.serveName}"
-                                                     label="#{r.serveName}" />                
-                        </h:selectOneMenu>
-                   </h:panelGroup> 
-                    
-                    <h:outputLabel  value="ESA Authentication" rendered = "#{adminAction.curUser.type_id ne 'DEPOT ADMINISTRATOR'}"/>
-                    <h:panelGroup rendered = "#{adminAction.curUser.type_id ne 'DEPOT ADMINISTRATOR'}">
                     	<h:selectOneMenu styleClass="controls-length2" id="selStatus1"
                                          value="#{adminAction.curUser.esa_type}">
                             <f:selectItem itemLabel="NO" itemValue="1" />
@@ -424,50 +285,6 @@
                         <rich:message for="selStatus1" styleClass="messagesingle"
                                       errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
                     </h:panelGroup>
-                    
-                    
-                    <h:outputLabel value="Company" rendered = "#{adminAction.curUser.type_id eq 'DEPOT ADMINISTRATOR'}"/>
-                    <h:panelGroup rendered = "#{adminAction.curUser.type_id eq 'DEPOT ADMINISTRATOR'}"><!-- if the user type selected is depot admin, that is when this drop down should show with the companies -->
-                        
-                        <h:selectOneMenu styleClass="controls-length2" required="true" requiredMessage="Company is required" id="comp1"
-                                         value="#{adminAction.curUser.service_id}">
-                                         
-                               <s:selectItems var="r" value="#{reportAction.companyList}" itemValue="#{r.companyCode}"
-                                                       label="#{r.companyName}" noSelectionLabel=".:: Select ::." />
-                        </h:selectOneMenu>
-                        
-                        <h:outputLabel value=" *" styleClass="messagesingle" />
-                        <br/>
-                        <rich:message for="comp1" styleClass="messagesingle"
-                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
-                    </h:panelGroup>
-                    
-                    
-                     <h:outputLabel value="Card Number" rendered = "#{adminAction.curUser.type_id eq 'DEPOT ADMINISTRATOR'}"/>
-                    <h:panelGroup rendered = "#{adminAction.curUser.type_id eq 'DEPOT ADMINISTRATOR'}"><!-- if the user type selected is depot admin, that is when this drop down should show with the companies -->
-                        
-                        <h:inputText id="cardnumber1" value="#{adminAction.curUser.cardNumber}" required="true" requiredMessage = "Card number is required"/>
-                        <h:outputLabel value=" *" styleClass="messagesingle" />
-                        <br/>
-                        <rich:message for="cardnumber1" styleClass="messagesingle"
-                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
-                    </h:panelGroup>
-                    
-        
-                    <h:outputLabel  value="ESA Authentication" rendered = "#{adminAction.curUser.type_id eq 'DEPOT ADMINISTRATOR'}"/>
-                    <h:panelGroup rendered = "#{adminAction.curUser.type_id eq 'DEPOT ADMINISTRATOR'}">
-                    	<h:selectOneMenu styleClass="controls-length2" id="dselStatus1"
-                                         value="#{adminAction.curUser.esa_type}">
-                            <f:selectItem itemLabel="NO" itemValue="1" />
-                            <f:selectItem itemLabel="YES" itemValue="0" />
-                        </h:selectOneMenu>
-                        
-                        <h:outputLabel value=" *" styleClass="messagesingle" />
-                        <br/>
-                        <rich:message for="dselStatus1" styleClass="messagesingle"
-                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
-                    </h:panelGroup>
-                    
                     
                   </h:panelGrid>  
                    
@@ -530,14 +347,14 @@
 					<f:facet name="header">Type</f:facet>
 					<h:outputText value="#{usr.type_nm}"/>
 				</rich:column>
-				<rich:column rendered = "#{usr.type_nm ne 'DEALER'}">
+			<!-- 	<rich:column rendered = "#{usr.type_nm ne 'DEALER'}">
 					<f:facet name="header">User Code</f:facet>
 					<h:outputText value="#{usr.user_code_nm}"/>
 				</rich:column>
 				<rich:column rendered = "#{usr.type_nm eq 'DEALER'}">
 					<f:facet name="header">User Code</f:facet>
 					<h:outputText value="#{usr.dealer_nm}"/>
-				</rich:column>
+				</rich:column> -->
 				<rich:column>
 					<f:facet name="header">Service ID</f:facet>
 					<h:outputText value="#{usr.service_id}"/>

@@ -27,7 +27,7 @@
     
     <h:form id="cardFrm">
         <rich:panel style="width:40%">
-            <f:facet name="header">Payment Report </f:facet>
+            <f:facet name="header">PHCN:Payment Report </f:facet>
             <rich:graphValidator>
                 <h:panelGrid columns="2" rowClasses="prop" columnClasses="name2,value">
                
@@ -143,6 +143,7 @@
                                          <f:selectItem itemLabel="WEB" itemValue="01" />
                                          <f:selectItem itemLabel="POS" itemValue="03" />
                                          <f:selectItem itemLabel="ATM" itemValue="04" />
+           
                         </h:selectOneMenu>
                         <br/>
                         <rich:message for="selChannel" styleClass="messagesingle"
@@ -155,8 +156,8 @@
                                           id="optionSel2" layout="lineDirection" value="#{reportAction.tarrif_type}">
                             
                              <f:selectItem id="item_a" itemLabel="ALL TARIFF TYPES" itemValue="ANY"/>
-                             <f:selectItem id="item_b" itemLabel="POSTPAID" itemValue="PHCN: TARRIFF"/>
-                             <f:selectItem id="item_c" itemLabel="PREPAID " itemValue="PHCN: PREPAID"/>
+                             <f:selectItem id="item_b" itemLabel="PHCN: TARRIFF" itemValue="PHCN: TARRIFF"/>
+                             <f:selectItem id="item_c" itemLabel="PHCN: PREPAID " itemValue="PHCN: PREPAID"/>
                              
                         </h:selectOneMenu>
                         <br/>
@@ -165,15 +166,14 @@
                     </h:panelGroup> 
                     
                     
-                    <h:outputLabel for="posdistrict"  value="District"/>
+                    <h:outputLabel value="District" />
                     <h:panelGroup>
                         <h:selectOneMenu styleClass="controls-length2" id="selType"
                                          value="#{reportAction.line_type}" required = "true">
                                          
                             <f:selectItem itemLabel="ALL DISTRICTS" itemValue="ALL" /> 
-                            <s:selectItems var="r" value="#{reportAction.districtByZone}" itemValue="#{r.desc}"
-                                                       label="#{r.desc}" /> 
-                                                    
+                            <s:selectItems var="r" value="#{reportAction.districtList}" itemValue="#{r.code}"
+                                                       label="#{r.desc}" />   
                         </h:selectOneMenu>
                         <br/>
                         <rich:message for="selType" styleClass="messagesingle"
@@ -236,7 +236,7 @@
 		
 		<rich:panel style="width:100%" rendered ="#{reportAction.billLog.size() > 0}" >
 
-           <f:facet name="header">Customer Account Report [ Total Record(s) found :  #{reportAction.billLog.size()} ], [Total Amount : #{reportAction.total_amount}]</f:facet>
+           <f:facet name="header">PHCN: Customer Account Report [ Total Record(s) found :  #{reportAction.billLog.size()} ]</f:facet>
           	 <s:link  id="srADreplogo" view="/excel-reports-templates/phcnExcelReport.xhtml"  rendered ="#{reportAction.billLog.size() > 0}"  >
            		<h:graphicImage value="/images/excel5.jpg"/>
           	</s:link>
@@ -250,16 +250,6 @@
            	
            	<h:commandButton id="submit2"  image="/images/notepad.jpg" action="#{reportAction.exportPHCN('txt')}" reRender="manageCardFrm">
            	</h:commandButton>
-			
-			<rich:spacer width="10px" height="20px"/>
-           	
-			<s:link  id="srADreplogo2" view="/excel-reports-templates/phcnPdfReport.xhtml">
-					<h:graphicImage value="/images/pdf.jpg"/>
-			</s:link>
-			
-		 	<rich:spacer width="10px" height="20px"/>
-            
-  		 	<a href = "../excel-reports-templates/phcnPrintableReport.etz" target = "_blank">Printable Version</a>
            	
 	            
             <rich:dataTable id="scardTb" rowKeyVar="rk"  rows="1000" value="#{reportAction.billLog}"  var="crd">   
@@ -274,7 +264,7 @@
                 </rich:column>
                 
                 <rich:column rendered = "#{reportAction.tarrif_type eq 'PHCN: TARRIFF'}">
-                    <f:facet name="header">ACCOUNT NO</f:facet>
+                    <f:facet name="header">PHCN ACCOUNT</f:facet>
 				    <h:outputText value="#{crd.subscriber_id}"/>
                 </rich:column>
                 
@@ -284,7 +274,7 @@
                 </rich:column>
                 
                 <rich:column rendered = "#{reportAction.tarrif_type eq 'ANY'}">
-                    <f:facet name="header">ACCOUNT/PREPAID METER NO</f:facet>
+                    <f:facet name="header">PHCN ACCOUNT/PREPAID METER NO</f:facet>
 				    <h:outputText value="#{crd.subscriber_id}"/>
                 </rich:column>
                 
@@ -305,16 +295,6 @@
                 </rich:column>
                 
                 <rich:column>
-                    <f:facet name="header">COMM. AMOUNT</f:facet>
-				    <h:outputText value="#{crd.etzCommissionAmt}"/>
-                </rich:column>
-                
-                <rich:column>
-                    <f:facet name="header">NET AMOUNT</f:facet>
-				    <h:outputText value="#{crd.netAmt}"/>
-                </rich:column>
-                
-                <rich:column>
                     <f:facet name="header">BANK NAME</f:facet>
 				    <h:outputText value="#{reportAction.getBankName(crd.issuer_code)}"/>
                 </rich:column>
@@ -328,35 +308,6 @@
                     <f:facet name="header">DATE</f:facet>
 				    <h:outputText value="#{crd.trans_date}"/>
                 </rich:column>
-                
-                <f:facet name="footer">
-                
-                	<rich:columnGroup>
-                        <rich:column>
-                        	<div align="left">
-                        		Total
-                        	</div>
-                        </rich:column>
-                        <rich:column colspan="4">
-                        	<div align="right">
-                        		
-                        	</div>
-                        </rich:column>
-                        <rich:column>
-                        	<div align="right">
-                        		<h:outputText value="#{reportAction.makeDouble(reportAction.total_amount)}">
-                                    <f:convertNumber pattern="#,###,###,###,###.00"/>
-                                </h:outputText>
-                        	</div>
-                        </rich:column>
-						<rich:column colspan="5">
-                        	<div align="left">
-                        		
-                        	</div>
-                        </rich:column>
-                    </rich:columnGroup>
-                </f:facet>
-                
                 
             </rich:dataTable>
 			<rich:datascroller id="scardTableDS" for="scardTb"  renderIfSinglePage="true">

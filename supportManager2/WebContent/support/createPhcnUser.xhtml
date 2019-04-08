@@ -35,8 +35,10 @@
                     <h:panelGroup>
                         <h:selectOneMenu styleClass="controls-length2" required="true" requiredMessage="User Type is required" id="type_id"
                                          value="#{adminAction.curUser.type_id}">
-                                         <s:selectItems var="r" value="#{reportAction.districtByZone}" itemValue="#{r.desc}"
-                                                       label="#{r.desc}"   noSelectionLabel=".:: Select ::."   />
+                                         
+                                         <f:selectItem itemLabel=".:: Select ::." itemValue="" />
+                                         <f:selectItem itemLabel="PHCN DISTRICT OFFICER" itemValue="PHCN DISTRICT OFFICER" />
+                                         <f:selectItem itemLabel="PHCN CASH OFFICER" itemValue="PHCN CASH OFFICER" />                                        
                         </h:selectOneMenu>
                         
                         <h:outputLabel value=" *" styleClass="messagesingle" />
@@ -89,7 +91,12 @@
                         <br/>
                         <rich:message for="mobile" styleClass="messagesingle"
                                       errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
-                    </h:panelGroup>                  
+                    </h:panelGroup>
+                    
+                    
+                    
+                    
+                    
                   </h:panelGrid>  
                    
             </rich:graphValidator>
@@ -115,8 +122,10 @@
                     <h:panelGroup>
                         <h:selectOneMenu styleClass="controls-length2" required="true" requiredMessage="User Type is required" id="type_id1"
                                          value="#{adminAction.curUser.type_id}">
-                                          <s:selectItems var="r" value="#{reportAction.districtByZone}" itemValue="#{r.desc}"
-                                                       label="#{r.desc}"   noSelectionLabel=".:: Select ::."   />				                                       
+                                         
+                                         <f:selectItem itemLabel=".:: Select ::." itemValue="" />
+                                         <f:selectItem itemLabel="PHCN DISTRICT OFFICER" itemValue="PHCN DISTRICT OFFICER" />
+                                         <f:selectItem itemLabel="PHCN CASH OFFICER" itemValue="PHCN CASH OFFICER" />                                        
                         </h:selectOneMenu>
                         
                         <h:outputLabel value=" *" styleClass="messagesingle" />
@@ -129,7 +138,7 @@
                     <h:outputLabel id="username_label1" value="Username"/>
                     <h:panelGroup>
                     	<h:inputText id="username1" value="#{adminAction.curUser.username}" required="true" requiredMessage="Username is required"/>
-                    	<h:outputLabel value="*" styleClass="messagesingle" />
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
                     	<br/>
                         <rich:message for="username1" styleClass="messagesingle"
                                       errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>

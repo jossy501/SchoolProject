@@ -26,13 +26,6 @@ public class MailExample
    		System.out.println("email sent!!!");
    }
    
-   @Observer("transactionmailer")
-   public void sendTransactionReportByEmail()throws Exception
-   {
-	    renderer.render("/cms/transactionReportByEMail.xhtml");
-   		System.out.println("email sent!!!");
-   }
- 
    
    @Observer("updatemailer")
    public void resetPlain()throws Exception
@@ -58,7 +51,6 @@ public class MailExample
   		System.out.println("pin email sent !!!");
 	   
    }
-   
    
    @Observer("paymentadvicemailer")
    public void paymentAdvicePlain()throws Exception

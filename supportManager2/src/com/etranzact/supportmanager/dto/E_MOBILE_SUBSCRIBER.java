@@ -29,20 +29,11 @@ public class E_MOBILE_SUBSCRIBER
 	private String created;
 	private String apptype;
 	private String appnm;
-	private String userCode;
 	
 	public E_MOBILE_SUBSCRIBER(){}
 
 	public String getMobile() {
 		return mobile;
-	}
-
-	public String getUserCode() {
-		return userCode;
-	}
-
-	public void setUserCode(String userCode) {
-		this.userCode = userCode;
 	}
 
 	public void setMobile(String mobile) {

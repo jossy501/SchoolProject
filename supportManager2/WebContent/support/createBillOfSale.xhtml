@@ -1,0 +1,369 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="../WEB-INF/layout/basic_layout.xhtml">
+                
+<ui:define name="body">
+
+	<!-- javascript -->
+	
+	<script language="JavaScript" type="text/javascript">
+
+        function showip()
+        {
+        	var c = document.getElementById('userFrm:selStatus').value;
+	        if(c == "RESTRICTED ACCESS")
+	        {
+	        	document.getElementById('ipAddressInfo').style.display = "block";
+	        }
+	        else if(c == "ANYWHERE")
+	        {
+		        document.getElementById('ipAddressInfo').style.display = "none";
+	        }
+        }
+        
+        function showip1()
+        {
+        	var c = document.getElementById('userFrm:selStatus1').value;
+	        if(c == "RESTRICTED ACCESS")
+	        {
+	        	document.getElementById('ipAddressInfo1').style.display = "block";
+	        }
+	        else if(c == "ANYWHERE")
+	        {
+		        document.getElementById('ipAddressInfo1').style.display = "none";
+	        }
+        }
+        
+      </script>
+	
+	<!-- processing panel -->
+    
+    <rich:modalPanel id="panelp" width="150" height="50">
+       <h:form id="pFrm">
+        <h:panelGrid columns="1" rowClasses="prop" columnClasses="name2,value">
+           <h:outputText value="Please wait...." styleClass="messagesingle" align="center">
+               <h:graphicImage value="/images/loading_small.gif"/>
+           </h:outputText>
+          </h:panelGrid>  
+         </h:form>
+    </rich:modalPanel>
+    
+    <!--  -->
+
+    <a4j:form id="userFrm">
+        <rich:panel style="width:40%" rendered = "#{reportAction.edit_id eq null}">
+            <f:facet name="header">Create Bill Of Sale</f:facet>
+            <rich:graphValidator>
+                <h:panelGrid columns="2" rowClasses="prop" columnClasses="name2,value">
+                    
+                    <h:outputLabel id="amoutOfSaleLabel" value="Sale Amount"/>
+                    <h:panelGroup> 
+                    	<h:inputText id="amountOfSale" value="#{reportAction.billOfSale.amount_sale}" required="true" requiredMessage="Amount of sale is required" size="40"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="amountOfSale" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+
+					<h:outputLabel id="methodofpaymentlable" value="Method Of Payment"/>
+                    <h:panelGroup>
+                    	<h:inputText id="methodOfPayment" value="#{reportAction.billOfSale.method_of_payment}" required="true" requiredMessage="Method of Payment  is required" size="40"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="methodOfPayment" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                    
+                    <h:outputLabel id="buysNamelabel" value="Buyers Full Name"/>
+                    <h:panelGroup>
+                    	<h:inputText id="buysFullName" value="#{reportAction.billOfSale.buyers_fullname}" required="true" requiredMessage="Buyers Full Name   is required" size="40"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="buysFullName" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                    
+                    <h:outputLabel id="itemdescritionLabel" value="Description of Item Sold"/>
+                    <h:panelGroup>
+                    	<h:inputTextarea id="itemDescription" rows="5" cols="35" styleClass="vertical-align:top;" value="#{reportAction.billOfSale.description_of_item_sold}" required="true" requiredMessage="Description of Item sold is required" size="40"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="itemDescription" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                    
+                     <h:outputLabel id="historyOfownerLabel" value="History Of OwnerShip"/>
+                    <h:panelGroup>
+                    	<h:inputText id="historyOfownership" value="#{reportAction.billOfSale.history_owner_ship}" required="true" requiredMessage="History of ownership required" size="40"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="historyOfownership" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                    
+                    
+                      <h:outputLabel id="taxesLabel" value="Taxes"/>
+                    <h:panelGroup>
+                    	<h:inputText id="taxes" value="#{reportAction.billOfSale.taxes}" required="true" requiredMessage="Taxes  is required" size="40"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="taxes" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                    
+                  </h:panelGrid>
+            </rich:graphValidator>
+            
+        </rich:panel>
+        
+        <rich:spacer width="10px" height="10px"/>
+        
+        <div id="ipAddressInfo" style="display: none">
+         <rich:panel style="width:40%" id="ipPanel" rendered = "#{reportAction.edit_id eq null}">
+       		
+       		<f:facet name="header"></f:facet>
+       		<h:panelGrid columns="2" rowClasses="prop" columnClasses="name2,value">
+	       		<h:outputLabel id="email_label" styleClass="vertical-align:top;" value="IP Address" />
+	               <h:panelGroup>
+	               	<rich:pickList value = "#{adminAction.menuItemToIpAddressList}" id ="modalPanel" >
+	               		<s:selectItems value="#{adminAction.ipAddressList}" var = "r" itemValue="#{r.id}" label = "#{r.ip_address}"/>
+	      			</rich:pickList>
+	          	</h:panelGroup>
+          	</h:panelGrid>
+          	
+         </rich:panel>
+		 </div>
+		 
+         <rich:panel style="width:40%" rendered = "#{reportAction.edit_id eq null}">
+       		
+       		<f:facet name="header"></f:facet>
+       		<div class="actionButtons" >
+            	<a4j:commandButton oncomplete=""
+                                   id="submit" value="   Submit  " action="#{reportAction.createBillOfSale}" reRender="userFrm, manageUserFrm"/>
+        	</div>
+          	
+         </rich:panel>
+		 
+   <!-- update -->
+
+        <rich:panel style="width:40%" rendered = "#{reportAction.edit_id ne null}">
+            <f:facet name="header">Update Bill Of Sale </f:facet>
+            <rich:graphValidator>
+                <h:panelGrid columns="2" rowClasses="prop" columnClasses="name2,value">
+                     <h:outputLabel id="amoutOfSaleLabels" value="Sale Amount"/>
+                    <h:panelGroup> 
+                    	<h:inputText id="amountOfSales" value="#{reportAction.billOfSale.amount_sale}" required="true" requiredMessage="Amount of sale is required" size="40"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="amountOfSales" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+
+					<h:outputLabel id="methodofpaymentlables" value="Method Of Payment"/>
+                    <h:panelGroup>
+                    	<h:inputText id="methodOfPayments" value="#{reportAction.billOfSale.method_of_payment}" required="true" requiredMessage="Method of Payment  is required" size="40"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="methodOfPayments" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                    
+                    <h:outputLabel id="buysNamelabels" value="Buyers Full Name"/>
+                    <h:panelGroup>
+                    	<h:inputText id="buysFullNames" value="#{reportAction.billOfSale.buyers_fullname}" required="true" requiredMessage="Buyers Full Name   is required" size="40"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="buysFullNames" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                    
+                    <h:outputLabel id="itemdescritionLabels" value="Description of Item Sold"/>
+                    <h:panelGroup>
+                    	<h:inputTextarea id="itemDescriptions" rows="5" cols="30" styleClass="vertical-align:top;" value="#{reportAction.billOfSale.description_of_item_sold}" required="true" requiredMessage="Description of Item sold is required" size="40"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="itemDescriptions" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                    
+                     <h:outputLabel id="historyOfownerLabels" value="History Of OwnerShip"/>
+                    <h:panelGroup>
+                    	<h:inputText id="historyOfownerships" value="#{reportAction.billOfSale.history_owner_ship}" required="true" requiredMessage="History of ownership required" size="40"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="historyOfownerships" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                    
+                    
+                      <h:outputLabel id="taxesLabels" value="Taxes"/>
+                    <h:panelGroup>
+                    	<h:inputText id="taxess" value="#{reportAction.billOfSale.taxes}" required="true" requiredMessage="Taxes  is required" size="40"/>
+                    	<h:outputLabel value=" *" styleClass="messagesingle" />
+                    	<br/>
+                        <rich:message for="taxess" styleClass="messagesingle"
+                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+                    </h:panelGroup>
+                  </h:panelGrid>
+                   
+            </rich:graphValidator>
+            
+        </rich:panel>
+        
+        <rich:spacer width="10px" height="10px"/>
+        
+        <div id="ipAddressInfo1" style="display: none">
+         <rich:panel style="width:40%" id="ipPanel1" rendered = "#{reportAction.edit_id ne null}">
+       		
+       		<f:facet name="header"></f:facet>
+       		<h:panelGrid columns="2" rowClasses="prop" columnClasses="name2,value">
+	       		<h:outputLabel id="email_label1" styleClass="vertical-align:top;" value="IP Address" />
+	               <h:panelGroup>
+	               	<rich:pickList value = "#{adminAction.menuItemToIpAddressList}" id ="modalPanel1" >
+	               		<s:selectItems value="#{adminAction.ipAddressList}" var = "r" itemValue="#{r.id}" label = "#{r.ip_address}"/>
+	      			</rich:pickList>
+	          	</h:panelGroup>
+          	</h:panelGrid>
+          	
+         </rich:panel>
+		 </div>
+		 
+         <rich:panel style="width:40%" rendered = "#{reportAction.edit_id ne null}">
+       		
+       		<f:facet name="header"></f:facet>
+       		<div class="actionButtons" >
+            	<a4j:commandButton oncomplete="javascript:showip1()"
+                                   id="submit1" value="   Update  " action="#{reportAction.updateBillOfSale}" reRender="userFrm, manageUserFrm"/>
+                
+                <a4j:commandButton oncomplete="javascript:showip1()"
+                                   id="submit2" value="   New Bill Of Sale  " action="#{reportAction.resetValues}" reRender="userFrm, manageUserFrm"/>
+                                   
+                                   
+        	</div>
+          	
+         </rich:panel>
+         
+        <script language="JavaScript" type="text/javascript">
+
+			var load_timer; 
+	        function showip2()
+	        {
+	        	var c = document.getElementById('userFrm:selStatus1').value;
+		        if(c == "RESTRICTED ACCESS")
+		        {
+		        	document.getElementById('ipAddressInfo1').style.display = "block";
+		        }
+		        else if(c == "ANYWHERE")
+		        {
+			        document.getElementById('ipAddressInfo1').style.display = "none";
+		        }
+		        window.clearInterval(load_timer);
+	        }
+	        load_timer = window.setInterval("showip2()", 10);
+        </script> 
+		 
+   </a4j:form>
+
+   <rich:spacer width="10px" height="10px"/>
+   
+   <a4j:form id="manageUserFrm">
+         <rich:panel style="width:100%" id="displayUserPanel">
+         
+             <f:facet name="header">Manage Bil Of Sales  </f:facet>
+             
+             <rich:dataTable id="userTb" reRender="userTableDS" rows="1000" value="#{reportAction.billOfSaleLists}" var="usr1">
+				
+				<rich:column>
+					<f:facet name="header">SN</f:facet>
+					<h:outputText value="#{usr1.counter}"/>
+				</rich:column>
+				
+				<rich:column>
+					<f:facet name="header">Counter Number</f:facet>
+					<h:outputText value="#{usr1.sales_id}"/>
+				</rich:column>
+					
+				<rich:column>
+						<f:facet name="header">Sales Amount</f:facet>
+                        	<div align="right">
+                        		<h:outputText value="#{reportAction.makeDouble(usr1.amount_sale)}">
+                                    <f:convertNumber pattern="#,###,###,###,###.00"/>
+                                </h:outputText>
+                        	</div>
+                </rich:column>
+				
+			
+				
+				<rich:column>
+					<f:facet name="header">Method of Payment</f:facet>
+					<h:outputText value="#{usr1.method_of_payment}"/>
+				</rich:column>
+				
+				<rich:column>
+					<f:facet name="header">Buyers Full Name</f:facet>
+					<h:outputText value="#{usr1.buyers_fullname}"/>
+				</rich:column>
+				
+				<rich:column>
+					<f:facet name="header">Description Of Item Sold</f:facet>
+					<h:outputText value="#{usr1.description_of_item_sold}"/>
+				</rich:column>
+				
+				<rich:column>
+					<f:facet name="header">History Of Ownership</f:facet>
+					<h:outputText value="#{usr1.history_owner_ship}"/>
+				</rich:column>
+				
+				<rich:column>
+					<f:facet name="header">Taxes</f:facet>
+					<h:outputText value="#{usr1.taxes}"/>
+				</rich:column>
+				
+				<rich:column>
+					<f:facet name="header">Date of Transaction</f:facet>
+					<h:outputText value="#{usr1.date_of_transaction}"/>
+				</rich:column>
+				
+				<rich:column>
+				
+					<h:commandButton action="#{reportAction.setBillOfSaleToEdit}" reRender="manageUserFrm"  image="/images/edit.png" id="submit_edit">
+		            	<f:setPropertyActionListener target="#{reportAction.edit_id}" value="#{usr1.counter}" />
+		            	<rich:componentControl for="panelp" attachTo="submit_edit" operation="show" event="onclick"/>
+		            </h:commandButton>
+					
+					<rich:spacer width="10px" height="10px"/>
+				
+					<h:commandButton action="#{reportAction.deleteBillOfSale}" reRender="manageUserFrm"  image="/images/invalid.png" id="submit_delete">
+		            	<f:setPropertyActionListener target="#{reportAction.operation_id}" value="#{usr1.counter}" />
+		            	<rich:componentControl for="panelp" attachTo="submit_delete" operation="show" event="onclick"/>
+		            </h:commandButton>
+				</rich:column>
+				<f:facet name="footer">
+					<rich:datascroller id="userTableDS" for="userTb"  renderIfSinglePage="true">
+						<f:facet name="first">
+							<h:outputText value="First" />
+						</f:facet>
+						<f:facet name="last">
+							<h:outputText value="Last" />
+						</f:facet>
+					</rich:datascroller>
+				</f:facet>
+			</rich:dataTable>
+
+         </rich:panel>
+         
+         
+     </a4j:form>
+   
+    
+</ui:define>
+
+
+</ui:composition>

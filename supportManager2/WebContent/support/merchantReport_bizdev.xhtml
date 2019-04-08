@@ -245,7 +245,6 @@
 				    </h:commandLink>
                 </rich:column>
                 
-                <!-- 
                 <rich:column>
                     <f:facet name="header">Product Name [Without Channel Breakdown]</f:facet>
 				    <h:commandLink value="#{reportAction.getTransName(crd.trans_code)}" action="#{reportAction.viewAllReportByTransCodeAndAccountID}" id="link3">
@@ -255,7 +254,7 @@
 				        <rich:componentControl for="panelp" attachTo="link3" operation="show" event="onclick"/>
 				    </h:commandLink>
                 </rich:column>
-                 -->
+                
                 <rich:column>
                     <f:facet name="header">Total Count</f:facet>
                     <h:outputText value="#{crd.transaction_count}" style="float: right;"/>
@@ -273,7 +272,7 @@
                 <f:facet name="footer">
                 
                 	<rich:columnGroup>
-                        <rich:column>
+                        <rich:column colspan = "2">
                         	<div align="left">
                         		Total Amount
                         	</div>

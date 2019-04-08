@@ -13,7 +13,7 @@ import org.jboss.seam.annotations.Scope;
 
 import com.etranzact.drs.controller.ClaimController;
 import com.etranzact.psm.controller.TPSMController;
-import com.etranzact.cms.action.CardManagementAction;
+
 
 /**
  * @author tony.ezeanya
@@ -39,9 +39,6 @@ public class AppOptions
 	
 	@In(create = true)
 	MerchantReportAction merchantReportAction;
-	
-	@In(create = true)
-	CardManagementAction cardManagementAction;
 
 	public void resetValues()
 	{
@@ -50,8 +47,6 @@ public class AppOptions
 		claimcontroller.distroyAll();
 		tpsmcontroller.distroy();
 		merchantReportAction.resetValues();
-		cardManagementAction.resetValues();
-		
 	}
 	
 }

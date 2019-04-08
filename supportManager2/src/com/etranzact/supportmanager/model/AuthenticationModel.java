@@ -82,13 +82,12 @@ public class AuthenticationModel
 				user.setAccount_id("");
 			}*/
 			String query = "select user_id, email, password, lastname, firstname, type_id," +
-			"(select distinct type_desc from telcodb..support_type where type_id = support_user.type_id),status_id, user_code," +
-			"(select distinct status_desc from telcodb..support_status where status_id = support_USER.status_id),username,first_logon," +
-			" service_id, esa_auth, bankApp, mobile, (select card_to_credit from company where support_user.service_id = company.compCode)," +
-			" (select bank from company where support_user.service_id = company.compCode), (select bankAccount from company where support_user.service_id = company.compCode), " +
-			" card_scheme,cardscheme_numbers from telcodb..support_user" +
-			" where telcodb..support_user.username = '"+username+"' AND telcodb..support_user.password = '"+crypt_password+"'";
-	
+					"(select distinct type_desc from telcodb..support_type where type_id = support_user.type_id),status_id, user_code," +
+					"(select distinct status_desc from telcodb..support_status where status_id = support_USER.status_id),username,first_logon," +
+					" service_id, esa_auth" +
+					" from telcodb..support_user" +
+					" where telcodb..support_user.username = '"+username+"' AND telcodb..support_user.password = '"+crypt_password+"'";
+		
 			result = stat.executeQuery(query);
 			while(result.next())
 			{
@@ -108,13 +107,6 @@ public class AuthenticationModel
 				user.setService_id(""+result.getObject(13));
 				user.setAccount_id("");
 				user.setEsa_type(""+result.getObject(14));
-				user.setBankApp(""+result.getObject(15));
-				user.setMobile(""+result.getObject(16));
-				user.setCardToCredit(""+result.getObject(17));
-				user.setBankToCredit(""+result.getObject(18));
-				user.setBankAccountToCredit(""+result.getObject(19));
-				user.setCardScheme(""+result.getString(20));
-				user.setCardSchemeNumbers(""+result.getObject(21));
 			}
 			
 			

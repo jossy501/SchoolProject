@@ -57,15 +57,6 @@ public class E_TRANSACTION
 	private String settle_batch;
 	private String batch_date;
 	
-	private String respondCode;
-	
-	private String errorDesc;
-	private String day;
-	private String month;
-	private String year;
-	
-	private String appid;
-	
 	public E_TRANSACTION(){}
 
 	public String getGlobalid() {
@@ -444,54 +435,6 @@ public class E_TRANSACTION
 
 	public void setBatch_date(String batch_date) {
 		this.batch_date = batch_date;
-	}
-
-	public String getRespondCode() {
-		return respondCode;
-	}
-
-	public void setRespondCode(String respondCode) {
-		this.respondCode = respondCode;
-	}
-
-	public String getErrorDesc() {
-		return errorDesc;
-	}
-
-	public void setErrorDesc(String errorDesc) {
-		this.errorDesc = errorDesc;
-	}
-
-	public String getDay() {
-		return day;
-	}
-
-	public void setDay(String day) {
-		this.day = day;
-	}
-
-	public String getMonth() {
-		return month;
-	}
-
-	public void setMonth(String month) {
-		this.month = month;
-	}
-
-	public String getYear() {
-		return year;
-	}
-
-	public void setYear(String year) {
-		this.year = year;
-	}
-
-	public String getAppid() {
-		return appid;
-	}
-
-	public void setAppid(String appid) {
-		this.appid = appid;
 	}
 	
 	

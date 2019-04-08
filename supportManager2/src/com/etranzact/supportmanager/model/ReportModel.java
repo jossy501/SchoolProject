@@ -3,7 +3,6 @@
  */
 package com.etranzact.supportmanager.model;
 
-import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,27 +12,18 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import com.etranzact.cms.dto.FundGateInfo;
-import com.etranzact.cms.dto.SchemeRegistration;
-import com.etranzact.institution.dto.Department;
-import com.etranzact.institution.dto.Faculty;
-import com.etranzact.institution.dto.Institution;
-import com.etranzact.institution.util.Sequencer;
 import com.etranzact.psm.dto.TPsmDealer;
-import com.etranzact.supportmanager.dto.AccountInfo;
 import com.etranzact.supportmanager.dto.Bank;
+import com.etranzact.supportmanager.dto.Bill_Of_Sale;
 import com.etranzact.supportmanager.dto.COP_FUNDGATE_LOG;
-import com.etranzact.supportmanager.dto.C_MTNRequestLogger;
 import com.etranzact.supportmanager.dto.C_TRANSACTION;
+import com.etranzact.supportmanager.dto.Car_Inventory;
 import com.etranzact.supportmanager.dto.CardHolder;
 import com.etranzact.supportmanager.dto.Channel;
-import com.etranzact.supportmanager.dto.Company;
 import com.etranzact.supportmanager.dto.District;
 import com.etranzact.supportmanager.dto.E_CARDSERVICE;
 import com.etranzact.supportmanager.dto.E_CATSCALE;
 import com.etranzact.supportmanager.dto.E_EXCEPTION;
-import com.etranzact.supportmanager.dto.E_IPAYMENTTRAN;
-import com.etranzact.supportmanager.dto.E_IPAYMENTUSERS;
 import com.etranzact.supportmanager.dto.E_MERCHANT;
 import com.etranzact.supportmanager.dto.E_MERCHANT_SPLIT;
 import com.etranzact.supportmanager.dto.E_MOBILE_SUBSCRIBER;
@@ -50,33 +40,281 @@ import com.etranzact.supportmanager.dto.E_TRANSCODE;
 import com.etranzact.supportmanager.dto.LOTTO_LOG;
 import com.etranzact.supportmanager.dto.M_Incoming_Messages;
 import com.etranzact.supportmanager.dto.M_Outgoing_Messages;
+import com.etranzact.supportmanager.dto.MenuItem;
 import com.etranzact.supportmanager.dto.PAYTRANS;
-import com.etranzact.supportmanager.dto.PoolAccount;
 import com.etranzact.supportmanager.dto.ProviderLog;
 import com.etranzact.supportmanager.dto.REQUEST_LOG;
 import com.etranzact.supportmanager.dto.REVERSAL;
 import com.etranzact.supportmanager.dto.R_pins_bought;
 import com.etranzact.supportmanager.dto.SMS_LOG;
 import com.etranzact.supportmanager.dto.Summary;
-import com.etranzact.supportmanager.dto.SwitchLog;
 import com.etranzact.supportmanager.dto.T_SMS_RECEIVE;
 import com.etranzact.supportmanager.dto.T_SMS_SEND;
-import com.etranzact.supportmanager.dto.User;
 import com.etranzact.supportmanager.dto.VTU_LOG;
 import com.etranzact.supportmanager.utility.Env;
 import com.etranzact.supportmanager.utility.HashNumber;
 import com.etz.security.util.Cryptographer;
-import com.etranzact.supportmanager.dto.Fileuploder;
 
 
 /**
- * @author tony.ezeanya
+ * @author Joshua.Aruno
  *
  */
 public class ReportModel 
 {
 
 	public ReportModel(){}
+
+	
+	
+	/*Method to create the ip address restriction*/
+	public String createBillOfSale(String amountOfSale, String methodOfPayment, String buyersFullName, String descriptioOfItemSold, String histor_ownerShip, String taxes )
+	{
+		int output = -1;
+		String message = "";
+		Connection con = null;
+		Statement stat = null;
+		ResultSet result = null;
+		
+		try
+		{
+			
+			con = connectToSupportLog();
+			stat = con.createStatement();
+
+	
+			String query = "insert into telcodb.dbo.bill_of_sales(amount_of_sale, method_of_payment,buyers,description_of_item_sold,history_owner_ship,taxes,date_of_transaction)" +
+					" values('"+amountOfSale+"','"+methodOfPayment+"','"+buyersFullName+"','"+descriptioOfItemSold+"','"+histor_ownerShip+"','"+taxes+"',getDate())";
+			//System.out.println("query " + query);
+			output = stat.executeUpdate(query);
+			
+			if(output > 0)
+			{
+				con.commit();
+				message = "Records successfully inserted";
+			}
+			else
+			{
+				con.rollback();
+				message = "Records not inserted";
+			}
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+			try
+			{
+				con.rollback();
+				message = "Error occured while creating bill of sale";
+			}
+			catch(Exception e){}
+			closeConnectionSupportLogDB(con, result);
+		}
+		finally
+		{
+			closeConnectionSupportLogDB(con, result);
+		}
+		return message;
+	}
+	
+	/*Method to create the ip address restriction*/
+	public String updateBillOfSale(String sales_id, String amountOfSale, String methodOfPayment, String buyersFullName, String descriptioOfItemSold, String histor_ownerShip, String taxes )
+	{
+		int output = -1;
+		String message = "";
+		Connection con = null;
+		Statement stat = null;
+		ResultSet result = null;
+		
+		try
+		{
+			
+			con = connectToSupportLog();
+			stat = con.createStatement();
+			
+			output = stat.executeUpdate("update telcodb.dbo.bill_of_sales set amount_of_sale= '"+amountOfSale+"', method_of_payment = '"+methodOfPayment+"', buyers ='"+buyersFullName+"'"
+					+ ", description_of_item_sold = '"+descriptioOfItemSold+"', history_owner_ship = '"+histor_ownerShip+"', taxes = '"+taxes+"' where sales_id = '"+sales_id+"'");
+			//System.out.println("query " + query);
+			//output = stat.executeUpdate(query);
+			
+			if(output > 0)
+			{
+				con.commit();
+				message = "Records successfully updated";
+			}
+			else
+			{
+				con.rollback();
+				message = "Records not updated";
+			}
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+			try
+			{
+				con.rollback();
+				message = "Error occured while updating bill of sale";
+			}
+			catch(Exception e){}
+			closeConnectionSupportLogDB(con, result);
+		}
+		finally
+		{
+			closeConnectionSupportLogDB(con, result);
+		}
+		return message;
+	}
+	
+	public ArrayList getBillOfSaleLists()
+	{
+		String query = "";
+		ArrayList arr = new ArrayList();
+		Bill_Of_Sale billOfSale = null;
+		int counter = 0;
+		Connection con = null;
+		Statement stat = null;
+		ResultSet result = null;
+
+		try
+		{
+			con = connectToSupportLog();
+			stat = con.createStatement();
+			
+			query = "select sales_id, "
+					+ "amount_of_sale, "
+					+ "method_of_payment, "
+					+ "date_of_transaction,"
+					+ " buyers,"
+					+ " description_of_item_sold,"
+					+ " history_owner_ship, taxes from telcodb.dbo.bill_of_sales";
+			
+			System.out.println("getMenuItems " + query);
+			result = stat.executeQuery(query);
+			while(result.next())
+			{
+				counter++;
+	
+				billOfSale = new Bill_Of_Sale();
+				billOfSale.setCounter(""+counter);
+				billOfSale.setSales_id(""+result.getObject(1));
+				billOfSale.setAmount_sale(""+result.getObject(2));
+				billOfSale.setMethod_of_payment(""+result.getObject(3));
+				billOfSale.setDate_of_transaction(""+result.getObject(4));
+				billOfSale.setBuyers_fullname(""+result.getObject(5));
+				billOfSale.setDescription_of_item_sold(""+result.getObject(6));
+				billOfSale.setHistory_owner_ship(""+result.getObject(7));
+				billOfSale.setTaxes(""+result.getObject(8));
+				arr.add(billOfSale);
+			}
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+			closeConnectionSupportLogDB(con, result);
+		}
+		finally
+		{
+			closeConnectionSupportLogDB(con, result);
+		}
+		return arr;
+	}
+	
+	public ArrayList getBillOfSaleBySaleId(String sale_id)
+	{
+		ArrayList arr = new ArrayList();
+		Car_Inventory carInventory;
+		Bill_Of_Sale billOfSale;
+		String empty = "";
+		String query = "";
+		Connection con = null;
+		Statement stat = null;
+		ResultSet result = null;
+		
+		try
+		{
+			con = connectToSupportLog();
+			stat = con.createStatement();
+			
+			query = "select sales_id, amount_of_sale, method_of_payment, date_of_transaction, buyers, description_of_item_sold, history_owner_ship,taxes from telcodb.dbo.bill_of_sales where sales_id ='"+sale_id+"'";
+			System.out.println("getMenuItems " + query);
+			result = stat.executeQuery(query);
+			while(result.next())
+			{
+				billOfSale = new Bill_Of_Sale();
+				billOfSale.setSales_id(""+result.getObject(1));
+				billOfSale.setAmount_sale(""+result.getObject(2));
+				billOfSale.setMethod_of_payment(""+result.getObject(3));
+				billOfSale.setDate_of_transaction(""+result.getObject(4));
+				billOfSale.setBuyers_fullname(""+result.getObject(5));
+				billOfSale.setDescription_of_item_sold(""+result.getObject(6));
+				billOfSale.setHistory_owner_ship(""+result.getObject(7));
+				billOfSale.setTaxes(""+result.getObject(8));
+				arr.add(billOfSale);
+			}
+		}
+		catch(SQLException sq)
+		{
+			System.out.println("error " + sq.getMessage());
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+			closeConnectionSupportLogDB(con, result);
+		}
+		finally
+		{
+			closeConnectionSupportLogDB(con, result);
+		}
+		return arr;
+	}
+	
+	
+	/*This method is used to delete the menuitem created*/
+	public String deleteBillOfSale(String sales_id)
+	{
+		int output = -1;
+		String message = "";
+		Connection con = null;
+		Statement stat = null;
+		ResultSet result = null;
+		
+		try
+		{
+			
+			con = connectToSupportLog();
+			stat = con.createStatement();
+			
+			String query = "delete from telcodb.dbo.bill_of_sales where sales_id = "+sales_id+" ";
+
+			output = stat.executeUpdate(query);
+			
+			if(output > 0){
+				con.commit();
+				message = "Records successfully deleted";
+			}
+			else{
+				con.rollback();
+				message = "Records not deleted";
+			}
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+			try
+			{
+				con.rollback();
+				message = "Error occured while deleting menuitem";
+			}
+			catch(Exception e){}
+			closeConnectionSupportLogDB(con, result);
+		}
+		finally
+		{
+			closeConnectionSupportLogDB(con, result);
+		}
+		return message;
+	}
 	
 	
 	/*Method to get air time sales*/
@@ -101,8 +339,7 @@ public class ReportModel
 					" trans_code in ('P') and char_length(merchant_code) = 10 and" +
 					" trans_date between '"+start_dt+"' and '"+end_dt+"' and" +
 					" merchant_code in ('0112430001','0333460001','0570010442','0560029913'," +
-					" '0140010010','7930010001','7920150004','7850010002','0560019910'," +
-					" '0690019910','0690069901', '0440019910','0440019952','0560019952') group by merchant_code";
+					" '0140010010','7930010001','7920150004','7850010002','0560019910','0690019910','0690069901') group by merchant_code";
 		
 			System.out.println("airTimeSales query " + query);
 			result = stat.executeQuery(query);
@@ -128,6 +365,7 @@ public class ReportModel
 		}
 		return arr;
 	}
+	
 	
 	/*Method to get air time sales breakdown*/
 	public ArrayList airTimeSalesBreakDown(String merchant_code, String start_dt, String end_dt)
@@ -179,60 +417,6 @@ public class ReportModel
 		}
 		return arr;
 	}
-	
-	
-	/*Method to get air time sales groupby merchant code, settlebatch and batchdate*/
-	public ArrayList airTimeSalesGroupBy(String start_dt, String end_dt)
-	{
-		String query = "";
-		ArrayList arr = new ArrayList();
-		E_TRANSACTION etran = null;
-		int counter = 0;
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		//" merchant_code in ('0560019910','0690019910','0690069901','0112430001')";
-		
-		try
-		{
-			con = connectToECard();
-			stat = con.createStatement();
-			
-			query = "select merchant_code, count(*), sum(trans_amount) ,settle_batch, batch_date  from e_settlement_download_bk " +
-					"  inner join e_settle_batch on batch_id = settle_batch where char_length(card_num) > 10  and" +
-					"  trans_code in ('P') and char_length(merchant_code) = 10 and " +
-					"  trans_date between '"+start_dt+"' and '"+end_dt+"' and" +
-					"  merchant_code in ('0112430001','0333460001','0570010442','0560029913', '0140010010','7930010001'," +
-					"  '7920150004','7850010002','0560019910','0690019910','0690069901', '0440019910','0440019952','0560019952') group by" +
-					"   merchant_code,settle_batch,batch_date order by batch_date";
-		
-			System.out.println("airTimeSalesGroupBy query " + query);
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-				etran = new E_TRANSACTION();
-				etran.setMerchat_code(""+result.getObject(1));
-				etran.setCard_count(""+result.getObject(2));
-				etran.setTotal_amount(""+result.getObject(3));
-				etran.setSettle_batch(""+result.getObject(4));
-				etran.setBatch_date(""+result.getObject(5));				
-
-				arr.add(etran);
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionECard(con, result, result);
-		}
-		finally
-		{
-			closeConnectionECard(con, result, result);
-		}
-		return arr;
-	}
-	
-	
 	public ArrayList DialyTransactionReportLog(String card_num, String start_dt, String end_dt, String status)
 	{
 		String query = "";
@@ -291,54 +475,6 @@ public class ReportModel
 			closeConnectionECard(con, result, result);
 		}
 		return arr;
-	}
-	
-	
-	/*This method is used to delete the mapping of the merchant ext mapping*/
-	public String deleteMerchantCommissionExt(String merchantCode)
-	{
-		int output = -1;
-		String message = "";
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		String query = "";
-		try
-		{
-			
-			con = connectToBackUpECard();
-			stat = con.createStatement();
-			
-			query = "delete from e_merchant_ext_split where merchant_code = '"+merchantCode+"' ";
-			output = stat.executeUpdate(query);
-			
-			if(output > 0)
-			{
-				con.commit();
-				message = "Records successfully deleted";
-			}
-			else
-			{
-				con.rollback();
-				message = "Records not deleted";
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			try
-			{
-				con.rollback();
-				message = "Error occured while deleting merchant code";
-			}
-			catch(Exception e){}
-			closeConnectionBackUpEcard(con, result, result);
-		}
-		finally
-		{
-			closeConnectionBackUpEcard(con, result, result);
-		}
-		return message;
 	}
 	
 	/**
@@ -624,62 +760,9 @@ public class ReportModel
 	}
 	
 	
-	/* 
-	 *  Method is to get Merchant Summary Report
-	 */
-	public ArrayList getMarchantSummaryReport(String merchatCode,String issuer,String subcode,String startDt,String endDt)
-	{
-		ArrayList arr = new ArrayList();
-		String[] str = new String[2];		
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		String query = "";
-		//E_MERCHANT marchant = null;
-		C_TRANSACTION cTran = null; 
-		try
-		{
-			con = connectToPayoutlet();
-			stat = con.createStatement();
-
-			 query = "SELECT DISTINCT A.TRANS_DATE AS TRANS_DATE, A.SERVICE_ID AS PAYEE_ID, A.T_FULLNAME" +
-			 		" AS PAYEE_NAME, A.PAYMENT_CODE AS CONFIRMATION_ORDER_#, A.TRANS_DESCR AS DESCRIPTION," +
-			 		" A.USERNAME AS TELLER_USERNAME,A.TRANS_AMOUNT AS AMOUNT FROM C_TRANSACTION A, C_TRANSACTION_EXT B, C_MERCHANT C" +
-			 		" WHERE C.merchant_code = '"+merchatCode+"'AND A.ISSUER_CODE LIKE '"+issuer+"%'" +
-			 		" AND A.SUB_CODE LIKE '"+subcode+"%' AND A.TRANS_DATE BETWEEN '"+startDt+"' AND '"+endDt+"' ";
-	
-			System.out.println("query ======= {£}  " + query);
-			  
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-		
-				cTran = new C_TRANSACTION();
-				cTran.setTrans_date(""+result.getObject(1));
-				cTran.setService_id(""+result.getObject(2));
-				cTran.setT_fullname(""+result.getObject(3));
-				cTran.setPayment_code(""+result.getObject(4));
-				cTran.setTrans_descr(""+result.getObject(5));
-				cTran.setUsername(""+result.getObject(6));
-				cTran.setTrans_amount(""+result.getObject(7));
-				arr.add(cTran);
-
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionPayoutlet(con, result);
-		}
-		finally
-		{
-			closeConnectionPayoutlet(con, result);
-		}
-		return arr;
-	}
 	/*Method to do the select for the support log*/
 	public ArrayList getSupportLog(String channel,String card_num, String start_dt , String end_dt,
-			String row_count, String status, String merchant_code, String bank_code, String terminal_id,String merchantId)
+			String row_count, String status, String merchant_code, String bank_code, String terminal_id)
 	{
 		ArrayList arr = new ArrayList();
 		T_SMS_RECEIVE sms_receive;
@@ -887,15 +970,15 @@ public class ReportModel
 					
 					if(status.equals("ALL"))
 					{
-						query = "select mti,pan,(select pro_code_desc from ecarddb.dbo.e_tmccode where ecarddb.dbo.e_tmccode.pro_code =  substring(ecarddb.dbo.e_tmcrequest.pro_code,1,2)), card_acc_name, terminal_id, (select aquirer_name from ecarddb.dbo.e_tmcaquirer where ecarddb.dbo.e_tmcaquirer.aqid =  ecarddb.dbo.e_tmcrequest.aqid), trans_date, datediff(ss,trans_date,response_time), amount,(select ecarddb.dbo.e_isoerror.error_descr from ecarddb.dbo.e_isoerror where error_code = ecarddb.dbo.e_tmcrequest.response_code),trans_seq,target from ecarddb.dbo.e_tmcrequest where trans_date between('"+start_dt+"') and ('"+end_dt+"') and merchant_type='6012' and pan like '"+card_num+"%' and terminal_id like '"+ terminal_id +"%' and CARD_ACC_ID like '"+merchantId+"%' order by trans_date desc ";
+						query = "select mti,pan,(select pro_code_desc from ecarddb.dbo.e_tmccode where ecarddb.dbo.e_tmccode.pro_code =  substring(ecarddb.dbo.e_tmcrequest.pro_code,1,2)), card_acc_name, terminal_id, (select aquirer_name from ecarddb.dbo.e_tmcaquirer where ecarddb.dbo.e_tmcaquirer.aqid =  ecarddb.dbo.e_tmcrequest.aqid), trans_date, datediff(ss,trans_date,response_time), amount,(select ecarddb.dbo.e_isoerror.error_descr from ecarddb.dbo.e_isoerror where error_code = ecarddb.dbo.e_tmcrequest.response_code),trans_seq,target from ecarddb.dbo.e_tmcrequest where trans_date between('"+start_dt+"') and ('"+end_dt+"') and merchant_type='6012' and pan like '"+card_num+"%' and terminal_id like '"+ terminal_id +"%' order by trans_date desc ";
 					}
 					else if(status.equals("SUCCESSFUL"))
 					{
-						query = "select mti,pan,(select pro_code_desc from ecarddb.dbo.e_tmccode where ecarddb.dbo.e_tmccode.pro_code =  substring(ecarddb.dbo.e_tmcrequest.pro_code,1,2)), card_acc_name, terminal_id, (select aquirer_name from ecarddb.dbo.e_tmcaquirer where ecarddb.dbo.e_tmcaquirer.aqid =  ecarddb.dbo.e_tmcrequest.aqid), trans_date, datediff(ss,trans_date,response_time), amount,(select ecarddb.dbo.e_isoerror.error_descr from ecarddb.dbo.e_isoerror where error_code = ecarddb.dbo.e_tmcrequest.response_code),trans_seq,target from ecarddb.dbo.e_tmcrequest where trans_date between('"+start_dt+"') and ('"+end_dt+"') and response_code in('00') and merchant_type='6012' and pan like '"+card_num+"%' and terminal_id like '"+ terminal_id +"%' and CARD_ACC_ID like '"+merchantId+"%'  order by trans_date desc ";
+						query = "select mti,pan,(select pro_code_desc from ecarddb.dbo.e_tmccode where ecarddb.dbo.e_tmccode.pro_code =  substring(ecarddb.dbo.e_tmcrequest.pro_code,1,2)), card_acc_name, terminal_id, (select aquirer_name from ecarddb.dbo.e_tmcaquirer where ecarddb.dbo.e_tmcaquirer.aqid =  ecarddb.dbo.e_tmcrequest.aqid), trans_date, datediff(ss,trans_date,response_time), amount,(select ecarddb.dbo.e_isoerror.error_descr from ecarddb.dbo.e_isoerror where error_code = ecarddb.dbo.e_tmcrequest.response_code),trans_seq,target from ecarddb.dbo.e_tmcrequest where trans_date between('"+start_dt+"') and ('"+end_dt+"') and response_code in('00') and merchant_type='6012' and pan like '"+card_num+"%' and terminal_id like '"+ terminal_id +"%' order by trans_date desc ";
 					}
 					else if(status.equals("FAILED"))
 					{
-						query = "select mti,pan,(select pro_code_desc from ecarddb.dbo.e_tmccode where ecarddb.dbo.e_tmccode.pro_code =  substring(ecarddb.dbo.e_tmcrequest.pro_code,1,2)), card_acc_name, terminal_id, (select aquirer_name from ecarddb.dbo.e_tmcaquirer where ecarddb.dbo.e_tmcaquirer.aqid =  ecarddb.dbo.e_tmcrequest.aqid), trans_date, datediff(ss,trans_date,response_time), amount,(select ecarddb.dbo.e_isoerror.error_descr from ecarddb.dbo.e_isoerror where error_code = ecarddb.dbo.e_tmcrequest.response_code),trans_seq,target from ecarddb.dbo.e_tmcrequest where trans_date between('"+start_dt+"') and ('"+end_dt+"') and (response_code not in ('00') or response_code = null) and merchant_type='6012' and pan like '"+card_num+"%' and terminal_id like '"+ terminal_id +"%' and CARD_ACC_ID like '"+merchantId+"%' order by trans_date desc ";
+						query = "select mti,pan,(select pro_code_desc from ecarddb.dbo.e_tmccode where ecarddb.dbo.e_tmccode.pro_code =  substring(ecarddb.dbo.e_tmcrequest.pro_code,1,2)), card_acc_name, terminal_id, (select aquirer_name from ecarddb.dbo.e_tmcaquirer where ecarddb.dbo.e_tmcaquirer.aqid =  ecarddb.dbo.e_tmcrequest.aqid), trans_date, datediff(ss,trans_date,response_time), amount,(select ecarddb.dbo.e_isoerror.error_descr from ecarddb.dbo.e_isoerror where error_code = ecarddb.dbo.e_tmcrequest.response_code),trans_seq,target from ecarddb.dbo.e_tmcrequest where trans_date between('"+start_dt+"') and ('"+end_dt+"') and (response_code not in ('00') or response_code = null) and merchant_type='6012' and pan like '"+card_num+"%' and terminal_id like '"+ terminal_id +"%' order by trans_date desc ";
 					}
 					
 					result = stat.executeQuery(query);
@@ -1355,149 +1438,6 @@ public class ReportModel
 		}
 		return arr;
 	}
-	
-	/*Method to get scheme List*/
-	public ArrayList getScheme_Registration()
-	{
-		String query = "";
-		ArrayList arr = new ArrayList();
-		CardHolder cholder = null;
-		SchemeRegistration reg = null;
-		int counter = 0;
-		
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-	
-		
-		try
-		{			
-			con = connectToECard();
-			stat = con.createStatement();
-			
-			query = " select SCHEME_ID,SCHEME_OWNER,SETTLEMENT_BANK,NARRATION FROM e_cardscheme "; 
-					
-			System.out.println("scheme query " + query);
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-	
-				reg = new SchemeRegistration();		
-				reg.setSchemeId(""+result.getObject(1));
-				reg.setSchemeName(""+result.getObject(2));
-				reg.setSettlementBank(""+result.getObject(3));
-				reg.setSchemeNarration(""+result.getObject(4));
-				
-				arr.add(reg);
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionECard(con, result, result);
-		}
-		finally
-		{
-			
-			closeConnectionECard(con, result, result);
-		}
-		return arr;
-	}
-	
-	/*Method to get scheme Report*/
-	public ArrayList getSchemeReport(String schemeId, String StartDt,String endDt)
-	{
-		String query = "";
-		ArrayList arr = new ArrayList();
-		CardHolder cholder = null;
-		SchemeRegistration reg = null;
-		int counter = 0;
-		
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-	
-		
-		try
-		{			
-			con = connectToECard();
-			stat = con.createStatement();
-			
-			query = " select SCHEME_ID,SCHEME_OWNER,SETTLEMENT_BANK,NARRATION FROM e_cardscheme where convert(varchar,SCHEME_ID) like '"+schemeId+"%' " +
-					"and Created between '"+StartDt+"' and '"+endDt+"' "; 
-					
-			System.out.println("scheme query " + query);
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-	
-				reg = new SchemeRegistration();		
-				reg.setSchemeId(""+result.getObject(1));
-				reg.setSchemeName(""+result.getObject(2));
-				reg.setSettlementBank(""+result.getObject(3));
-				reg.setSchemeNarration(""+result.getObject(4));
-				
-				arr.add(reg);
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionECard(con, result, result);
-		}
-		finally
-		{
-			
-			closeConnectionECard(con, result, result);
-		}
-		return arr;
-	}
-	
-	/*method to get cardnumber from pocketmoni ecardholder */
-	public String getCardnumberByMobile(String mobileno)
-	{
-		String query = "";
-		ArrayList arr = new ArrayList();
-		CardHolder cholder = null;
-		int counter = 0;
-		
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		String actualCardNumber =  "";
-	
-		
-		try
-		{			
-			con = connectPocketMoniEcardDB(); //133
-			stat = con.createStatement();
-			
-			query = " select card_num from e_cardholder where Phone = '"+mobileno+"' ";
-	
-					
-			System.out.println("getCardnumberByMobile " + query);
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-				
-				actualCardNumber = ""+result.getObject(1);
-				
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionPocketMoniEcardDB(con, result);
-		}
-		finally
-		{
-			
-			closeConnectionPocketMoniEcardDB(con, result);
-		}
-		return actualCardNumber;
-	}
-	
-	
 	
 	
 	/*Method to do the select for the support scheme log*/
@@ -2249,7 +2189,6 @@ public class ReportModel
 		try
 		{
 			
-			
 			if(merchantcode.indexOf(":")>0)
 			{
 				String m[] = merchantcode.split(":");
@@ -2323,7 +2262,7 @@ public class ReportModel
 						" trans_date, trans_amount, channelid " +
 						" from ecarddb..e_transaction  " +
 						" where merchant_code in ("+merchantcode+") " +
-						" and trans_date between('"+start_dt+"') and ('"+end_dt+"') order by trans_date desc";
+						" and trans_date between('"+start_dt+"') and ('"+end_dt+"') order by trans_date";
 				
 				System.out.println("getMerchantServiceTransactions query " + query);
 				result = stat.executeQuery(query);
@@ -2340,7 +2279,7 @@ public class ReportModel
 					
 					custname = tran.getTrans_desc();
 					
-					/*if(custname.startsWith("PAYMENT TO:"));
+					if(custname.startsWith("PAYMENT TO:"));
 					else if(custname.startsWith("PAYMENT:"))
 					{
 						afterprefix = custname.substring(custname.indexOf(":")+1);
@@ -2350,7 +2289,7 @@ public class ReportModel
 					else
 					{
 						System.out.println("didnt start with " + custname);
-					}*/
+					}
 					
 					arr.add(tran);
 				}
@@ -3682,74 +3621,6 @@ public class ReportModel
 		
 	}
 	
-	
-	public String getMerchantOnlineBalance(String type, String merchantCode)
-	{
-		String query = "";
-		String message = "";
-		Summary summary = new Summary();
-		String str = "";
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		try
-		{
-			
-			if(type.equals("0"))//LOCAL
-			{
-				/*con = connectToECard();
-				stat = con.createStatement();
-				query = "select online_balance from ecarddb..e_merchant where merchant_code = '"+merchantCode+"' ";
-				result = stat.executeQuery(query);
-				while(result.next())
-				{
-					message = ""+result.getObject(1);
-				}*/
-			}
-			else if(type.equals("1"))//INTERNATIONAL
-			{
-				double amt = 0.0;
-				con = connectIntnlECard();
-				stat = con.createStatement();
-				query = "select online_balance from ecarddbip..e_merchant where merchant_code = '"+merchantCode+"' ";
-				result = stat.executeQuery(query);
-				while(result.next())
-				{
-					message = ""+result.getObject(1);
-				}
-				
-				amt = Double.parseDouble(message);
-				
-				con = connectToECard();
-				stat = con.createStatement();
-				query = "select sum(trans_amount) from e_transactionipay where merchant_code = '"+merchantCode+"' and trans_date > '2012-01-01' ";
-				System.out.println("onlineBalance query " + query);
-				result = stat.executeQuery(query);
-				while(result.next())
-				{
-					message = ""+result.getObject(1);
-				}
-				
-				amt += Double.parseDouble(message);
-				message = ""+amt;
-				System.out.println("online amount " + amt);
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionECard(con, result, result);
-			closeConnectionIntnlEcard(con, result);
-		}
-		finally
-		{
-			closeConnectionECard(con, result, result);
-			closeConnectionIntnlEcard(con, result);
-		}
-		return message;
-	}
-	
-	
 	/*This method does the re-processing on failed transactions*/
 	public String processFailedVTUTransaction(String start_dt, String end_dt, String response_code)
 	{
@@ -4267,918 +4138,6 @@ public class ReportModel
 	}
 	
 	
-	/*Method to get Transactions based on card number*/
-	public ArrayList getOnlyHolderTransactions(String card_num, String start_dt, String end_dt)
-	{
-		String query = "";
-		ArrayList arr = new ArrayList();
-		E_TRANSACTION tran = null;
-		int counter = 0;
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		double d = 0.0;
-		String str = "";
-		
-		
-		try
-		{
-			con = connectToECard();
-			stat = con.createStatement();
-			
-			if(card_num.trim().length() > 0)
-			{
-				query = "select trans_no, card_num, merchant_code, trans_code, trans_descr," +
-						"(select channel_name from ecarddb..e_channel where channel_id = ecarddb..e_transaction.channelid), trans_date, trans_amount" +
-						" from ecarddb..e_transaction " +
-						"where (card_num='"+card_num+"' or merchant_code = '"+card_num+"') " +
-						"and trans_date between('"+start_dt+"') and ('"+end_dt+"') order by trans_date";						
-			}else
-			{
-				query = "select trans_no, card_num, merchant_code, trans_code, trans_descr," +
-						"(select channel_name from ecarddb..e_channel where channel_id = ecarddb..e_transaction.channelid), trans_date, trans_amount" +
-						" from ecarddb..e_transaction  where trans_date between('"+start_dt+"') and ('"+end_dt+"') order by trans_date ";	
-				
-			}
-			
-			
-			System.out.println("getOnlyHolderTransactions query " + query);
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-				counter++;
-				tran = new E_TRANSACTION();
-				tran.setCounter(""+counter);
-				tran.setTrans_no(""+result.getObject(1));
-				tran.setCard_num(""+result.getObject(2));
-				tran.setMerchat_code(""+result.getObject(3));
-				tran.setTrans_code(""+result.getObject(4));
-				tran.setTrans_desc(""+result.getObject(5));
-				tran.setChannelid(""+result.getObject(6));
-				tran.setTrans_date(""+result.getObject(7));
-				tran.setTrans_amount(""+result.getObject(8));
-				arr.add(tran);
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionECard(con, result, result);
-		}
-		finally
-		{
-			closeConnectionECard(con, result, result);
-		}
-		return arr;
-	}
-	
-	
-	
-	
-	/*Method to get Transactions based on card number*/
-	public ArrayList getMtnCollectionReport(String custId, String TransId,String accountNo,String custMsisdn,String partNo,String transOption,String start_dt, String end_dt)
-	{
-		String query = "";
-		ArrayList arr = new ArrayList();
-		E_TRANSACTION tran = null;
-		C_MTNRequestLogger mtnrequestLog = null;
-		int counter = 0;
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		double d = 0.0;
-		String str = "";
-		
-		
-		try
-		{
-			con = connectToPayoutlet();
-			stat = con.createStatement();
-			
-			if(transOption.equalsIgnoreCase("ALL"))
-			{
-
-				query = " select Userid,Accountno,CustomerMsisdn,CustomerID,CustomerName,CustomerEmail,DepositorName,DepositorMsisdn," +
-						" Amount,TellerNo,MerchantReferenceID,TransactionID,createdDate,TransactionCodeId,TransactionStatus,ErrCode," +
-						" ErrMessage,PaymentMode,PaymentType,PayTypeDetail,PriceListId,PartNo,SerialNo,SellQuantity,PaymentDescription," +
-						" ServiceType,ChequeNo,ChequeStatus,Currency,Channel,Region,CHEQUEBANK,CHEQUECLEARDATE,MerchantReferenceID," +
-						" Option1,Option2,Option3,Option4 from C_MTNRequestLogger " +
-						" where CustomerID like '"+custId+"%' and TransactionID like '"+TransId+"%' and Accountno like '"+accountNo+"%' " +
-						" and CustomerMsisdn like '"+custMsisdn+"%' and PartNo like '"+partNo+"%' and createdDate between('"+start_dt+"') and ('"+end_dt+"') order by createdDate desc";			
-				
-			}
-			else if(transOption.equalsIgnoreCase("SUCCESSFUL"))
-			{
-				
-				query = " select Userid,Accountno,CustomerMsisdn,CustomerID,CustomerName,CustomerEmail,DepositorName,DepositorMsisdn," +
-						" Amount,TellerNo,MerchantReferenceID,TransactionID,createdDate,TransactionCodeId,TransactionStatus,ErrCode," +
-						" ErrMessage,PaymentMode,PaymentType,PayTypeDetail,PriceListId,PartNo,SerialNo,SellQuantity,PaymentDescription," +
-						" ServiceType,ChequeNo,ChequeStatus,Currency,Channel,Region,CHEQUEBANK,CHEQUECLEARDATE,MerchantReferenceID," +
-						" Option1,Option2,Option3,Option4 from C_MTNRequestLogger " +
-						" where CustomerID like '"+custId+"%' and TransactionID like '"+TransId+"%' and Accountno like '"+accountNo+"%' " +
-						" and CustomerMsisdn like '"+custMsisdn+"%' and PartNo like '"+partNo+"%' " +
-						" and ErrCode = '0' and  createdDate between('"+start_dt+"') and ('"+end_dt+"') order by createdDate desc ";
-				
-			}
-			else if(transOption.equalsIgnoreCase("FAILED"))
-			{
-				query = " select Userid,Accountno,CustomerMsisdn,CustomerID,CustomerName,CustomerEmail,DepositorName,DepositorMsisdn," +
-						" Amount,TellerNo,MerchantReferenceID,TransactionID,createdDate,TransactionCodeId,TransactionStatus,ErrCode," +
-						" ErrMessage,PaymentMode,PaymentType,PayTypeDetail,PriceListId,PartNo,SerialNo,SellQuantity,PaymentDescription," +
-						" ServiceType,ChequeNo,ChequeStatus,Currency,Channel,Region,CHEQUEBANK,CHEQUECLEARDATE,MerchantReferenceID," +
-						" Option1,Option2,Option3,Option4 from C_MTNRequestLogger " +
-						" where CustomerID like '"+custId+"%' and TransactionID like '"+TransId+"%' and Accountno like '"+accountNo+"%' " +
-						" and CustomerMsisdn like '"+custMsisdn+"%' and PartNo like '"+partNo+"%' " +
-						" and ErrCode <> '0' and  createdDate between('"+start_dt+"') and ('"+end_dt+"') order by createdDate desc ";
-			}
-				
-			
-			System.out.println("getMtnCollectionReport query " + query);
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-				counter++;
-				
-				mtnrequestLog = new C_MTNRequestLogger();
-				mtnrequestLog.setUserid(""+result.getObject(1));
-				mtnrequestLog.setAccountno(""+result.getObject(2));
-				mtnrequestLog.setCustomerMsisdn(""+result.getObject(3));
-				mtnrequestLog.setCustomerID(""+result.getObject(4));
-				mtnrequestLog.setCustomerName(""+result.getObject(5));
-				mtnrequestLog.setCustomerEmail(""+result.getObject(6));
-				mtnrequestLog.setDepositorName(""+result.getObject(7));
-				mtnrequestLog.setDepositorMsisdn(""+result.getObject(8));
-				mtnrequestLog.setAmount(""+result.getObject(9));
-				mtnrequestLog.setTellerNo(""+result.getObject(10));
-				mtnrequestLog.setMerchantReferenceID(""+result.getObject(11));
-				String transId = ""+result.getObject(12);
-				String IssuerCode = transId.substring(0,3);
-				mtnrequestLog.setIssuerCode(IssuerCode);
-				mtnrequestLog.setTransactionID(transId);
-				mtnrequestLog.setTransactionDate(""+result.getObject(13));
-				mtnrequestLog.setTransactionCodeId(""+result.getObject(14));
-				mtnrequestLog.setTransactionStatus(""+result.getObject(15));
-				mtnrequestLog.setErrCode(""+result.getObject(16));
-				mtnrequestLog.setErrMessage(""+result.getObject(17));
-				mtnrequestLog.setPaymentMode(""+result.getObject(18));
-				mtnrequestLog.setPaymentType(""+result.getObject(19));
-				mtnrequestLog.setPayTypeDetail(""+result.getObject(20));
-				mtnrequestLog.setPriceListId(""+result.getObject(21));
-				mtnrequestLog.setPartNo(""+result.getObject(22));
-				mtnrequestLog.setSerialNo(""+result.getObject(23));
-				mtnrequestLog.setSellQuantity(""+result.getObject(24));
-				mtnrequestLog.setPaymentDescription(""+result.getObject(25));
-				mtnrequestLog.setServiceType(""+result.getObject(26));
-				mtnrequestLog.setChequeNo(""+result.getObject(27));
-				mtnrequestLog.setChequeStatus(""+result.getObject(28));
-				mtnrequestLog.setCurrency(""+result.getObject(29));
-				mtnrequestLog.setChannel(""+result.getObject(30));
-				mtnrequestLog.setRegion(""+result.getObject(31));
-				mtnrequestLog.setCHEQUEBANK(""+result.getObject(32));
-				mtnrequestLog.setCHEQUECLEARDATE(""+result.getObject(33));
-				mtnrequestLog.setMerchantReferenceID(""+result.getObject(34));
-				mtnrequestLog.setOption1(""+result.getObject(35));
-				mtnrequestLog.setOption2(""+result.getObject(36));
-				mtnrequestLog.setOption3(""+result.getObject(37));
-				mtnrequestLog.setOption4(""+result.getObject(38));
-				
-				
-				arr.add(mtnrequestLog);
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionPayoutlet(con, result);
-		}
-		finally
-		{
-			closeConnectionPayoutlet(con, result);
-		}
-		return arr;
-	}
-	
-	public ArrayList getMTNTransactionReport(String transType,String start_dt, String end_dt)
-	{
-		
-		
-		
-		String query = "";
-		ArrayList arr = new ArrayList();
-		C_TRANSACTION tran = null;
-		int counter = 0;
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		double d = 0.0;
-		String str = "";
-		
-		try
-		{
-				con  = connectToPayoutlet();
-				stat = con.createStatement();
-				
-			
-				if(transType.equalsIgnoreCase("SUCCESSFUL"))
-				{
-					query = " select TRANS_DATE,TRANS_DESCR,TRANS_AMOUNT,MERCHANT_CODE,SUBSCRIBER_ID,ISSUER_CODE,SUB_CODE," +
-							" TRANS_NO,TRANS_STATUS,T_FULLNAME,T_ADDRESS,PAYMENT_CODE,UNIQUE_TRANSID,INTSTATUS from c_transaction " +
-							" where INTSTATUS = '1' AND TRANS_DATE BETWEEN '"+start_dt+"' AND '"+end_dt+"' "; 
-				}
-				else if(transType.equalsIgnoreCase("FAILED"))
-				{
-					query = "select TRANS_DATE,TRANS_DESCR,TRANS_AMOUNT,MERCHANT_CODE,SUBSCRIBER_ID,ISSUER_CODE,SUB_CODE," +
-							"TRANS_NO,TRANS_STATUS,T_FULLNAME,T_ADDRESS,PAYMENT_CODE,UNIQUE_TRANSID,INTSTATUS from c_transaction " +
-							" where INTSTATUS <> '1' AND TRANS_DATE BETWEEN '"+start_dt+"' AND '"+end_dt+"' "; 
-				}
-				else if(transType.equalsIgnoreCase("PENDING"))
-				{
-					query = " select TRANS_DATE,TRANS_DESCR,TRANS_AMOUNT,MERCHANT_CODE,SUBSCRIBER_ID,ISSUER_CODE,SUB_CODE," +
-							" TRANS_NO,TRANS_STATUS,T_FULLNAME,T_ADDRESS,PAYMENT_CODE,UNIQUE_TRANSID,INTSTATUS from c_transaction " +
-							" where INTSTATUS IS NULL AND TRANS_DATE BETWEEN '"+start_dt+"' AND '"+end_dt+"' "; 
-				}
-				System.out.println("query  "+query);
-				result = stat.executeQuery(query);
-				while(result.next())
-				{
-					tran = new C_TRANSACTION();
-					tran.setTrans_date(""+result.getObject(1));
-					tran.setTrans_descr(""+result.getObject(2));
-					tran.setTrans_amount(""+result.getObject(3));
-					tran.setMerchant_code(""+result.getObject(4));
-					tran.setSubscriber_id(""+result.getObject(5));
-					tran.setIssuer_code(""+result.getObject(6));
-					tran.setSub_code(""+result.getObject(7));
-					tran.setTrans_no(""+result.getObject(8));
-					tran.setTrans_status(""+result.getObject(9));
-					tran.setT_fullname(""+result.getObject(10));
-					tran.setT_address(""+result.getObject(11));
-					tran.setPayment_code(""+result.getObject(12));
-					tran.setUnique_transid(""+result.getObject(13));
-					tran.setIntstatus(""+result.getObject(14));
-					
-					arr.add(tran);
-				}
-				
-				
-			
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			
-		}
-		
-		return arr;
-	}
-	
-	
-	
-	/*Method to get reversa Transactions based on card number ,date,amount,unique transid */
-	public ArrayList getReversalTransactions(String card_num, String merchantcode,String uniqueTrasid,String start_dt, String end_dt)
-	{
-		String query = "";
-		ArrayList arr = new ArrayList();
-		E_TRANSACTION tran = null;
-		int counter = 0;
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		double d = 0.0;
-		String str = "";
-		
-		
-		try
-		{
-			con = connectToECard();
-			//con = connectToStaggingEcardDB();
-			stat = con.createStatement();
-			
-			
-			query = "select trans_no, card_num, merchant_code, trans_code, trans_descr," +
-					" trans_date, trans_amount" +
-					",transid,unique_transid,trans_ref,channelid,closed from ecarddb..e_transaction " +
-					" where card_num like '"+card_num+"%' and  merchant_code like '"+merchantcode+"%' " +
-					"and UNIQUE_TRANSID like '"+uniqueTrasid+"%' and  trans_date between('"+start_dt+"') and ('"+end_dt+"') order by trans_date";	
-			
-		
-			/*if(card_num.trim().length() > 0)
-			{
-				query = "select trans_no, card_num, merchant_code, trans_code, trans_descr," +
-						"(select channel_name from ecarddb..e_channel where channel_id = ecarddb..e_transaction.channelid), trans_date, trans_amount" +
-						" from ecarddb..e_transaction " +
-						"where (card_num='"+card_num+"' or merchant_code = '"+card_num+"') " +
-						"and trans_date between('"+start_dt+"') and ('"+end_dt+"') order by trans_date";						
-			}else
-			{
-				query = "select trans_no, card_num, merchant_code, trans_code, trans_descr," +
-						"(select channel_name from ecarddb..e_channel where channel_id = ecarddb..e_transaction.channelid), trans_date, trans_amount" +
-						" from ecarddb..e_transaction  where trans_date between('"+start_dt+"') and ('"+end_dt+"') order by trans_date ";	
-				
-			}
-			*/
-			//tran.setGlobalid(""+result.getObject(6));
-			System.out.println("getReversalTransactions query " + query);
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-				counter++;
-				tran = new E_TRANSACTION();
-				tran.setCounter(""+counter);
-				tran.setTrans_no(""+result.getObject(1));
-				tran.setCard_num(""+result.getObject(2));
-				tran.setMerchat_code(""+result.getObject(3));
-				tran.setTrans_code(""+result.getObject(4));
-				tran.setTrans_desc(""+result.getObject(5));
-				tran.setTrans_date(""+result.getObject(6));
-				tran.setTrans_amount(""+result.getObject(7));
-				tran.setTransid(""+result.getObject(8));
-				tran.setUnique_transid(""+result.getObject(9));
-				tran.setTrans_ref(""+result.getObject(10));
-				tran.setChannelid(""+result.getObject(11));
-				tran.setClosed(""+result.getObject(12));
-				arr.add(tran);
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			//closeConnectionStaggingEcardDB(con, result);
-			 closeConnectionECard(con, result, result);
-			//closeConnectionEcardDBDemo(con, result);
-		}
-		finally
-		{
-			//closeConnectionStaggingEcardDB(con, result);
-			 closeConnectionECard(con, result, result);
-		}
-		return arr;
-	}
-	
-	/*Method to get settlement Report By Bank  */
-	public ArrayList getSettlementReportByRevenue(String merchantcode, String start_dt, String end_dt)
-	{
-		String query = "";
-		ArrayList arr = new ArrayList();
-		C_TRANSACTION tran = null;
-		int counter = 0;
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		double d = 0.0;
-		String str = "";
-		
-		
-		try
-		{
-			con = connectToECard();
-			stat = con.createStatement();
-			
-			query = "SELECT TRANS_TYPE, COUNT(*) AS TOTAL_COUNT, SUM(TRANS_AMOUNT) AS 'AMOUNT' " +
-					"FROM PAYOUTLETDB..C_TRANSACTION WHERE MERCHANT_CODE IN " +
-					"(SELECT SUB_MERCHANT_CODE FROM ECARDDB..E_MERCHANTCODE_MAP WHERE MAIN_MERCHANT_CODE = '"+merchantcode+"') " +
-					" AND TRANS_DATE BETWEEN '"+start_dt+"' AND '"+end_dt+"' GROUP BY TRANS_TYPE ORDER BY TRANS_TYPE ";
-			
-			
-			System.out.println("getSettlementReportByRevenue query ===== " + query);
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-				//counter++;
-				tran = new C_TRANSACTION();
-				tran.setTrans_type(""+result.getObject(1));
-				tran.setCounter(""+result.getObject(2));
-				tran.setTrans_amount(""+result.getObject(3));
-				arr.add(tran);
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionECard(con, result, result);
-		}
-		finally
-		{
-			closeConnectionECard(con, result, result);
-		}
-		return arr;
-	}
-	
-	/*Method to get settlement Report By Bank  */
-	public ArrayList getSettlementReportByBank(String merchantcode, String start_dt, String end_dt)
-	{
-		String query = "";
-		ArrayList arr = new ArrayList();
-		C_TRANSACTION tran = null;
-		int counter = 0;
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		double d = 0.0;
-		String str = "";
-		
-		
-		try
-		{
-			con = connectToECard();
-			stat = con.createStatement();
-			
-			
-			query =  "SELECT B.ISSUER_CODE AS 'ICODE' ,A.ISSUER_NAME AS 'BANK', COUNT(*) AS TOTAL_COUNT," +
-					" SUM(B.TRANS_AMOUNT) AS 'AMOUNT' FROM PAYOUTLETDB..C_TRANSACTION B " +
-					" JOIN ECARDDB..E_ISSUER A ON B.ISSUER_CODE = A.ISSUER_CODE AND " +
-					" MERCHANT_CODE IN (SELECT SUB_MERCHANT_CODE FROM ECARDDB..E_MERCHANTCODE_MAP " +
-					" WHERE MAIN_MERCHANT_CODE = '"+merchantcode+"') AND B.TRANS_DATE BETWEEN '"+start_dt+"' AND '"+end_dt+"'" +
-					" GROUP BY B.ISSUER_CODE, A.ISSUER_NAME ORDER BY B.ISSUER_CODE ";
-			
-			System.out.println("getSettlementReportByBank query ===== " + query);
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-				//counter++;
-				tran = new C_TRANSACTION();
-				tran.setIssuer_code(""+result.getObject(1));
-				tran.setCheque_bank(""+result.getObject(2));
-				tran.setCounter(""+result.getObject(3));
-				tran.setTrans_amount(""+result.getObject(4));
-				arr.add(tran);
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionECard(con, result, result);
-		}
-		finally
-		{
-			closeConnectionECard(con, result, result);
-		}
-		return arr;
-	}
-	
-	/*Method to get Transactions based on card number*/
-	public ArrayList getMerchantStatement(String merchantcode, String start_dt, String end_dt)
-	{
-		String query = "";
-		ArrayList arr = new ArrayList();
-		E_SETTLEMENTDOWNLOAD_BK settleDownload = null;
-		int counter = 0;
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		double d = 0.0;
-		String str = "";
-		String apostrophe = "'";
-		
-		try
-		{
-			con = connectToECard();
-			stat = con.createStatement();
-			
-			
-			if(merchantcode.indexOf(":")>0)
-			{
-				String m[] = merchantcode.split(":");
-				merchantcode = "";
-				for(int i=0;i<m.length;i++)
-				{
-					merchantcode += apostrophe + m[i] + apostrophe + ",";
-				}
-				
-				merchantcode = merchantcode.substring(0, merchantcode.lastIndexOf(","));
-			}
-			else
-			{
-				merchantcode = apostrophe + merchantcode + apostrophe;
-			}
-			
-			query =  "SELECT E_SETTLEMENT_DOWNLOAD_BK.TRANS_DATE, E_SETTLEMENT_DOWNLOAD_BK.TRANS_NO," +
-					" E_SETTLEMENT_DOWNLOAD_BK.MERCHANT_CODE, E_SETTLEMENT_DOWNLOAD_BK.TRANS_DESCR, 1," +
-					" E_SETTLEMENT_DOWNLOAD_BK.TRANS_AMOUNT CR_AMOUNT, 0 DR_AMOUNT, E_SETTLEMENT_DOWNLOAD_BK.UNIQUE_TRANSID " +
-					" FROM E_SETTLEMENT_DOWNLOAD_BK WHERE (E_SETTLEMENT_DOWNLOAD_BK.MERCHANT_CODE IN ("+merchantcode+")) AND " +
-					" (E_SETTLEMENT_DOWNLOAD_BK.TRANS_CODE = 'P') AND  (E_SETTLEMENT_DOWNLOAD_BK.TRANS_DATE BETWEEN '"+start_dt+"' AND '"+end_dt+"') " +
-					" UNION  ALL SELECT E_FEE_DETAIL_BK.TRANS_DATE, E_FEE_DETAIL_BK.TRANS_NO, E_FEE_DETAIL_BK.MERCHANT_CODE, E_FEE_DETAIL_BK.TRANS_DESCR, 2, 0 CR_AMOUNT," +
-					" E_FEE_DETAIL_BK.TRANS_AMOUNT DR_AMOUNT, E_FEE_DETAIL_BK.EXTERNAL_TRANSID FROM E_FEE_DETAIL_BK WHERE (E_FEE_DETAIL_BK.EXTERNAL_TRANSID" +
-					" IN (SELECT UNIQUE_TRANSID FROM E_SETTLEMENT_DOWNLOAD_BK  WHERE (E_SETTLEMENT_DOWNLOAD_BK.MERCHANT_CODE = "+merchantcode+") AND " +
-					" (E_SETTLEMENT_DOWNLOAD_BK.TRANS_CODE = 'P') AND (E_SETTLEMENT_DOWNLOAD_BK.TRANS_DATE BETWEEN '"+start_dt+"' AND '"+end_dt+"')))" +
-					" ORDER BY 2 ASC, 5 ";             
-	                               
-			
-			System.out.println("getMerchantStatement   ------ query " + query);
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-				counter++;
-				settleDownload = new E_SETTLEMENTDOWNLOAD_BK();
-				settleDownload.setTrans_date(""+result.getObject(1));
-				settleDownload.setTrans_no(""+result.getObject(2));
-				settleDownload.setMerchat_code(""+result.getObject(3));
-				settleDownload.setTrans_desc(""+result.getObject(4));
-				settleDownload.setRep_status(""+result.getObject(5));
-				settleDownload.setTrans_amount(""+result.getObject(6));
-				settleDownload.setTransaction_count(""+result.getObject(7));
-				settleDownload.setUnique_transid(""+result.getObject(8));
-				arr.add(settleDownload);
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionECard(con, result, result);
-		}
-		finally
-		{
-			closeConnectionECard(con, result, result);
-		}
-		return arr;
-	}
-	
-	/*Method to get Merchant Summary 
-	 * 
-	 */
-	public ArrayList getMarchantSummary(String merchatCode,String startDt,String endDt)
-	{
-		ArrayList arr = new ArrayList();		
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		String query = "";
-	    E_MERCHANT marchant = null; 
-		try
-		{
-			con = connectToPayoutlet();
-			stat = con.createStatement();
-			
-			query = "SELECT b.MERCHANT_NAME,sum(a.TRANS_AMOUNT),count(a.TRANS_AMOUNT),a.MERCHANT_CODE,b.MERCHANT_ACCT" +
-					" FROM C_TRANSACTION a, ecarddb.dbo.E_MERCHANT b WHERE (a.MERCHANT_CODE = b.MERCHANT_CODE) AND " +
-					"(a.MERCHANT_CODE IN ( SELECT SUB_MERCHANT_CODE FROM ECARDDB..E_MERCHANTCODE_MAP WHERE MAIN_MERCHANT_CODE =  '"+merchatCode+"') )" +
-					" AND  (a.TRANS_TYPE <> '9999') AND (a.TRANS_DATE BETWEEN '"+startDt +"' AND '"+endDt+"') " +
-					" GROUP BY a.MERCHANT_CODE,b.MERCHANT_NAME,b.MERCHANT_ACCT ";
-
-	
-			System.out.println("query =======  getMarchantSummary()  " + query);
-			
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-		
-				marchant = new E_MERCHANT();
-				
-				marchant.setMerchant_name(""+result.getObject(1));
-				marchant.setTransAmount(""+result.getObject(2));
-				marchant.setCounter(""+result.getObject(3));
-				marchant.setMerchant_code(""+result.getObject(4));
-				marchant.setMerchant_acct(""+result.getObject(5));
-				
-				
-				arr.add(marchant);
-
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionPayoutlet(con, result);
-		}
-		finally
-		{
-			closeConnectionPayoutlet(con, result);
-		}
-		return arr;
-	}
-	
-	
-	
-	public ArrayList getMarchantSettlementReport(String merchatCode,String startDt,String endDt)
-	{
-		ArrayList arr = new ArrayList();		
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		String query = "";
-		
-		E_SETTLEMENTDOWNLOAD_BK settlement =  null;
-		
-		C_TRANSACTION  ctran = null;
-		
-		try
-		{
-			con = con = connectToECard();
-			stat = con.createStatement();
-		
-			
-			
-			query = "SELECT 'O' BANK_TYPE,'OTHER BANKS - ',e_issuer.issuer_name BANK,E_SETTLEMENT_DOWNLOAD_BK.MERCHANT_CODE," +
-					" E_SETTLEMENT_DOWNLOAD_BK.SETTLE_BATCH, e_settle_batch.batch_date ,  E_SETTLEMENT_DOWNLOAD_BK.TRANS_CODE , " +
-					" sum(E_SETTLEMENT_DOWNLOAD_BK.TRANS_AMOUNT) tot_amount  FROM E_SETTLEMENT_DOWNLOAD_BK left outer " +
-					" join e_settle_batch on E_SETTLEMENT_DOWNLOAD_BK.settle_batch = e_settle_batch.batch_id left outer join " +
-					" e_issuer on substring(E_SETTLEMENT_DOWNLOAD_BK.merchant_code,1,3) = e_issuer.issuer_code  " +
-					" WHERE E_SETTLEMENT_DOWNLOAD_BK.TRANS_CODE in ('P','C')  AND  E_SETTLEMENT_DOWNLOAD_BK.TRANS_DATE " +
-					" BETWEEN '"+startDt+"' AND '"+endDt+"' AND   E_SETTLEMENT_DOWNLOAD_BK.MERCHANT_CODE IN " +
-					" (SELECT SUB_MERCHANT_CODE FROM E_MERCHANTCODE_MAP  WHERE MAIN_MERCHANT_CODE = '"+merchatCode+"') AND  " +
-					"  substring(E_SETTLEMENT_DOWNLOAD_BK.CARD_NUM,1,3) <> substring(E_SETTLEMENT_DOWNLOAD_BK.MERCHANT_CODE,1,3) " +
-					" GROUP BY e_issuer.issuer_name, E_SETTLEMENT_DOWNLOAD_BK.MERCHANT_CODE, E_SETTLEMENT_DOWNLOAD_BK.SETTLE_BATCH , " +
-					" e_settle_batch.batch_date,  E_SETTLEMENT_DOWNLOAD_BK.TRANS_CODE   UNION ALL  " +
-					"  SELECT 'M' BANK_TYPE,e_issuer.issuer_name,E_SETTLEMENT_DOWNLOAD_BK.MERCHANT_CODE,    E_SETTLEMENT_DOWNLOAD_BK.SETTLE_BATCH," +
-					"  e_settle_batch.batch_date ,  E_SETTLEMENT_DOWNLOAD_BK.TRANS_CODE,  sum(E_SETTLEMENT_DOWNLOAD_BK.TRANS_AMOUNT) tot_amount  " +
-					"  FROM E_SETTLEMENT_DOWNLOAD_BK left outer join e_settle_batch on" +
-					" E_SETTLEMENT_DOWNLOAD_BK.settle_batch = e_settle_batch.batch_id left outer join e_issuer on " +
-					" substring(E_SETTLEMENT_DOWNLOAD_BK.merchant_code,1,3) = e_issuer.issuer_code " +
-					"  WHERE E_SETTLEMENT_DOWNLOAD_BK.TRANS_CODE in ('P','C') AND  E_SETTLEMENT_DOWNLOAD_BK.TRANS_DATE " +
-					"  BETWEEN '"+startDt+"' AND '"+endDt+"' AND  E_SETTLEMENT_DOWNLOAD_BK.MERCHANT_CODE " +
-					" IN (SELECT SUB_MERCHANT_CODE FROM E_MERCHANTCODE_MAP  WHERE MAIN_MERCHANT_CODE = '"+merchatCode+"') " +
-					"  AND  substring(E_SETTLEMENT_DOWNLOAD_BK.CARD_NUM,1,3) = substring(E_SETTLEMENT_DOWNLOAD_BK.MERCHANT_CODE,1,3) " +
-					"  GROUP BY e_issuer.issuer_name,E_SETTLEMENT_DOWNLOAD_BK.MERCHANT_CODE,   E_SETTLEMENT_DOWNLOAD_BK.SETTLE_BATCH," +
-					"  e_settle_batch.batch_date,  E_SETTLEMENT_DOWNLOAD_BK.TRANS_CODE  order by settle_batch , merchant_code ";
-            
-
-			System.out.println("query =======  getMarchantSummary()  " + query);
-			
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-		
-				settlement = new E_SETTLEMENTDOWNLOAD_BK();
-				
-		
-				settlement.setTrans_type(""+result.getObject(1));
-				settlement.setIssuerCode(""+result.getObject(2));
-				settlement.setMerchat_code(""+result.getObject(3));
-				settlement.setSettle_batch(""+result.getObject(4));
-				settlement.setTrans_date(""+result.getObject(5));
-				settlement.setTrans_code(""+result.getObject(6));
-				settlement.setTrans_amount(""+result.getObject(7));
-			
-				arr.add(settlement);
-
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionECard(con, result,result);
-		}
-		finally
-		{
-			closeConnectionECard(con, result,result);
-		}
-		return arr;
-	}
-	/*Method to get Report By Faculty 
-	 * 
-	 */
-	public ArrayList getReportByFaculty(String merchatCode,String startDt,String endDt)
-	{
-		ArrayList arr = new ArrayList();		
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		String query = "";
-	    C_TRANSACTION tran = null; 
-		try
-		{
-			con = connectToPayoutlet();
-			stat = con.createStatement();
-		
-			
-			
-			query = "SELECT a.COL3, COUNT(a.COL3) AS TOTAL_COUNT, SUM(b.TRANS_AMOUNT) AS 'AMOUNT' FROM PAYOUTLETDB..C_TRANSACTION_EXT a, " +
-					"ECARDDB..E_TRANSACTION b WHERE a.UNIQUE_TRANSID = b.UNIQUE_TRANSID AND a.MERCHANT_CODE IN " +
-					"(SELECT SUB_MERCHANT_CODE FROM ECARDDB..E_MERCHANTCODE_MAP WHERE MAIN_MERCHANT_CODE = '"+merchatCode+"') " +
-					" AND a.TRANS_DATE BETWEEN '"+startDt+"' AND '"+endDt+"' GROUP BY a.COL3 ";
- 
-	
-			System.out.println("query =======  getReportByFaculty()  " + query);
-			
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-		
-				tran = new C_TRANSACTION();
-				tran.setT_fullname(""+result.getObject(1));
-				tran.setCounter(""+result.getObject(2));
-				tran.setTrans_amount(""+result.getObject(3));
-				arr.add(tran);
-
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionPayoutlet(con, result);
-		}
-		finally
-		{
-			closeConnectionPayoutlet(con, result);
-		}
-		return arr;
-	}
-	
-	public ArrayList getReportByProgramm(String merchatCode,String startDt,String endDt)
-	{
-		ArrayList arr = new ArrayList();		
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		String query = "";
-	    C_TRANSACTION tran = null; 
-		try
-		{
-			con = connectToPayoutlet();
-			stat = con.createStatement();
-		
-			
-			
-			query = "SELECT TRANS_TYPE, COUNT(*) AS TOTAL_COUNT, SUM(TRANS_AMOUNT) AS 'AMOUNT' FROM PAYOUTLETDB..C_TRANSACTION " +
-					"WHERE MERCHANT_CODE IN (SELECT SUB_MERCHANT_CODE FROM ECARDDB..E_MERCHANTCODE_MAP WHERE MAIN_MERCHANT_CODE = '"+merchatCode+"') " +
-					"AND TRANS_DATE BETWEEN '"+startDt+"' AND '"+endDt+"'  GROUP BY TRANS_TYPE ORDER BY TRANS_TYPE ";
-
-			System.out.println("query =======  getReportByProgramm()  " + query);
-			
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-		
-				tran = new C_TRANSACTION();
-				tran.setTrans_type(""+result.getObject(1));
-				tran.setCounter(""+result.getObject(2));
-				tran.setIntstatus("N/A");
-				tran.setTrans_amount(""+result.getObject(3));
-				arr.add(tran);
-
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionPayoutlet(con, result);
-		}
-		finally
-		{
-			closeConnectionPayoutlet(con, result);
-		}
-		return arr;
-	}
-	
-	public ArrayList getReportByPaymentType(String merchatCode,String startDt,String endDt)
-	{
-		ArrayList arr = new ArrayList();		
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		String query = "";
-	    C_TRANSACTION tran = null; 
-		try
-		{
-			con = connectToPayoutlet();
-			stat = con.createStatement();
-		
-			query = " SELECT C_TRANSACTION.MERCHANT_CODE, C_ISSUERMERCHANT.DESCRIPTION, COUNT(*) TRANS_COUNT, " +
-					" SUM(C_TRANSACTION.TRANS_AMOUNT) TRANS_AMOUNT FROM C_TRANSACTION LEFT OUTER JOIN " +
-					" C_ISSUERMERCHANT ON C_TRANSACTION.MERCHANT_CODE = C_ISSUERMERCHANT.MERCHANT_CODE  AND " +
-					" C_TRANSACTION.ISSUER_CODE = C_ISSUERMERCHANT.ISSUER_CODE WHERE C_TRANSACTION.TRANS_DATE BETWEEN '"+startDt +"' AND '"+endDt+"' " +
-					" AND C_TRANSACTION.MERCHANT_CODE IN (SELECT SUB_MERCHANT_CODE FROM ECARDDB..E_MERCHANTCODE_MAP" +
-					" WHERE MAIN_MERCHANT_CODE =  '"+merchatCode+"') " +
-					" GROUP BY C_TRANSACTION.MERCHANT_CODE, C_ISSUERMERCHANT.DESCRIPTION ";
-			
-			
-	
-			System.out.println("query =======  getReportByPaymentType  " + query);
-			
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-		
-				tran = new C_TRANSACTION();
-				tran.setMerchant_code(""+result.getObject(1));
-				tran.setTrans_descr(""+result.getObject(2));
-				tran.setCounter(""+result.getObject(3));
-				tran.setTrans_amount(""+result.getObject(4));
-				arr.add(tran);
-
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionPayoutlet(con, result);
-		}
-		finally
-		{
-			closeConnectionPayoutlet(con, result);
-		}
-		return arr;
-	}
-	
-	/*Method to get Merchant Summary 
-	 * 
-	 */
-	public ArrayList getMarchantPayment(String merchatCode,String startDt,String endDt)
-	{
-		ArrayList arr = new ArrayList();		
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		String query = "";
-	    E_MERCHANT marchant = null; 
-		try
-		{
-			con = connectToPayoutlet();
-			stat = con.createStatement();
-			
-			
-			
-			query = "SELECT C_TRANSACTION.MERCHANT_CODE, C_ISSUERMERCHANT.DESCRIPTION, COUNT(*) TRANS_COUNT," +
-					" SUM(C_TRANSACTION.TRANS_AMOUNT) TRANS_AMOUNT FROM C_TRANSACTION LEFT OUTER JOIN " +
-					"C_ISSUERMERCHANT ON C_TRANSACTION.MERCHANT_CODE = C_ISSUERMERCHANT.MERCHANT_CODE  AND " +
-					"C_TRANSACTION.ISSUER_CODE = C_ISSUERMERCHANT.ISSUER_CODE WHERE C_TRANSACTION.TRANS_DATE" +
-					" BETWEEN '"+startDt+"' AND '"+endDt+"' AND C_TRANSACTION.MERCHANT_CODE " +
-					"IN (SELECT SUB_MERCHANT_CODE FROM ECARDDB..E_MERCHANTCODE_MAP WHERE MAIN_MERCHANT_CODE =  '"+merchatCode+"')" +
-					" GROUP BY C_TRANSACTION.MERCHANT_CODE, C_ISSUERMERCHANT.DESCRIPTION ";
-					 
-	
-			System.out.println("query =======  getMarchantPayment()  " + query);
-			
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-		
-				marchant = new E_MERCHANT();
-				marchant.setMerchant_code(""+result.getObject(1));
-				marchant.setMerchant_name(""+result.getObject(2));
-				marchant.setCounter(""+result.getObject(3));
-				marchant.setTransAmount(""+result.getObject(4));
-				arr.add(marchant);
-
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionPayoutlet(con, result);
-		}
-		finally
-		{
-			closeConnectionPayoutlet(con, result);
-		}
-		return arr;
-	}
-	
-	/*Method to get Merchant Summary 
-	 * 
-	 */
-	public ArrayList getMarchantSummaryByBank(String merchatCode,String issuer , String startDt, String endDt)
-	{
-		ArrayList arr = new ArrayList();		
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		String query = "";
-	    E_MERCHANT marchant = null; 
-	    C_TRANSACTION cTrans = null;
-		try
-		{
-			con = connectToPayoutlet();
-			stat = con.createStatement();
-			
-			query = "SELECT a.SUB_CODE, b.SUB_NAME,sum(a.TRANS_AMOUNT),count(a.TRANS_AMOUNT) FROM C_TRANSACTION a, ecarddb.dbo.E_SUBISSUER b " +
-					"WHERE (a.SUB_CODE = b.SUB_CODE) AND (a.ISSUER_CODE = b.ISSUER_CODE) AND (a.ISSUER_CODE ='"+issuer+"') AND (a.TRANS_TYPE <> '9999') " +
-					"AND (a.MERCHANT_CODE = '"+merchatCode+"' ) AND (a.TRANS_DATE BETWEEN '"+startDt+"' AND '"+endDt+"')  " +
-					" GROUP BY a.SUB_CODE, b.SUB_NAME ";
-			
-			
-			System.out.println("query =======  getMarchantSummary()  " + query);
-			
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-		
-				marchant = new E_MERCHANT();
-				
-				cTrans = new C_TRANSACTION();
-				
-				marchant.setMerchant_name(""+result.getObject(1));
-				marchant.setTransAmount(""+result.getObject(2));
-				marchant.setCounter(""+result.getObject(3));
-				marchant.setMerchant_code(""+result.getObject(4));
-				marchant.setMerchant_acct(""+result.getObject(5));
-				
-				
-				arr.add(marchant);
-
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionPayoutlet(con, result);
-		}
-		finally
-		{
-			closeConnectionPayoutlet(con, result);
-		}
-		return arr;
-	}
 	
 	
 	public ArrayList getVtuLog(String source_frm, String dest, String start_dt, String end_dt,
@@ -5892,7 +4851,6 @@ public class ReportModel
 				}
 				
 				merchantcode = merchantcode.substring(0, merchantcode.lastIndexOf(","));
-			
 			}
 			else
 			{
@@ -6221,7 +5179,7 @@ public class ReportModel
 			stat = con.createStatement();
 
 			query = "select substring(merchant_code, 1, 3), count(*)," +
-					" sum(convert(decimal(25,3), trans_amount))" +
+					" sum(convert(decimal(18,3), trans_amount))" +
 					" from e_requestlog where trans_date between('"+start_dt+"') and ('"+end_dt+"') and" +
 					" response_code <> '0' group by  substring(merchant_code, 1, 3)";
 			
@@ -6270,7 +5228,7 @@ public class ReportModel
 			query = "select response_code," +
 			" (select ecarddb..e_autoswitch_error.error_desc from ecarddb..e_autoswitch_error where ecarddb..e_autoswitch_error.error_code = ecarddb..e_requestlog.response_code)," +
 			" count(*)," +
-			" sum(convert(decimal(25,3), trans_amount))" +
+			" sum(convert(decimal(18,3), trans_amount))" +
 			" from e_requestlog where trans_date between('"+start_dt+"') and ('"+end_dt+"') " +
 			" and response_code <> '0' and substring(merchant_code, 1, 3) = '"+merchantCode+"' group by response_code";
 			
@@ -6394,7 +5352,7 @@ public class ReportModel
 			query = "select response_code," +
 			" (select ecarddb..e_autoswitch_error.error_desc from ecarddb..e_autoswitch_error where ecarddb..e_autoswitch_error.error_code = ecarddb..e_requestlog.response_code)," +
 			" count(*)," +
-			" sum(convert(decimal(25,3), trans_amount))" +
+			" sum(convert(decimal(18,3), trans_amount))" +
 			" from e_requestlog where trans_date between('"+start_dt+"') and ('"+end_dt+"') " +
 			" and response_code <> '0' group by response_code";
 			
@@ -7034,7 +5992,6 @@ public class ReportModel
 					mobile_subscriber.setAuth_username(""+result.getObject(12));
 					mobile_subscriber.setAuth_ip(""+result.getObject(13));
 					mobile_subscriber.setAuth_date(""+result.getObject(14));
-				
 					
 					arr.add(mobile_subscriber);
 				}
@@ -7659,64 +6616,7 @@ public class ReportModel
 		return arr;
 	}
 	
-	/*Method to get the e merchant ext split*/
-	public ArrayList getE_MERCHANT_EXT_SPLIT(String merchant_code, String tran_count, String total_amount)
-	{
-		
-		ArrayList arr = new ArrayList();
-		String query = "";
-		E_MERCHANT_SPLIT merchant_split;
-		String svalue = "";
-		String main_flag = "";
-		double d = 0.0;
-		double total_amt = 0.0;
-		double db = 0.0;
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		ResultSet result1 = null;
-		
-		try
-		{
-			con = connectToBackUpECard();
-			stat = con.createStatement();
-			
-			query = "select split_descr, svalue, split_card" +
-					" from ecarddb..E_MERCHANT_EXT_SPLIT where merchant_code = '"+merchant_code+"'";
-			
-			System.out.println("getE_MERCHANT_EXT_SPLIT query " + query);
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-				svalue = "";
-				d = 0.0;
-
-				merchant_split = new E_MERCHANT_SPLIT();
-				
-				merchant_split.setSplit_descr(""+result.getObject(1));
-				svalue = ""+result.getObject(2);
-				d = Double.parseDouble(svalue) * Double.parseDouble(tran_count);
-				merchant_split.setSplit_card(""+result.getObject(3));
-				
-				merchant_split.setSvalue(""+d);
-				
-				merchant_split.setTrans_count(tran_count);
-				merchant_split.setEtzRatio(svalue);
-				
-				arr.add(merchant_split);
-			}
-		}
-		catch(Exception ex)
-		{   
-			ex.printStackTrace();
-			closeConnectionBackUpEcard(con, result, result1);
-		}
-		finally
-		{
-			closeConnectionBackUpEcard(con, result, result1);
-		}
-		return arr;
-	}
+	
 	
 	/*Method to get the commission split details by merchant code*/
 	public ArrayList getE_MERCHANT_COMMISSION_SPLIT_Bank(String merchant_code, String cat_id, String tran_count, 
@@ -8507,106 +7407,49 @@ public class ReportModel
 			con1 = connectToSupportLog();
 			stat1 = con1.createStatement();
 			
-			
-			if(account_id.equals("eTranzact"))//dis is the bizness code without any merchant mapping
+			query = "select merchant_code from support_merchant_mapping where username = '"+account_id+"'";
+			result1 = stat1.executeQuery(query);
+			while(result1.next())
 			{
-				/*query = "select merchant_code from support_merchant_mapping";
-				result1 = stat1.executeQuery(query);
-				while(result1.next())
-				{
-					myMerchants += approstrophe + ""+result1.getObject(1) + approstrophe + ",";
-				}
-				
-				if(myMerchants.trim().length()>0)
-				{
-					myMerchants = myMerchants.substring(0, myMerchants.lastIndexOf(","));
-				}
-				else
-				{
-					myMerchants = "0";
-				}*/
-				
-				
-				if(transcode.equalsIgnoreCase("P"))//if its payment
-				{
-					/*query = "select distinct merchant_code, (select merchant_name from ecarddb..e_merchant where ecarddb..e_merchant.merchant_code = ecarddb..e_transaction.merchant_code), sum(trans_amount),count(merchant_code),(select special_split from ecarddb..e_merchant where ecarddb..e_merchant.merchant_code = ecarddb..e_transaction.merchant_code),(select cat_id from ecarddb..e_merchant where ecarddb..e_merchant.merchant_code = ecarddb..e_transaction.merchant_code),sum(fee) from ecarddb..E_TRANSACTION " +
-					"where merchant_code not in ("+myMerchants+") and trans_date between('"+start_dt+"') and ('"+end_dt+"') and channelid like '"+channel+"%' and trans_code = '"+transcode+"' and char_length(merchant_code)=10 group by MERCHANT_CODE";*/
-					query = "select distinct merchant_code, (select merchant_name from ecarddb..e_merchant where ecarddb..e_merchant.merchant_code = ecarddb..e_transaction.merchant_code), sum(trans_amount),count(merchant_code),(select special_split from ecarddb..e_merchant where ecarddb..e_merchant.merchant_code = ecarddb..e_transaction.merchant_code),(select cat_id from ecarddb..e_merchant where ecarddb..e_merchant.merchant_code = ecarddb..e_transaction.merchant_code),sum(fee) from ecarddb..E_TRANSACTION " +
-					"where merchant_code not in (select merchant_code from telcodb..support_merchant_mapping) and trans_date between('"+start_dt+"') and ('"+end_dt+"') and channelid like '"+channel+"%' and trans_code = '"+transcode+"' and char_length(merchant_code)=10 group by MERCHANT_CODE";
-				}
-				else
-				{
-					/*query = "select distinct merchant_code, (select merchant_name from ecarddb..e_merchant where ecarddb..e_merchant.merchant_code = ecarddb..e_transaction.merchant_code), sum(trans_amount),count(merchant_code),(select special_split from ecarddb..e_merchant where ecarddb..e_merchant.merchant_code = ecarddb..e_transaction.merchant_code),(select cat_id from ecarddb..e_merchant where ecarddb..e_merchant.merchant_code = ecarddb..e_transaction.merchant_code),sum(fee) from ecarddb..E_TRANSACTION " +
-					"where merchant_code not in ("+myMerchants+") and trans_date between('"+start_dt+"') and ('"+end_dt+"') and channelid like '"+channel+"%' and trans_code = '"+transcode+"' group by MERCHANT_CODE";*/
-					
-					query = "select distinct merchant_code, (select merchant_name from ecarddb..e_merchant where ecarddb..e_merchant.merchant_code = ecarddb..e_transaction.merchant_code), sum(trans_amount),count(merchant_code),(select special_split from ecarddb..e_merchant where ecarddb..e_merchant.merchant_code = ecarddb..e_transaction.merchant_code),(select cat_id from ecarddb..e_merchant where ecarddb..e_merchant.merchant_code = ecarddb..e_transaction.merchant_code),sum(fee) from ecarddb..E_TRANSACTION " +
-					"where merchant_code not in (select merchant_code from telcodb..support_merchant_mapping) and trans_date between('"+start_dt+"') and ('"+end_dt+"') and channelid like '"+channel+"%' and trans_code = '"+transcode+"' group by MERCHANT_CODE";
-				}
-				
-				System.out.println("merchant summary " + query);
-				result = stat.executeQuery(query);
-				while(result.next())
-				{
-					transaction = new E_TRANSACTION();
-					
-					transaction.setMerchat_code(result.getString(1));
-					transaction.setMerchant_descr(result.getString(2));
-					transaction.setTotal_amount(""+result.getObject(3));
-					transaction.setTransaction_count(""+result.getObject(4));
-					transaction.setMerchant_split_type(""+result.getObject(5));
-					transaction.setMerchant_cat_id(""+result.getObject(6));
-					transaction.setTotal_fee(""+result.getObject(7));
-					
-					arr.add(transaction);
-				}
-				
+				myMerchants += approstrophe + ""+result1.getObject(1) + approstrophe + ",";
+			}
+			
+			if(myMerchants.trim().length()>0)
+			{
+				myMerchants = myMerchants.substring(0, myMerchants.lastIndexOf(","));
 			}
 			else
 			{
-				query = "select merchant_code from support_merchant_mapping where username = '"+account_id+"'";
-				result1 = stat1.executeQuery(query);
-				while(result1.next())
-				{
-					myMerchants += approstrophe + ""+result1.getObject(1) + approstrophe + ",";
-				}
+				myMerchants = "0";
+			}
+			
+			
+			if(transcode.equalsIgnoreCase("P"))//if its payment
+			{
+				query = "select distinct merchant_code, (select merchant_name from ecarddb..e_merchant where ecarddb..e_merchant.merchant_code = ecarddb..e_transaction.merchant_code), sum(trans_amount),count(merchant_code),(select special_split from ecarddb..e_merchant where ecarddb..e_merchant.merchant_code = ecarddb..e_transaction.merchant_code),(select cat_id from ecarddb..e_merchant where ecarddb..e_merchant.merchant_code = ecarddb..e_transaction.merchant_code),sum(fee) from ecarddb..E_TRANSACTION " +
+				"where merchant_code in ("+myMerchants+") and trans_date between('"+start_dt+"') and ('"+end_dt+"') and channelid like '"+channel+"%' and trans_code = '"+transcode+"' and char_length(merchant_code)=10 group by MERCHANT_CODE";
+			}
+			else
+			{
+				query = "select distinct merchant_code, (select merchant_name from ecarddb..e_merchant where ecarddb..e_merchant.merchant_code = ecarddb..e_transaction.merchant_code), sum(trans_amount),count(merchant_code),(select special_split from ecarddb..e_merchant where ecarddb..e_merchant.merchant_code = ecarddb..e_transaction.merchant_code),(select cat_id from ecarddb..e_merchant where ecarddb..e_merchant.merchant_code = ecarddb..e_transaction.merchant_code),sum(fee) from ecarddb..E_TRANSACTION " +
+				"where merchant_code in ("+myMerchants+") and trans_date between('"+start_dt+"') and ('"+end_dt+"') and channelid like '"+channel+"%' and trans_code = '"+transcode+"' group by MERCHANT_CODE";
+			}
+			
+			System.out.println("merchant summary " + query);
+			result = stat.executeQuery(query);
+			while(result.next())
+			{
+				transaction = new E_TRANSACTION();
 				
-				if(myMerchants.trim().length()>0)
-				{
-					myMerchants = myMerchants.substring(0, myMerchants.lastIndexOf(","));
-				}
-				else
-				{
-					myMerchants = "0";
-				}
+				transaction.setMerchat_code(result.getString(1));
+				transaction.setMerchant_descr(result.getString(2));
+				transaction.setTotal_amount(""+result.getObject(3));
+				transaction.setTransaction_count(""+result.getObject(4));
+				transaction.setMerchant_split_type(""+result.getObject(5));
+				transaction.setMerchant_cat_id(""+result.getObject(6));
+				transaction.setTotal_fee(""+result.getObject(7));
 				
-				if(transcode.equalsIgnoreCase("P"))//if its payment
-				{
-					query = "select distinct merchant_code, (select merchant_name from ecarddb..e_merchant where ecarddb..e_merchant.merchant_code = ecarddb..e_transaction.merchant_code), sum(trans_amount),count(merchant_code),(select special_split from ecarddb..e_merchant where ecarddb..e_merchant.merchant_code = ecarddb..e_transaction.merchant_code),(select cat_id from ecarddb..e_merchant where ecarddb..e_merchant.merchant_code = ecarddb..e_transaction.merchant_code),sum(fee) from ecarddb..E_TRANSACTION " +
-					"where merchant_code in ("+myMerchants+") and trans_date between('"+start_dt+"') and ('"+end_dt+"') and channelid like '"+channel+"%' and trans_code = '"+transcode+"' and char_length(merchant_code)=10 group by MERCHANT_CODE";
-				}
-				else
-				{
-					query = "select distinct merchant_code, (select merchant_name from ecarddb..e_merchant where ecarddb..e_merchant.merchant_code = ecarddb..e_transaction.merchant_code), sum(trans_amount),count(merchant_code),(select special_split from ecarddb..e_merchant where ecarddb..e_merchant.merchant_code = ecarddb..e_transaction.merchant_code),(select cat_id from ecarddb..e_merchant where ecarddb..e_merchant.merchant_code = ecarddb..e_transaction.merchant_code),sum(fee) from ecarddb..E_TRANSACTION " +
-					"where merchant_code in ("+myMerchants+") and trans_date between('"+start_dt+"') and ('"+end_dt+"') and channelid like '"+channel+"%' and trans_code = '"+transcode+"' group by MERCHANT_CODE";
-				}
-				
-				System.out.println("merchant summary " + query);
-				result = stat.executeQuery(query);
-				while(result.next())
-				{
-					transaction = new E_TRANSACTION();
-					
-					transaction.setMerchat_code(result.getString(1));
-					transaction.setMerchant_descr(result.getString(2));
-					transaction.setTotal_amount(""+result.getObject(3));
-					transaction.setTransaction_count(""+result.getObject(4));
-					transaction.setMerchant_split_type(""+result.getObject(5));
-					transaction.setMerchant_cat_id(""+result.getObject(6));
-					transaction.setTotal_fee(""+result.getObject(7));
-					
-					arr.add(transaction);
-				}
-				
+				arr.add(transaction);
 			}
 		}
 		catch(Exception ex)
@@ -9334,8 +8177,8 @@ public class ReportModel
 		String query = "";
 		ArrayList arr = new ArrayList();
 		E_TRANSACTION transaction;
-		Connection con = null, con1 = null;
-		Statement stat = null, stat1 = null;
+		Connection con = null;
+		Statement stat = null;
 		ResultSet result = null;
 		ResultSet result1 = null;
 		
@@ -9343,7 +8186,7 @@ public class ReportModel
 		{
 			con = connectToBackUpECard();
 			stat = con.createStatement();
-			
+
 			query = "select distinct trans_code, count(*) as total_count, sum(trans_amount) as total_amount  from ecarddb..e_transaction  where trans_date between('"+start_dt+"') and ('"+end_dt+"') group by trans_code";	
 			System.out.println("getE_TRANSACTIONGroupByTransCode " + query);
 			result = stat.executeQuery(query);
@@ -9397,80 +8240,36 @@ public class ReportModel
 			con1 = connectToSupportLog();
 			stat1 = con1.createStatement();
 			
-			if(account_id.equals("eTranzact"))//dis is the bizness code without any merchant mapping
+			query = "select merchant_code from support_merchant_mapping where username = '"+account_id+"'";
+			result1 = stat1.executeQuery(query);
+			while(result1.next())
 			{
-				/*query = "select merchant_code from support_merchant_mapping";
-				result1 = stat1.executeQuery(query);
-				while(result1.next())
-				{
-					myMerchants += approstrophe + ""+result1.getObject(1) + approstrophe + ",";
-				}
-				
-				if(myMerchants.trim().length()>0)
-				{
-					myMerchants = myMerchants.substring(0, myMerchants.lastIndexOf(","));
-				}
-				else
-				{
-					myMerchants = "0";
-				}*/
-				
-				//query = "select distinct trans_code, count(*) as total_count, sum(trans_amount) as total_amount  from ecarddb..e_transaction  where merchant_code not in ("+myMerchants+") and trans_date between('"+start_dt+"') and ('"+end_dt+"') group by trans_code";
-				query = "select distinct trans_code, count(*) as total_count, sum(trans_amount) as total_amount" +
-						" from ecarddb..e_transaction where" +
-						" merchant_code not in" +
-						" (select merchant_code from telcodb..support_merchant_mapping) and" +
-						" trans_date between('"+start_dt+"') and ('"+end_dt+"') group by trans_code";
-				System.out.println("getE_TRANSACTIONGroupByTransCode " + query);
-				result = stat.executeQuery(query);
-				while(result.next())
-				{
-					transaction = new E_TRANSACTION();
-
-					transaction.setTrans_code(""+result.getObject(1));
-					transaction.setTransaction_count(""+result.getObject(2));
-					transaction.setTotal_amount(""+result.getObject(3));
-					if(transaction.getTrans_code().equalsIgnoreCase("N") || transaction.getTrans_code().equalsIgnoreCase("X") || transaction.getTrans_code().equalsIgnoreCase("I") || transaction.getTrans_code().equalsIgnoreCase("C"));
-					else
-					{
-						arr.add(transaction);
-					}
-				}
-				
+				myMerchants += approstrophe + ""+result1.getObject(1) + approstrophe + ",";
+			}
+			
+			if(myMerchants.trim().length()>0)
+			{
+				myMerchants = myMerchants.substring(0, myMerchants.lastIndexOf(","));
 			}
 			else
 			{
-				query = "select merchant_code from support_merchant_mapping where username = '"+account_id+"'";
-				result1 = stat1.executeQuery(query);
-				while(result1.next())
-				{
-					myMerchants += approstrophe + ""+result1.getObject(1) + approstrophe + ",";
-				}
-				
-				if(myMerchants.trim().length()>0)
-				{
-					myMerchants = myMerchants.substring(0, myMerchants.lastIndexOf(","));
-				}
+				myMerchants = "0";
+			}
+
+			query = "select distinct trans_code, count(*) as total_count, sum(trans_amount) as total_amount  from ecarddb..e_transaction  where merchant_code in ("+myMerchants+") and trans_date between('"+start_dt+"') and ('"+end_dt+"') group by trans_code";	
+			System.out.println("getE_TRANSACTIONGroupByTransCode " + query);
+			result = stat.executeQuery(query);
+			while(result.next())
+			{
+				transaction = new E_TRANSACTION();
+
+				transaction.setTrans_code(""+result.getObject(1));
+				transaction.setTransaction_count(""+result.getObject(2));
+				transaction.setTotal_amount(""+result.getObject(3));
+				if(transaction.getTrans_code().equalsIgnoreCase("N") || transaction.getTrans_code().equalsIgnoreCase("X") || transaction.getTrans_code().equalsIgnoreCase("I") || transaction.getTrans_code().equalsIgnoreCase("C"));
 				else
 				{
-					myMerchants = "0";
-				}
-				
-				query = "select distinct trans_code, count(*) as total_count, sum(trans_amount) as total_amount  from ecarddb..e_transaction  where merchant_code in ("+myMerchants+") and trans_date between('"+start_dt+"') and ('"+end_dt+"') group by trans_code";	
-				System.out.println("getE_TRANSACTIONGroupByTransCode " + query);
-				result = stat.executeQuery(query);
-				while(result.next())
-				{
-					transaction = new E_TRANSACTION();
-
-					transaction.setTrans_code(""+result.getObject(1));
-					transaction.setTransaction_count(""+result.getObject(2));
-					transaction.setTotal_amount(""+result.getObject(3));
-					if(transaction.getTrans_code().equalsIgnoreCase("N") || transaction.getTrans_code().equalsIgnoreCase("X") || transaction.getTrans_code().equalsIgnoreCase("I") || transaction.getTrans_code().equalsIgnoreCase("C"));
-					else
-					{
-						arr.add(transaction);
-					}
+					arr.add(transaction);
 				}
 			}
 		}
@@ -9487,183 +8286,6 @@ public class ReportModel
 		}
 		return arr;
 	}
-	
-	
-	/*Method to get the account ids transactions*/
-	public ArrayList getBizHeadAccountId(String start_dt, String end_dt)
-	{
-		String query = "";
-		ArrayList arr = new ArrayList();
-		String[] str = null;
-		Connection con = null, con1 = null, con2 = null;
-		Statement stat = null, stat1 = null, stat2 = null;
-		ResultSet result = null, result1 = null, result2 = null;
-		String myMerchants = "";
-		String approstrophe = "'";
-		String bizdevMerchants = "";
-		
-		try
-		{
-			con = connectToSupportLog();
-			stat = con.createStatement();
-			
-			con1 = connectToSupportLog();
-			stat1 = con1.createStatement();
-			
-			con2 = connectToBackUpECard();
-			stat2 = con2.createStatement();
-
-			query = "select distinct sm.username, su.username, su.lastname, su.firstname, su.email " +
-					"from support_merchant_mapping sm, support_user su where su.service_id = sm.username";	
-			
-			System.out.println("bizhead query " + query);
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-				str = new String[8];
-				myMerchants = "";
-				str[0] = ""+result.getObject(1);
-				str[1] = ""+result.getObject(2);
-				str[2] = ""+result.getObject(3);
-				str[3] = ""+result.getObject(4);
-				str[4] = ""+result.getObject(5);
-				
-				query = "select merchant_code from support_merchant_mapping where username = '"+str[0]+"'";
-				result1 = stat1.executeQuery(query);
-				while(result1.next())
-				{
-					myMerchants += approstrophe + ""+result1.getObject(1) + approstrophe + ",";
-				}
-				
-				bizdevMerchants += myMerchants;
-				
-				if(myMerchants.trim().length()>0)
-				{
-					myMerchants = myMerchants.substring(0, myMerchants.lastIndexOf(","));
-				}
-				else
-				{
-					myMerchants = "0";
-				}
-				
-				
-				
-				query = "select count(*) , sum(trans_amount) from ecarddb..e_transaction" +
-				"  where trans_date between('"+start_dt+"') and ('"+end_dt+"') and merchant_code in("+myMerchants+")" +
-				"  and  trans_code not in('N','X', 'I','C')  ";	
-				
-				System.out.println("commision for bizdev query " + query);
-				result2 = stat2.executeQuery(query);
-				while(result2.next())
-				{
-					str[5] = ""+result2.getObject(1);
-					str[6] = ""+result2.getObject(2);
-				}
-				arr.add(str);
-			}	
-			
-			if(bizdevMerchants.trim().length()>0)
-			{
-				bizdevMerchants = bizdevMerchants.substring(0, bizdevMerchants.lastIndexOf(","));
-			}
-			else
-			{
-				bizdevMerchants = "0";
-			}
-			
-			//adding the merchants that are not mapped
-			str = new String[8];
-			str[0] = "eTranzact";
-			str[1] = "NA";
-			str[2] = "No Mapping";
-			str[3] = "No Mapping";
-			str[4] = "NA";
-			
-			/*query = "select count(*) , sum(trans_amount) from ecarddb..e_transaction" +
-			"  where trans_date between('"+start_dt+"') and ('"+end_dt+"') and merchant_code not in("+bizdevMerchants+")" +
-			"  and  trans_code not in('N','X', 'I','C')  ";	*/
-			
-			query = "select count(*) , sum(trans_amount) from ecarddb..e_transaction" +
-			"  where trans_date between('"+start_dt+"') and ('"+end_dt+"') and" +
-			" merchant_code not in(select merchant_code from telcodb..support_merchant_mapping)" +
-			"  and  trans_code not in('N','X', 'I','C')  ";	
-			
-			System.out.println("commision for bizdev that are not mapped query " + query);
-			result2 = stat2.executeQuery(query);
-			while(result2.next())
-			{
-				str[5] = ""+result2.getObject(1);
-				str[6] = ""+result2.getObject(2);
-			}
-
-			arr.add(str);
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionSupportLogDB(con, result);
-			closeConnectionSupportLogDB(con1, result1);
-			closeConnectionBackUpEcard(con2, result2, result2);
-		}
-		finally
-		{
-			closeConnectionSupportLogDB(con, result);
-			closeConnectionSupportLogDB(con1, result1);
-			closeConnectionBackUpEcard(con2, result2, result2);
-		}
-		return arr;
-	}
-	
-	
-	
-	/*Method to get the account ids*/
-	public ArrayList getOnlyBizHeadAccountId()
-	{
-		String query = "";
-		ArrayList arr = new ArrayList();
-		String[] str = null;
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		String myMerchants = "";
-		String approstrophe = "'";
-		String bizdevMerchants = "";
-		
-		try
-		{
-			con = connectToSupportLog();
-			stat = con.createStatement();
-
-			query = "select distinct sm.username, su.username, su.lastname, su.firstname, su.email " +
-					"from support_merchant_mapping sm, support_user su where su.service_id = sm.username";	
-			
-			//System.out.println("bizhead query " + query);
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-				str = new String[5];
-				myMerchants = "";
-				str[0] = ""+result.getObject(1);
-				str[1] = ""+result.getObject(2);
-				str[2] = ""+result.getObject(3);
-				str[3] = ""+result.getObject(4);
-				str[4] = ""+result.getObject(5);				
-				
-				arr.add(str);
-			}	
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionSupportLogDB(con, result);
-		}
-		finally
-		{
-			closeConnectionSupportLogDB(con, result);
-		}
-		return arr;
-	}
-	
 	
 	/*Method to get the transactions by bank code grouped by trans code and by date*/
 	public ArrayList getE_TRANSACTIONByBankCodeGroupByTransCode(String bank_code,String start_dt, String end_dt)
@@ -9844,93 +8466,43 @@ public class ReportModel
 			con1 = connectToSupportLog();
 			stat1 = con1.createStatement();
 			
-			
-			if(account_id.equals("eTranzact"))//dis is the bizness code without any merchant mapping
+			query = "select merchant_code from support_merchant_mapping where username = '"+account_id+"'";
+			result1 = stat1.executeQuery(query);
+			while(result1.next())
 			{
-				/*query = "select merchant_code from support_merchant_mapping";
-				result1 = stat1.executeQuery(query);
-				while(result1.next())
-				{
-					myMerchants += approstrophe + ""+result1.getObject(1) + approstrophe + ",";
-				}
-				
-				if(myMerchants.trim().length()>0)
-				{
-					myMerchants = myMerchants.substring(0, myMerchants.lastIndexOf(","));
-				}
-				else
-				{
-					myMerchants = "0";
-				}*/
-				
-				
-				if(trans_code.equalsIgnoreCase("P"))//payment
-				{
-					//query = "select distinct channelid, count(*) as total_count, sum(trans_amount) as total_amount  from ecarddb..e_transaction  where merchant_code not in ("+myMerchants+") and trans_date between('"+start_dt+"') and ('"+end_dt+"') and trans_code = '"+trans_code+"' and char_length(merchant_code)=10 group by channelid";
-					query = "select distinct channelid, count(*) as total_count, sum(trans_amount) as total_amount  from ecarddb..e_transaction  where merchant_code not in (select merchant_code from telcodb..support_merchant_mapping) and trans_date between('"+start_dt+"') and ('"+end_dt+"') and trans_code = '"+trans_code+"' and char_length(merchant_code)=10 group by channelid";
-				}
-				else
-				{
-					//query = "select distinct channelid, count(*) as total_count, sum(trans_amount) as total_amount  from ecarddb..e_transaction  where merchant_code not in ("+myMerchants+") and trans_date between('"+start_dt+"') and ('"+end_dt+"') and trans_code = '"+trans_code+"' group by channelid";
-					query = "select distinct channelid, count(*) as total_count, sum(trans_amount) as total_amount  from ecarddb..e_transaction  where merchant_code not in (select merchant_code from telcodb..support_merchant_mapping) and trans_date between('"+start_dt+"') and ('"+end_dt+"') and trans_code = '"+trans_code+"' group by channelid";
-				}
-				
-				//System.out.println("getE_TRANSACTIONByTransCodeGroupByChannel " + query);
-				result = stat.executeQuery(query);
-				while(result.next())
-				{
-					transaction = new E_TRANSACTION();
-
-					transaction.setTrans_code(trans_code);
-					transaction.setChannelid(""+result.getObject(1));
-					transaction.setTransaction_count(""+result.getObject(2));
-					transaction.setTotal_amount(""+result.getObject(3));
-					arr.add(transaction);
-				}
-				
-				
+				myMerchants += approstrophe + ""+result1.getObject(1) + approstrophe + ",";
+			}
+			
+			if(myMerchants.trim().length()>0)
+			{
+				myMerchants = myMerchants.substring(0, myMerchants.lastIndexOf(","));
 			}
 			else
 			{
-				query = "select merchant_code from support_merchant_mapping where username = '"+account_id+"'";
-				result1 = stat1.executeQuery(query);
-				while(result1.next())
-				{
-					myMerchants += approstrophe + ""+result1.getObject(1) + approstrophe + ",";
-				}
-				
-				if(myMerchants.trim().length()>0)
-				{
-					myMerchants = myMerchants.substring(0, myMerchants.lastIndexOf(","));
-				}
-				else
-				{
-					myMerchants = "0";
-				}
-				
-				
-				if(trans_code.equalsIgnoreCase("P"))//payment
-				{
-					query = "select distinct channelid, count(*) as total_count, sum(trans_amount) as total_amount  from ecarddb..e_transaction  where merchant_code in ("+myMerchants+") and trans_date between('"+start_dt+"') and ('"+end_dt+"') and trans_code = '"+trans_code+"' and char_length(merchant_code)=10 group by channelid";
-				}
-				else
-				{
-					query = "select distinct channelid, count(*) as total_count, sum(trans_amount) as total_amount  from ecarddb..e_transaction  where merchant_code in ("+myMerchants+") and trans_date between('"+start_dt+"') and ('"+end_dt+"') and trans_code = '"+trans_code+"' group by channelid";
-				}
-				
-				//System.out.println("getE_TRANSACTIONByTransCodeGroupByChannel " + query);
-				result = stat.executeQuery(query);
-				while(result.next())
-				{
-					transaction = new E_TRANSACTION();
+				myMerchants = "0";
+			}
+			
+			
+			if(trans_code.equalsIgnoreCase("P"))//payment
+			{
+				query = "select distinct channelid, count(*) as total_count, sum(trans_amount) as total_amount  from ecarddb..e_transaction  where merchant_code in ("+myMerchants+") and trans_date between('"+start_dt+"') and ('"+end_dt+"') and trans_code = '"+trans_code+"' and char_length(merchant_code)=10 group by channelid";
+			}
+			else
+			{
+				query = "select distinct channelid, count(*) as total_count, sum(trans_amount) as total_amount  from ecarddb..e_transaction  where merchant_code in ("+myMerchants+") and trans_date between('"+start_dt+"') and ('"+end_dt+"') and trans_code = '"+trans_code+"' group by channelid";
+			}
+			
+			//System.out.println("getE_TRANSACTIONByTransCodeGroupByChannel " + query);
+			result = stat.executeQuery(query);
+			while(result.next())
+			{
+				transaction = new E_TRANSACTION();
 
-					transaction.setTrans_code(trans_code);
-					transaction.setChannelid(""+result.getObject(1));
-					transaction.setTransaction_count(""+result.getObject(2));
-					transaction.setTotal_amount(""+result.getObject(3));
-					arr.add(transaction);
-				}
-				
+				transaction.setTrans_code(trans_code);
+				transaction.setChannelid(""+result.getObject(1));
+				transaction.setTransaction_count(""+result.getObject(2));
+				transaction.setTotal_amount(""+result.getObject(3));
+				arr.add(transaction);
 			}
 		}
 		catch(Exception ex)
@@ -10028,376 +8600,7 @@ public class ReportModel
 	}
 	
 	
-	/*Method to get the merchant codes count*/
-	public String getMerchantCodeCommissionCount(String trans_code,String channelid, String start_dt, String end_dt)
-	{
-		String query = "";
-		String message = "";
-		E_TRANSACTION transaction;
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		ResultSet result1 = null;
-		
-		try
-		{
-			con = connectToBackUpECard();
-			stat = con.createStatement();
-			
-			if(trans_code.equalsIgnoreCase("P"))//payment
-			{
-				query = "select count(distinct merchant_code) from ecarddb..e_transaction where trans_date between('"+start_dt+"') and ('"+end_dt+"') and trans_code = '"+trans_code+"' and channelid = '"+channelid+"' and char_length(merchant_code)=10";
-			}
-			else
-			{
-				query = "select count(distinct merchant_code) from ecarddb..e_transaction where trans_date between('"+start_dt+"') and ('"+end_dt+"') and trans_code = '"+trans_code+"' and channelid = '"+channelid+"'";
-			}
-
-		
-			System.out.println("getMerchantCodeCommissionCount " + query);
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-				message = ""+result.getObject(1);
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionBackUpEcard(con, result, result1);
-		}
-		finally
-		{
-			closeConnectionBackUpEcard(con, result, result1);
-		}
-		return message;
-	}
 	
-	
-	/*Method to get the merchant codes count by account id or code*/
-	public String getMerchantCodeCommissionCountByAccountId(String trans_code,String channelid, String start_dt, String end_dt, String accountId)
-	{
-		String query = "";
-		String message = "";
-		E_TRANSACTION transaction;
-		Connection con = null;
-		Connection con1 = null;
-		Statement stat = null;
-		Statement stat1 = null;
-		ResultSet result = null;
-		ResultSet result1 = null;
-		
-		String myMerchants = "";
-		String approstrophe = "'";
-		
-		try
-		{
-			con = connectToBackUpECard();
-			stat = con.createStatement();
-			
-			con1 = connectToSupportLog();
-			stat1 = con1.createStatement();
-			
-			if(accountId.equals("eTranzact"))//dis is the bizness code without any merchant mapping
-			{
-				/*query = "select merchant_code from support_merchant_mapping";
-				result1 = stat1.executeQuery(query);
-				while(result1.next())
-				{
-					myMerchants += approstrophe + ""+result1.getObject(1) + approstrophe + ",";
-				}
-				
-				if(myMerchants.trim().length()>0)
-				{
-					myMerchants = myMerchants.substring(0, myMerchants.lastIndexOf(","));
-				}
-				else
-				{
-					myMerchants = "0";
-				}*/
-				
-				if(trans_code.equalsIgnoreCase("P"))//payment
-				{
-					
-					//query = "select count(distinct merchant_code) from ecarddb..e_transaction where trans_date between('"+start_dt+"') and ('"+end_dt+"') and trans_code like '"+trans_code+"%' and channelid like '"+channelid+"%' and merchant_code not in ("+myMerchants+") and char_length(merchant_code)=10";
-					query = "select count(distinct merchant_code) from ecarddb..e_transaction where trans_date between('"+start_dt+"') and ('"+end_dt+"') and trans_code like '"+trans_code+"%' and channelid like '"+channelid+"%' and merchant_code not in (select merchant_code from telcodb..support_merchant_mapping) and char_length(merchant_code)=10";
-				}
-				else
-				{
-					//query = "select count(distinct merchant_code) from ecarddb..e_transaction where trans_date between('"+start_dt+"') and ('"+end_dt+"') and trans_code like '"+trans_code+"%' and channelid like '"+channelid+"%'  and merchant_code not in ("+myMerchants+") ";
-					query = "select count(distinct merchant_code) from ecarddb..e_transaction where trans_date between('"+start_dt+"') and ('"+end_dt+"') and trans_code like '"+trans_code+"%' and channelid like '"+channelid+"%'  and merchant_code not in (select merchant_code from telcodb..support_merchant_mapping) ";
-				}
-
-			
-				System.out.println("getMerchantCodeCommissionCount " + query);
-				result = stat.executeQuery(query);
-				while(result.next())
-				{
-					message = ""+result.getObject(1);
-				}
-				
-			}
-			else
-			{
-				query = "select merchant_code from support_merchant_mapping where username = '"+accountId+"'";
-				result1 = stat1.executeQuery(query);
-				while(result1.next())
-				{
-					myMerchants += approstrophe + ""+result1.getObject(1) + approstrophe + ",";
-				}
-				
-				if(myMerchants.trim().length()>0)
-				{
-					myMerchants = myMerchants.substring(0, myMerchants.lastIndexOf(","));
-				}
-				else
-				{
-					myMerchants = "0";
-				}
-				
-				if(trans_code.equalsIgnoreCase("P"))//payment
-				{
-					query = "select count(distinct merchant_code) from ecarddb..e_transaction where trans_date between('"+start_dt+"') and ('"+end_dt+"') and trans_code like '"+trans_code+"%' and channelid like '"+channelid+"%' and merchant_code in ("+myMerchants+") and char_length(merchant_code)=10";
-				}
-				else
-				{
-					query = "select count(distinct merchant_code) from ecarddb..e_transaction where trans_date between('"+start_dt+"') and ('"+end_dt+"') and trans_code like '"+trans_code+"%' and channelid like '"+channelid+"%'  and merchant_code in ("+myMerchants+") ";
-				}
-
-			
-				System.out.println("getMerchantCodeCommissionCount " + query);
-				result = stat.executeQuery(query);
-				while(result.next())
-				{
-					message = ""+result.getObject(1);
-				}
-				
-			}
-
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionBackUpEcard(con, result, result1);
-		}
-		finally
-		{
-			closeConnectionBackUpEcard(con, result, result1);
-		}
-		return message;
-	}
-	
-	
-	/*Method to get the transactions grouped by trans code and by date*/
-	/*public ArrayList getCorporatePayCommission(String start_dt, String end_dt)
-	{
-		String query = "";
-		ArrayList arr = new ArrayList();
-		COP_FUNDGATE_LOG cpay;
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		
-		try
-		{
-			con = connectToCPay();
-			stat = con.createStatement();
-			query = "SELECT COP_MERCHANT.COMPANY_NAME , " + //company name
-            		" COUNT(COP_FUNDGATE_LOG.REFERENCE), " + //transaction count
-            		" SUM(COP_FUNDGATE_LOG.TRANS_AMOUNT) , " + //transaction volume
-            		" COP_COMMISSION.FEE , " + //commission
-            		" COUNT(COP_FUNDGATE_LOG.REFERENCE)* COP_COMMISSION.FEE ,  " + //total commission
-            		" COUNT(COP_FUNDGATE_LOG.REFERENCE)* COP_COMMISSION.ETZ_COMM_AMOUNT  " + //etz commission
-            		" FROM COP_MERCHANT, COP_FUNDGATE_LOG, COP_COMMISSION " +
-            		" WHERE (COP_FUNDGATE_LOG.COMPANY_ID = COP_MERCHANT.COMPANY_ID) AND  " +
-            		" (COP_MERCHANT.COMPANY_ID = COP_COMMISSION.COMPANY_ID) AND " +
-            		" (COP_COMMISSION.COMPANY_ID = COP_FUNDGATE_LOG.COMPANY_ID) AND  " +
-            		" (COP_FUNDGATE_LOG.PROCESSED_DATE BETWEEN ('"+start_dt+"') AND ('"+end_dt+"')) AND  " +
-            		" (COP_FUNDGATE_LOG.HOST_ERROR_CODE IN ('00','000')) AND " +
-            		" (COP_MERCHANT.OFFLINE_PAYMENT in (0, 2)) " +
-            		" GROUP BY COP_MERCHANT.COMPANY_NAME,COP_COMMISSION.FEE , COP_COMMISSION.ETZ_COMM_AMOUNT";
-			
-			System.out.println("getCorporatePayCommission query " + query);
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-				cpay = new COP_FUNDGATE_LOG();
-
-				cpay.setBENEFICIARY_NAME(""+result.getObject(1));
-				cpay.setREFERENCE(""+result.getObject(2));
-				cpay.setTRANS_AMOUNT(""+result.getObject(3));
-				cpay.setBATCH_ID(""+result.getObject(4)); //commission
-				cpay.setACCOUNT_TYPE(""+result.getObject(5)); //total commission
-				cpay.setACCOUNT_NUMBER(""+result.getObject(6)); //etz commission
-			
-				arr.add(cpay);
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionCPay(con, result);
-		}
-		finally
-		{
-			closeConnectionCPay(con, result);
-		}
-		return arr;
-	}*/
-	
-	
-	/*Method to get the transactions grouped by trans code and by date*/
-    public ArrayList getCorporatePayCommission(String start_dt, String end_dt)
-    {
-          String query = "";
-          String batchId = "";
-          String uniqueTransId = "";
-          String appostrph = "'";
-          ArrayList arr = new ArrayList();
-          COP_FUNDGATE_LOG cpay;
-          Connection con = null, con1 = null;
-          Statement stat = null, stat1 = null;
-          ResultSet result = null, result1 = null;
-          
-          try
-          {
-                con = connectToECard();
-                stat = con.createStatement();
-                
-                con1 = connectToCPay();
-                stat1 = con1.createStatement();
-                
-                /*query = "SELECT COP_MERCHANT.COMPANY_NAME , " + //company name
-                      " COUNT(COP_FUNDGATE_LOG.REFERENCE), " + //transaction count
-                      " SUM(COP_FUNDGATE_LOG.TRANS_AMOUNT) , " + //transaction volume
-                      " COP_COMMISSION.FEE , " + //commission
-                      " COUNT(COP_FUNDGATE_LOG.REFERENCE)* COP_COMMISSION.FEE ,  " + //total commission
-                      " COUNT(COP_FUNDGATE_LOG.REFERENCE)* COP_COMMISSION.ETZ_COMM_AMOUNT  " + //etz commission
-                      " FROM COP_MERCHANT, COP_FUNDGATE_LOG, COP_COMMISSION " +
-                      " WHERE (COP_FUNDGATE_LOG.COMPANY_ID = COP_MERCHANT.COMPANY_ID) AND  " +
-                      " (COP_MERCHANT.COMPANY_ID = COP_COMMISSION.COMPANY_ID) AND " +
-                      " (COP_COMMISSION.COMPANY_ID = COP_FUNDGATE_LOG.COMPANY_ID) AND  " +
-                      " (COP_FUNDGATE_LOG.PROCESSED_DATE BETWEEN ('"+start_dt+"') AND ('"+end_dt+"')) AND  " +
-                      " (COP_FUNDGATE_LOG.HOST_ERROR_CODE IN ('00','000')) AND " +
-                      " (COP_MERCHANT.OFFLINE_PAYMENT in (0, 2)) " +
-                      " GROUP BY COP_MERCHANT.COMPANY_NAME,COP_COMMISSION.FEE , COP_COMMISSION.ETZ_COMM_AMOUNT";
-                
-                System.out.println("getCorporatePayCommission query " + query);
-                result = stat.executeQuery(query);
-                while(result.next())
-                {
-                      cpay = new COP_FUNDGATE_LOG();
-
-                      cpay.setBENEFICIARY_NAME(""+result.getObject(1));
-                      cpay.setREFERENCE(""+result.getObject(2));
-                      cpay.setTRANS_AMOUNT(""+result.getObject(3));
-                      cpay.setBATCH_ID(""+result.getObject(4)); //commission
-                      cpay.setACCOUNT_TYPE(""+result.getObject(5)); //total commission
-                      cpay.setACCOUNT_NUMBER(""+result.getObject(6)); //etz commission
-                
-                      arr.add(cpay);
-                }*/
-                
-              /*  query = "select batch_id from e_settle_batch where batch_date between '"+ start_dt +"' and '"+ end_dt +"' ";
-                result = stat.executeQuery(query);
-                while(result.next())
-                {
-                      batchId += appostrph + result.getString(1) + appostrph + ",";
-                }
-                
-                query = "select unique_transid from e_settlement_download_bk where settle_batch in ('"+ batchId +"') and" +
-                            " merchant_code = '0443240866' AND TRANS_CODE = 'C'";
-                System.out.println("query :"+query);      
-                result = stat.executeQuery(query);
-                while(result.next())
-                {
-                      uniqueTransId += appostrph + result.getString(1) + appostrph + ",";
-                }
-                
-                query = "SELECT COP_MERCHANT.COMPANY_NAME, COP_MERCHANT.COMPANY_ID, COP_MERCHANT.ISSUER_CODE," +
-                            " SUM(COP_SETTLEMENT.AMOUNT), SUM(COP_SETTLEMENT.TOTALCOUNT) FROM COP_MERCHANT, COP_SETTLEMENT WHERE" +
-                            " (COP_SETTLEMENT.COMPANY_ID = COP_MERCHANT.COMPANY_ID)" +
-                            " AND (COP_SETTLEMENT.TRANS_REF IN ('"+ uniqueTransId +"')) AND (COP_SETTLEMENT.TRANS_DESCR = 'COP/COMMISSION/')" +
-                            " GROUP BY COP_MERCHANT.COMPANY_NAME, COP_MERCHANT.ISSUER_CODE, COP_MERCHANT.COMPANY_ID";
-                result1 = stat1.executeQuery(query);
-                System.out.println("getCorporatePayCommission query : " + query);
-                while(result1.next())
-                {
-                      cpay = new COP_FUNDGATE_LOG();
-
-                      cpay.setBENEFICIARY_NAME(""+result.getObject(1));
-                      cpay.setCOMPANY_ID(""+result.getObject(2));
-                      cpay.setISSUER_CODE(""+result.getObject(3));
-                      cpay.setTRANS_AMOUNT(""+result.getObject(4));
-                      cpay.setREFERENCE(""+result.getObject(5)); //total count
-                
-                      arr.add(cpay);
-                }*/
-
-                query = "select batch_id from e_settle_batch where batch_date between '"+ start_dt +"' and '"+ end_dt +"' ";
-                result = stat.executeQuery(query);
-                while(result.next())
-                {
-                      batchId += appostrph + result.getString(1) + appostrph + ",";
-                }
-                
-                
-                batchId = batchId.substring(0, batchId.lastIndexOf(","));
-                
-                query = "select unique_transid from e_settlement_download_bk where settle_batch in ("+ batchId +") and" +
-                            " merchant_code = '0443240866' AND TRANS_CODE = 'C'";
-                System.out.println("query :"+query);      
-                result = stat.executeQuery(query);
-                while(result.next())
-                {
-                      uniqueTransId += appostrph + result.getString(1) + appostrph + ",";
-                }
-                
-                uniqueTransId = uniqueTransId.substring(0, uniqueTransId.lastIndexOf(","));
-                
-                query = "SELECT COP_MERCHANT.COMPANY_NAME, COP_MERCHANT.COMPANY_ID, COP_MERCHANT.ISSUER_CODE," +
-                            " SUM(COP_SETTLEMENT.AMOUNT), SUM(COP_SETTLEMENT.TOTALCOUNT) FROM COP_MERCHANT, COP_SETTLEMENT WHERE" +
-                            " (COP_SETTLEMENT.COMPANY_ID = COP_MERCHANT.COMPANY_ID)" +
-                            " AND (COP_SETTLEMENT.TRANS_REF IN ("+ uniqueTransId +")) AND (COP_SETTLEMENT.TRANS_DESCR = 'COP/COMMISSION/')" +
-                            " GROUP BY COP_MERCHANT.COMPANY_NAME, COP_MERCHANT.ISSUER_CODE, COP_MERCHANT.COMPANY_ID";
-                result1 = stat1.executeQuery(query);
-                System.out.println("getCorporatePayCommission query : " + query);
-                while(result1.next())
-                {
-                      cpay = new COP_FUNDGATE_LOG();
-
-                      cpay.setBENEFICIARY_NAME(""+result1.getObject(1));
-                      cpay.setCOMPANY_ID(""+result1.getObject(2));
-                      cpay.setISSUER_CODE(""+result1.getObject(3));
-                      cpay.setTRANS_AMOUNT(""+result1.getObject(4));
-                      cpay.setREFERENCE(""+result1.getObject(5)); //total count
-                
-                      arr.add(cpay);
-                }
-
-
-                
-                
-                
-                
-                
-          }
-          catch(Exception ex)
-          {
-                ex.printStackTrace();
-                closeConnectionECard(con, result, result);
-                closeConnectionCPay(con1, result1);
-          }
-          finally
-          {
-                closeConnectionECard(con, result, result);
-                closeConnectionCPay(con1, result1);
-          }
-          return arr;
-    }
-
-
-
 	
 	/*Method to get the banks*/
 	public ArrayList getBanks()
@@ -11210,7 +9413,7 @@ public class ReportModel
 	
 	
 	/*Method to get card holders info*/
-	public ArrayList getCardHolders(String card_num, String version)
+	public ArrayList getCardHolders(String card_num)
 	{
 		String query = "";
 		ArrayList arr = new ArrayList();
@@ -11224,21 +9427,15 @@ public class ReportModel
 		try
 		{
 			
-			if(version.equals("Version I"))
-			{
-				con1 = connectToTestECard();
-				stat1 = con1.createStatement();
-			}
-			else
-			{
-				con1 = connectPocketMoniEcardDB();
-				stat1 = con1.createStatement();
-			}
-				
+			con1 = connectToTestECard();
+			stat1 = con1.createStatement();
+			
+			
+			
 			query = "select card_num, phone, lastname, firstname, street, state, card_expiration, email, bound_work, bound_value," +
-			" birth_date, change_pin, user_locked, user_hotlist, pin_missed, last_used, modified, created," +
-			" online_balance,payfee, cashwthdw_limit, client_id  from ecarddb..e_cardholder where card_num = '" + card_num +"' ";
-	
+					" birth_date, change_pin, user_locked, user_hotlist, pin_missed, last_used, modified, created," +
+					" online_balance,payfee, cashwthdw_limit, client_id  from ecarddb..e_cardholder where card_num = '" + card_num +"' ";
+			
 			System.out.println("query " + query);
 			result1 = stat1.executeQuery(query);
 			while(result1.next())
@@ -11277,12 +9474,10 @@ public class ReportModel
 		{
 			ex.printStackTrace();
 			closeConnectionTestECard(con1, result, result1);
-			closeConnectionPocketMoniEcardDB(con1, result1);
 		}
 		finally
 		{
 			closeConnectionTestECard(con1, result, result1);
-			closeConnectionPocketMoniEcardDB(con1, result1);
 		}
 		return arr;
 	}
@@ -11477,7 +9672,7 @@ public class ReportModel
 	
 	
 	/*Method to get card number when mobile or cardnumber info is supplied*/
-	public String getCardNumber(String card_num_mobile, String versionType)
+	public String getCardNumber(String card_num_mobile)
 	{
 		String query = "";
 		String message = "";
@@ -11488,16 +9683,9 @@ public class ReportModel
 		
 		try
 		{
-			if(versionType.equals("Version I"))
-			{
-				con = connectToTestECard();
-				stat = con.createStatement();
-			}
-			else
-			{
-				con = connectPocketMoniEcardDB();
-				stat = con.createStatement();
-			}
+			
+			con = connectToTestECard();
+			stat = con.createStatement();
 			
 			query = "select card_num from ecarddb..e_cardholder where card_num = '" + card_num_mobile +"' or phone = '" + card_num_mobile +"'";
 			
@@ -11716,414 +9904,6 @@ public class ReportModel
 		}
 		return message;
 	}
-	
-	public ArrayList getCompanyName()
-	{
-				
-		String query = "";
-		ArrayList arr = new ArrayList();
-		District district  = null; 
-		Company company = null;
-		Connection con = null;
-		
-		Statement stat = null;
-		ResultSet result = null;
-		
-		try
-		{
-			 con = connectToSupportLog();
-			 stat = con.createStatement();
-			
-			query =  "select company_id, company_name, compCode, bank, bankAccount from company ";
-
-			System.out.println("getCompanyName ALL COMPANY   :: :: :  :::: " +  query);
-			
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-				company = new Company();
-				company.setCompanyId(""+result.getObject(1));
-				company.setCompanyName(""+result.getObject(2));
-				company.setCompanyCode(""+result.getObject(3));
-				company.setBank(""+result.getObject(4));
-				company.setBankAcct(""+result.getObject(5));
-				String bankcode_account = getBankName(company.getBank()) +"  -----  "+company.getBankAcct();
-				company.setBankcode_bankAccount(bankcode_account);
-				
-				arr.add(company);
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionSupportLogDB(con, result);
-		}
-		finally
-		{
-		
-			closeConnectionSupportLogDB(con, result);
-		}
-		return arr;
-		
-	}
-	
-	public ArrayList getAccountInfo()
-	{
-				
-		String query = "";
-		ArrayList arr = new ArrayList();
-		AccountInfo accountInfo = null;
-		Connection con = null;	
-		Statement stat = null;
-		ResultSet result = null;
-		
-		try
-		{
-			 con = connectToTelco();
-			 stat = con.createStatement();
-			
-			query =  "select company_id, bank_code, account_no, account_desc, created  from accountInfo ";
-
-			System.out.println("getAccountInfo  :: :: :  :::: " +  query);
-			
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-				accountInfo = new AccountInfo();
-				accountInfo.setCompanyId(""+result.getObject(1));
-				accountInfo.setBankCode(""+result.getObject(2));
-				accountInfo.setAccountNo(""+result.getObject(3));
-				accountInfo.setAccountDesc(""+result.getObject(4));
-				accountInfo.setCreateDat(""+result.getObject(5));
-			
-				arr.add(accountInfo);
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionTelco(con, result);
-		}
-		finally
-		{
-		
-			closeConnectionTelco(con, result);	
-		}
-		return arr;
-		
-	}
-	
-	
-	/*This method is getting comapany Name By company Id*/
-	public String  getCompanyNameByComapanyId(String companyid)
-	{
-				
-		String query = "";
-	
-		Company company = null;
-		Connection con = null;
-		String message = "";	
-		Statement stat = null;
-		ResultSet result = null;
-		
-		try
-		{
-			 con = connectToSupportLog();
-			 stat = con.createStatement();
-			
-			query =  "select company_name  from company where company_id = "+companyid+" ";
-			
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-				message = ""+result.getObject(1);
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionSupportLogDB(con, result);
-		}
-		finally
-		{
-		
-			closeConnectionSupportLogDB(con, result);
-		}
-		return message;
-		
-	}
-	
-	/*This method is getting comapany Id By company Code*/
-	public String  getCompanyIDByComapanyCode(String companycode)
-	{
-				
-		String query = "";
-	
-		Company company = null;
-		Connection con = null;
-		String message = "";	
-		Statement stat = null;
-		ResultSet result = null;
-		
-		try
-		{
-			 con = connectToSupportLog();
-			 stat = con.createStatement();
-			
-			query =  "select company_id from telcodb.dbo.company where compCode = '"+companycode+"' ";
-
-			System.out.println("query "+query);
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-				message = ""+result.getObject(1);
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionSupportLogDB(con, result);
-		}
-		finally
-		{
-		
-			closeConnectionSupportLogDB(con, result);
-		}
-		return message;
-		
-	}
-	
-	
-	
-	/*Method to setup company */
-	public String createCompanySetup(String companyname, String compCode, String bankAccount, String bank)
-	{
-		String query = "";
-		String message = "";
-		ArrayList arr = new ArrayList();
-		int output = -1;
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-
-		try
-		{
-			con = connectToSupportLog();
-			stat = con.createStatement();
-			
-			query = "select * from company where compCode = '"+compCode+"' ";
-			result = stat.executeQuery(query);
-			System.out.println("query existed"+query);
-			if(result.next())
-			{
-				message = "A company with the company code " +  compCode + " already exists";		
-			}
-			else
-			{
-				query = "insert into company(company_name,compCode, bankAccount, bank)" +
-						"values('"+companyname+"', '"+compCode+"', '"+bankAccount+"', '"+bank+"') ";
-			
-				System.out.println("createCompanySetup query " + query);
-				output = stat.executeUpdate(query);
-				if(output > 0)
-				{
-					message = "Records successfully inserted";
-					con.commit();
-				}
-				else
-				{
-					message = "Records not inserted";
-					con.rollback();
-				}
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			try
-			{
-				con.rollback();
-			}
-			catch(Exception e){}
-			closeConnectionSupportLogDB(con, result);
-			
-		}
-		finally
-		{
-			closeConnectionSupportLogDB(con, result);
-			
-		}
-		return message;
-	}
-	
-	
-	public String createPoolAccountSetup(String companyId, String mobile, String status, String createdat)
-	{
-		String query = "";
-		String message = "";
-		ArrayList arr = new ArrayList();
-		int output = -1;
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-
-		try
-		{
-			con = connectToSupportLog();
-			stat = con.createStatement();
-			
-			query = "select * from pool_accounts where mobile = '"+mobile+"' ";
-			result = stat.executeQuery(query);
-			System.out.println("query existed"+query);
-			if(result.next())
-			{
-				message = "A company with this Mobile Number " + mobile + " already exists";		
-			}
-			else
-			{
-				query = "insert into pool_accounts(company_id, mobile, active_Status, created)" +
-						"values("+companyId+", '"+mobile+"', '"+status+"','"+createdat+"')";
-			
-				System.out.println("createPoolAccountSetup query " + query);
-				output = stat.executeUpdate(query);
-				if(output > 0)
-				{
-					message = "Records successfully inserted";
-					con.commit();
-				}
-				else
-				{
-					message = "Records not inserted";
-					con.rollback();
-				}
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			try
-			{
-				con.rollback();
-			}
-			catch(Exception e){}
-			closeConnectionSupportLogDB(con, result);
-			
-		}
-		finally
-		{
-			closeConnectionSupportLogDB(con, result);
-		}
-		return message;
-	}
-
-	
-	public String createAccountInfoSetup(String companyId, String bankCode, String accountNo, String acccountDec, String createdat)
-	{
-		String query = "";
-		String message = "";
-		ArrayList arr = new ArrayList();
-		int output = -1;
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-
-		try
-		{
-			con = connectToTelco();
-			stat = con.createStatement();
-			
-			query = "select * from accountInfo where company_id = "+companyId+" and account_no = '"+accountNo+"' ";
-			result = stat.executeQuery(query);
-			System.out.println("query existed"+query);
-			if(result.next())
-			{
-				message = "A company with this Account Number " + accountNo + " already exists";		
-			}
-			else
-			{
-				query = "insert into accountInfo(company_id, bank_code, account_no,account_desc, created)" +
-						"values("+companyId+", '"+bankCode+"', '"+accountNo+"','"+acccountDec+"','"+createdat+"')";
-			
-				System.out.println("createAccountInfoSetup query " + query);
-				output = stat.executeUpdate(query);
-				if(output > 0)
-				{
-					message = "Records successfully inserted";
-					con.commit();
-				}
-				else
-				{
-					message = "Records not inserted";
-					con.rollback();
-				}
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			try
-			{
-				con.rollback();
-			}
-			catch(Exception e){}
-			closeConnectionTelco(con, result);
-			
-		}
-		finally
-		{
-			closeConnectionTelco(con, result);
-			
-		}
-		return message;
-	}
-	
-	/* Method to display all Pool account details */
-	public ArrayList getPoolAccount()
-	{
-		
-		String query = "";
-		ArrayList arr = new ArrayList();
-		PoolAccount pool = null;
-		Connection con = null;
-		
-		Statement stat = null;
-		ResultSet result = null;
-		
-		try
-		{
-			 con = connectToSupportLog();
-			 stat = con.createStatement();
-			
-			query =  "select company_id, mobile, active_Status, created  from pool_accounts ";
-
-			System.out.println("getPoolAccount ALL Pool Account    :: :: :  :::: " +  query);
-			
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-				pool = new PoolAccount();
-				pool.setCompanyId(""+result.getObject(1));
-				pool.setMobile(""+result.getObject(2));
-				pool.setActiveStatus(""+result.getObject(3));
-				pool.setCreatedDat(""+result.getObject(4));
-			
-				arr.add(pool);
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionSupportLogDB(con, result);
-		}
-		finally
-		{
-		
-			closeConnectionSupportLogDB(con, result);	
-		}
-		return arr;
-		
-	}
-	
 	
 	/*card holder firstname*/
 	public String getCardHolderFirstName(String card_num)
@@ -12492,7 +10272,7 @@ public class ReportModel
 				query = "select substring(card_num,1,3) Bank, count(distinct card_num) Card_Count,count(*) Trans_Count, sum(trans_amount)" +
 						" Trans_Sum from ecarddb..e_transaction where char_length(card_num) > 10  and" +
 						" trans_code in ('P') and char_length(merchant_code) = 10 and trans_date between '"+start_dt+"' and '"+end_dt+"' and" +
-						" unique_transid like '01%' and merchant_code in ('0560019910','0690019910','0690010097','0690069901','0440019910') and" +
+						" unique_transid like '01%' and merchant_code in ('0560019910','0690019910','0690010097','0690069901') and" +
 						" substring(card_num,1,6) not in ('011811','011812','011813','011814','011815') group by substring(card_num,1,3) order by" +
 						" trans_count desc";
 				
@@ -12518,7 +10298,7 @@ public class ReportModel
 				query = "select substring(card_num,1,3) Bank, count(distinct card_num) Card_Count,count(*) Trans_Count, sum(trans_amount)" +
 						" Trans_Sum from ecarddb..e_transaction where char_length(card_num) > 10  and trans_code in ('P') and" +
 						" char_length(merchant_code) = 10 and trans_date between '"+start_dt+"' and '"+end_dt+"' and" +
-						" unique_transid like '02%' and merchant_code in ('0560019910','0690019910','0690010097','0690069901','0440019910') and" +
+						" unique_transid like '02%' and merchant_code in ('0560019910','0690019910','0690010097','0690069901') and" +
 						" substring(card_num,1,6) not in ('011811','011812','011813','011814','011815') group by substring(card_num,1,3) order by" +
 						" trans_count desc";
 				
@@ -12949,33 +10729,6 @@ public class ReportModel
 				while(result.next())
 				{
 					etran = new E_TRANSACTION();
-					
-					etran.setBank_code(""+result.getObject(1));
-					etran.setCard_count(""+result.getObject(2));
-										
-					arr.add(etran);
-				}
-			}
-			else if(type.equalsIgnoreCase("TOTAL MOBILE SUBSCRIBERS II"))//TOTAL MOBILE SUBSCRIBERS II
-			{
-				con = connectToECard();
-				stat = con.createStatement();
-				
-				
-				query = " Select substring(card_number,1,3) Bank, count(distinct mobile_no) " +
-						" from mobiledb..m_mobile_subscriber_card a,mobiledb..m_mobile_subscriber b " +
-						" where b.id=subscriber_id group by substring(card_number,1,3) " ;
-				
-				/*query = "select substring(card_num,1,3) Bank, count(distinct card_num)" +
-						" from e_mobile_subscriber_card group by" +
-						" substring(card_num,1,3) order by count(*) desc";*/
-				
-				System.out.println("general query " + query);
-				result = stat.executeQuery(query);
-				while(result.next())
-				{
-					etran = new E_TRANSACTION();
-					
 					etran.setBank_code(""+result.getObject(1));
 					etran.setCard_count(""+result.getObject(2));
 										
@@ -12986,50 +10739,21 @@ public class ReportModel
 			{
 				con = connectToECard();
 				stat = con.createStatement();
-			
-					query = " select substring(card_num,1,3) Bank, count(distinct card_num) from ecarddb..e_mobile_subscriber_card" +
-							" a inner join ecarddb..e_mobile_subscriber b on a.mobile=b.mobile " +
-							" where sysdate between '"+start_dt+"' and '"+end_dt+"' group by" +
-							" substring(card_num,1,3) order by count(*) desc ";	
-				/*
-					query = "select substring(card_num,1,3) Bank, count(distinct card_num)" +
-							" from ecarddb..e_mobile_subscriber_card where modified between '"+start_dt+"' and '"+end_dt+"'  group by" +
-							" substring(card_num,1,3) order by count(*) desc";*/
-			
-			
-					System.out.println("general query " + query);
-					
-					result = stat.executeQuery(query);
-					while(result.next())
-					{
-						etran = new E_TRANSACTION();
-						etran.setBank_code(""+result.getObject(1));
-						etran.setCard_count(""+result.getObject(2));			
 				
-						arr.add(etran);
-					}
-					
+				query = "select substring(card_num,1,3) Bank, count(distinct card_num)" +
+						" from ecarddb..e_mobile_subscriber_card where modified between '"+start_dt+"' and '"+end_dt+"'  group by" +
+						" substring(card_num,1,3) order by count(*) desc";
 				
-				
-			}
-			else if(type.equalsIgnoreCase("NEW MOBILE SUBSCRIBERS VERSION II"))//NEW MOBILE SUBSCRIBERS ll
-			{
-				con = connectMobileDB();
-				stat = con.createStatement();
-				
-					/*query = "select appid, count(*),(select m_mobileapp_properties.appid from m_mobileapp_properties where m_mobileapp_properties.id = m_mobile_subscriber.id )  from m_mobile_subscriber where created between ('"+start_dt+"') and ('"+end_dt+"') group by appid";
-					*/
-					query = "select (select m_mobileapp_properties.bank_code from m_mobileapp_properties where m_mobileapp_properties.id = m_mobile_subscriber.appid), count(*) from m_mobile_subscriber where created between ('"+start_dt+"') and ('"+end_dt+"') group by appid";
-					result = stat.executeQuery(query);
-					while(result.next())
-					{
-						etran = new E_TRANSACTION();
-						etran.setBank_code(""+result.getObject(1));
-						etran.setCard_count(""+result.getObject(2));
-						arr.add(etran);
-						
-					}
-					
+				System.out.println("general query " + query);
+				result = stat.executeQuery(query);
+				while(result.next())
+				{
+					etran = new E_TRANSACTION();
+					etran.setBank_code(""+result.getObject(1));
+					etran.setCard_count(""+result.getObject(2));
+										
+					arr.add(etran);
+				}
 			}
 			else if(type.equalsIgnoreCase("ACTIVE MOBILE SUBSCRIBERS"))//ACTIVE MOBILE SUBSCRIBERS
 			{
@@ -13118,7 +10842,7 @@ public class ReportModel
 				}
 			}
 			
-
+			
 		}
 		catch(Exception ex)
 		{
@@ -13126,168 +10850,20 @@ public class ReportModel
 			closeConnectionECard(con, result, result);
 			closeConnectionTestECard(con, result, result);
 			closeConnectionCPay(con, result);
-			closeConnectionMobileDB(con, result);
 		}
 		finally
 		{
 			closeConnectionECard(con, result, result);
 			closeConnectionTestECard(con, result, result);
 			closeConnectionCPay(con, result);
-			closeConnectionMobileDB(con, result);
 		}
 		return arr;
 	}
 	
 	
-
+	
+	
 	/*Method to get the switch report for each bank*/
-	public ArrayList getSwitchReportByDateAndTypeAndBank(String start_dt, String end_dt, String type, String bank_code)
-	{
-		String query = "";
-		ArrayList arr = new ArrayList();
-		E_TRANSACTION etran = null;
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		
-		
-		try
-		{
-			if(type.equalsIgnoreCase("NUMBER OF SUBSCRIBER"))//NUMBER OF SUBSCRIBER I
-			{
-				con = connectToECard();
-				stat = con.createStatement(); 
-				
-				
-				query = "select month(sysdate) Month, count(distinct a.mobile) Trans_count from ecarddb..e_mobile_subscriber_card" +
-						" a inner join ecarddb..e_mobile_subscriber b on a.mobile=b.mobile" +
-						"  where sysdate between '"+start_dt+"' and '"+end_dt+"'" +
-						"  and card_num like '"+bank_code+"%' group by month(sysdate) ";
-				
-				/*query = "select month(sysdate) Month, count(distinct card_num) Trans_count from ecarddb..e_mobile_subscriber_card" +
-						" a inner join ecarddb..e_mobile_subscriber b on a.mobile=b.mobile " +
-						" where sysdate between '"+start_dt+"' and '"+end_dt+"'" +
-						" and card_num like '"+bank_code+"%' group by month(sysdate) ";*/
-				
-		/*
-				query = "select month(modified) month,count(distinct(mobile)) from e_mobile_subscriber_card where substring(card_num,1,3) like '"+bank_code+"%' " +
-						" and modified between '"+start_dt+"' and '"+end_dt+"' group by month(modified) order by month(modified) ";*/
-				
-				System.out.println("general query " + query);
-				result = stat.executeQuery(query);
-				while(result.next())
-				{
-					etran = new E_TRANSACTION();
-					etran.setMonth(""+result.getObject(1));
-					etran.setCard_count(""+result.getObject(2));
-					arr.add(etran);
-				}
-			}
-			if(type.equalsIgnoreCase("NUMBER OF SUBSCRIBER II"))//NUMBER OF SUBSCRIBER II
-			{
-				con = connectMobileDB();
-				stat = con.createStatement();
-				
-				query = "Select month(b.created), count(distinct mobile_no) from mobiledb..m_mobile_subscriber_card" +
-						" a,mobiledb..m_mobile_subscriber b where b.id=subscriber_id " +
-						"and card_Number like '"+bank_code+"%' and b.created" +
-						" between '"+start_dt+"' and '"+end_dt+"' group by month(b.created)";
-				
-				
-				/*query = "Select month(created), count(*) from m_mobile_subscriber_card " +
-						"where card_Number like '"+bank_code+"%' and created between '"+start_dt+"' and '"+end_dt+"'" +
-						" group by month(created)";*/
-				
-				/*query = " select (select m_mobileapp_properties.bank_code from m_mobileapp_properties where" +
-						" m_mobileapp_properties.id = m_mobile_subscriber.appid), count(*) from m_mobile_subscriber" +
-						" where created between ('"+start_dt+"') and ('"+end_dt+"') group by bank_code";*/
-				
-			
-				System.out.println("general query " + query);
-				result = stat.executeQuery(query);
-				while(result.next())
-				{
-					etran = new E_TRANSACTION();
-					etran.setMonth(""+result.getObject(1));
-					etran.setCard_count(""+result.getObject(2));
-					arr.add(etran);
-				}
-			}
-			else if(type.equalsIgnoreCase("AVERAGE TRANSACTION COUNT"))//AVERAGE TRANSACTION COUNT
-			{
-				con = connectToECard();
-				stat = con.createStatement();
-				
-				query = " select month(trans_date) month,count(card_num) from e_transaction where trans_date between '"+start_dt+"' and '"+end_dt+"'" +
-						" and unique_transid like '02%' and substring(card_num,1,3) like '"+bank_code+"%' group by month(trans_date) order by month(trans_date)";
-
-			
-				System.out.println("general query " + query);
-				result = stat.executeQuery(query);
-				while(result.next())
-				{
-					etran = new E_TRANSACTION();
-					etran.setMonth(""+result.getObject(1));
-					etran.setCard_count(""+result.getObject(2));
-										
-					arr.add(etran);
-				}
-			}
-			else if(type.equalsIgnoreCase("AVERAGE TRANSACTION VOLUME"))//AVERAGE TRANSACTION VOLUME
-			{
-				con = connectToECard();
-				stat = con.createStatement();
-				
-				query = " select month(trans_date) month,sum(trans_amount) from e_transaction where trans_date between '"+start_dt+"' and '"+end_dt+"' " +
-						" and unique_transid like '02%' and substring(card_num,1,3) like '"+bank_code+"%' group by month(trans_date) order by month(trans_date) ";
-				
-				System.out.println("general query " + query);
-				result = stat.executeQuery(query);
-				while(result.next())
-				{
-					etran = new E_TRANSACTION();
-					etran.setMonth(""+result.getObject(1));
-					etran.setCard_count(""+result.getObject(2));
-										
-					arr.add(etran);
-				}
-			}
-			else if(type.equalsIgnoreCase("AVERAGE INCOME"))//AVERAGE INCOME 
-			{
-				con = connectToECard();
-				stat = con.createStatement();
-				
-				
-				query = " select month(trans_date) month,sum(trans_amount) from e_fee_detail_bk where trans_date between '"+start_dt+"' and '"+end_dt+"'" +
-						" and channelID = '02' and merchant_code like '"+bank_code+"___9999' group by month(trans_date) order by month(trans_date) ";
-
-				System.out.println("general query " + query);
-				result = stat.executeQuery(query);
-				while(result.next())
-				{
-					etran = new E_TRANSACTION();
-					etran.setMonth(""+result.getObject(1));
-					etran.setCard_count(""+result.getObject(2));					
-					arr.add(etran);
-				}
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionECard(con, result, result);
-			closeConnectionMobileDB(con, result);
-		}
-		finally
-		{
-			closeConnectionECard(con, result, result);
-			closeConnectionMobileDB(con, result);
-		}
-		return arr;
-	}
-	
-	
-	/*
 	public ArrayList getSwitchReportByDateAndTypeAndBank(String start_dt, String end_dt, String type, String bank_code)
 	{
 		String query = "";
@@ -13313,7 +10889,6 @@ public class ReportModel
 				while(result.next())
 				{
 					etran = new E_TRANSACTION();
-					
 					etran.setCard_count(""+result.getObject(1));
 					arr.add(etran);
 				}
@@ -13385,456 +10960,7 @@ public class ReportModel
 			closeConnectionECard(con, result, result);
 		}
 		return arr;
-	}*/
-	
-	
-	
-	/*Method for the activation debit card  report
-	public ArrayList getActivationUBADebitCardReport(String start_dt,String end_dt )
-	{
-		String query = "";
-		ArrayList arr = new ArrayList();
-		E_TRANSACTION ctran = null;
-		int counter = 0;
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		
-		
-		try
-		{
-			con = connectMobileDB();
-			stat = con.createStatement();
-			//033
-			query = "select count(*) from m_mobile_subscriber_card where created between ('"+start_dt+"') and ('"+end_dt+"')  and substring (card_number, 1, 3) like '033%'";
-			
-			
-			query = "select count(*) from m_mobile_subscriber where agentid like 'BANKSYNC%' and appid in (33, 42) and created between('"+start_dt+"') and ('"+end_dt+"')";
-			
-			System.out.println("Debit Count query " + query);
-			result = stat.executeQuery(query);
-			ctran = new E_TRANSACTION();
-			while(result.next())  // debit count
-			{
-				ctran.setCard_count(""+result.getObject(1));
-				//arr.add(ctran);
-				
-			}
-			
-			query  = " select count(*) from m_mobile_subscriber where agentid like 'ACCSYNC%' and appid in (33, 42) and created between('"+start_dt+"') and ('"+end_dt+"')";
-			System.out.println("Debit Count query " + query);
-			result = stat.executeQuery(query);
-			while(result.next())  // difference count
-			{
-				ctran.setVolume(""+result.getObject(1));
-				//arr.add(ctran);
-				
-			}
-			
-			query = "select count(*) from m_mobile_subscriber_card where created between ('"+start_dt+"') and ('"+end_dt+"')  and substring (card_number, 1, 3) like '730%'";
-			System.out.println("Prepaid Count query " + query);
-			result = stat.executeQuery(query);
-			while(result.next())   // prepaid count
-			{
-				//ctran = new E_TRANSACTION();
-				ctran.setCounter(""+result.getObject(1));
-				//arr.add(ctran);
-				
-			}
-			
-			
-			query = "select count(*) from m_mobile_subscriber where appid in (33, 42) and created between ('"+start_dt+"') and ('"+end_dt+"') and mobile_no not" +
-					" in (select mobile from ecarddb..e_mobile_subscriber where appid = 'UMobile')";
-			System.out.println("New Subscriber Count query  "+query);
-			result = stat.executeQuery(query);
-			while(result.next())    // new subscriber count
-			{
-				///ctran = new E_TRANSACTION();
-				ctran.setPhone(""+result.getObject(1));
-				
-				
-			}
-			
-			
-			arr.add(ctran);
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionMobileDB(con, result);
-		}
-		finally
-		{
-			closeConnectionMobileDB(con, result);
-		}
-		return arr;
-	}*/
-	
-	
-	
-	
-	/*Method for the activation debit card  report*/
-	 public ArrayList getActivationUBADebitCardReport(String start_dt,String end_dt )
-	 {
-	  String query = "";
-	  ArrayList arr = new ArrayList();
-	  E_TRANSACTION ctran = null;
-	  int counter = 0;
-	  Connection con = null, con1 = null;
-	  Statement stat = null, stat1 = null;
-	  ResultSet result = null, result1 = null;
-	  
-	  
-	  try
-	  {
-	   con = connectMobileDB();
-	   stat = con.createStatement();
-	   
-	   con1 = connectToECard();
-	   stat1 = con1.createStatement();
-	   
-	   //033
-	   /*query = "select count(*) from m_mobile_subscriber_card where created between ('"+start_dt+"') and ('"+end_dt+"')  and substring (card_number, 1, 3) like '033%'";
-	   */
-	   
-	   // debit count
-	   query = "select count(*) from m_mobile_subscriber where agentid like 'BANKSYNC%' and appid in (33, 42) and created between('"+start_dt+"') and ('"+end_dt+"')";
-	   System.out.println("Debit Count query " + query);
-	   result = stat.executeQuery(query);
-	   ctran = new E_TRANSACTION();
-	   while(result.next())  
-	   {
-	    ctran.setCard_count(""+result.getObject(1));
-	    //arr.add(ctran);
-	    
-	   }
-	   
-	   // account sync count
-	   query  = " select count(*) from m_mobile_subscriber where agentid like 'ACCSYNC%' and appid in (33, 42) and created between('"+start_dt+"') and ('"+end_dt+"')";
-	   System.out.println("ACCSYNC Count query " + query);
-	   result = stat.executeQuery(query);
-	   while(result.next())  
-	   {
-	    ctran.setVolume(""+result.getObject(1));
-	    //arr.add(ctran);
-	    
-	   }
-	   
-	   // prepaid count
-	   query = "select count(*) from m_mobile_subscriber_card where created between ('"+start_dt+"') and ('"+end_dt+"')  and substring (card_number, 1, 3) like '730%'";
-	   System.out.println("Prepaid Count query " + query);
-	   result = stat.executeQuery(query);
-	   while(result.next())   
-	   {
-	    //ctran = new E_TRANSACTION();
-	    ctran.setCounter(""+result.getObject(1));
-	    //arr.add(ctran);
-	    
-	   }
-	   
-	   // new subscriber count
-	   query = "select count(*) from m_mobile_subscriber where appid in (33, 42) and created between ('"+start_dt+"') and ('"+end_dt+"') and mobile_no not" +
-	     " in (select mobile from ecarddb..e_mobile_subscriber where appid = 'UMobile')";
-	   System.out.println("New Subscriber Count query  "+query);
-	   result = stat.executeQuery(query);
-	   while(result.next())    
-	   {
-		   ctran.setPhone(""+result.getObject(1));
-	   }
-	   
-	   
-	   // transaction volume, value count
-	   query = "select count(*), sum(trans_amount) from e_transaction where" +
-	   " trans_date between ('"+start_dt+"') and ('"+end_dt+"') and substring(card_num,1,3) in ('033', '730')" +
-	   " and trans_Code not in ('i','c') and channelid = '02' ";
-	   System.out.println("Transaction volume, value query  "+query);
-	   result1 = stat1.executeQuery(query);
-	   while(result1.next())    
-	   {
-	    ctran.setClosed(""+result1.getObject(1));
-	    ctran.setTrans_amount(""+result1.getObject(2));
-	   }
-	   
-	   //cummulative numbers of active customers
-	   
-	   query = 	"select count(mobile_no) from mobiledb..m_mobile_subscriber  where " +
-	   			" appid in (33,42) and mobile_no in (select mobile_no from mobiledb..m_incoming_messages a," +
-	   			" ecarddb..e_transaction b where a.unique_transid=b.unique_transid) ";
-	   System.out.println("cummulative Number of active customers  query  "+query);
-	   result = stat.executeQuery(query);
-	   while(result.next())
-	   {
-		   ctran.setOtherComm(""+result.getObject(1));
-	   }
-	   
-	   // cummulative value and volume of transaction
-	 /*  query = "select count(*), sum(trans_amount) from e_transaction where" +
-	   " substring(card_num,1,3) in ('033', '730')" +
-	   " and trans_Code not in ('i','c')";
-	   System.out.println("cummulative value and volume of transaction query  "+query);
-	   result1 = stat1.executeQuery(query);
-	   while(result1.next())    
-	   {
-	    ctran.setFee(""+result1.getObject(1));
-	    ctran.setTrans_type(""+result1.getObject(2));
-	   }*/
-	   
-	   
-	   // Cumulative number of Registered customers version I
-	   int versionI = 0;
-	   int versionII = 0;
-	   query = "select count(*) from m_mobile_subscriber where appid in (33, 42)";
-	   System.out.println("Count by Account (New activation by account) query  "+query);
-	   result = stat.executeQuery(query);
-	   while(result.next())    
-	   {
-		   versionI = result.getInt(1);
-	   }
-	   
-	   // Cumulative number of Registered customers version II
-	   query = "select count(*) from ecarddb..e_mobile_subscriber where appid = 'UMobile'";
-	   System.out.println("Count by Account (New activation by account) query  "+query);
-	   result1 = stat1.executeQuery(query);
-	   while(result1.next())    
-	   {
-		   versionII = result1.getInt(1);
-	   }
-	   ctran.setServiceid(""+ (versionI + versionII));
-	   
-	   // Count by Account (New activation by account)
-	   query = "select count(*) from m_mobile_subscriber where agentid like 'ACCSYNC%' and appid in (33, 42) and created " +
-	     " between ('"+start_dt+"') and ('"+end_dt+"') and mobile_no not" +
-	     " in (select mobile from ecarddb..e_mobile_subscriber where appid = 'UMobile')";
-	   System.out.println("New Activation by account query  "+query);
-	   result = stat.executeQuery(query);
-	   while(result.next())    
-	   {
-	    ctran.setIntstatus(""+result.getObject(1));
-	   }
-
-	   arr.add(ctran);
-	  }
-	  catch(Exception ex)
-	  {
-	   ex.printStackTrace();
-	   closeConnectionMobileDB(con, result);
-	   closeConnectionECard(con1, result1, result1);
-	  }
-	  finally
-	  {
-	   closeConnectionMobileDB(con, result);
-	   closeConnectionECard(con1, result1, result1);
-	  }
-	  return arr;
-	 }
-	
-	/*Method for the activation debit card  report*/
-	public ArrayList getActivationPrePaidCardReport(String start_dt,String end_dt )
-	{
-		String query = "";
-		ArrayList arr = new ArrayList();
-		E_TRANSACTION ctran = null;
-		int counter = 0;
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		
-		
-		try
-		{
-			con = connectMobileDB();
-			stat = con.createStatement();
-			
-			query = "select count(*),card_number from m_mobile_subscriber_card where created between ('"+start_dt+"') and ('"+end_dt+"')  and substring (card_number, 1, 3) like '730%'";
-					
-			System.out.println("getActivationPrePaidCardReport query " + query);
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-				counter++;
-				
-				ctran = new E_TRANSACTION();
-				ctran.setCard_count(""+result.getObject(1));
-				ctran.setCard_num(""+result.getObject(2));
-				
-				arr.add(ctran);
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionMobileDB(con, result);
-		}
-		finally
-		{
-			closeConnectionMobileDB(con, result);
-		}
-		return arr;
 	}
-	
-	
-	
-	/*U-Mobile attempted failed debit card activation */
-	public ArrayList getFailedDebitCardActivationReport(String start_dt,String end_dt )
-	{
-		String query = "";
-		ArrayList arr = new ArrayList();
-		E_TRANSACTION ctran = null;
-		//M_Incoming_Messages trans = null;
-		M_Outgoing_Messages trans = null;
-		int counter = 0;
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		
-		
-		try
-		{
-			con = connectMobileDB();
-			stat = con.createStatement();
-			
-			query = "select a.mobile_no,appid,channel,response_code,response_message " +
-					"from mobiledb..m_incoming_messages a,mobiledb..m_outgoing_messages b " +
-					"where a.id=b.message_id and msg_date between('"+start_dt+"') and ('"+end_dt+"') and " +
-					"message like '?=BANKSYNC*UMobile%' and response_code !=0 ";
-					
-			System.out.println("getFailedDebitCardActivationReport query " + query);
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-				counter++;
-				trans = new M_Outgoing_Messages();
-				trans.setMobile_no(""+result.getObject(1));
-				trans.setAppid(""+result.getObject(2));
-				trans.setSender_id(""+result.getObject(3));
-				trans.setResponse_code(""+result.getObject(4));
-				trans.setResponse_message(""+result.getObject(5));		
-				arr.add(trans);
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionMobileDB(con, result);
-		}
-		finally
-		{
-			closeConnectionMobileDB(con, result);
-		}
-		return arr;
-	}
-	
-	
-	/*U-Mobile attempted Successful debit card activation */
-	public ArrayList getSuccessfulDebitCardActivationReport(String start_dt,String end_dt )
-	{
-		String query = "";
-		ArrayList arr = new ArrayList();
-		E_TRANSACTION ctran = null;
-		//M_Incoming_Messages trans = null;
-		M_Outgoing_Messages trans = null;
-		int counter = 0;
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		
-		
-		try
-		{
-			con = connectMobileDB();
-			stat = con.createStatement();
-			
-			query = "select a.mobile_no,appid,channel,response_code,response_message " +
-					"from mobiledb..m_incoming_messages a,mobiledb..m_outgoing_messages b " +
-					"where a.id=b.message_id and msg_date between('"+start_dt+"') and ('"+end_dt+"') and " +
-					"message like '?=BANKSYNC*UMobile%' and response_code = 0 ";
-					
-			System.out.println("getFailedDebitCardActivationReport query " + query);
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-				counter++;
-				trans = new M_Outgoing_Messages();
-				trans.setMobile_no(""+result.getObject(1));
-				trans.setAppid(""+result.getObject(2));
-				trans.setSender_id(""+result.getObject(3));
-				trans.setResponse_code(""+result.getObject(4));
-				trans.setResponse_message(""+result.getObject(5));		
-				arr.add(trans);
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionMobileDB(con, result);
-		}
-		finally
-		{
-			closeConnectionMobileDB(con, result);
-		}
-		return arr;
-	}
-	
-	
-	/*Method to return swtich log records  */
-	public ArrayList getSwitchLogReport(String merchantcode,String paymentRef,String start_dt,String end_dt )
-	{
-		String query = "";
-		ArrayList arr = new ArrayList();
-		SwitchLog log = null;
-		int counter = 0;
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		
-		
-		try
-		{
-			//con = connectToEcardDBDemo();
-			con = connectMobileDB();
-			stat = con.createStatement();
-			
-			//carddb.dbo.E_SWITCHLOG ---  privious table name
-			query = "Select ID , Transaction_Id, Payment_Ref,Amount,Description,Status,Response_COde,Response_Description" +
-					",MerchantCode,Transaction_Date from ecarddb.dbo.E_INTERSWITCHLOG where MerchantCode like '"+merchantcode+"%' and " +
-					"Payment_Ref like '"+paymentRef+"%' and Transaction_Date between('"+start_dt+"') and ('"+end_dt+"')  ";
-			
-			
-			System.out.println("getSwitchLogReport query " + query);
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-				counter++;
-			
-				log = new SwitchLog();
-				log.setId(""+result.getObject(1));
-				log.setTransactionId(""+result.getObject(2));
-				log.setPaymentRef(""+result.getObject(3));
-				log.setAmount(""+result.getObject(4));
-				log.setDescription(""+result.getObject(5));
-				log.setStatus(""+result.getObject(6));
-				log.setResponseCode(""+result.getObject(7));
-				log.setResponseDesc(""+result.getObject(8));
-				log.setMerchantCode(""+result.getObject(9));
-				log.setTransactionDate(""+result.getObject(10));
-				arr.add(log);
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionMobileDB(con, result);
-			
-			//closeConnectionEcardDBDemo(con, result);
-		}
-		finally
-		{
-			//closeConnectionEcardDBDemo(con, result);
-			closeConnectionMobileDB(con, result);
-		}
-		return arr;
-	}
-	
 	
 	
 	/*Method to get the switch report for the scheme types*/
@@ -13909,386 +11035,6 @@ public class ReportModel
 			closeConnectionECard(con, result, result);
 			closeConnectionPocketMoniEcardDB(con1, result1);
 			closeConnectionTestECard(con, result, result);
-		}
-		return arr;
-	}
-	
-	
-	/*Method to return IPayment Transaction Records  */
-	public ArrayList getIPaymentTransactionReport(String merchantId,String terminalId,String status,String paymentRef,String start_dt,String end_dt )
-	{
-		String query = "";
-		ArrayList arr = new ArrayList();
-		E_IPAYMENTTRAN ipayment = null;
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		
-		
-		try
-		{
-			
-			con = connectToECard();
-			//con = connectToEcardDBDemo();
-			stat = con.createStatement();
-			System.out.println(" Status ---- > "+status);
-			
-			if(status.equals("0"))
-			{
-				
-				query = "Select TERMINALID,AMOUNT,CURRENCY_CODE,(select merchant_name from ecarddb..e_merchant where ecarddb..e_merchant.merchant_code = ecarddb..E_IPAYMENTTRAN.merchant_ID),NARRATION,TRANSACTION_ID,PAYMENT_REF,RESPONSE" +
-						",FIRST_NAME,LAST_NAME,STREET,CITY,COUNTRY,REGION,POSTAL,TELLPHONE,EMAIL,TRANS_DATE,NET_AMOUNT" +
-						" From E_IPAYMENTTRAN where MERCHANT_ID like '"+merchantId.trim()+"%' and TERMINALID like '"+terminalId.trim()+"%' and " +
-						" PAYMENT_REF like '"+paymentRef+"%' and TRANS_DATE between('"+start_dt+"') and ('"+end_dt+"')   ";	
-			}
-			else if(status.equals("1"))
-			{
-				query = "Select TERMINALID,AMOUNT,CURRENCY_CODE,(select merchant_name from ecarddb..e_merchant where ecarddb..e_merchant.merchant_code = ecarddb..E_IPAYMENTTRAN.merchant_ID),NARRATION,TRANSACTION_ID,PAYMENT_REF,RESPONSE" +
-						",FIRST_NAME,LAST_NAME,STREET,CITY,COUNTRY,REGION,POSTAL,TELLPHONE,EMAIL,TRANS_DATE,NET_AMOUNT" +
-						" From E_IPAYMENTTRAN where MERCHANT_ID like '"+merchantId.trim()+"%' and TERMINALID like '"+terminalId.trim()+"%' and " +
-						" PAYMENT_REF like '"+paymentRef+"%' and RESPONSE = '0' and  TRANS_DATE between('"+start_dt+"') and ('"+end_dt+"')   ";	
-				
-			}
-			else if(status.equals("2"))
-			{
-				query = "Select TERMINALID,AMOUNT,CURRENCY_CODE,(select merchant_name from ecarddb..e_merchant where ecarddb..e_merchant.merchant_code = ecarddb..E_IPAYMENTTRAN.merchant_ID),NARRATION,TRANSACTION_ID,PAYMENT_REF,RESPONSE" +
-						",FIRST_NAME,LAST_NAME,STREET,CITY,COUNTRY,REGION,POSTAL,TELLPHONE,EMAIL,TRANS_DATE,NET_AMOUNT" +
-						" From E_IPAYMENTTRAN where MERCHANT_ID like '"+merchantId.trim()+"%' and TERMINALID like '"+terminalId.trim()+"%' and " +
-						" PAYMENT_REF like '"+paymentRef+"%' and RESPONSE <> '0' and  TRANS_DATE between('"+start_dt+"') and ('"+end_dt+"')   ";	
-			}
-			
-			System.out.println("getIPaymentTransactionReport query " + query);
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-			
-				ipayment = new E_IPAYMENTTRAN();
-				ipayment.setTerminalId(""+result.getObject(1));
-				ipayment.setAmount(""+result.getObject(2));
-				ipayment.setCurrencyCode(""+result.getObject(3));
-				ipayment.setMerchantId(""+result.getObject(4));
-				ipayment.setNarration(""+result.getObject(5));
-				ipayment.setTransactionId(""+result.getObject(6));
-				ipayment.setPaymentRef(""+result.getObject(7));
-				ipayment.setResponse(""+result.getObject(8));
-				ipayment.setFirstname(""+result.getObject(9));
-				ipayment.setLastname(""+result.getObject(10));
-				ipayment.setStreet(""+result.getObject(11));
-				ipayment.setCity(""+result.getObject(12));
-				ipayment.setCountry(""+result.getObject(13));
-				ipayment.setRegion(""+result.getObject(14));
-				ipayment.setPostal(""+result.getObject(15));
-				ipayment.setTellphone(""+result.getObject(16));
-				ipayment.setEmail(""+result.getObject(17));
-				ipayment.setTransDate(""+result.getObject(18));
-				ipayment.setConvertedAmount(""+result.getObject(19));
-				
-				arr.add(ipayment);
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionECard(con, result, result);
-			//closeConnectionEcardDBDemo(con, result);
-		}
-		finally
-		{
-			closeConnectionECard(con, result, result);
-			//closeConnectionEcardDBDemo(con, result);
-		}
-		return arr;
-	}
-	
-	
-	
-	
-	/*Method to return IPayment Transaction Records  */
-	public ArrayList getIPaymentTransactionReportByMerchantCode(String merchantCode,String start_dt,String end_dt )
-	{
-		String query = "";
-		ArrayList arr = new ArrayList();
-		E_IPAYMENTTRAN ipayment = null;
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		
-		
-		try
-		{
-			
-			con = connectToECard();
-			//con = connectToEcardDBDemo();
-			stat = con.createStatement();
-			
-			query = "Select TERMINALID,AMOUNT,CURRENCY_CODE,(select merchant_name from ecarddb..e_merchant where ecarddb..e_merchant.merchant_code = ecarddb..E_IPAYMENTTRAN.merchant_ID)," +
-					"NARRATION,TRANSACTION_ID,PAYMENT_REF,RESPONSE,FIRST_NAME,LAST_NAME,STREET,CITY,COUNTRY,REGION,POSTAL,TELLPHONE,EMAIL,TRANS_DATE,NET_AMOUNT" +
-					" From E_IPAYMENTTRAN where MERCHANT_ID = '"+merchantCode.trim()+"' and " +
-					" TRANS_DATE between('"+start_dt+"') and ('"+end_dt+"') ";
-		
-			
-			System.out.println("getIPaymentTransactionReportByMerchantCode query " + query);
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-			
-				ipayment = new E_IPAYMENTTRAN();
-				ipayment.setTerminalId(""+result.getObject(1));
-				ipayment.setAmount(""+result.getObject(2));
-				ipayment.setCurrencyCode(""+result.getObject(3));
-				ipayment.setMerchantId(""+result.getObject(4));
-				ipayment.setNarration(""+result.getObject(5));
-				ipayment.setTransactionId(""+result.getObject(6));
-				ipayment.setPaymentRef(""+result.getObject(7));
-				ipayment.setResponse(""+result.getObject(8));
-				ipayment.setFirstname(""+result.getObject(9));
-				ipayment.setLastname(""+result.getObject(10));
-				ipayment.setStreet(""+result.getObject(11));
-				ipayment.setCity(""+result.getObject(12));
-				ipayment.setCountry(""+result.getObject(13));
-				ipayment.setRegion(""+result.getObject(14));
-				ipayment.setPostal(""+result.getObject(15));
-				ipayment.setTellphone(""+result.getObject(16));
-				ipayment.setEmail(""+result.getObject(17));
-				ipayment.setTransDate(""+result.getObject(18));
-				ipayment.setConvertedAmount(""+result.getObject(19));
-				
-				arr.add(ipayment);
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			 closeConnectionECard(con, result, result);
-			//closeConnectionEcardDBDemo(con, result);
-		}
-		finally
-		{
-			closeConnectionECard(con, result, result);
-			//closeConnectionEcardDBDemo(con, result);
-		}
-		return arr;
-	}
-	
-	
-	/*Method to return IPayment Transaction Records  */
-	public ArrayList getIPaymentTransactionReportByUser(String emailaddress,String moibleNo,String country,String merchantName )
-	{
-		String query = "";
-		ArrayList arr = new ArrayList();
-		E_IPAYMENTUSERS ipaymentusers = null;  
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		
-		
-		try
-		{
-			
-			con = connectToECard();
-			//con = connectToEcardDBDemo();
-			stat = con.createStatement();
-			
-			query = " select emailAddress,phoneNumber,country,salutation,lastName,firstName,address,city,state,zip, " +
-						" postalCode,password,limitAmount,userStatus,userMaster,userMasterName from E_IPAYMENTUSERS " +
-						" where emailAddress like '"+emailaddress+"%' and phoneNumber like '"+moibleNo+"%' and " +
-						" country like '"+country+"%' and userMasterName like '"+merchantName+"%' ";	
-				
-			System.out.println("getIPaymentTransactionReportByUser query " +query);
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-			
-				ipaymentusers = new E_IPAYMENTUSERS();
-				ipaymentusers.setEmailAddress(""+result.getObject(1));
-				ipaymentusers.setPhoneNumber(""+result.getObject(2));
-				ipaymentusers.setCountry(""+result.getObject(3));
-				ipaymentusers.setSalutation(""+result.getObject(4));
-				ipaymentusers.setLastName(""+result.getObject(5));
-				ipaymentusers.setFirstName(""+result.getObject(6));
-				ipaymentusers.setAddress(""+result.getObject(7));
-				ipaymentusers.setCity(""+result.getObject(8));
-				ipaymentusers.setState(""+result.getObject(9));
-				ipaymentusers.setZip(""+result.getObject(10));
-				ipaymentusers.setPostalCode(""+result.getObject(11));
-				ipaymentusers.setPassword(""+result.getObject(12));
-				ipaymentusers.setLimitAmount(""+result.getObject(13));
-				ipaymentusers.setUserStatus(""+result.getObject(14));
-				ipaymentusers.setUserMaster(""+result.getObject(15));
-				ipaymentusers.setUserMasterName(""+result.getObject(16));
-		
-				arr.add(ipaymentusers);
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionECard(con, result, result);
-			//closeConnectionEcardDBDemo(con, result);
-		}
-		finally
-		{
-			closeConnectionECard(con, result, result);
-			//closeConnectionEcardDBDemo(con, result);
-		}
-		return arr;
-	}
-	
-	
-	
-	
-	/*Method to return IPayment Transaction Records by email  */
-	public ArrayList getIPaymentTransactionReportByEmail(String emailAddress)
-	{
-		String query = "";
-		ArrayList arr = new ArrayList();
-		E_IPAYMENTUSERS ipaymentUsers = null;
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		
-		
-		try
-		{
-			
-			con = connectToECard();
-			//con = connectToEcardDBDemo();
-			stat = con.createStatement();
-			
-			query  = " select firstname,Lastname,phoneNumber,address,city,emailAddress,country,salutation from E_IPAYMENTUSERS where emailAddress ='"+emailAddress+"' ";
-			
-
-			System.out.println("getIPaymentTransactionReportByEmail query " + query);
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-			
-				ipaymentUsers =  new E_IPAYMENTUSERS();
-				ipaymentUsers.setFirstName(""+result.getObject(1));
-				ipaymentUsers.setLastName(""+result.getObject(2));
-				ipaymentUsers.setPhoneNumber(""+result.getObject(3));
-				ipaymentUsers.setAddress(""+result.getObject(4));
-				ipaymentUsers.setCity(""+result.getObject(5));
-				ipaymentUsers.setEmailAddress(""+result.getObject(6));
-				ipaymentUsers.setCountry(""+result.getObject(7));
-				ipaymentUsers.setSalutation(""+result.getObject(8));
-				
-				arr.add(ipaymentUsers);
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionECard(con, result, result);
-			//closeConnectionEcardDBDemo(con, result);
-		}
-		finally
-		{
-			closeConnectionECard(con, result, result);
-			//closeConnectionEcardDBDemo(con, result);
-		}
-		return arr;
-	}
-	
-	/*Method to return IPayment Transaction by Individuals using email address  */
-	public ArrayList getIPaymentTransactionReportByEmailDrillDown(String emailAddres)
-	{
-		String query = "";
-		ArrayList arr = new ArrayList();
-		E_IPAYMENTTRAN ipayment = null;
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		
-		
-		try
-		{
-			
-			con = connectToECard();
-			//con = connectToEcardDBDemo();
-			stat = con.createStatement();
-			
-			query = "Select TERMINALID,AMOUNT,CURRENCY_CODE,(select merchant_name from ecarddb..e_merchant where ecarddb..e_merchant.merchant_code = ecarddb..E_IPAYMENTTRAN.merchant_ID)," +
-					"NARRATION,TRANSACTION_ID,PAYMENT_REF,RESPONSE,POSTAL,TRANS_DATE,NET_AMOUNT" +
-					" From E_IPAYMENTTRAN where EMAIL = '"+emailAddres.trim()+"' ";
-					
-		
-			
-			System.out.println("getIPaymentTransactionReportByMerchantCode query " + query);
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-			
-				ipayment = new E_IPAYMENTTRAN();
-				ipayment.setTerminalId(""+result.getObject(1));
-				ipayment.setAmount(""+result.getObject(2));
-				ipayment.setCurrencyCode(""+result.getObject(3));
-				ipayment.setMerchantId(""+result.getObject(4));
-				ipayment.setNarration(""+result.getObject(5));
-				ipayment.setTransactionId(""+result.getObject(6));
-				ipayment.setPaymentRef(""+result.getObject(7));
-				ipayment.setResponse(""+result.getObject(8));
-				ipayment.setPostal(""+result.getObject(9));
-				ipayment.setTransDate(""+result.getObject(10));
-				ipayment.setConvertedAmount(""+result.getObject(11));
-				
-				arr.add(ipayment);
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionECard(con, result, result);
-			//closeConnectionEcardDBDemo(con, result);
-		}
-		finally
-		{
-			closeConnectionECard(con, result, result);
-			//closeConnectionEcardDBDemo(con, result);
-		}
-		return arr;
-	}
-	
-	/*Method to return IPayment Transaction by Individuals using email address  */
-	public ArrayList getIPaymentMerchantName()
-	{
-		String query = "";
-		ArrayList arr = new ArrayList();
-		E_IPAYMENTTRAN ipayment = null;
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		
-		
-		try
-		{
-			
-			con = connectToECard();
-			//con = connectToEcardDBDemo();
-			stat = con.createStatement();
-			
-			query = "select merchant_name from E_IPAYMERCHANT";
-
-			System.out.println("getIPaymentMerchantName query " + query);
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-			
-				ipayment = new E_IPAYMENTTRAN();
-				ipayment.setMerchantId(""+result.getObject(1));
-				arr.add(ipayment);
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionECard(con, result, result);
-			//closeConnectionEcardDBDemo(con, result);
-		}
-		finally
-		{
-			closeConnectionECard(con, result, result);
-			//closeConnectionEcardDBDemo(con, result);
 		}
 		return arr;
 	}
@@ -14393,473 +11139,6 @@ public class ReportModel
 		return message;
 	}
 	
-	/*Method for getting the transaction of All Payment base on the amount*/
-	public ArrayList getPaymentTransaction(String option, double grt_amount, String transCode, String transCount,String start_dt, String end_dt)
-	{
-		String query = "";
-		ArrayList arr = new ArrayList();
-		E_TRANSACTION transaction;
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		
-		try
-		{
-			con = connectToECard();
-			stat = con.createStatement();
-			
-			if(option.equals("1"))//greater than
-			{
-				
-				if(transCount.trim().length() > 0)
-				{
-					
-					query = "select distinct merchant_code,count(*) Payment_Count,sum(trans_amount) Amount," +
-							" (select merchant_name from e_merchant where e_merchant.merchant_code = e_transaction.merchant_code)" + 
-							" from e_transaction where trans_date between('"+start_dt+"') and ('"+end_dt+"')" +
-							" and trans_code = '"+transCode+"' and trans_amount > "+grt_amount+" group by merchant_code having count(*) = "+transCount+" ";
-					
-
-				    System.out.println("greater than  "+query);
-					result = stat.executeQuery(query);	
-					while(result.next())
-					{
-						transaction = new E_TRANSACTION();
-						
-						transaction.setMerchat_code(""+result.getObject(1));
-						transaction.setCounter(""+result.getObject(2));
-						transaction.setTotal_amount(""+result.getObject(3));
-						transaction.setMerchant_descr(""+result.getObject(4));
-						arr.add(transaction);
-					}
-				}else
-				{
-					
-					query = "select distinct merchant_code,count(*) Payment_Count,sum(trans_amount) Amount," +
-							" (select merchant_name from e_merchant where e_merchant.merchant_code = e_transaction.merchant_code)" + 
-							" from e_transaction where trans_date between('"+start_dt+"') and ('"+end_dt+"')" +
-							" and trans_code = '"+transCode+"' and trans_amount > "+grt_amount+" group by merchant_code ";
-					
-
-				    System.out.println("greater than  "+query);
-					result = stat.executeQuery(query);	
-					while(result.next())
-					{
-						transaction = new E_TRANSACTION();
-						
-						transaction.setMerchat_code(""+result.getObject(1));
-						transaction.setCounter(""+result.getObject(2));
-						transaction.setTotal_amount(""+result.getObject(3));
-						transaction.setMerchant_descr(""+result.getObject(4));
-						arr.add(transaction);
-					}
-					
-				}
-				
-			}
-			else if(option.equals("2"))//lesser than
-			{
-			
-				if(transCode.trim().length() > 0)
-				{
-					query = "select distinct merchant_code,count(*) Payment_Count,sum(trans_amount) Amount," +
-							" (select merchant_name from e_merchant where e_merchant.merchant_code = e_transaction.merchant_code)" + 
-							" from e_transaction where trans_date between('"+start_dt+"') and ('"+end_dt+"')" +
-							" and trans_code = '"+transCode+"' and trans_amount < "+grt_amount+" group by merchant_code having count(*) = "+transCount+" ";
-					
-					
-					   	System.out.println("lesser than  "+query);
-						result = stat.executeQuery(query);	
-						while(result.next())
-						{
-							transaction = new E_TRANSACTION();
-							
-							transaction.setMerchat_code(""+result.getObject(1));
-							transaction.setCounter(""+result.getObject(2));
-							transaction.setTotal_amount(""+result.getObject(3));
-							transaction.setMerchant_descr(""+result.getObject(4));
-							arr.add(transaction);
-						}
-				}
-				else
-				{
-					query = "select distinct merchant_code,count(*) Payment_Count,sum(trans_amount) Amount," +
-							" (select merchant_name from e_merchant where e_merchant.merchant_code = e_transaction.merchant_code)" + 
-							" from e_transaction where trans_date between('"+start_dt+"') and ('"+end_dt+"')" +
-							" and trans_code = '"+transCode+"' and trans_amount < "+grt_amount+" group by merchant_code ";
-					  
-						System.out.println("lesser than  "+query);
-						result = stat.executeQuery(query);	
-						while(result.next())
-						{
-							transaction = new E_TRANSACTION();
-							
-							transaction.setMerchat_code(""+result.getObject(1));
-							transaction.setCounter(""+result.getObject(2));
-							transaction.setTotal_amount(""+result.getObject(3));
-							transaction.setMerchant_descr(""+result.getObject(4));
-							arr.add(transaction);
-						}
-				
-				
-				}
-				
-				
-			}
-			else if(option.equals("3"))//exact
-			{
-				if(transCode.trim().length() > 0)
-				{
-					
-					query = "select distinct merchant_code,count(*) Payment_Count,sum(trans_amount) Amount," +
-							" (select merchant_name from e_merchant where e_merchant.merchant_code = e_transaction.merchant_code)" + 
-							" from e_transaction where trans_date between('"+start_dt+"') and ('"+end_dt+"')" +
-							" and trans_code = '"+transCode+"' and trans_amount = "+grt_amount+" group by merchant_code having count(*) = "+transCount+" ";
-					
-					System.out.println("exact  "+query);
-					result = stat.executeQuery(query);	
-					while(result.next())
-					{
-						transaction = new E_TRANSACTION();
-						
-						transaction.setMerchat_code(""+result.getObject(1));
-						transaction.setCounter(""+result.getObject(2));
-						transaction.setTotal_amount(""+result.getObject(3));
-						transaction.setMerchant_descr(""+result.getObject(4));
-						arr.add(transaction);
-					}
-			
-				}else
-				{
-					query = "select distinct merchant_code,count(*) Payment_Count,sum(trans_amount) Amount," +
-							" (select merchant_name from e_merchant where e_merchant.merchant_code = e_transaction.merchant_code)" + 
-							" from e_transaction where trans_date between('"+start_dt+"') and ('"+end_dt+"')" +
-							" and trans_code = '"+transCode+"' and trans_amount = "+grt_amount+" group by merchant_code ";
-					
-					System.out.println("exact  "+query);
-					result = stat.executeQuery(query);	
-					while(result.next())
-					{
-						transaction = new E_TRANSACTION();
-						
-						transaction.setMerchat_code(""+result.getObject(1));
-						transaction.setCounter(""+result.getObject(2));
-						transaction.setTotal_amount(""+result.getObject(3));
-						transaction.setMerchant_descr(""+result.getObject(4));
-						arr.add(transaction);
-					}
-					
-				}
-				
-						
-			}
-			else
-			{
-				
-				query = "select distinct merchant_code,count(*) Payment_Count,sum(trans_amount) Amount," +
-						" (select merchant_name from e_merchant where e_merchant.merchant_code = e_transaction.merchant_code)" + 
-						" from e_transaction where trans_date between('"+start_dt+"') and ('"+end_dt+"')" +
-						" and trans_code = '"+transCode+"' and trans_amount = "+grt_amount+" group by merchant_code ";
-				
-				
-					System.out.println("deaultt  "+query);
-					result = stat.executeQuery(query);
-					while(result.next())
-					{
-								
-						transaction = new E_TRANSACTION();
-						transaction.setMerchat_code(""+result.getObject(1));
-						transaction.setCounter(""+result.getObject(2));
-						transaction.setTotal_amount(""+result.getObject(3));
-						transaction.setMerchant_descr(""+result.getObject(4));
-						arr.add(transaction);
-
-					}
-				
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionECard(con, result, result);
-		}
-		finally
-		{
-			closeConnectionECard(con, result, result);
-		}
-		return arr;
-	}
-	
-	
-	/*Method for getting the transaction */
-	public ArrayList getPaymentTransaction_Wallet(String option, double grt_amount, String transCode, String transCount,String start_dt, String end_dt)
-	{
-		String query = "";
-		ArrayList arr = new ArrayList();
-		E_TRANSACTION transaction;
-		Connection con = null;
-		Connection con1 = null;
-		Statement stat2 = null;
-				
-		Statement stat = null;
-		ResultSet result = null;
-		ResultSet result1 = null;
-		
-		try
-		{
-			
-			
-			con = connectToECard();
-			stat = con.createStatement();
-			
-			con1 = connectPocketMoniEcardDB(); //.33
-			stat2 = con.createStatement();
-			
-			
-			
-			transaction = new E_TRANSACTION();
-			if(option.equals("1"))//greater than
-			{	
-				
-				if(transCount.trim().length() > 0)
-				{
-					
-				    query = "select distinct card_num,count(*) Payment_Count,sum(trans_amount) Amount " +
-							"from e_transaction where trans_date between('"+start_dt+"') and ('"+end_dt+"') " +
-							"and trans_code = '"+transCode+"' and trans_amount > "+grt_amount+" group by card_num having count(*) = "+transCount+" ";
-
-				    System.out.println("greater than  "+query);
-					result = stat.executeQuery(query);	
-					while(result.next())
-					{
-						transaction = new E_TRANSACTION();
-						transaction.setCard_num(""+result.getObject(1));
-						transaction.setCounter(""+result.getObject(2));
-						transaction.setTrans_amount(""+result.getObject(3));
-						
-						
-						query = "select Firstname,Lastname,Phone from E_CARDHOLDER where Card_num ='"+transaction.getCard_num()+"' ";
-						result1 = stat2.executeQuery(query);
-						System.out.println("lower query  "+query);
-						if(result1.next())
-						{
-							transaction.setFirstname(""+result1.getObject(1));
-							transaction.setLastname(""+result1.getObject(2));
-							transaction.setPhone(""+result1.getObject(3));
-							arr.add(transaction);
-							
-						}
-					}
-										
-				}
-				else
-				{
-					
-						query = "select distinct card_num,count(*) Payment_Count,sum(trans_amount) Amount " +
-								"from e_transaction where trans_date between('"+start_dt+"') and ('"+end_dt+"') " +
-								"and trans_code = '"+transCode+"' and trans_amount > "+grt_amount+" group by card_num ";
-
-					    System.out.println("greater than  "+query);
-						result = stat.executeQuery(query);	
-						while(result.next())
-						{
-							transaction = new E_TRANSACTION();    
-							transaction.setCard_num(""+result.getObject(1));
-							transaction.setCounter(""+result.getObject(2));
-							transaction.setTrans_amount(""+result.getObject(3));
-						
-							query = "select Firstname,Lastname,Phone from E_CARDHOLDER where Card_num ='"+transaction.getCard_num()+"' ";
-							System.out.println("second query   "+query);
-							result1 = stat2.executeQuery(query);
-							if(result1.next())
-							{
-								transaction.setFirstname(""+result1.getObject(1));
-								transaction.setLastname(""+result1.getObject(2));
-								transaction.setPhone(""+result1.getObject(3));
-								arr.add(transaction);
-								
-							}
-						}	
-					
-				}
-				
-			}
-			else if(option.equals("2"))//lesser than
-			{
-			
-				if(transCode.trim().length() > 0)
-				{
-					
-					
-					query = "select distinct card_num,count(*) Payment_Count,sum(trans_amount) Amount " +
-							"from e_transaction where trans_date between('"+start_dt+"') and ('"+end_dt+"') " +
-							"and trans_code = '"+transCode+"' and trans_amount < "+grt_amount+" group by card_num having count(*) = "+transCount+" ";
-
-				    System.out.println("lesser than  "+query);
-					result = stat.executeQuery(query);	
-					while(result.next())
-					{
-						transaction = new E_TRANSACTION();
-						transaction.setCard_num(""+result.getObject(1));
-						transaction.setCounter(""+result.getObject(2));
-						transaction.setTrans_amount(""+result.getObject(3));
-						
-						
-						query = "select Firstname,Lastname,Phone from E_CARDHOLDER where Card_num ='"+transaction.getCard_num()+"' ";
-						result1 = stat2.executeQuery(query);
-						if(result1.next())
-						{
-							transaction.setFirstname(""+result1.getObject(1));
-							transaction.setLastname(""+result1.getObject(2));
-							transaction.setPhone(""+result1.getObject(3));
-							arr.add(transaction);
-							
-						}
-					}
-				}
-				else
-				{
-					query = "select distinct card_num,count(*) Payment_Count,sum(trans_amount) Amount " +
-							"from e_transaction where trans_date between('"+start_dt+"') and ('"+end_dt+"') " +
-							"and trans_code = '"+transCode+"' and trans_amount > "+grt_amount+" group by card_num ";
-
-				    System.out.println("lesser than  "+query);
-					result = stat.executeQuery(query);	
-					while(result.next())
-					{
-						transaction = new E_TRANSACTION();
-						transaction.setCard_num(""+result.getObject(1));
-						transaction.setCounter(""+result.getObject(2));
-						transaction.setTrans_amount(""+result.getObject(3));
-						
-						
-						query = "select Firstname,Lastname,Phone from E_CARDHOLDER where Card_num ='"+transaction.getCard_num()+"' ";
-						result1 = stat2.executeQuery(query);
-						if(result1.next())
-						{
-							transaction.setFirstname(""+result1.getObject(1));
-							transaction.setLastname(""+result1.getObject(2));
-							transaction.setPhone(""+result1.getObject(3));
-							arr.add(transaction);
-							
-						}
-					}	
-				
-				
-				}
-				
-				
-			}
-			else if(option.equals("3"))//exact
-			{
-				if(transCode.trim().length() > 0)
-				{
-					
-					
-					query = "select distinct card_num,count(*) Payment_Count,sum(trans_amount) Amount " +
-							"from e_transaction where trans_date between('"+start_dt+"') and ('"+end_dt+"') " +
-							"and trans_code = '"+transCode+"' and trans_amount = "+grt_amount+" group by card_num having count(*) = "+transCount+" ";
-
-				    System.out.println("exact  "+query);
-					result = stat.executeQuery(query);	
-					while(result.next())
-					{
-						transaction = new E_TRANSACTION();
-						transaction.setCard_num(""+result.getObject(1));
-						transaction.setCounter(""+result.getObject(2));
-						transaction.setTrans_amount(""+result.getObject(3));
-						
-						
-						query = "select Firstname,Lastname,Phone from E_CARDHOLDER where Card_num ='"+transaction.getCard_num()+"' ";
-						result1 = stat2.executeQuery(query);
-						if(result1.next())
-						{
-							transaction.setFirstname(""+result1.getObject(1));
-							transaction.setLastname(""+result1.getObject(2));
-							transaction.setPhone(""+result1.getObject(3));
-							arr.add(transaction);
-							
-						}
-					}
-			
-				}else
-				{
-					
-
-					query = "select distinct card_num,count(*) Payment_Count,sum(trans_amount) Amount " +
-							"from e_transaction where trans_date between('"+start_dt+"') and ('"+end_dt+"') " +
-							"and trans_code = '"+transCode+"' and trans_amount = "+grt_amount+" group by card_num ";
-
-				    System.out.println("greater than  "+query);
-					result = stat.executeQuery(query);	
-					while(result.next())
-					{
-						transaction = new E_TRANSACTION();
-						transaction.setCard_num(""+result.getObject(1));
-						transaction.setCounter(""+result.getObject(2));
-						transaction.setTrans_amount(""+result.getObject(3));
-						
-						
-						query = "select Firstname,Lastname,Phone from E_CARDHOLDER where Card_num ='"+transaction.getCard_num()+"' ";
-						result1 = stat2.executeQuery(query);
-						if(result1.next())
-						{
-							transaction.setFirstname(""+result1.getObject(1));
-							transaction.setLastname(""+result1.getObject(2));
-							transaction.setPhone(""+result1.getObject(3));
-							arr.add(transaction);
-							
-						}
-					}	
-				}
-				
-						
-			}
-			else
-			{
-				
-				query = "select distinct card_num,count(*) Payment_Count,sum(trans_amount) Amount " +
-						"from e_transaction where trans_date between('"+start_dt+"') and ('"+end_dt+"') " +
-						"and trans_code = '"+transCode+"' and trans_amount = "+grt_amount+" group by card_num ";
-
-			    System.out.println("greater than  "+query);
-				result = stat.executeQuery(query);	
-				while(result.next())
-				{
-					transaction = new E_TRANSACTION();
-					transaction.setCard_num(""+result.getObject(1));
-					transaction.setCounter(""+result.getObject(2));
-					transaction.setTrans_amount(""+result.getObject(3));
-					
-					
-					query = "select Firstname,Lastname,Phone from E_CARDHOLDER where Card_num ='"+transaction.getCard_num()+"' ";
-					result1 = stat2.executeQuery(query);
-					if(result1.next())
-					{
-						transaction.setFirstname(""+result1.getObject(1));
-						transaction.setLastname(""+result1.getObject(2));
-						transaction.setPhone(""+result1.getObject(3));
-						arr.add(transaction);
-						
-					}
-				}	
-				
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionECard(con, result, result);
-			closeConnectionPocketMoniEcardDB(con1, result1);
-			
-		}
-		finally
-		{
-			closeConnectionECard(con, result, result);
-			closeConnectionPocketMoniEcardDB(con1, result1);
-		}
-		return arr;
-	}
 	
 	/*Method to get E_Exception*/
 	public ArrayList getE_EXCEPTIONByPan(String pan)
@@ -14978,13 +11257,11 @@ public class ReportModel
 		
 		try
 		{
-			
-			con = connectToECard();
+			con = connectToBackUpECard();
 			stat = con.createStatement();
 			
 			
-			
-			query = "select trans_no, card_num, merchant_code, (select f_name from ecarddb..e_transcode where f_code = ecarddb..e_transaction.trans_code), trans_descr, (select channel_name from ecarddb..e_channel where channel_id = ecarddb..e_transaction.channelid), trans_date, transid, " +
+			query = "select trans_no, card_num, merchant_code, (select f_name from ecarddb..e_transcode where f_code = ecarddb..e_transaction.trans_code), trans_descr, (select channel_name from ecarddb..e_channel where channel_id = ecarddb..e_transaction.channelid), trans_date, " +
 					"case when" +
 						" card_num='"+card_num+"' " +
 					"then -1*trans_amount " +
@@ -14993,7 +11270,7 @@ public class ReportModel
 					"end" +
 					" from ecarddb..e_transaction " +
 					"where (card_num='"+card_num+"' or merchant_code = '"+card_num+"') " +
-					"and trans_date between('"+start_dt+"') and ('"+end_dt+"') order by trans_date desc";
+					"and trans_date between('"+start_dt+"') and ('"+end_dt+"') order by trans_date";
 			
 			
 			System.out.println("getCardHolderTransactions query " + query);
@@ -15010,9 +11287,8 @@ public class ReportModel
 				tran.setTrans_desc(""+result.getObject(5));
 				tran.setChannelid(""+result.getObject(6));
 				tran.setTrans_date(""+result.getObject(7));
-				tran.setTransid(""+result.getObject(8));
 				
-				d = Double.parseDouble(""+result.getObject(9));
+				d = Double.parseDouble(""+result.getObject(8));
 				if(d > 0)
 				{
 					tran.setCreditAmt(""+d);
@@ -15031,11 +11307,11 @@ public class ReportModel
 		catch(Exception ex)
 		{
 			ex.printStackTrace();
-			closeConnectionECard(con, result, result);
+			closeConnectionBackUpEcard(con, result, result);
 		}
 		finally
 		{
-			closeConnectionECard(con, result, result);
+			closeConnectionBackUpEcard(con, result, result);
 		}
 		return arr;
 	}
@@ -15252,25 +11528,25 @@ public class ReportModel
 				"end" +
 				" from ecarddb..e_transaction " +
 				"where (card_num='"+card_num+"' or merchant_code = '"+card_num+"') " +
-				"and trans_date between('"+start_dt+"') and ('"+end_dt+"') order by trans_date desc";
+				"and trans_date between('"+start_dt+"') and ('"+end_dt+"') order by trans_date";
 				
 				System.out.println("getMerchantTransactions local query " + query);
 			}
 			else//INTERNATIONAL
 			{
-				con = connectToECard();
+				con = connectIntnlECard();
 				stat = con.createStatement();
 				
-				query = "select trans_no, card_num, merchant_code, trans_code, trans_descr, (select channel_name from ecarddb..e_channel where channel_id = ecarddb..e_transactionipay.channelid), trans_date, " +
+				query = "select trans_no, card_num, merchant_code, trans_code, trans_descr, (select channel_name from ecarddb..e_channel where channel_id = ecarddb..e_transaction.channelid), trans_date, " +
 				"case when" +
 					" card_num='"+card_num+"' " +
 				"then -1*trans_amount " +
 				"else" +
 					" trans_amount " +
 				"end" +
-				" from ecarddb..e_transactionipay  " +
+				" from ecarddb..e_transaction " +
 				"where (card_num='"+card_num+"' or merchant_code = '"+card_num+"') " +
-				"and trans_date between('"+start_dt+"') and ('"+end_dt+"') order by trans_date desc";
+				"and trans_date between('"+start_dt+"') and ('"+end_dt+"') order by trans_date";
 				
 				System.out.println("getMerchantTransactions intl query " + query);
 			}
@@ -15324,155 +11600,6 @@ public class ReportModel
 	
 	
 	
-
-	/*Method to get Transactions based on an international merchant_code*/
-	public ArrayList getMerchantTransactions2(String type, String card_num,String currencyType,String start_dt, String end_dt)
-	{
-		String query = "";
-		ArrayList arr = new ArrayList();
-		E_TRANSACTION tran = null;
-		E_IPAYMENTTRAN ipayment = null;
-		int counter = 0;
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		double d = 0.0;
-		String str = "";
-		
-		String apostrophe = "'";
-		
-		
-		try
-		{
-			
-			
-			if(card_num.indexOf(":")>0)
-			{
-				String m[] = card_num.split(":");
-				card_num = "";
-				for(int i=0;i<m.length;i++)
-				{
-					card_num += apostrophe + m[i] + apostrophe + ",";
-				}
-				
-				card_num = card_num.substring(0, card_num.lastIndexOf(","));
-			}
-			else
-			{
-				card_num = apostrophe + card_num + apostrophe;
-			}
-			
-			if(type.equals("1"))//LOCAL
-			{
-				
-				con = connectToECard();
-				stat = con.createStatement();
-				
-				query = "select trans_no, card_num, merchant_code, trans_code, trans_descr, (select channel_name from ecarddb..e_channel where channel_id = ecarddb..e_transaction.channelid), trans_date, " +
-				"case when" +
-					" card_num in("+card_num+") " +
-				"then -1*trans_amount " +
-				"else" +
-					" trans_amount " +
-				"end" +
-				" from ecarddb..e_transaction " +
-				"where (card_num in("+card_num+") or merchant_code in("+card_num+")) " +
-				"and trans_date between('"+start_dt+"') and ('"+end_dt+"') order by trans_date desc";
-				
-				System.out.println("getMerchantTransactions local query " + query);
-				result = stat.executeQuery(query);
-				while(result.next())
-				{
-					counter++;
-					tran = new E_TRANSACTION();
-					tran.setCounter(""+counter);
-					tran.setTrans_no(""+result.getObject(1));
-					tran.setCard_num(""+result.getObject(2));
-					tran.setMerchat_code(""+result.getObject(3));
-					tran.setTrans_code(""+result.getObject(4));
-					tran.setTrans_desc(""+result.getObject(5));
-					tran.setChannelid(""+result.getObject(6));
-					tran.setTrans_date(""+result.getObject(7));
-					
-					d = Double.parseDouble(""+result.getObject(8));
-					if(d > 0)
-					{
-						tran.setCreditAmt(""+d);
-						tran.setDebitAmt("");
-						
-					}
-					else
-					{
-						str = ""+d;
-						tran.setDebitAmt(str.substring(str.lastIndexOf("-")+1));
-						tran.setCreditAmt("");
-					}
-						
-					arr.add(tran);
-				}
-			}
-			else if(type.equals("2"))//INTERNATIONAL
-			{
-				//con = connectToEcardDBDemo();
-				con = connectToECard();
-				stat = con.createStatement();
-				
-				query = "Select TERMINALID,AMOUNT,CURRENCY_CODE,(select merchant_name from ecarddb..e_merchant where ecarddb..e_merchant.merchant_code = ecarddb..E_IPAYMENTTRAN.merchant_ID),NARRATION,TRANSACTION_ID,PAYMENT_REF,RESPONSE" +
-						",FIRST_NAME,LAST_NAME,STREET,CITY,COUNTRY,REGION,POSTAL,TELLPHONE,EMAIL,TRANS_DATE, NET_AMOUNT " +
-						" From E_IPAYMENTTRAN where MERCHANT_ID ="+card_num.trim()+" and RESPONSE = '0' and CURRENCY_CODE like '"+currencyType+"%' " +
-						" and TRANS_DATE between('"+start_dt+"') and ('"+end_dt+"')   ";
-				
-				System.out.println("getMerchantTransactions International  query " + query);
-				result = stat.executeQuery(query);
-				while(result.next())
-				{
-				
-					ipayment = new E_IPAYMENTTRAN();
-					ipayment.setTerminalId(""+result.getObject(1)); 
-					ipayment.setAmount(""+result.getObject(2));
-					ipayment.setCurrencyCode(""+result.getObject(3));
-					ipayment.setMerchantId(""+result.getObject(4));
-					ipayment.setNarration(""+result.getObject(5));
-					ipayment.setTransactionId(""+result.getObject(6));
-					ipayment.setPaymentRef(""+result.getObject(7));
-					ipayment.setResponse(""+result.getObject(8));
-					ipayment.setFirstname(""+result.getObject(9));
-					ipayment.setLastname(""+result.getObject(10));
-					ipayment.setStreet(""+result.getObject(11));
-					ipayment.setCity(""+result.getObject(12));
-					ipayment.setCountry(""+result.getObject(13));
-					ipayment.setRegion(""+result.getObject(14));
-					ipayment.setPostal(""+result.getObject(15));
-					ipayment.setTellphone(""+result.getObject(16));
-					ipayment.setEmail(""+result.getObject(17));
-					ipayment.setTransDate(""+result.getObject(18));
-					ipayment.setConvertedAmount(""+result.getObject(19));
-					
-
-					arr.add(ipayment);
-				}
-				
-			}
-			
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			//closeConnectionIntnlEcard(con, result);
-			closeConnectionECard(con, result, result);
-			//closeConnectionEcardDBDemo(con, result);
-		}
-		finally
-		{
-			//closeConnectionIntnlEcard(con, result);
-			closeConnectionECard(con, result, result);
-			//closeConnectionEcardDBDemo(con, result);
-		}
-		return arr;
-	}
-	
-	
-	
 	
 	/*Method to get Transactions based on a merchant_code*/
 	public ArrayList getOnlyMerchantTransactions(String card_num, String start_dt, String end_dt)
@@ -15499,160 +11626,6 @@ public class ReportModel
 					" (select channel_name from ecarddb..e_channel where channel_id = ecarddb..e_transaction.channelid), trans_date, trans_amount" +
 					" from ecarddb..e_transaction " +
 					"where (card_num='"+card_num+"' or merchant_code = '"+card_num+"') " +
-					"and trans_date between('"+start_dt+"') and ('"+end_dt+"') order by trans_date";
-			
-			System.out.println("getOnlyMerchantTransactions query " + query);
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-				counter++;
-				tran = new E_TRANSACTION();
-				tran.setCounter(""+counter);
-				tran.setTrans_no(""+result.getObject(1));
-				tran.setCard_num(""+result.getObject(2));
-				tran.setMerchat_code(""+result.getObject(3));
-				tran.setTrans_code(""+result.getObject(4));
-				tran.setTrans_desc(""+result.getObject(5));
-				tran.setMerchant_descr(""+result.getObject(6));
-				tran.setChannelid(""+result.getObject(7));
-				tran.setTrans_date(""+result.getObject(8));
-				tran.setTrans_amount(""+result.getObject(9));
-				arr.add(tran);
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionECard(con, result, result);
-		}
-		finally
-		{
-			closeConnectionECard(con, result, result);
-		}
-		return arr;
-	}
-	
-	/*Method to get Transactions based on a merchant_code*/
-	public ArrayList getMerchantTransactionsTripMart(String merchantcode, String start_dt, String end_dt)
-	{
-		String query = "";
-		ArrayList arr = new ArrayList();
-		E_TRANSACTION tran = null;
-		int counter = 0;
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		double d = 0.0;
-		String str = "";
-		String apostrophe = "'";
-		
-		
-		try
-		{
-			
-			
-			
-			con = connectToECard();
-			stat = con.createStatement();
-			
-			
-			if(merchantcode.indexOf(":")>0)
-			{
-				String m[] = merchantcode.split(":");
-				merchantcode = "";
-				for(int i=0;i<m.length;i++)
-				{
-					merchantcode += apostrophe + m[i] + apostrophe + ",";
-				}
-				
-				merchantcode = merchantcode.substring(0, merchantcode.lastIndexOf(","));
-			}
-			else
-			{
-				merchantcode = apostrophe + merchantcode + apostrophe;
-			}
-			
-			
-			query = "select trans_no, card_num, merchant_code, trans_code, trans_descr," +
-					" (select merchant_name from ecarddb..e_merchant where e_merchant.merchant_code = ecarddb..e_transaction.card_num)," + 	
-					" (select channel_name from ecarddb..e_channel where channel_id = ecarddb..e_transaction.channelid), trans_date, trans_amount" +
-					" from ecarddb..e_transaction " +
-					"where (card_num in("+merchantcode+") or merchant_code in("+merchantcode+")) " +
-					"and trans_date between('"+start_dt+"') and ('"+end_dt+"') order by trans_date";
-			
-			System.out.println("getOnlyMerchantTransactions query " + query);
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-				counter++;
-				tran = new E_TRANSACTION();
-				tran.setCounter(""+counter);
-				tran.setTrans_no(""+result.getObject(1));
-				tran.setCard_num(""+result.getObject(2));
-				tran.setMerchat_code(""+result.getObject(3));
-				tran.setTrans_code(""+result.getObject(4));
-				tran.setTrans_desc(""+result.getObject(5));
-				tran.setMerchant_descr(""+result.getObject(6));
-				tran.setChannelid(""+result.getObject(7));
-				tran.setTrans_date(""+result.getObject(8));
-				tran.setTrans_amount(""+result.getObject(9));
-				arr.add(tran);
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionECard(con, result, result);
-		}
-		finally
-		{
-			closeConnectionECard(con, result, result);
-		}
-		return arr;
-	}
-	
-	
-	/*Method to get Transactions based on a list of merchant_code*/
-	public ArrayList getMerchantTransaction(String merchantcode, String start_dt, String end_dt)
-	{
-		String query = "";
-		ArrayList arr = new ArrayList();
-		E_TRANSACTION tran = null;
-		int counter = 0;
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		double d = 0.0;
-		String str = "";
-		String apostrophe = "'";
-		
-		try
-		{
-			con = connectToECard();
-			stat = con.createStatement();
-			
-			if(merchantcode.indexOf(":")>0)
-			{
-				String m[] = merchantcode.split(":");
-				merchantcode = "";
-				for(int i=0;i<m.length;i++)
-				{
-					merchantcode += apostrophe + m[i] + apostrophe + ",";
-				}
-				
-				merchantcode = merchantcode.substring(0, merchantcode.lastIndexOf(","));
-			}
-			else
-			{
-				merchantcode = apostrophe + merchantcode + apostrophe;
-			}
-			
-			
-			query = "select trans_no, card_num, merchant_code, trans_code, trans_descr," +
-					" (select merchant_name from ecarddb..e_merchant where e_merchant.merchant_code = ecarddb..e_transaction.card_num)," + 	
-					" (select channel_name from ecarddb..e_channel where channel_id = ecarddb..e_transaction.channelid), trans_date, trans_amount" +
-					" from ecarddb..e_transaction " +
-					"where (card_num in("+merchantcode+") or merchant_code in("+merchantcode+")) " +
 					"and trans_date between('"+start_dt+"') and ('"+end_dt+"') order by trans_date";
 			
 			System.out.println("getOnlyMerchantTransactions query " + query);
@@ -15774,16 +11747,10 @@ public class ReportModel
 			{
 				if(type.equals("0"))//successful
 				{
-					/*query = "select sum(fee), count(*), sum(trans_amount), card_num from e_transaction where trans_code = 'T' " +
+					query = "select sum(fee), count(*), sum(trans_amount), card_num from e_transaction where trans_code = 'T' " +
 					" and channelid in ('07') and substring(card_num, 1,6) like '084889%' and" +
-					" card_num like '"+card_num+"%' and trans_date between('"+start_dt+"') and ('"+end_dt+"') group by card_num ";*/
-					//701889
-					query = "select sum(fee), count(*), sum(trans_amount), card_num from e_settlement_download_bk where trans_code = 'T' " +
-							" and channelid in ('07')" +
-							" and (substring(card_num, 1,6) like '084889%' or substring(card_num, 1,6) like '710889%' or card_num like '0350921206010012%') and" +
-							" card_num like '"+card_num+"%' and trans_date between('"+start_dt+"') and ('"+end_dt+"') group by card_num ";
-					
-					
+					" card_num like '"+card_num+"%' and trans_date between('"+start_dt+"') and ('"+end_dt+"') group by card_num ";
+			
 					System.out.println("getMerchantTransactions query " + query);
 					result = stat.executeQuery(query);
 					while(result.next())
@@ -15822,16 +11789,10 @@ public class ReportModel
 			{
 				if(type.equals("0"))//successful
 				{
-					/*query = "select sum(fee), count(*), sum(trans_amount), card_num from e_transaction where trans_code = 'T' " +
+					query = "select sum(fee), count(*), sum(trans_amount), card_num from e_transaction where trans_code = 'T' " +
 					" and channelid in ('09') and substring(card_num, 1,6) like '084889%' and" +
 					" card_num like '"+card_num+"%' and trans_date between('"+start_dt+"') and ('"+end_dt+"') group by card_num ";
-			*/
-					query = "select sum(fee), count(*), sum(trans_amount), card_num from e_settlement_download_bk where trans_code = 'T' " +
-							" and channelid in ('09') and (substring(card_num, 1,6) like '084889%' or substring(card_num, 1,6) like '710889%' or card_num like '0350921206010012%') and" +
-							" card_num like '"+card_num+"%' and trans_date between('"+start_dt+"') and ('"+end_dt+"') group by card_num ";
-					
-					
-					
+			
 					System.out.println("getMerchantTransactions query " + query);
 					result = stat.executeQuery(query);
 					while(result.next())
@@ -15870,14 +11831,9 @@ public class ReportModel
 			{
 				if(type.equals("0"))//successful
 				{
-					/*query = "select sum(fee), count(*), sum(trans_amount), card_num from e_transaction where trans_code = 'T' " +
+					query = "select sum(fee), count(*), sum(trans_amount), card_num from e_transaction where trans_code = 'T' " +
 					" and channelid in ('07','09','17') and substring(card_num, 1,6) like '084889%' and" +
-					" card_num like '"+card_num+"%' and trans_date between('"+start_dt+"') and ('"+end_dt+"') group by card_num ";*/
-					
-					query = "select sum(fee), count(*), sum(trans_amount), card_num from e_settlement_download_bk where trans_code = 'T' " +
-							" and channelid in ('07','09','17','01')" +
-							" and (substring(card_num, 1,6) like '084889%' or substring(card_num, 1,6) like '710889%' or card_num like '0350921206010012%') and" +
-							" card_num like '"+card_num+"%' and trans_date between('"+start_dt+"') and ('"+end_dt+"') group by card_num ";
+					" card_num like '"+card_num+"%' and trans_date between('"+start_dt+"') and ('"+end_dt+"') group by card_num ";
 			
 					System.out.println("getMerchantTransactions query " + query);
 					result = stat.executeQuery(query);
@@ -15945,17 +11901,10 @@ public class ReportModel
 			con = connectToECard();
 			stat = con.createStatement();
 			
-			/*query = "select trans_date, fee, trans_amount, card_num, trans_ref," +
+			query = "select trans_date, fee, trans_amount, card_num, trans_ref," +
 					" substring(merchant_code, 1,3) from e_transaction where trans_code = 'T'" +
 			" and channelid in ('07','09','17') and trans_date between('"+start_dt+"') and ('"+end_dt+"') and card_num = '"+card_num+"' ";
-	*/
-			
-			query = "select trans_date, fee, trans_amount, card_num, trans_ref," +
-					" substring(merchant_code, 1,3) from e_settlement_download_bk where trans_code = 'T'" +
-			" and channelid in ('07','09','17','01') and trans_date between('"+start_dt+"') and ('"+end_dt+"') and card_num = '"+card_num+"' ";
 	
-			
-			
 			System.out.println("getMerchantTransactions query " + query);
 			result = stat.executeQuery(query);
 			while(result.next())
@@ -16007,7 +11956,7 @@ public class ReportModel
 			if(status.equals("0"))//successful
 			{
 				query = "select sum(fee), count(*), sum(trans_amount) from e_transaction where trans_code = 'T' " +
-				" and channelid in ('07','09','17','01') and (substring(card_num, 1,6) like '084889%' or substring(card_num, 1,6) like '710889%' or card_num like '0350921206010012%') ";
+				" and channelid in ('07','09','17') and substring(card_num, 1,6) like '084889%' ";
 		
 				System.out.println("getMTOSummaryDetails query " + query);
 				result = stat.executeQuery(query);
@@ -16034,87 +11983,6 @@ public class ReportModel
 		}
 		return arr;
 	}
-	
-	
-	
-
-	/* Failed fund Transaction reports for bank_code 057 */
-	public ArrayList getFailedFundTransactionReportByBank(String bankCode,String start_dt, String end_dt)
-	{
-		String query = "";
-		ArrayList arr = new ArrayList();
-		REQUEST_LOG request_log;
-		int counter = 0;
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		
-		try
-		{
-			con = connectToECard();
-			stat = con.createStatement();
-
-			query = "select TRANSID,CARD_NUM,TRANS_DATE,TRANS_AMOUNT,TRANS_CODE," +
-			"MERCHANT_CODE," +
-			"(select e_autoswitch_error.error_desc from e_autoswitch_error where e_autoswitch_error.error_code = e_requestlog.response_code)," +
-			"(select E_MERCHANT.MERCHANT_NAME from E_MERCHANT where E_MERCHANT.MERCHANT_CODE = e_requestlog.MERCHANT_CODE)," +
-			" RESPONSE_TIME,TRANS_DESCR,client_id," +
-			" REQUEST_ID,FEE,CURRENCY,datediff(ss,response_time,trans_date)" +
-			" from e_requestlog where merchant_code like '"+bankCode+"%' and card_num not like '"+bankCode+"%' and " +
-			" trans_date between('"+start_dt+"') and ('"+end_dt+"') and response_code <> '0' " +
-			" order by trans_date desc";
-			
-			System.out.println("getFailedFundsTransferByErrorCode " + query);
-			
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-				request_log = new REQUEST_LOG();
-				request_log.setCounter(""+counter);
-				request_log.setTransid(""+result.getObject(1));
-				request_log.setCard_num(""+result.getObject(2));
-				request_log.setTrans_date(""+result.getObject(3));
-				request_log.setTrans_amount(""+result.getObject(4));
-				request_log.setTrans_code(""+result.getObject(5));
-				
-				String s = ""+result.getObject(6);
-				if(s.equals("")||s.equals("null"))
-					s = "";
-				request_log.setMerchant_code(s);
-				
-				request_log.setResponse_code(""+result.getObject(7));
-				String merchantDesc = ""+result.getObject(8);
-				if(merchantDesc.equals("")||merchantDesc.equals("null"))
-					merchantDesc = "";
-				request_log.setMerchant_desc(merchantDesc);
-				request_log.setResponse_time(""+result.getObject(9));
-				request_log.setTrans_descr(""+result.getObject(10));
-				request_log.setClient_id(""+result.getObject(11));
-				request_log.setRequest_id(""+result.getObject(12));
-				request_log.setFee(""+result.getObject(13));
-				request_log.setCurrency(""+result.getObject(14));
-				
-				s = ""+result.getObject(15);
-				if(s.equals("")||s.equals("null"))
-					s = "";
-				
-				request_log.setResponse_time_in_secs(s);
-				
-				arr.add(request_log);
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionECard(con, result, result);
-		}
-		finally
-		{
-			closeConnectionECard(con, result, result);
-		}
-		return arr;
-	}
-	
 	
 	public ArrayList getRequestLogData(String start_dt, String end_dt)
 	{
@@ -16207,275 +12075,6 @@ public class ReportModel
 		return arr;
 	}
 	
-	
-	/*This method is getting comapany account number By company Code*/
-	public String  getCompanyAccountNumberByCompanyCode(String companycode)
-	{
-				
-		String query = "";
-	
-		Company company = null;
-		Connection con = null;
-		String message = "";	
-		Statement stat = null;
-		ResultSet result = null;
-		
-		try
-		{
-			 con = connectToTelco();
-			 stat = con.createStatement();
-			
-			query =  "select bankAccount from company where compCode = '"+companycode+"' ";
-
-			System.out.println("query "+query);
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-				message = ""+result.getObject(1);
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionTelco(con, result);
-		}
-		finally
-		{
-		
-			closeConnectionTelco(con, result);	
-		}
-		return message;
-		
-	}
-	
-	
-	/*This method is getting comapany bank By company Code*/
-	public String  getCompanyBankByCompanyCode(String companycode)
-	{
-				
-		String query = "";
-	
-		Company company = null;
-		Connection con = null;
-		String message = "";	
-		Statement stat = null;
-		ResultSet result = null;
-		
-		try
-		{
-			 con = connectToTelco();
-			 stat = con.createStatement();
-			
-			query =  "select Bank from company where compCode = '"+companycode+"' ";
-
-			System.out.println("query "+query);
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-				message = ""+result.getObject(1);
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionTelco(con, result);
-		}
-		finally
-		{
-		
-			closeConnectionTelco(con, result);	
-		}
-		return message;
-		
-	}
-	
-	/*Method to delete comapany*/
-	public String deleteCompany(String companyId)
-	{
-		String query = "";
-		String message = "";
-		ArrayList arr = new ArrayList();
-		int output = -1;
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		
-
-		try
-		{
-			con = connectToTelco();
-			stat = con.createStatement();
-
-			query = " delete from company where company_id = "+companyId+" ";
-			
-			System.out.println("delete Company query " + query);
-			output = stat.executeUpdate(query);
-			if(output > 0)
-			{
-				message = "SUCCESS";
-				con.commit();
-			}
-			else
-			{
-				message = "FAILED";
-				con.rollback();
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionTelco(con, result);
-		}
-		finally
-		{
-			closeConnectionTelco(con, result);
-		
-		}
-		return message;
-	}
-	
-	
-	/*Method to delete Pool Account*/
-	public String deletePoolAccount(String companyId)
-	{
-		String query = "";
-		String message = "";
-		ArrayList arr = new ArrayList();
-		int output = -1;
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		
-
-		try
-		{
-			con = connectToTelco();
-			stat = con.createStatement();
-
-			query = " delete from pool_accounts where company_id = "+companyId+" ";
-			
-			System.out.println("delete Company query " + query);
-			output = stat.executeUpdate(query);
-			if(output > 0)
-			{
-				message = "SUCCESS";
-				con.commit();
-			}
-			else
-			{
-				message = "FAILED";
-				con.rollback();
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionTelco(con, result);
-		}
-		finally
-		{
-			closeConnectionTelco(con, result);
-		
-		}
-		return message;
-	}
-	
-	
-	/*Method to delete  Account Info*/
-	public String deleteAccountInfo(String companyId)
-	{
-		String query = "";
-		String message = "";
-		ArrayList arr = new ArrayList();
-		int output = -1;
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		
-
-		try
-		{
-			con = connectToTelco();
-			stat = con.createStatement();
-
-			query = " delete from accountInfo where company_id = "+companyId+" ";
-			
-			System.out.println("delete accountInfo query " + query);
-			output = stat.executeUpdate(query);
-			if(output > 0)
-			{
-				message = "SUCCESS";
-				con.commit();
-			}
-			else
-			{
-				message = "FAILED";
-				con.rollback();
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionTelco(con, result);
-		}
-		finally
-		{
-			closeConnectionTelco(con, result);
-		
-		}
-		return message;
-	}
-	
-	
-	
-	/*Method to disable Pool Account*/
-	public String disablePoolAccount(String companyId)
-	{
-		String query = "";
-		String message = "";
-		ArrayList arr = new ArrayList();
-		int output = -1;
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		
-
-		try
-		{
-			con = connectToTelco();
-			stat = con.createStatement();
-
-			query = " update pool_accounts set active_status ='0' where company_id = "+companyId+" ";
-			
-			System.out.println("disablePoolAccount query " + query);
-			output = stat.executeUpdate(query);
-			if(output > 0)
-			{
-				message = "SUCCESS";
-				con.commit();
-			}
-			else
-			{
-				message = "FAILED";
-				con.rollback();
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionTelco(con, result);
-		}
-		finally
-		{
-			closeConnectionTelco(con, result);
-		
-		}
-		return message;
-	}
-	
-	
-	
-	
 	/*Method to delete the exception*/
 	public String deleteE_EXCEPTION(String pan, String date)
 	{
@@ -16520,50 +12119,7 @@ public class ReportModel
 		return message;
 	}
 	
-	/*Method to delete scheme*/
-	public String deleteScheme(String schemeI)
-	{
-		String query = "";
-		String message = "";
-		ArrayList arr = new ArrayList();
-		int output = -1;
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		
-
-		try
-		{
-			con = connectToECard();
-			stat = con.createStatement();
-			
-		
-			query = " delete from e_cardscheme where SCHEME_ID = "+schemeI+" ";
-			
-			System.out.println("createE_Scheme query " + query);
-			output = stat.executeUpdate(query);
-			if(output > 0)
-			{
-				message = "SUCCESS";
-				con.commit();
-			}
-			else
-			{
-				message = "FAILED";
-				con.rollback();
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionECard(con, result, result);
-		}
-		finally
-		{
-			closeConnectionECard(con, result, result);
-		}
-		return message;
-	}
+	
 	/*Method to create card service*/
 	public String createE_CardService(String card_num, String mobile_no)
 	{
@@ -16607,68 +12163,6 @@ public class ReportModel
 		}
 		return message;
 	}
-	
-	/*Method to create scheme*/
-	public String createE_Scheme(String schemeId,String schemeName, String settleBank,String schemeNarration,String createDate)
-	{
-		String query = "";
-		String message = "";
-		ArrayList arr = new ArrayList();
-		int output = -1;
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		
-		
-
-		try
-		{
-			con = connectToECard();
-			stat = con.createStatement();
-			
-			query = "select * from e_cardscheme where SCHEME_ID ="+schemeId+" ";
-			result = stat.executeQuery(query);
-			
-			System.out.println("query existed"+query);
-			if(result.next())
-			{
-				System.out.println("query existed 2"+query);
-					message = "EXISTED";		
-				
-			}
-			else
-			{
-				
-				DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-			
-					query = "insert into e_cardscheme(SCHEME_ID, SCHEME_OWNER, SETTLEMENT_BANK,NARRATION,CREATED)values("+schemeId+", '"+schemeName+"', '"+settleBank+"','"+schemeNarration+"','"+createDate+"') ";
-				
-					System.out.println("createE_Scheme query " + query);
-					output = stat.executeUpdate(query);
-					if(output > 0)
-					{
-						message = "SUCCESS";
-						con.commit();
-					}
-					else
-					{
-						message = "FAILED";
-						con.rollback();
-					}
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionECard(con, result, result);
-		}
-		finally
-		{
-			closeConnectionECard(con, result, result);
-		}
-		return message;
-	}
-	
 	
 	
 	/*Method to create e_exception data*/
@@ -16720,71 +12214,6 @@ public class ReportModel
 		finally
 		{
 			closeConnectionECard(con, result, result);
-		}
-		return message;
-	}
-	
-	
-	/*Method to create merchant ext split*/
-	public String createMerchantExtSplit(String merchant_code, String value)
-	{
-		String query = "";
-		String message = "";
-		ArrayList arr = new ArrayList();
-		int output = -1;
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		
-		
-		try
-		{
-			con = connectToBackUpECard();
-			stat = con.createStatement();
-			
-			
-			
-			query = "select merchant_code from e_merchant where merchant_code = '"+merchant_code+"' ";
-			result  = stat.executeQuery(query);
-			if(result.next())
-			{
-				query = "select merchant_code from E_MERCHANT_EXT_SPLIT where merchant_code = '"+merchant_code+"' ";
-				result  = stat.executeQuery(query);
-				if(result.next())
-				{
-					message = "Records not inserted, this merchant code has already been assigned a commission value";
-				}
-				else
-				{
-					query = "insert into E_MERCHANT_EXT_SPLIT(merchant_code, split_card, svalue, split_descr)" +
-							"values('"+merchant_code+"', '', "+Integer.parseInt(value)+", 'eTranzact Comm') ";
-					output = stat.executeUpdate(query);
-					if(output > 0)
-					{
-						message = "Records successfully inserted";
-						con.commit();
-					}
-					else
-					{
-						message = "Records not inserted";
-						con.rollback();
-					}
-				}
-			}
-			else
-			{
-				message = "Records not inserted, this merchant code doesn't exist";
-			}
-			
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionBackUpEcard(con, result, result);
-		}
-		finally
-		{
-			closeConnectionBackUpEcard(con, result, result);
 		}
 		return message;
 	}
@@ -18044,7 +13473,9 @@ public class ReportModel
 				
 			}
 			
+			
 
+			
 			
 		}
 		catch(Exception ex)
@@ -18068,7 +13499,6 @@ public class ReportModel
 		District district;
 		Connection con = null;
 		Statement stat = null;
-		Statement stat1 = null;
 		ResultSet result = null;
 		
 		try
@@ -18076,10 +13506,7 @@ public class ReportModel
 			con = connectToSupportLog();
 			stat = con.createStatement();
 			
-		
-		 	query = "select * from phcn_district" ;	
-		  
-			
+			query = "select * from phcn_district";	
 			System.out.println("getDistricts " + query);
 			result = stat.executeQuery(query);
 			while(result.next())
@@ -18203,8 +13630,8 @@ public class ReportModel
 		return arr;
 	}*/
 	
-	public ArrayList getPHCNAdminReport(String start_dt, String end_dt, String type,
-			String merchantcode,String tarrif, String issue_code,String subcode, String channelid,String meterno,String disco,String district)
+	public ArrayList getPHCNAdminReport(String start_dt, String end_dt, String type, String district,
+			String merchantcode,String tarrif, String issue_code,String subcode, String channelid,String meterno)
 	{
 		ArrayList arr = new ArrayList();
 		Connection con = null;
@@ -18215,9 +13642,7 @@ public class ReportModel
 		String query = "";
 		
 		String apostrophe = "'";
-		String merchantID = "";
 		
-	
 		try
 		{
 			
@@ -18257,227 +13682,30 @@ public class ReportModel
 					" card_subname, sub_code, trans_note, status_description, trans_channel from" +
 					" telcodb.dbo.T_PAYTRANS" +
 					" where trans_date between('"+start_dt+"') and ('"+end_dt+"') and" +
-					" subscriber_id like '"+meterno+"%' and " +
+					" substring(subscriber_id,1,6) like '"+district+"%' and subscriber_id like '"+meterno+"%' and " +
 					" issuer_code like '"+issue_code+"%' and sub_code like '"+subcode+"%' and merchant_code in("+merchantcode+") " +
 					" and trans_channel like '"+channelid+"%'  and status_description in ('0|0|0|0') order by trans_date desc";
 				}
 				else if(tarrif.equals("PHCN: PREPAID"))
 				{
-					
-					
-					if(disco.equals("IKJ"))
-					{
-						
-						if(district.equals("ABULE-EGBA"))
-						{
-							merchantID = "001IKJ";
-						}
-						else if(district.equals("AKOWONJO"))
-						{
-							merchantID = "002IKJ";
-						}
-						else if(district.equals("IKEJA"))
-						{
-							merchantID = "003IKJ";
-							
-						}
-						else if(district.equals("IKORODU"))
-						{
-							merchantID = "004IKJ";
-						}
-						else if(district.equals("IKOTUN"))
-						{
-							merchantID = "005IKJ";
-							
-						}
-						else if(district.equals("ODOGUNYAN"))
-						{
-							merchantID = "006IKJ";
-						}
-						else if(district.equals("OGBA"))
-						{
-							merchantID = "007IKJ";
-						}
-						else if(district.equals("OJODU"))
-						{
-							merchantID = "008IKJ";
-						}
-						else if(district.equals("OSHODI"))
-						{
-							merchantID = "009IKJ";
-						}
-						else if(district.equals("SHOMOLU"))
-						{
-							merchantID = "010IKJ";
-						}
-						else
-						{
-							merchantID = "IKJ";
-						}
-						
-		
-						query = "select trans_date,UNIQUE_TRANSID,subscriber_id, card_fullname, T_ADDRESS,TRANS_AMOUNT, issuer_code, " +
-								"card_subname, sub_code, trans_note, status_description, trans_channel from t_paytrans where merchant_id " +
-								" like '%" + merchantID + "%' and trans_date between('"+start_dt+"') and ('"+end_dt+"')";
-						
-						
-					}
-					else
-					{
-					
-						query = "select trans_date,UNIQUE_TRANSID,subscriber_id, card_fullname, T_ADDRESS,TRANS_AMOUNT, issuer_code, " +
-						" card_subname, sub_code, trans_note, status_description, trans_channel from" +
-						" telcodb.dbo.T_PAYTRANS" +
-						" where trans_date between('"+start_dt+"') and ('"+end_dt+"') and" +
-						" subscriber_id like '"+meterno+"%' and " +
-						" issuer_code like '"+issue_code+"%' and sub_code like '"+subcode+"%' and merchant_code in("+merchantcode+") " +
-						" and trans_channel like '"+channelid+"%' and (status_description not in('0|0|0|0') or status_description = null )" +
-						" order by trans_date desc ";
-					 }
-					
+					query = "select trans_date,UNIQUE_TRANSID,subscriber_id, card_fullname, T_ADDRESS,TRANS_AMOUNT, issuer_code, " +
+					" card_subname, sub_code, trans_note, status_description, trans_channel from" +
+					" telcodb.dbo.T_PAYTRANS" +
+					" where trans_date between('"+start_dt+"') and ('"+end_dt+"') and" +
+					" subscriber_id like '"+meterno+"%' and " +
+					" issuer_code like '"+issue_code+"%' and sub_code like '"+subcode+"%' and merchant_code in("+merchantcode+") " +
+					" and trans_channel like '"+channelid+"%' and (status_description not in('0|0|0|0') or status_description = null )" +
+					" order by trans_date desc";
 				}
 				else
 				{
-					
-					if(disco.equals("IKJ"))
-					{
-						
-						
-						if(district.equals("ABULE-EGBA"))
-						{
-							merchantID = "001IKJ";
-						}
-						else if(district.equals("AKOWONJO"))
-						{
-							merchantID = "002IKJ";
-						}
-						else if(district.equals("IKEJA"))
-						{
-							merchantID = "003IKJ";
-							
-						}
-						else if(district.equals("IKORODU"))
-						{
-							merchantID = "004IKJ";
-						}
-						else if(district.equals("IKOTUN"))
-						{
-							merchantID = "005IKJ";
-							
-						}
-						else if(district.equals("ODOGUNYAN"))
-						{
-							merchantID = "006IKJ";
-						}
-						else if(district.equals("OGBA"))
-						{
-							merchantID = "007IKJ";
-						}
-						else if(district.equals("OJODU"))
-						{
-							merchantID = "008IKJ";
-						}
-						else if(district.equals("OSHODI"))
-						{
-							merchantID = "009IKJ";
-						}
-						else if(district.equals("SHOMOLU"))
-						{
-							merchantID = "010IKJ";
-						}
-						else
-						{
-							merchantID = "IKJ";
-						}
-						
-
-		
-						query = "select trans_date,UNIQUE_TRANSID,subscriber_id, card_fullname, T_ADDRESS,TRANS_AMOUNT, issuer_code, " +
-								"card_subname, sub_code, trans_note, status_description, trans_channel from t_paytrans where merchant_id " +
-								" like '%" + merchantID + "%' and trans_date between('"+start_dt+"') and ('"+end_dt+"')";
-						
-						
-						/*query = "select trans_date,UNIQUE_TRANSID,subscriber_id, card_fullname, T_ADDRESS,TRANS_AMOUNT, issuer_code, " +
-								"card_subname, sub_code, trans_note, status_description, trans_channel from t_paytrans where merchant_id " +
-								" like '%IKJ%' and trans_date between('"+start_dt+"') and ('"+end_dt+"')";
-						*/
-						
-						System.out.println("query me  " + query);
-						result = stat.executeQuery(query);
-						while(result.next())
-						{
-							
-							tpay = new PAYTRANS();
-							tpay.setTrans_date(""+result.getObject(1));
-							tpay.setUnique_trans_id(""+result.getObject(2));
-							tpay.setSubscriber_id(""+result.getObject(3));
-							tpay.setCard_fullname(""+result.getObject(4));
-							tpay.setT_address(""+result.getObject(5));
-							tpay.setTrans_amount(""+result.getObject(6));
-							tpay.setIssuer_code(""+result.getObject(7));
-							tpay.setCard_subname(""+result.getObject(8));
-							tpay.setSub_code(""+result.getObject(9));
-							tpay.setTrans_note(""+result.getObject(10));
-							tpay.setStatus_desc(""+result.getObject(11));
-							tpay.setTrans_channel(""+result.getObject(12));
-							
-							System.out.println("Channael ------  > "+tpay.getTrans_channel());
-							
-							if(tpay.getTrans_channel().equals("03") || tpay.getTrans_channel().equals("02"))//pos or  web
-							{
-								double amt = Double.parseDouble(tpay.getTrans_amount());
-								double comAmt  = ((1.25/100) * amt);
-						
-								
-								double etzAmt = 100;
-						        if(comAmt <= 100)
-						        {
-						         tpay.setEtzCommissionAmt(""+etzAmt);
-						         tpay.setNetAmt(""+ (amt - etzAmt));
-						        }
-						        else
-						        {
-						         tpay.setEtzCommissionAmt(""+comAmt);
-						         tpay.setNetAmt(""+ (amt - comAmt));
-						        }
-								
-						       
-								
-								/*		double issuer = (0.2) * (comAmt);
-										double acquirer = (0.3) * (comAmt);
-										double schemeOwner = (0.35) * (comAmt);
-										double ptsp = (0.15) * (comAmt);
-										double etzAmt = (issuer + acquirer + schemeOwner + ptsp);
-										
-										System.out.println("comAmt " + comAmt);
-										System.out.println("issuer " + issuer);
-										System.out.println("acquirer " + acquirer);
-										System.out.println("schemeOwner " + schemeOwner);
-										System.out.println("ptsp " + ptsp);
-										System.out.println("etzAmt " + etzAmt);
-										
-										tpay.setEtzCommissionAmt(""+etzAmt);
-										tpay.setNetAmt(""+ (amt - etzAmt));*/
-							}
-							else
-							{
-								tpay.setEtzCommissionAmt("0");
-								tpay.setNetAmt(tpay.getTrans_amount());
-							}
-							
-							arr.add(tpay);
-						}
-					}
-					
-					
 					query = "select trans_date,UNIQUE_TRANSID,subscriber_id, card_fullname, T_ADDRESS,TRANS_AMOUNT, issuer_code, " +
-							" card_subname, sub_code, trans_note, status_description, trans_channel from" +
-							" telcodb.dbo.T_PAYTRANS" +
-							" where trans_date between('"+start_dt+"') and ('"+end_dt+"') and" +
-							" subscriber_id like '"+meterno+"%' and " +
-							" issuer_code like '"+issue_code+"%' and sub_code like '"+subcode+"%' and merchant_code in("+merchantcode+") " +
-							" and trans_channel like '"+channelid+"%' order by trans_date desc ";
-				
+					" card_subname, sub_code, trans_note, status_description, trans_channel from" +
+					" telcodb.dbo.T_PAYTRANS" +
+					" where trans_date between('"+start_dt+"') and ('"+end_dt+"') and" +
+					" subscriber_id like '"+meterno+"%' and " +
+					" issuer_code like '"+issue_code+"%' and sub_code like '"+subcode+"%' and merchant_code in("+merchantcode+") " +
+					" and trans_channel like '"+channelid+"%' order by trans_date desc";
 				}
 				System.out.println("getPHCNReport query " + query);
 				result = stat.executeQuery(query);
@@ -18496,40 +13724,6 @@ public class ReportModel
 					tpay.setTrans_note(""+result.getObject(10));
 					tpay.setStatus_desc(""+result.getObject(11));
 					tpay.setTrans_channel(""+result.getObject(12));
-					
-					
-					if(tpay.getTrans_channel().equals("03")  || tpay.getTrans_channel().equals("02") )//pos
-					{
-						double amt = Double.parseDouble(tpay.getTrans_amount());
-						double comAmt  = ((1.25/100) * amt);
-						double issuer = (0.2) * (comAmt);
-						double acquirer = (0.3) * (comAmt);
-						double schemeOwner = (0.35) * (comAmt);
-						double ptsp = (0.15) * (comAmt);
-						double etzAmt = (issuer + acquirer + schemeOwner + ptsp);
-						
-						System.out.println("comAmt " + comAmt);
-						System.out.println("issuer " + issuer);
-						System.out.println("acquirer " + acquirer);
-						System.out.println("schemeOwner " + schemeOwner);
-						System.out.println("ptsp " + ptsp);
-						System.out.println("etzAmt " + etzAmt);
-						
-						tpay.setEtzCommissionAmt(""+etzAmt);
-						tpay.setNetAmt(""+ (amt - etzAmt));
-					}
-					else
-					{
-						tpay.setEtzCommissionAmt("0");
-						tpay.setNetAmt(tpay.getTrans_amount());
-					}
-					
-					//get the cat scale
-					//get the merchan
-					
-					
-					
-					
 					arr.add(tpay);
 				}
 			}
@@ -18624,7 +13818,6 @@ public class ReportModel
 					" and trans_channel like '"+channelid+"%' group by issuer_code";
 		
 			System.out.println("getPHCNPaymentByBankRport query " + query);
-			
 			result = stat.executeQuery(query);
 			while(result.next())
 			{
@@ -18671,7 +13864,6 @@ public class ReportModel
 					" and trans_channel like '"+channelid+"%' group by sub_code,issuer_code";
 		
 			System.out.println("getPHCNBranchBankSummaryRepor query " + query);
-			
 			result = stat.executeQuery(query);
 			while(result.next())
 			{
@@ -18696,7 +13888,7 @@ public class ReportModel
 	
 	
 	/*Method to get the distinct merchant codes for the disco*/
-	public String getDistinctPostpaidPHCNMerchantCode(String disco, String districts)
+	public String getDistinctPostpaidPHCNMerchantCode(String disco, String col)
 	{
 		String message = "";
 		Connection con = null;
@@ -18712,15 +13904,9 @@ public class ReportModel
 			con = connectToTelco();
 			stat = con.createStatement();
 
-			query = "SELECT distinct(pos_merchant_code) FROM T_PHCN_DISTRICTS_POSTPAID where POS_MERCHANT_CODE <> '' and disco = '"+disco+"' and district like '"+districts+"%' " +
-					" union " +
-					" SELECT distinct(payoutlet_merchant_code) FROM T_PHCN_DISTRICTS_POSTPAID where Payoutlet_MERCHANT_CODE <> '' and disco = '"+disco+"' and district like '"+districts+"%' " +
-					" union " +
-					" SELECT distinct(mobile_merchant_code) as merchant_code FROM T_PHCN_DISTRICTS_POSTPAID where mobile_MERCHANT_CODE <> '' and disco = '"+disco+"' and district like '"+districts+"%' " +
-					" union " +
-					" SELECT distinct(web_merchant_code) FROM T_PHCN_DISTRICTS_POSTPAID where web_MERCHANT_CODE <> '' and disco = '"+disco+"' and district like '"+districts+"%' ";
+			query = "select distinct " + col + " from t_phcn_districts_postpaid where disco = '"+disco+"' ";
 				
-			System.out.println("getDistinctPostpaidPHCNMerchantCode query " + query);
+			System.out.println("getDistinctPHCNMerchantCode query " + query);
 			result = stat.executeQuery(query);
 			while(result.next())
 			{
@@ -18873,1128 +14059,6 @@ public class ReportModel
 	}
 	
 	
-	
-	/*This method is used by the depot admin to check the VSM Transactions */
-	public ArrayList getVSMTransactionSummary(String mobile, String username, String startDt, String endDt)
-	{
-		ArrayList arr = new ArrayList();	
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		Connection con1 = null;
-		Statement stat1 = null;
-		ResultSet result1 = null;
-		String query = "";
-		E_TRANSACTION trans = null;
-		try
-		{
-			con = connectPocketMoniEcardDB();
-			stat = con.createStatement();
-			
-			con1 = connectToECard();
-			stat1 = con1.createStatement();
-			
-			query = "select card_num  from e_cardholder where phone = '"+mobile+"' ";
-		
-			System.out.println("query 1" + query);
-			result = stat.executeQuery(query);
-		
-			if(result.next())
-			{ 
-				query ="select count(*), day(trans_date) as day ,month(trans_date) as month, year(trans_date) as year," +
-						" merchant_code, sum(trans_amount) from e_transaction where merchant_code ='"+result.getObject(1)+"'" +
-						" and trans_date between '"+startDt+"' and '"+endDt+"'" +
-						" group by day(trans_date), month(trans_date),year(trans_date), merchant_code " +
-						" order by day(trans_date),month(trans_date), year(trans_date) ";
-				
-				System.out.println("query 2"+query);
-				result1 = stat1.executeQuery(query);
-				while(result1.next())
-				{
-					trans = new E_TRANSACTION();
-					trans.setTransaction_count(""+result1.getObject(1));
-					trans.setDay(""+result1.getObject(2));
-					trans.setMonth(""+result1.getObject(3));
-					trans.setYear(""+result1.getObject(4));
-					String transDate = ""+trans.getDay()+"/"+trans.getMonth()+"/"+trans.getYear();
-					trans.setTrans_date(transDate);
-					trans.setCard_num(""+result1.getObject(5));
-					trans.setTrans_amount(""+result1.getObject(6));
-					trans.setIntstatus(username);
-					String status = this.getTransactionStatusByDateAndCardNum(trans.getDay(), trans.getMonth(),
-							trans.getYear(), trans.getCard_num());
-					trans.setProcess_status(status);
-					arr.add(trans);
-					
-				}
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionPocketMoniEcardDB(con, result);
-			closeConnectionECard(con1, result, result1);
-	
-		}
-		finally
-		{
-			closeConnectionPocketMoniEcardDB(con, result);
-			closeConnectionECard(con1, result, result1);
-		}
-		return arr;
-	}
-	
-
-	/*This method is used to get Depot transaction summary */
-	public ArrayList getDepotPoolAccountTransactionSummary(String startDt, String endDt)
-	{
-		ArrayList arr = new ArrayList();	
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		Connection con1 = null;
-		Statement stat1 = null;
-		ResultSet result1 = null;
-		String query = "";
-		E_TRANSACTION trans = null;
-		
-		try
-		{
-			con = connectToSupportLog();
-			stat = con.createStatement();
-			
-		
-			
-			String depotCardNum = "";
-			String vsmCardNum = "";
-			
-			query = "select depot_cardnum,vsm_cardnum from pm_directCredit where create_date between '"+startDt+"' and '"+endDt+"' ";
-			System.out.println("getting Depot Card Number  ::  :"+query);
-			result = stat.executeQuery(query);
-			
-			if(result.next())
-			{
-				
-				depotCardNum = ""+result.getObject(1);
-				vsmCardNum = ""+result.getObject(2);
-				
-			}
-				
-				query = "select count(*), day(create_date) as day, month(create_date) as month, year(create_date) as year ," +
-						" sum(amount) from pm_directCredit where create_date between '"+startDt+"' and '"+endDt+"'"+
-						" group by day(create_date), month(create_date),year(create_date) order by day(create_date), month(create_date),year(create_date) "; 
-
-				
-				result = stat.executeQuery(query);
-				System.out.println("query  getDepotPoolAccountTransactionSummary()  "+query);
-				while(result.next())
-				{
-					trans = new E_TRANSACTION();
-					trans.setTransaction_count(""+result.getObject(1));
-					trans.setDay(""+result.getObject(2));
-					trans.setMonth(""+result.getObject(3));
-					trans.setYear(""+result.getObject(4));
-					String transDate = ""+trans.getYear()+"-"+trans.getMonth()+"-"+trans.getDay();
-					trans.setTrans_date(transDate);
-					trans.setTrans_amount(""+result.getObject(5));
-					trans.setCard_num(depotCardNum);
-					trans.setCard_count(vsmCardNum);
-					
-					arr.add(trans);
-				}
-				
-				
-			
-	
-			
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionSupportLogDB(con, result);
-		
-		}
-		finally
-		{
-			closeConnectionSupportLogDB(con, result);
-			
-		}
-		return arr;
-	}
-	
-	
-	/*This method is used to get Vas transaction summary */
-	public ArrayList getVasTransSummary(String mobile, String startDt, String endDt)
-	{
-		ArrayList arr = new ArrayList();	
-		Connection con = null;
-		Statement stat = null;
-		Statement stat1 = null;
-		ResultSet result = null;
-		ResultSet result1 = null;
-		Connection con1 = null;
-		String query = "";
-		E_TRANSACTION trans = null;
-		
-		try
-		{
-		
-			con1 = connectPocketMoniEcardDB();
-			stat1 = con1.createStatement();
-			
-
-			con = connectToECard();
-			stat = con.createStatement();
-			
-			query = "select card_num from e_cardholder where phone = '"+mobile+"' ";
-			result1 = stat1.executeQuery(query);
-			if(result1.next())
-			{
-				query =" select count(*), day(trans_date) as day ,month(trans_date) as month," +
-						" year(trans_date) as year,merchant_code, sum(trans_amount) from e_transaction where merchant_code ='"+result1.getObject(1)+"'" +
-						" and trans_date between '"+startDt+"' and '"+endDt+"' group by day(trans_date),merchant_code";
-
-				result = stat.executeQuery(query);
-				while(result.next())
-				{
-					
-					trans = new E_TRANSACTION();
-					trans.setTransaction_count(""+result.getObject(1));
-					trans.setDay(""+result.getObject(2));
-					trans.setMonth(""+result.getObject(3));
-					trans.setYear(""+result.getObject(4));
-					String transDate = ""+trans.getDay()+"/"+trans.getMonth()+"/"+trans.getYear();
-					System.out.println("Trans Date here - --  - > "+transDate);
-					trans.setTrans_date(transDate);
-					trans.setCard_num(""+result.getObject(5));
-					trans.setTrans_amount(""+result.getObject(6));	
-					arr.add(trans);
-
-				}
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionPocketMoniEcardDB(con1, result1);
-			closeConnectionECard(con, result, result);
-			
-	
-		}
-		finally
-		{
-			closeConnectionPocketMoniEcardDB(con1, result1);
-			closeConnectionECard(con, result, result);
-		}
-		return arr;
-	}
-	
-	
-	
-	/*Method to load VSM Fullname base on its mobile*/
-	public String getVSMFullName(String mobileno)
-	{
-		
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		String message = "";
-	
-		try
-		{
-			con = connectToSupportLog();
-			stat = con.createStatement();
-			
-			String query = "select Firstname,Lastname from support_user where mobile ='"+mobileno+"' "; 
-			result = stat.executeQuery(query);
-			System.out.println("getVSMFullName  "+query);
-			while(result.next())
-			{
-				message = ""+result.getObject(1) +"     "+result.getObject(2);
-			}
-		}
-		catch(SQLException sq)
-		{
-			System.out.println("error " + sq.getMessage());
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionSupportLogDB(con, result);
-		}
-		finally
-		{
-			closeConnectionSupportLogDB(con, result);
-		}
-		return message;
-	}
-	
-		
-	/*This method is used to get transaction date*/
-	public ArrayList getTransactionDateByDayCard(String day,String cardnum)
-	{
-		ArrayList arr = new ArrayList();	
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		String query = "";
-		E_TRANSACTION trans = null;
-		String message = "";
-		
-		try
-		{
-			con = connectToECard();
-			stat = con.createStatement();
-			
-			query = " Select TRANS_DATE, merchant_code from e_transaction where day(trans_date) = "+Integer.parseInt(day)+" and" +
-					" merchant_code ='"+cardnum+"'  ";
-			
-			System.out.println("query check  "+query);
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-				trans = new E_TRANSACTION();
-				trans.setTrans_date(""+result.getObject(1));
-				trans.setCard_num(""+result.getObject(2));
-				arr.add(trans);
-			}
-
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionECard(con, result, result);
-	
-		}
-		finally
-		{
-			closeConnectionECard(con, result, result);
-		}
-		return arr;
-	}
-	
-	/*This method is used to get transaction date*/
-	public String getTransDate(String day,String month,String year,String cardnum)
-	{
-		ArrayList arr = new ArrayList();	
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		String query = "";
-		String message = "";
-		
-		try
-		{
-			con = connectToECard();
-			stat = con.createStatement();
-			
-			query = " Select TRANS_DATE from e_transaction where day(trans_date) = "+Integer.parseInt(day)+" and" +
-					" month(trans_date) = "+Integer.parseInt(month)+" and year(trans_date) = "+Integer.parseInt(year)+" and"+
-					" merchant_code ='"+cardnum+"'  ";
-			
-			System.out.println("query check  "+query);
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-				message = ""+result.getObject(1);
-			}
-
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionECard(con, result, result);
-	
-		}
-		finally
-		{
-			closeConnectionECard(con, result, result);
-		}
-		return message;
-	}
-	
-	
-	
-	/*This method is used to get transaction date*/
-	public ArrayList getTransactionDateByDayDates(String day,String cardnum)
-	{
-		ArrayList arr = new ArrayList();	
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		String query = "";
-		E_TRANSACTION trans = null;
-		String message = "";
-		
-		try
-		{
-			con = connectToTelco();
-			stat = con.createStatement();
-			
-			query = "select date, vsm_cardnum, amount from pm_directCredit where day(date) = "+Integer.parseInt(day)+" and" +
-					" vsm_cardnum = '"+cardnum+"' ";
-			
-			System.out.println("query check  "+query);
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-				trans = new E_TRANSACTION();
-				trans.setTrans_date(""+result.getObject(1));
-				trans.setCard_num(""+result.getObject(2));
-				trans.setTrans_amount(""+result.getObject(3));
-				arr.add(trans);
-			}
-
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionTelco(con, result);
-		}
-		finally
-		{
-			closeConnectionTelco(con, result);
-		}
-		return arr;
-	}
-	
-	
-	
-	
-	
-	/*This method is used to get transaction Status*/
-	public String getTransactionStatusByDateAndCardNum(String transDay, String transMonth, String transYear, String cardnum)
-	{	
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		String query = "";
-		String message = "";
-		
-		try
-		{
-			con = connectToSupportLog();
-			stat = con.createStatement();
-			
-			query = " Select Status from pm_directCredit where" +
-					" day(date) = "+Integer.parseInt(transDay)+" and" +
-					" month(date) = "+Integer.parseInt(transMonth)+" and" +
-					" year(date) = "+Integer.parseInt(transYear)+" and" +
-					" vsm_cardnum = '"+cardnum+"' ";
-			
-			System.out.println("query   "+query);
-			result = stat.executeQuery(query);
-			if(result.next())
-			{
-				message = ""+result.getObject(1);
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionSupportLogDB(con, result);
-		}
-		finally
-		{
-			closeConnectionSupportLogDB(con, result);
-		}
-		return message;
-	}
-	
-	
-	
-	/*This method is used to get vsm transaction Report */
-	public ArrayList getVSMTransactionReporByDay(String day,String cardNum)
-	{
-		ArrayList arr = new ArrayList();	
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		String query = "";
-		E_TRANSACTION trans = null;
-		
-		try
-		{
-			con = connectToECard();
-			stat = con.createStatement();
-			
-			
-			 query =    " select TRANSID, CARD_NUM, TRANS_NO, TRANS_DATE, TRANS_DESCR," +
-						" TRANS_AMOUNT,TRANS_TYPE,TRANS_CODE, MERCHANT_CODE, UNIQUE_TRANSID, PROCESS_STATUS, " +
-						" (select merchant_name from e_merchant where e_merchant.merchant_code = e_transaction.merchant_code) "+
-						" from  E_TRANSACTION where day(trans_date) = "+Integer.parseInt(day)+" "+
-						" and merchant_code = '"+cardNum+"' order by trans_date desc ";
-
-			 System.out.println("query   "+query);
-			 
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-				trans = new E_TRANSACTION();
-				trans.setTransid(""+result.getObject(1));
-				trans.setCard_num(""+result.getObject(2));
-				trans.setTrans_no(""+result.getObject(3));
-				trans.setTrans_date(""+result.getObject(4));
-				trans.setTrans_desc(""+result.getObject(5));
-				trans.setTrans_amount(""+result.getObject(6));
-				trans.setTrans_type(""+result.getObject(7));
-				trans.setTrans_code(""+result.getObject(8));
-				trans.setMerchat_code(""+result.getObject(9));
-				trans.setUnique_transid(""+result.getObject(10));
-				trans.setProcess_status(""+result.getObject(11));
-				trans.setMerchant_descr(""+result.getObject(12));
-				arr.add(trans);
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionECard(con, result, result);
-		}
-		finally
-		{
-			closeConnectionECard(con, result, result);
-		}
-		return arr;
-	}
-	
-	
-	/*This method is used to get depot transaction Report */
-	public ArrayList getDepotPoolTransactionReport(String day,String month,String year,String cardNum)
-	{
-		ArrayList arr = new ArrayList();	
-		Connection con = null;
-		Connection con1 = null;
-		Statement stat = null;
-		Statement stat1 = null;
-		ResultSet result = null;
-		ResultSet result1 = null;
-		String query = "";
-		E_TRANSACTION trans = null;
-		
-		try
-		{
-			con = connectToSupportLog();
-			stat = con.createStatement();
-			
-			con1 = connectPocketMoniEcardDB();
-			stat1 = con1.createStatement();
-			
-			String onlineBal = "";
-			String mobileNo = "";
-			
-			
-			query ="Select online_balance,phone from e_cardholder where card_num = '"+cardNum+"' ";
-			System.out.println("query 1 pocketmoni  --  >   "+query);
-			result1 = stat1.executeQuery(query);
-			if(result1.next())
-			{
-				
-				onlineBal =""+result1.getObject(1);
-				mobileNo = ""+result1.getObject(2);
-				
-			/*	 query =    " select TRANSID, CARD_NUM, TRANS_NO, TRANS_DATE, TRANS_DESCR," +
-							" TRANS_AMOUNT,TRANS_TYPE,TRANS_CODE, MERCHANT_CODE, UNIQUE_TRANSID, PROCESS_STATUS, " +
-							" (select merchant_name from e_merchant where e_merchant.merchant_code = e_transaction.merchant_code) "+
-							" from  E_TRANSACTION where day(trans_date) = "+Integer.parseInt(day)+" and month(trans_date) = "+Integer.parseInt(month)+" "+
-							" and year(trans_date) = "+Integer.parseInt(year)+" and  merchant_code = '"+cardNum+"' order by trans_date desc ";
-				 */
-				 
-				 query = 	" select depot_cardnum,vsm_cardnum,create_date,vsm_mobile,amount from pm_directCredit where day(create_date) = "+Integer.parseInt(day)+" " +
-							" and  month(create_date) = "+Integer.parseInt(month)+" and year(create_date) = "+Integer.parseInt(year)+" " +
-							" order by create_date  "; 
-				 
-			
-
-				 System.out.println("query   "+query);
-				result = stat.executeQuery(query);
-				while(result.next())
-				{
-					trans = new E_TRANSACTION();
-					trans.setCard_num(""+result.getObject(1));
-					trans.setCard_count(""+result.getObject(2));
-					trans.setTrans_date(""+result.getObject(3));
-					trans.setProcess_status(""+result.getObject(4));
-					trans.setTrans_amount(""+result.getObject(5));
-					trans.setVolume(onlineBal);
-					trans.setPhone(mobileNo);
-					arr.add(trans);
-				}
-				
-			}
-
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionSupportLogDB(con, result);
-			closeConnectionPocketMoniEcardDB(con1, result1);
-		}
-		finally
-		{
-			closeConnectionSupportLogDB(con, result);
-			closeConnectionPocketMoniEcardDB(con1, result1);
-		}
-		return arr;
-	}
-	
-
-	
-	
-	/*This method is used to get depot transaction Report */
-	/*public ArrayList getDepotPoolTransactionReport(String moveDate,String cardNum)
-	{
-		ArrayList arr = new ArrayList();	
-		Connection con = null;
-		Connection con1 = null;
-		Statement stat = null;
-		Statement stat1 = null;
-		ResultSet result = null;
-		ResultSet result1 = null;
-		String query = "";
-		E_TRANSACTION trans = null;
-		
-		try
-		{
-	
-			con = connectToSupportLog();
-			stat = con.createStatement();
-			
-			con1 = connectPocketMoniEcardDB();
-			stat1 = con1.createStatement();
-			
-			String onlineBal = "";
-			String phone ="";
-			
-			query ="Select online_balance,phone from e_cardholder where card_num = '"+cardNum+"' ";
-			System.out.println("query 1 pocketmoni  --  >   "+query);
-			result1 = stat1.executeQuery(query);
-			if(result1.next())
-			{
-				
-				onlineBal = ""+result1.getObject(1);
-				phone = ""+result1.getObject(2);
-				
-				query = "select vsm_cardnum,status,create_date,amount from pm_directCredit where create_date = '"+moveDate+"' " +
-							" and vsm_cardnum = '"+cardNum+"' order by create_date desc "; 
-					
-				System.out.println("query van sales man query  --  >   "+query);
-					 
-				result = stat.executeQuery(query);
-				while(result.next())
-				{
-					
-					trans = new E_TRANSACTION();
-					
-					trans.setRecalc_bal(onlineBal); // setting the online balance
-					trans.setPhone(phone);
-		
-					
-					trans.setCard_num(""+result.getObject(1));
-					trans.setProcess_status(""+result.getObject(2));
-					String shortDate = ""+result.getObject(3);
-					String transDate = shortDate.substring(0,10);
-					trans.setTrans_date(transDate);
-					trans.setTrans_amount(""+result.getObject(4));
-					System.out.println("Transaction amount from the model view  -- --    >> "+trans.getTrans_amount());
-					arr.add(trans);
-						
-				}
-			}
-			
-		}
-		catch(Exception ex)
-		{
-			closeConnectionSupportLogDB(con, result);
-			closeConnectionPocketMoniEcardDB(con1, result1);
-		}
-		finally
-		{
-			closeConnectionSupportLogDB(con, result);
-			closeConnectionPocketMoniEcardDB(con1, result1);
-		}
-		return arr;
-	}
-	*/
-	
-	public ArrayList getCompanyBankAccountByCompanyCode(String companyCode)
-	{
-				
-		String query = "";
-		Connection con = null;
-		Company company = null;
-		ArrayList arr = new ArrayList();
-		String message = "";
-		Statement stat = null;
-		ResultSet result = null;
-		
-		try
-		{
-			 con = connectToSupportLog();
-			 stat = con.createStatement();
-			
-			query =  "select  bank, bankAccount from company where compCode = '"+companyCode+"' ";
-
-			System.out.println(" :: :: :  :::: " +  query);
-			
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-				company = new Company();
-				company.setBank(""+result.getObject(1));
-				company.setBankAcct(""+result.getObject(2));
-				
-				String bankcode_account = getBankName(company.getBank()) +"  -----  "+company.getBankAcct();
-				company.setBankcode_bankAccount(bankcode_account);
-				
-				arr.add(company);
-				/*message =  ""+result.getObject(1)+" ------------ "+result.getObject(2);*/
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionSupportLogDB(con, result);
-		}
-		finally
-		{
-		
-			closeConnectionSupportLogDB(con, result);
-		}
-		return arr;
-		
-	}
-	
-	/*Method to move transaction to a card */
-	public String moveToCard(String cardnum,String status, String amount, String date,String companyid,String depotId,String vsmcard,String moveDate)
-	{
-		String query = "";
-		String message = "";
-		int output = -1;
-		int output2 = -1;
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-	
-		try
-		{
-			con = connectToSupportLog();
-			stat = con.createStatement();
-				   
-		   	query = "select * from pm_directCredit where vsm_cardnum = '"+vsmcard+"' and date = '"+date+"' and amount = "+amount+" ";
-		   	result = stat.executeQuery(query);
-		   	if(result.next())
-		   	{
-		   		message = "EXISTED";
-		   	}
-		   	else
-		   	{
-		   		query = "insert into pm_directCredit(depot_cardnum,STATUS, AMOUNT, DATE,company_id,depot_id,vsm_cardnum,create_date)" +
-		   				" values('"+cardnum+"','"+status+"', "+amount+", '"+date+"',"+companyid+","+depotId+",'"+vsmcard+"','"+moveDate+"') ";
-				
-				System.out.println("moveToBank query " + query);
-				output = stat.executeUpdate(query);
-				if(output > 0)
-				{
-					message = "SUCCESS";
-					con.commit();
-				}
-				else
-				{
-					message = "FAILED";
-					con.rollback();
-				}
-		   		
-		   	}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-		closeConnectionSupportLogDB(con, result);
-			
-		}
-		finally
-		{
-			closeConnectionSupportLogDB(con, result);
-			
-			
-		}
-		return message;
-	}
-	
-	
-	
-	/*Method to move transaction to a card */
-	public String moveToCreditAccount(String cardToCredit,String status, double amount, String date,String companyid,String depotId,String cardToDebit,String cardToDebitMobile,String filename,String pendStatus,String authoirsedBy)
-	{
-		String query = "";
-		String query1 = "";
-		String message = "";
-		int output = -1;
-		int output2 = -1;
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-	
-		try
-		{
-			con = connectToSupportLog();
-			stat = con.createStatement();
-			
-			//String status = "0";
-			
-				   
-		   	query = "select * from pm_directCredit where vsm_cardnum = '"+cardToDebit+"' and amount = "+amount+" ";
-		   	result = stat.executeQuery(query);
-		   	if(result.next())
-		   	{
-		   		message = "EXISTED";
-		   	}
-		   	else
-		   	{
-		   		query = "insert into pm_directCredit(depot_cardnum,STATUS, AMOUNT, DATE,company_id,depot_id,vsm_cardnum,create_date,vsm_mobile)" +
-		   				" values('"+cardToCredit+"','"+status+"', "+amount+", '"+date+"',"+companyid+","+depotId+",'"+cardToDebit+"',getDATE(),'"+cardToDebitMobile+"') ";
-				
-		   		query1 = "update debitfileTracker set Status = '0',authorisedBy = '"+authoirsedBy+"',authorisedDt = getDate() where filename ='"+filename+"' and status ='"+pendStatus+"' ";
-				System.out.println("moveToCreditAccount query " + query);
-				System.out.println("update  query   - - --   >  >  " + query1);
-				output = stat.executeUpdate(query);
-				
-				if(output > 0)
-				{
-					
-					message = "SUCCESS";
-					output = stat.executeUpdate(query1);
-					con.commit();
-				}
-				else
-				{
-					message = "FAILED";
-					con.rollback();
-				}
-		   		
-		   	}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionSupportLogDB(con, result);
-			
-		}
-		finally
-		{
-			closeConnectionSupportLogDB(con, result);
-			
-			
-		}
-		return message;
-	}
-	
-	
-	
-	
-
-	
-	/*Method to log into the pending table  */
-	public String getReversalLog(String uniqueTransId,String transNo,String transDesc,String cardnum,String merchantCode,String transAmount,String transdate,String reversaStatus,String initiator,String channelID,String transRef,String closed)
-	{
-		String query = "";
-		String message = "";
-		ArrayList arr = new ArrayList();
-		int output = -1;
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		
-		try
-		{
-			
-			con = connectToPMEcardholder();
-			//con = connectToEcardDBDemo();
-			//con = connectToStaggingEcardDB();
-			stat = con.createStatement();	
-			System.out.println("did it got here "+"statement "+stat+"connection "+con);
-		
-			query = "select * from E_QUEUED_INFO where UNIQUE_TRANSID = '"+uniqueTransId+"' and REVERSA_STATUS = '"+reversaStatus+"' ";	
-			System.out.println("existed "+query);
-			result  = stat.executeQuery(query);
-			if(result.next())
-			{
-				
-				message = " Record Already Queued for  Authorization ";
-
-			}
-			else
-			{
-				query = "select  * from E_QUEUED_INFO where UNIQUE_TRANSID = '"+uniqueTransId+"' and (REVERSA_STATUS ='0' OR REVERSA_STATUS is null) ";
-				System.out.println("existed 2 "+query);
-				result  = stat.executeQuery(query);
-				if(result.next())
-				{
-					query = "update E_QUEUED_INFO set REVERSA_STATUS ='"+reversaStatus+"', USER_INITIATOR ='"+initiator+"',DATE_INITIATED= getDate()  where UNIQUE_TRANSID ='"+uniqueTransId+"' ";	
-					System.out.println("existed 3 "+query);
-					output = stat.executeUpdate(query);
-					if(output > 0)
-					{
-						message = "Transaction Reversal has been successfully logged. The request will be effected when this request is  authorized";
-						con.commit();
-					}
-				}
-				else
-				{
-						
-					query = "INSERT INTO E_QUEUED_INFO(UNIQUE_TRANSID,TRANS_NO,TRANS_DESCR,CARD_NUM,MERCHANT_CODE,TRANS_AMOUNT,TRANS_DATE,REVERSA_STATUS,USER_INITIATOR,DATE_INITIATED,CHANNELID,TRANS_REF,CLOSED)" +
-							"values('"+uniqueTransId+"','"+transNo+"','"+transDesc+"','"+cardnum+"','"+merchantCode+"',"+transAmount+",'"+transdate+"','"+reversaStatus+"','"+initiator+"',getDate(),'"+channelID+"','"+transRef+"','"+closed+"')";
-					System.out.println("existed 4 "+query);
-					output = stat.executeUpdate(query);
-					if(output > 0) 
-					{	
-						message = "Transaction Reversal has been successfully logged. The request will be effected when this request is  authorized";
-						con.commit();
-						
-					}
-					else
-					{
-						message = "Transaction Reversal Request has Not been logged";
-						con.rollback();
-					}
-					
-					}
-					
-				}
-				
-			
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeconnectToPMEcardholder(con, result);
-			//closeConnectionEcardDBDemo(con, result);
-			//closeConnectionStaggingEcardDB(con, result);
-		}
-		finally
-		{
-			closeconnectToPMEcardholder(con, result);
-			//closeConnectionEcardDBDemo(con, result);
-			//closeConnectionStaggingEcardDB(con, result);
-		}
-		return message;
-	}
-	
-	
-	public String getReversal_Auth(String cardNum)
-	{
-		
-		Connection con = null;
-		Statement stat = null;
-		Connection con1 = null;
-		Statement stat1 = null;
-		ResultSet result = null;
-		int output = -1 ;
-		String message = "";
-		String query = "";
-	
-		
-		try
-		{
-				con = connectToPMEcardholder();
-				stat = con.createStatement();
-				
-	
-			query = "update E_QUEUED_INFO set REVERSA_STATUS ='0' where card_num = '"+cardNum+"' ";
-			output = stat.executeUpdate(query);
-			System.out.println("query and output   "+output);
-           if(output > 0)
-           {
-        	   message = "SUCCESS";
-        	   con.commit();
-           }
-           else
-           {
-        	   message = "Fail";
-        	   con.rollback();
-           }
-		}catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeconnectToPMEcardholder(con, result);
-			
-		}
-		finally
-		{
-			closeconnectToPMEcardholder(con, result);
-			
-		}
-		
-		return message;
-	}
-	
-	/**/
-	
-	public boolean getCheckUserAuthoriser(String username)
-	{
-		
-		Connection con = null;
-		Statement stat = null;
-		Connection con1 = null;
-		Statement stat1 = null;
-		ResultSet result = null;
-		int output = -1 ;
-		boolean message = false;
-		String query = "";
-	
-		
-		try
-		{
-				con = connectToPMEcardholder();
-				stat = con.createStatement();
-				
-				query = "select user_initiator from E_QUEUED_INFO where user_initiator = '"+username+"' ";
-
-				System.out.println("query and output   "+query);
-				result = stat.executeQuery(query);
-				if(result.next())
-				{
-					message  = true;
-				}
-          
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeconnectToPMEcardholder(con, result);
-			
-		}
-		finally
-		{
-			closeconnectToPMEcardholder(con, result);
-			
-		}
-		
-		return message;
-	}
-	/*Method to list Queued Reversal Details */
-	public ArrayList getQueuedReveralDetails()
-	{
-		String query = "";
-		ArrayList arr = new ArrayList();
-		E_TRANSACTION  trans = null;
-		int counter = 0;
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null ;
-		
-		try
-		{
-			
-			con = connectToPMEcardholder();
-			//con  = connectToEcardDBDemo();
-			//con = connectToStaggingEcardDB();
-			//con = connectToECard();
-			stat = con.createStatement();
-			
-			query = "SELECT CARD_NUM,TRANS_NO,TRANS_DATE,TRANS_DESCR,TRANS_AMOUNT,MERCHANT_CODE,TRANS_REF,UNIQUE_TRANSID,USER_INITIATOR,DATE_INITIATED,CHANNELID,CLOSED" +
-					" FROM E_QUEUED_INFO where REVERSA_STATUS = 'Queued' ";
-			System.out.println("query " + query);
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-		
-				trans  = new E_TRANSACTION();
-				trans.setCard_num(""+result.getObject(1));
-				trans.setTrans_no(""+result.getObject(2));
-				trans.setTrans_date(""+result.getObject(3));
-				trans.setTrans_desc(""+result.getObject(4));
-				trans.setTrans_amount(""+result.getObject(5));
-				trans.setMerchat_code(""+result.getObject(6));
-				trans.setTrans_ref(""+result.getObject(7));
-				trans.setUnique_transid(""+result.getObject(8));
-				trans.setYear(""+result.getObject(9));
-				trans.setDay(""+result.getObject(10));
-				trans.setChannelid(""+result.getObject(11));
-				trans.setClosed(""+result.getObject(12));
-			
-				arr.add(trans);
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			 closeconnectToPMEcardholder(con, result);
-			//closeConnectionEcardDBDemo(con, result);
-			//closeConnectionStaggingEcardDB(con, result);
-		}
-		finally
-		{
-	
-			closeConnectionEcardDBDemo(con, result);
-		}
-		return arr;
-	}
-	
-	
-	/*Method to move transaction to a card */
-	public String moveToDepotBank(String cardnum,String status,String totalAmount,String date)
-	{
-		String query = "";
-		String message = "";
-		int output = -1;
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		
-	
-		try
-		{
-			
-			con = connectToSupportLog();
-			stat = con.createStatement();
-			
-			query = "select * from pm_directCredit where amount = 0.0  and" +
-					" depot_cardnum = '"+cardnum+"' and create_date = '"+date+"' ";
-		
-		
-			result = stat.executeQuery(query);
-			if(result.next())
-			{
-				message = "EXISTED";
-			}else
-			{
-				
-				query = "update pm_directCredit set amount = 0.0 where" +
-						" depot_cardnum = '"+cardnum+"' and create_date = '"+date+"' ";
-
-				System.out.println("moveToDepotBank query " + query);
-				output = stat.executeUpdate(query);
-				if(output > 0)
-				{
-					message = "SUCCESS";
-					con.commit();
-				}
-				else
-				{
-					message = "FAILED";
-					con.rollback();
-				}
-				
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-		closeConnectionSupportLogDB(con, result);
-			
-		}
-		finally
-		{
-			closeConnectionSupportLogDB(con, result);
-		}
-		return message;
-	}
-	
-	
-	
-	
     /*This method is used to display pos merchants that we debit everyday*/    
     /*public ArrayList getPOSMerchantReport(String etz_merchant_code, String start_dt, String end_dt)
 	{
@@ -20082,211 +14146,7 @@ public class ReportModel
 		return arr;
 	}
 	
-	/*This method is used to get merchant Account no*/
-	public ArrayList getMerchantAccount(String merchant)
-	{
-		String query = "";
-		ArrayList arr = new ArrayList();
-		E_MERCHANT merchants  = null;
-		Connection con = null;
-		
-		Statement stat = null;
-		ResultSet result = null;
-		
-		try
-		{
-			con = connectToECard();
-			stat = con.createStatement();
-			
-			
-			query = "SELECT MERCHANT_CODE,MERCHANT_NAME,MERCHANT_ACCT FROM E_MERCHANT  WHERE MERCHANT_CODE IN" +
-					" (SELECT SUB_MERCHANT_CODE FROM E_MERCHANTCODE_MAP WHERE MAIN_MERCHANT_CODE = '"+merchant+"')";
-
-			System.out.println(query + " query");
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-				merchants = new E_MERCHANT();
-				merchants.setMerchant_code(""+result.getObject(1));
-				merchants.setMerchant_name(""+result.getObject(2));
-				merchants.setMerchant_acct(""+result.getObject(3));
-				arr.add(merchants);
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionECard(con, result, result);
-		}
-		finally
-		{
-			closeConnectionECard(con, result, result);
-		}
-		return arr;
-	}
 	
-	public ArrayList getPHCNALLDISTRCT(String zone)
-	{
-		String query = "";
-		ArrayList arr = new ArrayList();
-		District district  = null; 
-		Connection con = null;
-		
-		Statement stat = null;
-		ResultSet result = null;
-		
-		try
-		{
-			 con = connectToTelco();
-			 stat = con.createStatement();
-			
-			query =  "select distinct DISTRICT from telcodb.dbo.T_PHCN_DISTRICTS_POSTPAID where DISCO = '"+zone+"'";
-
-			System.out.println("getPHCN ALL DISTRCT   :: :: :  :::: " +  query);
-			
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-				district = new District();
-				district.setDesc(""+result.getObject(1));	
-				arr.add(district);
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionTelco(con, result);
-		}
-		finally
-		{
-		
-			closeConnectionTelco(con, result);	
-		}
-		return arr;
-	}
-	
-	
-	public ArrayList getPHCNDISTRCT(String disco)
-	{
-		String query = "";
-		ArrayList arr = new ArrayList();
-		District district  = null; 
-		Connection con = null;
-		
-		Statement stat = null;
-		ResultSet result = null;
-		
-		try
-		{
-			 con = connectToTelco();
-			 stat = con.createStatement();
-			
-			// query = "Select DISCO,DISTRICT FROM T_PHCN_DISTRICTS_POSTPAID WHERE DISCO = '"+disco+"' ";
-			 query = "Select distinct District,Disco from telcodb.dbo.T_PHCN_DISTRICTS_POSTPAID where DISCO='"+disco+"' ";
-
-			System.out.println("getPHCNDISTRCT   :: :: :  query" +  query);
-			
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-				district = new District();
-				district.setDesc(""+result.getObject(1));	
-				district.setCode(""+result.getObject(2));
-				arr.add(district);
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionTelco(con, result);
-		}
-		finally
-		{
-		
-			closeConnectionTelco(con, result);	
-		}
-		return arr;
-	}
-	
-	public String getActivateUsers(String mobileNo)
-	{
-		String query = "";
-		ArrayList arr = new ArrayList();
-		Bank bank;
-		Connection con = null;
-		
-		Statement stat = null;
-		ResultSet result = null;
-		String results = null;
-		
-		query = "update E_MOBILE_SUBSCRIBER set Active ='1' where Mobile = '"+mobileNo+"'  ";
-		
-		try
-		{
-			con = connectToECard();
-			stat = con.createStatement();
-			int rowcount = stat.executeUpdate(query); 
-			con.commit();
-			if(rowcount > 0)
-			{
-				results = "Success";
-			}else{
-				results = "Fail";
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionECard(con, result,result);
-		}
-		finally
-		{
-			closeConnectionECard(con, result, result);
-		}
-		return results;
-	}
-	
-
-	public String getDeActivateUsers(String mobileNo)
-	{
-		String query = "";
-		ArrayList arr = new ArrayList();
-		Bank bank;
-		Connection con = null;
-		
-		Statement stat = null;
-		ResultSet result = null;
-		String results = null;
-		
-		query = "update E_MOBILE_SUBSCRIBER set Active ='0' where Mobile = '"+mobileNo+"'  ";
-		
-		try
-		{
-			con = connectToECard();
-			stat = con.createStatement();
-			int rowcount = stat.executeUpdate(query);
-			con.commit();
-			if(rowcount > 0)
-			{
-				results = "Success";
-			}else
-			{
-				results = "Fail";
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionECard(con, result,result);
-		}
-		finally
-		{
-			closeConnectionECard(con, result, result);
-		}
-		
-		return results;
-		
-	}
 	/*This method is used to get branch name*/
 	public String getBranchName(String branchCode)
 	{
@@ -20323,283 +14183,7 @@ public class ReportModel
 		return message;
 	}
 	
-	/*This method is used to get the created merchant ext split*/
-	public ArrayList getAllMerchantExtSplit()
-	{
-		ArrayList arr = new ArrayList();
-		String query = "";
-		Connection con = null;
-		
-		Statement stat = null;
-		ResultSet result = null;
-		
-		E_MERCHANT_SPLIT merchantExt = null;
-		
-		try
-		{
-			con = connectToBackUpECard();
-			stat = con.createStatement();
-			
-			query = "select merchant_code, split_card, svalue, split_descr" +
-					" from e_merchant_ext_split ";
-			
-			System.out.println("getAllMerchantExtSplit query " + query);
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-				merchantExt = new E_MERCHANT_SPLIT();
-				merchantExt.setMerchant_code(""+result.getObject(1));
-				merchantExt.setSplit_card(""+result.getObject(2));
-				merchantExt.setSvalue(""+result.getObject(3));
-				merchantExt.setSplit_descr(""+result.getObject(4));
-				arr.add(merchantExt);
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionBackUpEcard(con, result, result);
-		}
-		finally
-		{
-			closeConnectionBackUpEcard(con, result, result);
-		}
-		return arr;
-	}
-	
-	
-	
-	public ArrayList getBizdevSettlementSummary(String startDt, String endDt, String bizdevCode)
-	{
-		ArrayList arr = new ArrayList();
-		String[] str = new String[7];
-		String query = "";
-		Connection con = null;
-		
-		Statement stat = null;
-		ResultSet result = null;
-		
-		try
-		{
-			
-			con = connectToECard();
-			stat = con.createStatement();
-			
-			query = "select a.merchant_code, d.merchant_name, count(a.trans_amount) "+
-					" trans_count,sum(a.trans_amount) trans_sum, count(b.trans_amount) settle_count," +
-					" sum(b.trans_amount) settle_sum, count(c.trans_amount) fee_count," +
-					" sum(c.trans_amount) fee_sum from e_transaction a" +
-					" left outer join e_settlement_download_bk b on a.unique_transid = b.unique_transid" +
-					" left outer join e_fee_detail_bk c on a.unique_transid = c.external_transid and" +
-					" c.merchant_code in ('0690019914','0443241197','0443241317') " +
-					" left outer join e_merchant d on a.merchant_code = d.merchant_code where" +
-					" a.trans_date between ('"+startDt+"') and ('"+endDt+"') and" +
-					" a.trans_code = 'P' and a.settle_batch not like '%SKIP%' and" +
-					" a.merchant_code in (select merchant_code from telcodb..support_merchant_mapping where username = '"+bizdevCode+"')" +
-					" group by a.merchant_code, d.merchant_name ";
-
-			
-			System.out.println("getBizdevSettlementSummary query " + query);
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-				str = new String[7];
-				str[0] = ""+result.getObject(1);
-				str[1] = ""+result.getObject(2);
-				str[2] = ""+result.getObject(3);
-				str[3] = ""+result.getObject(4);
-				str[4] = ""+result.getObject(5);
-				str[5] = ""+result.getObject(6);
-				str[6] = ""+result.getObject(7);
-
-				arr.add(str);
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionBackUpEcard(con, result, result);
-		}
-		finally
-		{
-			closeConnectionECard(con, result, result);
-		}
-		return arr;
-	}
-	
-	
-	public ArrayList getSettlementSummary(String startDt, String endDt)
-	{
-		ArrayList arr = new ArrayList();
-		String[] str = new String[7];
-		String query = "";
-		Connection con = null;
-		
-		Statement stat = null;
-		ResultSet result = null;
-		
-		try
-		{
-			
-			con = connectToECard();
-			stat = con.createStatement();
-			
-			query = " select 'Payments' , count(a.trans_amount) trans_count,sum(a.trans_amount) trans_sum, count(b.trans_amount) settle_count, sum(b.trans_amount) settle_sum, count(c.trans_amount) fee_count, sum(c.trans_amount) fee_sum from e_transaction a left outer join e_settlement_download_bk b on a.unique_transid = b.unique_transid left outer join e_fee_detail_bk c on a.unique_transid = c.external_transid and c.merchant_code in " +
-			" ('0690019914','0443241197','0443241317') left outer join e_merchant d on a.merchant_code = d.merchant_code where a.trans_date between ('"+startDt+"') and ('"+endDt+"') and a.trans_code = 'P' and ((a.settle_batch not like '%SKIP%') or (a.settle_batch is null))  " +
-			" Union all " +
-			" select 'Transfers' , count(a.trans_amount) trans_count,sum(a.trans_amount) trans_sum, count(b.trans_amount) settle_count, sum(b.trans_amount) settle_sum, count(c.trans_amount) fee_count, sum(c.trans_amount) fee_sum from e_transaction a left outer join e_settlement_download_bk b on a.unique_transid = b.unique_transid left outer join e_fee_detail_bk c on a.unique_transid = c.external_transid and c.merchant_code in " +
-			" ('0690019914','0443241197','0443241317') left outer join e_issuer d on " +
-			" substring(a.card_num,1,3) = d.issuer_code where a.trans_date between ('"+startDt+"') and ('"+endDt+"') and a.trans_code = 'T'  and " +
-			" (substring(a.card_num,1,3) <> substring(a.merchant_code,1,3)) and " +
-			" substring(a.card_num,1,1) <> '7' and ((a.settle_batch not like '%rev%') or (a.settle_batch is null)) " +
-			" Union all " +
-			" select 'ATM Withdrawals', count(a.trans_amount) " +
-			" trans_count,sum(a.trans_amount) trans_sum, count(b.trans_amount) settle_count, sum(b.trans_amount) settle_sum, count(c.trans_amount) fee_count, sum(c.trans_amount) fee_sum from e_transaction a left outer join e_settlement_download_bk b on a.unique_transid = b.unique_transid left outer join e_fee_detail_bk c on a.unique_transid = c.external_transid and c.merchant_code in ('0690019914','0443241197','0443241317') left outer join e_issuer d on substring(a.card_num,1,3) = d.issuer_code where a.trans_date between ('"+startDt+"') and ('"+endDt+"') and a.trans_code = 'W'  and " +
-			" ((substring(a.card_num,1,3) <> substring(a.merchant_code,1,3)) or (a.sbatch_no = '9')) Union All select 'Card Loads', count(a.trans_amount) trans_count,sum(a.trans_amount) trans_sum, count(b.trans_amount) settle_count, sum(b.trans_amount) settle_sum, count(c.trans_amount) fee_count, sum(c.trans_amount) fee_sum from e_transaction a left outer join e_settlement_download_bk b on a.unique_transid = b.unique_transid left outer join e_fee_detail_bk c on a.unique_transid = c.external_transid and c.merchant_code in " +
-			" ('0690019914','0443241197','0443241317') left outer join e_issuer d on " +
-			" substring(a.card_num,1,3) = d.issuer_code where a.trans_date between ('"+startDt+"') and ('"+endDt+"') and a.trans_code = 'D'  " +
-			" Union all " +
-			" select 'Card Unloads', count(a.trans_amount) trans_count,sum(a.trans_amount) trans_sum, count(b.trans_amount) settle_count, sum(b.trans_amount) settle_sum, count(c.trans_amount) fee_count, sum(c.trans_amount) fee_sum from e_transaction a left outer join e_settlement_download_bk b on a.unique_transid = b.unique_transid left outer join e_fee_detail_bk c on a.unique_transid = c.external_transid and c.merchant_code in " +
-			" ('0690019914','0443241197','0443241317') left outer join e_issuer d on " +
-			" substring(a.card_num,1,3) = d.issuer_code where a.trans_date between ('"+startDt+"') and ('"+endDt+"') and a.trans_code = 'U' ";
-			
-			System.out.println("getSettlementSummary query " + query);
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-				str = new String[7];
-				str[0] = ""+result.getObject(1);
-				str[1] = ""+result.getObject(2);
-				str[2] = ""+result.getObject(3);
-				str[3] = ""+result.getObject(4);
-				str[4] = ""+result.getObject(5);
-				str[5] = ""+result.getObject(6);
-				str[6] = ""+result.getObject(7);
-
-				arr.add(str);
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionBackUpEcard(con, result, result);
-		}
-		finally
-		{
-			closeConnectionECard(con, result, result);
-		}
-		return arr;
-	}
-	
-	
-	
-	public ArrayList getSettlementDetails(String startDt, String endDt, String transCode)
-	{
-		ArrayList arr = new ArrayList();
-		String[] str = new String[7];
-		String query = "";
-		Connection con = null;
-		
-		Statement stat = null;
-		ResultSet result = null;
-		
-		try
-		{
-			
-			con = connectToECard();
-			stat = con.createStatement();
-			
-			if(transCode.equals("Payments"))
-			{
-				query = "select a.merchant_code, d.merchant_name, count(a.trans_amount) "+
-				" trans_count,sum(a.trans_amount) trans_sum, count(b.trans_amount) settle_count," +
-				" sum(b.trans_amount) settle_sum, count(c.trans_amount) fee_count," +
-				" sum(c.trans_amount) fee_sum from" +
-				" e_transaction a left outer join e_settlement_download_bk b on a.unique_transid = b.unique_transid" +
-				" left outer join e_fee_detail_bk c on a.unique_transid = c.external_transid and" +
-				" c.merchant_code in ('0690019914','0443241197','0443241317')" +
-				" left outer join e_merchant d on a.merchant_code = d.merchant_code where" +
-				" a.trans_date between ('"+startDt+"') and ('"+endDt+"') and a.trans_code = 'P' and" +
-				" a.settle_batch not like '%SKIP%' group by a.merchant_code, d.merchant_name";
-
-			}
-			else if(transCode.equals("Transfers"))
-			{
-				query = "select substring(a.card_num,1,3), d.issuer_name, count(a.trans_amount) " +
-					" trans_count,sum(a.trans_amount) trans_sum, count(b.trans_amount) settle_count," +
-					" sum(b.trans_amount) settle_sum, count(c.trans_amount) fee_count," +
-					" sum(c.trans_amount) fee_sum from e_transaction a" +
-					" left outer join e_settlement_download_bk b on a.unique_transid = b.unique_transid" +
-					" left outer join e_fee_detail_bk c on a.unique_transid = c.external_transid and" +
-					" c.merchant_code in ('0690019914','0443241197','0443241317')" +
-					" left outer join e_issuer d on substring(a.card_num,1,3) = d.issuer_code where" +
-					" a.trans_date between ('"+startDt+"') and ('"+endDt+"') and a.trans_code = 'T'  and " +
-					" (substring(a.card_num,1,3) <> substring(a.merchant_code,1,3)) and  "+
-					" substring(a.card_num,1,1) <> '7' and a.settle_batch not like '%rev%' group by substring(a.card_num,1,3), d.issuer_name ";
-
-			}
-			else if(transCode.equals("ATM Withdrawals"))
-			{
-				query = "select substring(a.card_num,1,3), d.issuer_name, count(a.trans_amount) " +
-					" trans_count,sum(a.trans_amount) trans_sum, count(b.trans_amount) settle_count," +
-					" sum(b.trans_amount) settle_sum, count(c.trans_amount) fee_count, sum(c.trans_amount) fee_sum from" +
-					" e_transaction a left outer join e_settlement_download_bk b on a.unique_transid = b.unique_transid" +
-					" left outer join e_fee_detail_bk c on a.unique_transid = c.external_transid and" +
-					" c.merchant_code in ('0690019914','0443241197','0443241317') " +
-					" left outer join e_issuer d on substring(a.card_num,1,3) = d.issuer_code " +
-					"where a.trans_date between ('"+startDt+"') and ('"+endDt+"') and a.trans_code = 'W'  and " +
-					" ((substring(a.card_num,1,3) <> substring(a.merchant_code,1,3)) or (a.sbatch_no = '9'))" +
-					" group by substring(a.card_num,1,3), d.issuer_name";
-
-			}
-			else if(transCode.equals("Card Loads"))
-			{
-				query = "select substring(a.card_num,1,3), d.issuer_name, count(a.trans_amount) "+
-					" trans_count,sum(a.trans_amount) trans_sum, count(b.trans_amount) settle_count, sum(b.trans_amount) settle_sum, count(c.trans_amount) fee_count, sum(c.trans_amount) fee_sum from e_transaction a left outer join e_settlement_download_bk b on a.unique_transid = b.unique_transid left outer join e_fee_detail_bk c on a.unique_transid = c.external_transid and c.merchant_code in ('0690019914','0443241197','0443241317') left outer join e_issuer d on substring(a.card_num,1,3) = d.issuer_code where a.trans_date between ('"+startDt+"') and ('"+endDt+"') and a.trans_code = 'D' group by substring(a.card_num,1,3), d.issuer_name";
-
-			}
-			else if(transCode.equals("Card Unloads"))
-			{
-				query = "select substring(a.merchant_code,1,3), d.issuer_name, count(a.trans_amount) "+
-					" trans_count,sum(a.trans_amount) trans_sum, count(b.trans_amount) settle_count, sum(b.trans_amount) settle_sum, count(c.trans_amount) fee_count, sum(c.trans_amount) fee_sum from e_transaction a left outer join e_settlement_download_bk b on a.unique_transid = b.unique_transid left outer join e_fee_detail_bk c on a.unique_transid = c.external_transid and c.merchant_code in ('0690019914','0443241197','0443241317') left outer join e_issuer d on substring(a.card_num,1,3) = d.issuer_code where a.trans_date between ('"+startDt+"') and ('"+endDt+"') and a.trans_code = 'U'  group by substring(a.merchant_code,1,3), d.issuer_name ";
-
-			}
-			
-			System.out.println("getSettlementDetails query " + query);
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-				str = new String[8];
-				str[0] = ""+result.getObject(1);
-				str[1] = ""+result.getObject(2);
-				str[2] = ""+result.getObject(3);
-				str[3] = ""+result.getObject(4);
-				str[4] = ""+result.getObject(5);
-				str[5] = ""+result.getObject(6);
-				str[6] = ""+result.getObject(7);
-				str[7] = ""+result.getObject(8);
-
-				arr.add(str);
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionBackUpEcard(con, result, result);
-		}
-		finally
-		{
-			closeConnectionECard(con, result, result);
-		}
-		return arr;
-	}
-	
     
-	
-	
-	
-	
-	
 	/**
 	 * This method is used to encrypt or decrypt card numbers
 	 * 
@@ -20647,1971 +14231,6 @@ public class ReportModel
         return cryptedPan;
     }
 	
-	
-	
-	public ArrayList getFundPmSummary(java.util.Date start_dt,java.util.Date end_dt,String ref,String status)
-	{
-		String query = "";
-		ArrayList arr = new ArrayList();
-		Summary summary = new Summary();
-		String str = "";
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		try
-		{
-			
-			query = "select type,pocketmoniacct,orderid,sessionid,logtime,amount,status,ref,msglog "
-                                + "from mobiledb..m_fundpocketmonitransactionlog "
-                                + "where 1=1 ";
-            if(ref!=null && !ref.isEmpty())
-            {
-               query = query+" and ref = '"+ref+"' ";
-            }
-             if(status!=null && !status.isEmpty())
-            {
-            	 if(status.equals("0"))
-            	 {
-            		 query = query+" and status != '0' and type = '0900' ";
-            	 } 
-            	 else if(status.equals("2"))
-            	 {
-            		 query = query+" and status in ('001','00') ";
-            	 }
-               
-            }
-
-            if(start_dt!=null)
-            {
-            com.etranzact.drs.utility.DateUtility dateUtil = new com.etranzact.drs.utility.DateUtility(); 
-            java.util.Date endDate=null;
-            if (end_dt == null ) {
-            	end_dt = new java.util.Date();
-            }
-            String startDateString = dateUtil.formatDate(start_dt);
-            String endDateString = dateUtil.formatDate(end_dt);
-
-            query = query+" and convert(datetime, logtime) between '"+startDateString+"' and '"+endDateString+"'";
-            }
-            System.out.println(query);    
-            con = connectMobileDB();
-			stat = con.createStatement();
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-				com.etranzact.supportmanager.dto.FundPocketMoniLog fundPocketMoniLog = new com.etranzact.supportmanager.dto.FundPocketMoniLog();
-				fundPocketMoniLog.setAmount(result.getString("amount"));
-                fundPocketMoniLog.setDateTime(result.getString("logtime"));
-                fundPocketMoniLog.setOrderID(result.getString("orderid"));
-                fundPocketMoniLog.setPhonenumber(result.getString("pocketmoniacct"));
-                fundPocketMoniLog.setSessionID(result.getString("sessionid"));
-                fundPocketMoniLog.setStatus(result.getString("status"));
-                fundPocketMoniLog.setTransactionRef(result.getString("ref"));
-                fundPocketMoniLog.setType(result.getString("type"));
-                try{fundPocketMoniLog.setOperatorType(result.getString("msglog").split(":::")[1]);}catch(Exception sd){fundPocketMoniLog.setOperatorType("700");}
-				arr.add(fundPocketMoniLog);
-			}
-			closeConnectionMobileDB(con, result);
-
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionMobileDB(con, result);
-		}
-		finally
-		{
-			closeConnectionMobileDB(con, result);
-		}
-		return arr;
-	}
-	
-	
-	public void updateFundPMLog(String transactionRef, String phonenumber, int response) {
-        try 
-        {
-
-
-            java.sql.Connection con = Env.getConnection4psmDB();
-            int output = -1;
-            String message = "";
-
-
-            try {
-                Statement stat = null;
-
-                stat = con.createStatement();
-                String query = "update mobiledb.dbo.m_fundpocketmonitransactionlog set status = '" + (response) + "' where ref = '" + (transactionRef) + "' and  pocketmoniacct = '" + (phonenumber) + "'";
-
-                System.out.println("   " + query);
-                output = stat.executeUpdate(query);
-
-                if (output > 0) {
-                    message = "Record Successfully created";
-                } else {
-                    con.rollback();
-                    message = "Record not successfully created";
-                }
-
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                try {
-                    message = "Error occured while creating record";
-                } catch (Exception e) {
-                }
-
-            } finally {
-                try {
-                    con.close();
-                } catch (Exception s) {
-                }
-                // facesMessages.add(Severity.INFO, message);
-            }
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-	
-	
-	public ArrayList getPHCNSettlement(String zone, String districts, String startDt, String endDt)
-	{
-		ArrayList arr = new ArrayList();
-		String[] str = new String[7];
-		String query = "";
-		Connection con = null;
-		
-		Statement stat = null;
-		ResultSet result = null;
-		
-		try
-		{
-			
-			con = connectToECard();
-			stat = con.createStatement();
-			
-			
-			/*query = "select settle_batch , batch_date , DISTRICTS," +
-					" TRANS_DESCR  ,trans_amount ," +
-					" issuer_name , merchant_acct  from" +
-					" e_settlement_download_bk a left outer join e_settle_batch b on settle_batch = batch_id" +
-					" left outer join e_merchant c on a.merchant_code=c.merchant_code left outer join t_phcn_merchantcode_map" +
-					" on card_num=holding_merchant_code left outer join e_issuer d on substring(a.merchant_code,1,3) = d.issuer_code" +
-					"  where DISTRICT_NAME= '"+ zone +"' and DISTRICTS like '%"+ districts +"%' and trans_code ='P'  and" +
-					" batch_date between '"+startDt+"' and '"+endDt+"'" +
-					" union" +
-					" select settle_batch ,batch_date ,DISTRICTS," +
-					" MERCHANT_NAME ,sum(trans_amount) ," +
-					" issuer_name  ,merchant_acct  from" +
-					" e_settlement_download_bk a left outer join e_settle_batch b on settle_batch=batch_id" +
-					" left outer join e_merchant c on a.merchant_code=c.merchant_code left outer join t_phcn_merchantcode_map" +
-					" on a.merchant_code=holding_merchant_code" +
-					" left outer join e_issuer d on substring(a.merchant_code,1,3)=d.issuer_code  where" +
-					" DISTRICT_NAME= '"+ zone +"' and holding_merchant_code=main_merchant_code and DISTRICTS like '%"+ districts +"%' and" +
-					" trans_code ='P'  and batch_date between '"+startDt+"' and '"+endDt+"'" +
-					" group by settle_batch,batch_date,issuer_name,MERCHANT_NAME,a.merchant_code,merchant_acct," +
-					" DISTRICTS order by BATCH_DATE,DISTRICTS";
-
-			*/
-			
-			 query = 	"select settle_batch , batch_date , DISTRICTS," +
-					   " TRANS_DESCR  ,trans_amount ," +
-					   " issuer_name , merchant_acct  from" +
-					   " e_settlement_download_bk a left outer join e_settle_batch b on settle_batch = batch_id" +
-					   " left outer join e_merchant c on a.merchant_code=c.merchant_code left outer join t_phcn_merchantcode_map" +
-					   " on card_num=holding_merchant_code and a.merchant_code=main_merchant_code left outer join e_issuer d on substring(a.merchant_code,1,3) = d.issuer_code" +
-					   "  where DISTRICT_NAME= '"+ zone +"' and DISTRICTS like '%"+ districts +"%' and" +
-					   " batch_date between '"+startDt+"' and '"+endDt+"'" +
-					   " union" +
-					   " select settle_batch ,batch_date ,DISTRICTS," +
-					   " MERCHANT_NAME ,sum(trans_amount) ," +
-					   " issuer_name  ,merchant_acct  from" +
-					   " e_settlement_download_bk a left outer join e_settle_batch b on settle_batch=batch_id" +
-					   " left outer join e_merchant c on a.merchant_code=c.merchant_code left outer join t_phcn_merchantcode_map" +
-					   " on a.merchant_code=holding_merchant_code" +
-					   " left outer join e_issuer d on substring(a.merchant_code,1,3)=d.issuer_code  where" +
-					   " DISTRICT_NAME= '"+ zone +"' and holding_merchant_code=main_merchant_code and DISTRICTS like '%"+ districts +"%' and" +
-					   " trans_code ='P'  and batch_date between '"+startDt+"' and '"+endDt+"'" +
-					   " group by settle_batch,batch_date,issuer_name,MERCHANT_NAME,a.merchant_code,merchant_acct," +
-					   " DISTRICTS order by BATCH_DATE,DISTRICTS";
-			
-			
-			System.out.println("getPHCNSettlement query " + query);
-			
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-				str = new String[7];
-				str[0] = ""+result.getObject(1);
-				str[1] = ""+result.getObject(2);
-				str[2] = ""+result.getObject(3);
-				str[3] = ""+result.getObject(4);
-				str[4] = ""+result.getObject(5);
-				str[5] = ""+result.getObject(6);
-				str[6] = ""+result.getObject(7);
-				arr.add(str);
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionECard(con, result, result);
-		}
-		finally
-		{
-			closeConnectionECard(con, result, result);
-		}
-		return arr;
-	}
-	
-	
-	/*Method to get Transactions based on a card number*/
-	public ArrayList getSupervisor_VAS_CardHolderTransactions(String mobileno,String start_dt, String end_dt)
-	{
-		String query = "";
-		ArrayList arr = new ArrayList();
-		E_TRANSACTION tran = null;
-		int counter = 0;
-		Connection con = null;
-		Statement stat = null;
-		
-		Connection con1 = null;
-		Statement stat1 = null;
-		
-		ResultSet result = null;
-		ResultSet result1 = null;
-		double d = 0.0;
-		String str = "";
-		String apostrophe = "'";
-
-		
-		try
-		{
-				
-			con1 = connectPocketMoniEcardDB();
-			stat1 = con1.createStatement();
-			
-			con = connectToECard();
-			stat = con.createStatement();
-			
-			query ="select card_num, phone,firstname,Lastname from e_cardholder where phone = '"+mobileno+"' ";
-			result1 = stat1.executeQuery(query);
-			if(result1.next())
-			{
-				
-				query = "select trans_no, card_num, merchant_code, (select f_name from ecarddb..e_transcode where f_code = ecarddb..e_transaction.trans_code), trans_descr, (select channel_name from ecarddb..e_channel where channel_id = ecarddb..e_transaction.channelid), trans_date, " +
-						"case when" +
-							" card_num =('"+result1.getObject(1)+"') " +
-						"then -1*trans_amount " +
-						"else" +
-							" trans_amount " +
-						"end" +
-						" from ecarddb..e_transaction " +
-						"where (card_num in('"+result1.getObject(1)+"') or merchant_code in('"+result1.getObject(1)+"')) " +
-						"and trans_date between('"+start_dt+"') and ('"+end_dt+"') order by trans_date ";
-				
-				System.out.println("query   "+query);
-				result = stat.executeQuery(query);
-				while(result.next())
-				{
-					
-					counter++;
-					tran = new E_TRANSACTION();
-					tran.setCounter(""+counter);	
-					tran.setPhone(""+result1.getObject(2));
-					tran.setFirstname(""+result1.getObject(3));
-					tran.setLastname(""+result1.getObject(4));
-				
-					
-					tran.setTrans_no(""+result.getObject(1));
-					tran.setCard_num(""+result.getObject(2));
-					tran.setMerchat_code(""+result.getObject(3));
-					tran.setTrans_code(""+result.getObject(4));
-					tran.setTrans_desc(""+result.getObject(5));
-					tran.setChannelid(""+result.getObject(6));
-					tran.setTrans_date(""+result.getObject(7));
-					
-					
-					d = Double.parseDouble(""+result.getObject(8));
-					if(d > 0)
-					{
-						tran.setCreditAmt(""+d);
-						tran.setDebitAmt("");
-					}
-					else
-					{
-						str = ""+d;
-						tran.setDebitAmt(str.substring(str.lastIndexOf("-")+1));
-						tran.setCreditAmt("");
-					}
-						
-				
-				
-					arr.add(tran);
-				}
-
-			}
-			
-			
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionPocketMoniEcardDB(con1, result1);
-			closeConnectionECard(con, result, result);
-		}
-		finally
-		{
-			closeConnectionPocketMoniEcardDB(con1, result1);
-			closeConnectionECard(con, result, result);
-			
-		}
-		return arr;
-	}
-	
-	
-	
-	/*Method to get Transactions based on a card number*/
-	public ArrayList getSupervisor_DEPOT_CardHolderTransactions(String depotCardnum, String start_dt, String end_dt)
-	{
-		String query = "";
-		ArrayList arr = new ArrayList();
-		E_TRANSACTION tran = null;
-		int counter = 0;
-		Connection con = null;
-		Statement stat = null;
-		
-		Connection con1 = null;
-		Statement stat1 = null;
-		
-		ResultSet result = null;
-		ResultSet result1 = null;
-		double d = 0.0;
-		String str = "";
-		String apostrophe = "'";
-
-		
-		try
-		{
-			
-			con = connectToECard();
-			stat = con.createStatement();
-			
-			
-			query = "select trans_no, card_num,merchant_code, (select f_name from ecarddb..e_transcode where f_code = ecarddb..e_transaction.trans_code), trans_descr, (select channel_name from ecarddb..e_channel where channel_id = ecarddb..e_transaction.channelid), trans_date, " +
-					"case when" +
-						" card_num='"+depotCardnum+"' " +
-					"then -1*trans_amount " +
-					"else" +
-						" trans_amount " +
-					"end" +
-					" from ecarddb..e_transaction " +
-					"where (card_num='"+depotCardnum+"' or merchant_code = '"+depotCardnum+"') " +
-					"and trans_date between('"+start_dt+"') and ('"+end_dt+"') order by trans_date";
-			
-				 System.out.println("query   "+query);
-				 
-				result = stat.executeQuery(query);
-				while(result.next())
-				{
-					
-					counter++;
-					tran = new E_TRANSACTION();
-					tran.setCounter(""+counter);
-					tran.setTrans_no(""+result.getObject(1));
-					tran.setCard_num(""+result.getObject(2));
-					tran.setMerchat_code(""+result.getObject(3));
-					tran.setTrans_code(""+result.getObject(4));
-					tran.setTrans_desc(""+result.getObject(5));
-					tran.setChannelid(""+result.getObject(6));
-					tran.setTrans_date(""+result.getObject(7));
-					
-					
-					d = Double.parseDouble(""+result.getObject(8));
-					if(d > 0)
-					{
-						tran.setCreditAmt(""+d);
-						tran.setDebitAmt("");
-					}
-					else
-					{
-						str = ""+d;
-						tran.setDebitAmt(str.substring(str.lastIndexOf("-")+1));
-						tran.setCreditAmt("");
-					}
-						
-					arr.add(tran);
-			   }
-				
-			
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionECard(con, result, result);
-		}
-		finally
-		{
-			closeConnectionECard(con, result, result);
-		}
-		return arr;
-	}
-	
-	
-	/*This method is used to display the report of glo registration*/
-	public ArrayList getGloRegistrationReport(String startDt, String endDt)
-	{
-		ArrayList arr = new ArrayList();
-		String[] str = new String[7];
-		String query = "";
-		Connection con = null;
-		
-		Statement stat = null;
-		ResultSet result = null;
-		
-		try
-		{
-			
-			con = connectMobileDB();
-			stat = con.createStatement();
-			
-			
-			query = "select agentid, created, mobile_no, id from m_mobile_subscriber where agentid = 'glo001' and" +
-					" created between ('"+startDt+"') and ('"+endDt+"') order by created desc";
-
-	
-			System.out.println("getGloRegistrationReport query " + query);
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-				str = new String[7];
-				str[0] = result.getString(1);
-				str[1] = "Gloworld";
-				str[2] = ""+result.getObject(2);
-				str[3] = result.getString(3);
-				str[4] = ""+result.getObject(4);
-				str[5] = "Permanent";
-				str[6] = "Successful";
-
-				arr.add(str);
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionMobileDB(con, result);
-		}
-		finally
-		{
-			closeConnectionMobileDB(con, result);
-		}
-		return arr;
-	}
-	
-	
-	/*This method is used to display the report of glo transaction*/
-	public ArrayList getGloTransactionReport(String startDt, String endDt)
-	{
-		ArrayList arr = new ArrayList();
-		String[] str = new String[8];
-		String query = "";
-		Connection con = null, con1 = null, con2 = null;
-		
-		Statement stat = null, stat1 = null, stat2 = null;
-		ResultSet result = null, result1 = null, result2 = null;
-		
-		double d = 0.0d;
-		
-		try
-		{
-			//Transaction Date Time	Mobile Number	Transaction ID	Transaction Type	Pocketmoni bal. before trxn 	 Amount 	 Transaction Fee Value 	 Bonus Value 	Tax	Pocketmoni bal. after trxn 	Trxn Status
-
-			con = connectToBackUpECard();
-			stat = con.createStatement(); 
-			query = "select a.id, a.mobile_no, d.token, c.trans_code, c.trans_date," +
-					" (select error_desc from ecarddb..e_autoswitch_error where error_code = c.response_code), " +
-					" c.trans_amount " +
-					" from" +
-					" m_incoming_messages a, m_mobile_subscriber b,ecarddb..e_requestlog c, m_outgoing_messages d" +
-					" where a. mobile_no = b.mobile_no and a.id=d.message_id and b.agentid = 'GLO001' and" +
-					" a.unique_transid = c.transid and c.trans_date between ('"+startDt+"') and ('"+endDt+"') order by c.trans_date desc";
-			
-			System.out.println("getGloTransactionReport query " + query);
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-				str = new String[8];
-				str[0] = ""+result.getObject(1);//trans id
-				str[1] = result.getString(2);//mobile no
-				str[2] = result.getString(3);//token
-				if(str[2].equals("T"))
-				{
-					str[2] = "Transfer";
-				}
-				else if(str[2].equals("CP"))
-				{
-					str[2] = "Change Pin";
-				}
-				else if(str[2].equals("VL"))
-				{
-					str[2] = "Airtime";
-				}
-				else if(str[2].equals("BILL"))
-				{
-					str[2] = "Bill Payment";
-				}
-				str[3] = result.getString(4);//trans code
-				str[4] = ""+result.getObject(5);//date
-				str[5] = result.getString(6);//response code
-				str[6] = ""+result.getObject(7);//amount
-				
-				if(str[2].equals("Airtime"))
-				{
-					d = 0.1 * Double.parseDouble(""+result.getObject(7));
-				}
-				else
-				{
-					d = 0;
-				}
-					
-				str[7] =  ""+d;//bonus
-				
-				
-				arr.add(str);
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionBackUpEcard(con, result, result);
-		}
-		finally
-		{
-			closeConnectionBackUpEcard(con, result, result);
-		}
-		return arr;
-	}
-	
-/* this is method is to get lead bank Transaction Summary  */
-	
-	public ArrayList getLeadBankTransactionSummaryReport(String bankCode,String start_dt, String end_dt)
-	{
-		String query = "";
-		ArrayList arr = new ArrayList();
-		C_TRANSACTION ctrans = null;
-		int counter = 0;
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		
-		try
-		{
-		
-			con = connectToPayoutlet();
-			stat = con.createStatement();
-			
-			query = "select count(*), sub_code , sum(trans_amount) ,issuer_code from c_transaction where issuer_code = '"+bankCode+"'" +
-					" and merchant_code like '"+bankCode+"%' and trans_date between('"+start_dt+"') and ('"+end_dt+"') group by sub_code,issuer_code ";
-
-			System.out.println("getSuccessfulSummaryTransactionReportByBank " + query);		
-	
-			
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-			
-				ctrans = new C_TRANSACTION();
-				ctrans.setCounter(""+result.getObject(1));
-				ctrans.setSub_code(""+result.getObject(2));
-				ctrans.setTrans_amount(""+result.getObject(3));
-				ctrans.setIssuer_code(""+result.getObject(4));
-				ctrans.setTrans_status("01");
-				
-				arr.add(ctrans);
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionPayoutlet(con, result);
-		}
-		finally
-		{
-			closeConnectionPayoutlet(con, result);
-		}
-		return arr;
-	}
-	
-
-
-	public ArrayList getCollectingBankTransactionSummaryReport(String bankCode,String start_dt, String end_dt)
-	{
-		String query = "";
-		ArrayList arr = new ArrayList();
-		C_TRANSACTION ctrans = null;
-		int counter = 0;
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		
-		try
-		{
-		
-			con = connectToPayoutlet();
-			stat = con.createStatement();
-			
-			query = "select count(*), sub_code , sum(trans_amount) ,issuer_code from c_transaction where issuer_code <> '"+bankCode+"'" +
-					" and merchant_code like '"+bankCode+"%' and trans_date between('"+start_dt+"') and ('"+end_dt+"') group by sub_code,issuer_code ";
-
-			System.out.println("getCollectingBankTransactionSummaryReport " + query);		
-	
-			
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-			
-				ctrans = new C_TRANSACTION();
-				ctrans.setCounter(""+result.getObject(1));
-				ctrans.setSub_code(""+result.getObject(2));
-				ctrans.setTrans_amount(""+result.getObject(3));
-				ctrans.setIssuer_code(""+result.getObject(4));
-				ctrans.setTrans_status("02");
-				
-				arr.add(ctrans);
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionPayoutlet(con, result);
-		}
-		finally
-		{
-			closeConnectionPayoutlet(con, result);
-		}
-		return arr;
-	}
-
-
-
-
-/* Failed fund Transaction reports for bank_code 057 */
-	public ArrayList getDrillDownBranchTransactionReportByBank(String subCode,String issuerCode,String start_dt, String end_dt)
-	{
-		String query = "";
-		ArrayList arr = new ArrayList();
-		C_TRANSACTION ctrans = null;
-		int counter = 0;
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		
-		try
-		{
-		
-			con = connectToPayoutlet();
-			stat = con.createStatement();
-			
-			query = "select unique_Transid, Trans_date,Trans_descr,trans_amount,merchant_code,Issuer_code,Sub_code,Trans_no,T_Fullname," +
-					"T_address from c_transaction where sub_code = '"+subCode+"' and issuer_code = '"+issuerCode+"' and merchant_code like '"+issuerCode+"%'" +
-					" and trans_date between '"+start_dt+"' and '"+end_dt+"' ";
-
-			System.out.println("getDrillDownBranchTransactionReportByBank " + query);		
-			
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-			
-				ctrans = new C_TRANSACTION();
-				
-				ctrans.setUnique_transid(""+result.getObject(1));
-				ctrans.setTrans_date(""+result.getObject(2));
-				ctrans.setTrans_descr(""+result.getObject(3));
-				ctrans.setTrans_amount(""+result.getObject(4));
-				ctrans.setMerchant_code(""+result.getObject(5));
-				ctrans.setIssuer_code(""+result.getObject(6));
-				ctrans.setSub_code(""+result.getObject(7));
-				ctrans.setTrans_no(""+result.getObject(8));
-				ctrans.setT_fullname(""+result.getObject(9));
-				ctrans.setT_address(""+result.getObject(10));
-
-				arr.add(ctrans);
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionPayoutlet(con, result);
-		}
-		finally
-		{
-			closeConnectionPayoutlet(con, result);
-		}
-		return arr;
-	}
-	
-
-
-public ArrayList getDrillDownCollectingBankTransactionReportByBranch(String subCode,String issuerCode,String start_dt, String end_dt)
-	{
-		String query = "";
-		ArrayList arr = new ArrayList();
-		C_TRANSACTION ctrans = null;
-		int counter = 0;
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		
-		try
-		{
-		
-			con = connectToPayoutlet();
-			stat = con.createStatement();
-			
-			query = "select unique_Transid, Trans_date,Trans_descr,trans_amount,merchant_code,Issuer_code,Sub_code,Trans_no,T_Fullname," +
-					"T_address from c_transaction where sub_code = '"+subCode+"' and issuer_code <> '"+issuerCode+"' and merchant_code like '"+issuerCode+"%'" +
-					" and trans_date between '"+start_dt+"' and '"+end_dt+"' ";
-
-			System.out.println("getDrillDownBranchTransactionReportByBank " + query);		
-			
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-			
-				ctrans = new C_TRANSACTION();
-				
-				ctrans.setUnique_transid(""+result.getObject(1));
-				ctrans.setTrans_date(""+result.getObject(2));
-				ctrans.setTrans_descr(""+result.getObject(3));
-				ctrans.setTrans_amount(""+result.getObject(4));
-				ctrans.setMerchant_code(""+result.getObject(5));
-				ctrans.setIssuer_code(""+result.getObject(6));
-				ctrans.setSub_code(""+result.getObject(7));
-				ctrans.setTrans_no(""+result.getObject(8));
-				ctrans.setT_fullname(""+result.getObject(9));
-				ctrans.setT_address(""+result.getObject(10));
-
-				arr.add(ctrans);
-			}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionPayoutlet(con, result);
-		}
-		finally
-		{
-			closeConnectionPayoutlet(con, result);
-		}
-		return arr;
-	}
-
-
-/* this is method is to get lead bank Transaction Summary  */
-
-public ArrayList getVTUTransactionSummaryReport(String start_dt, String end_dt)
-{
-	String query = "";
-	ArrayList arr = new ArrayList();
-	ProviderLog providerLog = null;
-	int counter = 0;
-	Connection con = null;
-	Statement stat = null;
-	ResultSet result = null;
-	
-	try
-	{
-	
-		con =  connectToTelco();
-		stat = con.createStatement();
-		
-		
-		query = "select provider,count(*),sum(amount) from telcodb..t_provider_log where" +
-				" unique_transid in( select unique_transid from ecarddb..e_transaction where " +
-				" merchant_code in('0440019910','0440019952') and trans_code='p' and " +
-				" trans_date between '"+start_dt+"' and '"+end_dt+"') group by provider";
-		
-
-		System.out.println("getVTUTransactionSummaryReport " + query);		
-
-		
-		result = stat.executeQuery(query);
-		while(result.next())
-		{
-			
-			providerLog = new ProviderLog(); 
-			
-			providerLog.setProvider(""+result.getObject(1));
-			providerLog.setAttempts(""+result.getObject(2));
-			providerLog.setAmount(""+result.getObject(3));
-			providerLog.setSource("vtu");
-			arr.add(providerLog);
-		}
-	}
-	catch(Exception ex)
-	{
-		ex.printStackTrace();
-		closeConnectionTelco(con, result);
-	}
-	finally
-	{
-		closeConnectionTelco(con, result);
-	}
-	return arr;
-}
-
-
-public ArrayList getPINTransactionSummaryReport(String start_dt, String end_dt)
-{
-	String query = "";
-	ArrayList arr = new ArrayList();
-	R_pins_bought pinBought = null;
-	int counter = 0;
-	Connection con = null;
-	Statement stat = null;
-	ResultSet result = null;
-	
-	try
-	{
-	
-		con = connectToRechargeDB();
-		stat = con.createStatement();
-		
-		
-		query = "select sum(convert(numeric(12,2),PIN_DENO)),count(*),provider_id from r_pins_bought " +
-				"where unique_transid in ( select unique_transid from ecarddb..e_transaction  where " +
-				"merchant_code in ('0440019910','0440019952') and trans_code='p' " +
-				"and trans_date between '"+start_dt+"' and '"+end_dt+"') group by provider_id";
-
-
-
-		System.out.println("getPINTransactionSummaryReport " + query);		
-
-		
-		result = stat.executeQuery(query);
-		while(result.next())
-		{
-			
-			pinBought = new R_pins_bought(); 
-			
-			pinBought.setPIN_DENO(""+result.getObject(1));
-			pinBought.setValidCount(""+result.getObject(2));
-			pinBought.setPROVIDER_ID(""+result.getObject(3));
-			pinBought.setPIN_STATUS("pin");
-			arr.add(pinBought);
-		}
-	}
-	catch(Exception ex)
-	{
-		ex.printStackTrace();
-		closeConnectionRechargeDB(con, result);
-		
-	}
-	finally
-	{
-		closeConnectionRechargeDB(con, result);
-	}
-	return arr;
-}
-
-/*Method to create file uploader*/
-public String SaveFileDetails(String title,String author, String description,long filesize,String filePath,String filename)
-{
-	String query = "";
-	String message = "";
-	ArrayList arr = new ArrayList();
-	int output = -1;
-	Connection con = null;
-	Statement stat = null;
-	ResultSet result = null;
-	
-
-	try
-	{
-		con = connectToECard();
-		stat = con.createStatement();
-		
-		query = "select * from e_FileUploder  where File_Name = '"+filename+"' and File_Path ='"+filePath+"' ";
-		result = stat.executeQuery(query);
-		
-		System.out.println("query existed"+query);
-		if(result.next())
-		{
-				message = "EXISTED";		
-			
-		}
-		else
-		{				/*query = "insert into ecarddb..e_exception(pan, reason, date)values('"+card_num+"', '"+reason+"', getDate()) ";
-			*/
-				query = "insert into e_FileUploder(Title, Description, Size,Author,File_Name,File_Path,Created)values('"+title+"', '"+description+"', '"+filesize+"','"+author+"','"+filename+"','"+filePath+"',getDate()) ";
-			
-				System.out.println("SaveFileDetails query " + query);
-				output = stat.executeUpdate(query);
-				if(output > 0)
-				{
-					message = "SUCCESS";
-					con.commit();
-				}
-				else
-				{
-					message = "FAILED";
-					con.rollback();
-				}
-		}
-	}
-	catch(Exception ex)
-	{
-		ex.printStackTrace();
-		closeConnectionECard(con, result, result);
-	}
-	finally
-	{
-		closeConnectionECard(con, result, result);
-	}
-	return message;
-}
-
-/*Method to persist File details */
-public String createUploadFile(String filename,String filePath, String Status, String uploadBy, String code)
-{
-	String query = "";
-	String message = "";
-	ArrayList arr = new ArrayList();
-	int output = -1;
-	Connection con = null;
-	Statement stat = null;
-	ResultSet result = null;
-	
-
-	try
-	{
-		con = connectToSupportLog();
-		stat = con.createStatement();
-		
-		query = "select * from debitfileTracker  where filename = '"+filename+"' and filepath ='"+filePath+"' ";
-		result = stat.executeQuery(query);
-		
-		System.out.println("query existed"+query);
-		if(result.next())
-		{
-				message = "EXISTED";		
-			
-		}
-		else
-		{	
-				query = "insert into debitfileTracker(filename, filepath,status,uploadedBy,uploadedDt,code)" +
-						" values('"+filename+"','"+filePath+"','"+Status+"','"+uploadBy+"',getDate(),'"+code+"') ";
-			
-				System.out.println("createUploadFile query " + query);
-				output = stat.executeUpdate(query);
-				if(output > 0)
-				{
-					message = "SUCCESS";
-					con.commit();
-				}
-				else
-				{
-					message = "FAILED";
-					con.rollback();
-				}
-		}
-	}
-	catch(Exception ex)
-	{
-		ex.printStackTrace();
-		closeConnectionSupportLogDB(con, result);
-	}
-	finally
-	{
-		closeConnectionSupportLogDB(con, result);
-	}
-	return message;
-}
-
-public ArrayList getFileUploderReport(String title,String author, String StartDt,String endDt)
-{
-	String query = "";
-	ArrayList arr = new ArrayList();
-	CardHolder cholder = null;
-	SchemeRegistration reg = null;
-	Fileuploder upload = null;
-	int counter = 0;
-	
-	Connection con = null;
-	Statement stat = null;
-	ResultSet result = null;
-
-	
-	try
-	{			
-		con = connectToECard();
-		stat = con.createStatement();
-		
-		if(title.length() > 0 || author.length() > 0)
-		{
-			query  = "select top 10 * from E_FILEUPLODER where Title like '"+title+"%' and Author like '"+author+"%' ";
-		}
-		else
-		{
-			query  = "select top 10 * from E_FILEUPLODER where Title like '"+title+"%' and Author like '"+author+"%' " +
-					" and created between '"+StartDt+"' and '"+endDt+"' ";
-			
-		/*	query = " Select Id,Title,Description,Size,Author,File_name,File_Path,created from E_FILEUPLODER " +
-					" where Title like '"+title+"%' and Author like '"+author+"%' and " +
-					" created between '"+StartDt+"' and '"+endDt+"'  ";*/
-		}
-				
-		System.out.println("scheme query " + query);
-		result = stat.executeQuery(query);
-		while(result.next())
-		{
-			
-			upload = new Fileuploder();
-			upload.setId(""+result.getObject(1));
-			upload.setTitle(""+result.getObject(2));
-			upload.setDesc(""+result.getObject(3));
-			upload.setSize(""+result.getObject(4));
-			upload.setAuthor(""+result.getObject(5));
-			upload.setFilename(""+result.getObject(6));
-			upload.setFilePath(""+result.getObject(7));
-			upload.setCreated(""+result.getObject(8));
-			arr.add(upload);
-		}
-	}
-	catch(Exception ex)
-	{
-		ex.printStackTrace();
-		closeConnectionECard(con, result, result);
-	}
-	finally
-	{
-		
-		closeConnectionECard(con, result, result);
-	}
-	return arr;
-}
-
-public ArrayList getFileUploderRecord(String title,String author)
-{
-	String query = "";
-	ArrayList arr = new ArrayList();
-	CardHolder cholder = null;
-	SchemeRegistration reg = null;
-	Fileuploder upload = null;
-	int counter = 0;
-	
-	Connection con = null;
-	Statement stat = null;
-	ResultSet result = null;
-
-	
-	try
-	{			
-		con = connectToECard();
-		stat = con.createStatement();
-		
-	
-		query = " Select Id,Title,Description,Size,Author,File_name,File_Path,created from E_FILEUPLODER " +
-					" where Title like '"+title+"%' and Author like '"+author+"%' ";
-				
-		System.out.println("scheme query " + query);
-		result = stat.executeQuery(query);
-		while(result.next())
-		{
-			
-			upload = new Fileuploder();
-			upload.setId(""+result.getObject(1));
-			upload.setTitle(""+result.getObject(2));
-			upload.setDesc(""+result.getObject(3));
-			upload.setSize(""+result.getObject(4));
-			upload.setAuthor(""+result.getObject(5));
-			upload.setFilename(""+result.getObject(6));
-			upload.setFilePath(""+result.getObject(7));
-			upload.setCreated(""+result.getObject(8));
-			arr.add(upload);
-		}
-	}
-	catch(Exception ex)
-	{
-		ex.printStackTrace();
-		closeConnectionECard(con, result, result);
-	}
-	finally
-	{
-		
-		closeConnectionECard(con, result, result);
-	}
-	return arr;
-}
-
-public ArrayList getCreatedFileUploader(String filename ,String status)
-{
-	String query = "";
-	ArrayList arr = new ArrayList();
-	CardHolder cholder = null;
-	SchemeRegistration reg = null;
-	Fileuploder upload = null;
-	int counter = 0;
-	
-	Connection con = null;
-	Statement stat = null;
-	ResultSet result = null;
-
-	
-	try
-	{			
-	    con = connectToSupportLog();
-		stat = con.createStatement();
-		
-		query = "Select ID,Filename,FilePath,Status,uploadedBy,uploadedDt,code from debitfileTracker " +
-				" where Filename = '"+filename+"' and Status = '"+status+"' ";
-				
-		System.out.println("getCreatedFileUploader  query " + query);
-		result = stat.executeQuery(query);
-		while(result.next())
-		{
-			
-			upload = new Fileuploder();
-			upload.setId(""+result.getObject(1));
-			upload.setFilename(""+result.getObject(2));
-			upload.setFilePath(""+result.getObject(3));
-			upload.setSize(""+result.getObject(4));
-			upload.setTitle(""+result.getObject(5));
-			upload.setCreated(""+result.getObject(6));
-			upload.setDesc(""+result.getObject(7));
-			arr.add(upload);
-		}
-	}
-	catch(Exception ex)
-	{
-		ex.printStackTrace();
-		closeConnectionSupportLogDB(con, result);
-	}
-	finally
-	{
-		
-		closeConnectionSupportLogDB(con, result);
-	}
-	return arr;
-}
-
-
-public ArrayList getCreatedFileUploaderList()
-{
-	String query = "";
-	ArrayList arr = new ArrayList();
-	CardHolder cholder = null;
-	SchemeRegistration reg = null;
-	Fileuploder upload = null;
-	int counter = 0;
-	
-	Connection con = null;
-	Statement stat = null;
-	ResultSet result = null;
-
-	
-	try
-	{			
-	    con = connectToSupportLog();
-		stat = con.createStatement();
-		
-		query = "Select ID,Filename,FilePath,Status,uploadedBy,uploadedDt,code from debitfileTracker where status = 'queued' " ;
-				
-				
-		System.out.println("getCreatedFileUploader  query " + query);
-		result = stat.executeQuery(query);
-		while(result.next())
-		{
-			
-			upload = new Fileuploder();
-			upload.setId(""+result.getObject(1));
-			upload.setFilename(""+result.getObject(2));
-			upload.setFilePath(""+result.getObject(3));
-			upload.setSize(""+result.getObject(4));
-			upload.setTitle(""+result.getObject(5));
-			upload.setCreated(""+result.getObject(6));
-			upload.setDesc(""+result.getObject(7));
-			arr.add(upload);
-		}
-	}
-	catch(Exception ex)
-	{
-		ex.printStackTrace();
-		closeConnectionSupportLogDB(con, result);
-	}
-	finally
-	{
-		
-		closeConnectionSupportLogDB(con, result);
-	}
-	return arr;
-}
-
-
-/*Method to setup Master Bank */
-public String createMasterBankSetup(String bankcode,String mobile,String fname,String lname)
-{
-	
-	String quer = "";
-	String query = "";
-	String query1 = "";
-	String query2 = "";
-	String message = "";
-	ArrayList arr = new ArrayList();
-	int output = -1;
-	Connection con = null;
-	Statement stat = null;
-	ResultSet result = null;
-	
-	try
-	{
-		
-		con = connectMobileDB();
-		stat = con.createStatement();
-		
-		quer = "Select * from m_BankAgent where phone = '"+mobile+"' ";
-		result = stat.executeQuery(quer);
-		if(result.next())
-		{
-			message = "Exists";
-		}
-		else
-		{
-			query = "insert into m_BankAgent(Bank, Phone,Fname,Lname,Date)values('"+bankcode+"','"+mobile+"','"+fname+"','"+lname+"',getDate())";
-			
-				
-			System.out.println("createMasterBankSetup query " + query);
-			output = stat.executeUpdate(query);
-			if(output > 0)
-			{
-				message = "SUCCESS";
-				con.commit();
-			}
-			else
-			{
-				message = "FAILED";
-				con.rollback();
-			}
-					
-		}
-	
-	
-	}
-	catch(Exception ex)
-	{
-		ex.printStackTrace();
-	
-		closeConnectionMobileDB(con, result);
-	}
-	finally
-	{
-		closeConnectionMobileDB(con, result);
-		
-	}
-	return message;
-}
-	
-
-/*Method to setup customer   */
-public String createCustomerBankStaffSetup(String bankcode,String bankstaffmobileNo,String userNo)
-{
-	
-	String quer = "";
-	String query = "";
-	String query1 = "";
-	String query2 = "";
-	String message = "";
-	ArrayList arr = new ArrayList();
-	int output = -1;
-	Connection con = null;
-	Statement stat = null;
-	ResultSet result = null;
-	
-	try
-	{
-		
-		con = connectMobileDB();
-		stat = con.createStatement();
-		
-		query = "Select * from m_BankAgent where Phone = '"+bankstaffmobileNo+"' ";
-		result = stat.executeQuery(query);
-		if(result.next())
-		{
-			query = "select * from m_BankAgentUsers where user_no = '"+userNo+"' and staff_no = '"+bankstaffmobileNo+"' ";
-			
-			result = stat.executeQuery(query);
-			if(result.next())
-			{
-				message = "User Number Exists";
-			}
-			else
-			{
-				query = "insert into m_BankAgentUsers(Staff_no, User_no,Bank,Date)values('"+bankstaffmobileNo+"','"+userNo+"','"+bankcode+"',getDate())";
-				
-				System.out.println("createCustomerBankStaffSetup query " + query);
-				output = stat.executeUpdate(query);
-				if(output > 0)
-				{
-					message = "SUCCESS";
-					con.commit();
-				}
-				else
-				{
-					message = "FAILED";
-					con.rollback();
-				}
-				
-			}
-			
-		
-					
-		}
-		else
-		{
-			message =  "Bank Staff Does not exists";
-		}
-	
-	
-	}
-	catch(Exception ex)
-	{
-		ex.printStackTrace();
-		closeConnectionMobileDB(con, result);
-		
-	}
-	finally
-	{
-		closeConnectionMobileDB(con, result);
-		
-		
-	}
-	return message;
-}
-	
-
-/*Method to get eMasterbank records */
-public ArrayList geteMasterBankRecords()
-{
-	String query = "";
-	ArrayList arr = new ArrayList();
-	CardHolder holder = null;
-	int counter = 0;
-	Connection con = null;
-	Statement stat = null;
-	ResultSet result = null;
-
-	
-	try
-	{			
-		con = connectMobileDB();
-		stat = con.createStatement();
-		
-		
-		
-		query = "SELECT Id,Bank,Phone,Fname,Lname,Date FROM m_BankAgent ";
-	
-		System.out.println(" geteMasterBankRecords " + query);
-		result = stat.executeQuery(query);
-		while(result.next())
-		{
-			holder = new CardHolder();
-			holder.setCounter(""+result.getObject(1));
-			holder.setModified(""+result.getObject(2));
-			holder.setPhone(""+result.getObject(3));
-			holder.setFirstname(""+result.getObject(4));
-			holder.setLastname(""+result.getObject(5));
-			holder.setCreated(""+result.getObject(6));
-			arr.add(holder);
-		}
-	}
-	catch(Exception ex)
-	{
-		ex.printStackTrace();
-		closeConnectionMobileDB(con, result);
-	
-	}
-	finally
-	{
-		closeConnectionMobileDB(con, result);
-	
-	}
-	return arr;
-}
-
-public String getStaffBankCode(String phone)
-{
-	
-	String quer = "";
-	String query = "";
-	String query1 = "";
-	String query2 = "";
-	String message = "";
-	ArrayList arr = new ArrayList();
-	int output = -1;
-	Connection con = null;
-	Statement stat = null;
-	ResultSet result = null;
-	
-	try
-	{
-		
-		con = connectMobileDB();
-		stat = con.createStatement();
-		
-		quer = "Select Bank from m_BankAgent where Phone = '"+phone+"' ";
-		result = stat.executeQuery(quer);
-		if(result.next())
-		{
-			message = ""+result.getObject(1);
-		}
-	
-	}
-	catch(Exception ex)
-	{
-		ex.printStackTrace();
-		closeConnectionMobileDB(con, result);
-		
-	}
-	finally
-	{
-		closeConnectionMobileDB(con, result);
-		
-	}
-	return message;
-}
-	
-
-/*Method to get Customer and BankStaff  records */
-public ArrayList geteCustomerBankStaff(String bankcode)
-{
-	String query = "";
-	ArrayList arr = new ArrayList();
-	CardHolder holder = null;
-	int counter = 0;
-	Connection con = null;
-	Statement stat = null;
-	ResultSet result = null;
-
-	
-	try
-	{			
-	    
-		con =  connectMobileDB();
-		stat = con.createStatement();
-		
-		
-		
-		query = "SELECT Id,Staff_no,User_no,Date FROM m_BankAgentUsers where Bank = '"+bankcode+"' ";
-	
-		System.out.println(" geteMasterBankRecords " + query);
-		result = stat.executeQuery(query);
-		while(result.next())
-		{
-			holder = new CardHolder();
-			holder.setCounter(""+result.getObject(1));
-			holder.setState(""+result.getObject(2));
-			holder.setUser_hotlist(""+result.getObject(3));
-			holder.setCreated(""+result.getObject(4));
-			arr.add(holder);
-		}
-	}
-	catch(Exception ex)
-	{
-		ex.printStackTrace();
-		closeConnectionMobileDB(con, result);
-	
-	}
-	finally
-	{
-		closeConnectionMobileDB(con, result);
-	
-	
-	}
-	return arr;
-}
-
-
-
-/*Method to get eMasterbank records  base on a parameter pass */
-public ArrayList geteMasterBankRecords(String bankcode)
-{
-	String query = "";
-	ArrayList arr = new ArrayList();
-	CardHolder holder = null;
-	int counter = 0;
-	Connection con = null;
-	Statement stat = null;
-	ResultSet result = null;
-
-	
-	try
-	{			
-		con = connectMobileDB();
-		stat = con.createStatement();
-		
-		
-		
-		query = "SELECT Id,Bank,Phone,Fname,Lname,Date FROM m_BankAgent where bank = '"+bankcode+"' ";
-	
-		System.out.println(" geteMasterBankRecords " + query);
-		result = stat.executeQuery(query);
-		while(result.next())
-		{
-			holder = new CardHolder();
-			holder.setCounter(""+result.getObject(1));
-			holder.setModified(""+result.getObject(2));
-			holder.setPhone(""+result.getObject(3));
-			holder.setFirstname(""+result.getObject(4));
-			holder.setLastname(""+result.getObject(5));
-			holder.setCreated(""+result.getObject(6));
-			arr.add(holder);
-		}
-	}
-	catch(Exception ex)
-	{
-		ex.printStackTrace();
-		closeConnectionMobileDB(con, result);
-	
-	}
-	finally
-	{
-		closeConnectionMobileDB(con, result);
-	
-	}
-	return arr;
-}
-
-/*Method to get Masterbank records  base on the firstname */
-public String getMasterBankRecordByMobile(String mobile)
-{
-	String query = "";
-	ArrayList arr = new ArrayList();
-	CardHolder holder = null;
-	int counter = 0;
-	Connection con = null;
-	Statement stat = null;
-	ResultSet result = null;
-	String mobileno = "";
-	boolean check = false;
-
-	
-	try
-	{			
-		con = connectMobileDB();
-		stat = con.createStatement();
-		
-		
-		
-		query = " SELECT phone FROM m_BankAgent where phone = '"+mobile+"' ";
-	
-		System.out.println(" geteMasterBankRecords " + query);
-		result = stat.executeQuery(query);
-		while(result.next())
-		{
-			
-			 mobileno = ""+result.getObject(1);
-			
-			
-		}
-	}
-	catch(Exception ex)
-	{
-		ex.printStackTrace();
-		closeConnectionMobileDB(con, result);
-	
-	}
-	finally
-	{
-		closeConnectionMobileDB(con, result);
-	
-	}
-	return mobileno;
-}
-
-
-/*Method to delete Master Bank Recoreds */
-public String deletMasterBankRecords(String mobileno)
-{
-	String query = "";
-	String message = "";
-	ArrayList arr = new ArrayList();
-	int output = -1;
-	Connection con = null;
-	Statement stat = null;
-	ResultSet result = null;
-	
-
-	try
-	{
-		con = connectMobileDB();
-		stat = con.createStatement();
-
-		query = " delete from m_BankAgent where Phone  = '"+mobileno+"' ";
-		
-		
-		System.out.println("deleteFundGateRecords query " + query);
-		output = stat.executeUpdate(query);
-		if(output > 0)
-		{
-			output = stat.executeUpdate(query);
-			message = "SUCCESS";
-			con.commit();
-		}
-		else
-		{
-			message = "FAILED";
-			con.rollback();
-		}
-	}
-	catch(Exception ex)
-	{
-		ex.printStackTrace();
-		closeConnectionMobileDB(con, result);
-		
-		
-	}
-	finally
-	{
-		closeConnectionMobileDB(con, result);
-	
-	}
-	return message;
-	
-}
-
-
-/*Method to delete Master Bank Recoreds */
-public String deleteCustomerBankStaffRecord(String mobileno)
-{
-	String query = "";
-	String message = "";
-	ArrayList arr = new ArrayList();
-	int output = -1;
-	Connection con = null;
-	Statement stat = null;
-	ResultSet result = null;
-	
-
-	try
-	{
-		con = connectMobileDB();
-		stat = con.createStatement();
-
-		query = " delete from M_BANKAGENTUSERS where Staff_no  = '"+mobileno+"' ";
-		
-		
-		System.out.println("deleteCustomerBankStaffRecord query " + query);
-		output = stat.executeUpdate(query);
-		if(output > 0)
-		{
-			output = stat.executeUpdate(query);
-			message = "SUCCESS";
-			con.commit();
-		}
-		else
-		{
-			message = "FAILED";
-			con.rollback();
-		}
-	}
-	catch(Exception ex)
-	{
-		ex.printStackTrace();
-		closeConnectionMobileDB(con, result);
-		
-	}
-	finally
-	{
-		closeConnectionMobileDB(con, result);
-	
-	}
-	return message;
-	
-}
-/*Method to update Master bank Records*/
-
-public String updateMasterBankRecords(String mobileno, String firstname,String lastname,String bankcode )
-{
-	
-	String quer = "";
-	String query = "";
-	String query1 = "";
-	String query2 = "";
-	String message = "";
-	ArrayList arr = new ArrayList();
-	int output = -1;
-	Connection con = null;
-	Statement stat = null;
-	ResultSet result = null;
-	
-	try
-	{
-	    	con =  connectMobileDB();
-	    	stat = con.createStatement();
-		
-			query = "update m_BankAgent set phone = '"+mobileno+"', Fname = '"+firstname+"', lname = '"+lastname+"' where bank = '"+bankcode+"' ";
-			output = stat.executeUpdate(query);
-			if(output > 0)
-			{
-				message = "SUCCESS";
-				con.commit();
-			}
-			else
-			{
-				message = "FAILED";
-				con.rollback();
-			}
-	
-	}
-	catch(Exception ex)
-	{
-		ex.printStackTrace();
-		closeConnectionMobileDB(con, result);
-		
-	}
-	finally
-	{
-		closeConnectionMobileDB(con, result);
-		
-	}
-	return message; 
-}
-
-
-/*Method to get Summary report for Trip Mart Marchant */
-public ArrayList getTripMartMarchartAdminSummaryReport(String merchantcode, String start_dt, String end_dt)
-{
-	String query = "";
-	ArrayList arr = new ArrayList();
-	E_TRANSACTION tran = null;
-	int counter = 0;
-	Connection con = null;
-	Statement stat = null;
-	
-	Connection con1 = null;
-	Statement stat1 = null;
-	
-	ResultSet result = null;
-	ResultSet result1 = null;
-	double d = 0.0;
-	String str = "";
-	String apostrophe = "'";
-
-	
-	try
-	{
-		
-		con = connectToECard();
-		stat = con.createStatement();
-		
-		
-		if(merchantcode.indexOf(":")>0)
-		{
-			String m[] = merchantcode.split(":");
-			merchantcode = "";
-			for(int i=0;i<m.length;i++)
-			{
-				merchantcode += apostrophe + m[i] + apostrophe + ",";
-			}
-			
-			merchantcode = merchantcode.substring(0, merchantcode.lastIndexOf(","));
-		}
-		else
-		{
-			merchantcode = apostrophe + merchantcode + apostrophe;
-		}
-		
-		
-			query = "Select b.merchant_code,LASTNAME,count(*),Sum(trans_amount) " +
-					" from ecarddb..e_transaction a inner join ecarddb..e_merchant b on a.merchant_code=b.merchant_code " +
-					"where trans_date between '"+start_dt+"' and '"+end_dt+"'" +
-					" and  b.merchant_code in ("+merchantcode+") and trans_code ='P' group by LASTNAME ";
-	
-			 System.out.println("query   "+query);
-			 
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-				tran = new E_TRANSACTION();
-				tran.setMerchat_code(""+result.getObject(1));
-				tran.setLastname(""+result.getObject(2));
-				tran.setCounter(""+result.getObject(3));			
-				arr.add(tran);
-		   }
-			
-		
-	}
-	catch(Exception ex)
-	{
-		ex.printStackTrace();
-		closeConnectionECard(con, result, result);
-	}
-	finally
-	{
-		closeConnectionECard(con, result, result);
-	}
-	return arr;
-}
-
-public ArrayList getSettledFailedVtuTransactionReport(String merchantcode,String start_dt, String end_dt)
-{
-	String query = "";
-	ArrayList arr = new ArrayList();
-	ProviderLog providerLog = null;
-	int counter = 0;
-	Connection con = null;
-	Statement stat = null;
-	ResultSet result = null;
-	
-	try
-	{
-	
-		con =  connectToTelco();
-		stat = con.createStatement();
-		
-		//0440019910
-		
-
-		
-		query = "select settle_batch,batch_date,provider,count(*),sum(amount) TransactionAmount,merchant_code," +
-				"sum(trans_amount) SettledAmount from telcodb..t_provider_log a inner join ecarddb..e_settlement_download_bk b" +
-				" on a.unique_transid=b.unique_transid left outer join ecarddb..e_settle_batch on batch_id=settle_batch " +
-				"where merchant_code='"+merchantcode+"' and response_code !='0'" +
-				" and batch_date between '"+start_dt+"' and '"+end_dt+"'" +
-				" group by provider,merchant_code,settle_batch,batch_date order by batch_date,merchant_code ";
-		
-	
-		System.out.println("query  " + query);		
-		result = stat.executeQuery(query);
-		while(result.next())
-		{
-			
-			providerLog = new ProviderLog(); 
-			providerLog.setSource(""+result.getObject(1));  // setttle batch
-			providerLog.setTransDate(""+result.getObject(2)); // batch date
-			providerLog.setProvider(""+result.getObject(3)); // provider
-			providerLog.setAttempts(""+result.getObject(4)); // counts
-			providerLog.setAmount(""+result.getObject(5)); // transaction amount
-			providerLog.setSourceAccount(""+result.getObject(6)); // merchant code
-			providerLog.setDestBalance(""+result.getObject(7)); // settled Amount 
-			
-			arr.add(providerLog);
-		}
-	}
-	catch(Exception ex)
-	{
-		ex.printStackTrace();
-		closeConnectionTelco(con, result);
-	}
-	finally
-	{
-		closeConnectionTelco(con, result);
-	}
-	return arr;
-}
-
-
-
-public ArrayList getAirTimePinReport(String start_dt, String end_dt)
-{
-	String query = "";
-	ArrayList arr = new ArrayList();
-	R_pins_bought rechange = null;
-	int counter = 0;
-	Connection con = null;
-	Statement stat = null;
-	ResultSet result = null;
-	
-	try 
-	{
-	
-		
-		con = connectToECard();
-		stat = con.createStatement();
-		
-		
-		//PIN query 
-		
-		query = " select PROVIDER_NAME,pin_deno,count(*),sum(pin_value)" +
-				" from rechargedb..r_pins_bought a,rechargedb..r_provider b where a.provider_id=b.provider_id " +
-				" and pin_issued between '"+start_dt+"' and '"+end_dt+"' and issuer='000' group by a.provider_id," +
-				" pin_deno,PROVIDER_NAME order by PROVIDER_NAME ";
-		
-		System.out.println("query :"+query);	
-		result = stat.executeQuery(query);
-		while(result.next())
-		{
-			rechange = new R_pins_bought();
-			rechange.setPROVIDER_ID(""+result.getObject(1));
-			rechange.setPIN_DENO(""+result.getObject(2));
-			rechange.setValidCount(""+result.getObject(3));
-			rechange.setDISCOUNT(""+result.getObject(4));
-			arr.add(rechange);
-		}
-	}
-	catch(Exception ex)
-	{
-		ex.printStackTrace();
-		closeConnectionECard(con, result, result);
-	}
-	finally
-	{
-		closeConnectionECard(con, result, result);
-	}
-	return arr;
-}
-
-public ArrayList getAirTimePinlessReport(String start_dt, String end_dt)
-{
-	String query = "";
-	ArrayList arr = new ArrayList();
-	ProviderLog providerLog = null;
-	int counter = 0;
-	Connection con = null;
-	Statement stat = null;
-	ResultSet result = null;
-	
-	try
-	{
-	
-		
-		con = connectToTelco();
-		stat = con.createStatement();
-		
-		//PINLESS
-		
-		query = "select provider,source_account,count(*),sum(Amount) from telcodb..t_provider_log " +
-				"where trans_date between '"+start_dt+"' and '"+end_dt+"' and response_code='0'" +
-				" group by provider,source_account";
-
-		
-		
-		System.out.println("query :"+query);	
-		result = stat.executeQuery(query);
-		while(result.next())
-		{
-			
-			providerLog = new ProviderLog();
-			providerLog.setAlias(""+result.getObject(1));
-			providerLog.setSourceAccount(""+result.getObject(2));
-			providerLog.setAttempts(""+result.getObject(3));
-			providerLog.setAmount(""+result.getObject(4));
-			arr.add(providerLog);
-		}
-	}
-	catch(Exception ex)
-	{
-		ex.printStackTrace();
-		closeConnectionTelco(con, result);
-	}
-	finally
-	{
-		closeConnectionTelco(con, result);
-	}
-	return arr;
-}
-
-
 	
 	/**
 	 * Connection to the ENV class
@@ -23049,101 +14668,6 @@ public ArrayList getAirTimePinlessReport(String start_dt, String end_dt)
 			catch(Exception ignore){}
 		}
 	}
-	/*Connection to PMECARDHOLDER database*/
-	private Connection connectToPMEcardholder() throws Exception
-	{
-		Connection con = null;
-		con = Env.getConnectionPMEcardHolderSybaseDB();
-		return con;
-	}   
-	
-	private void closeconnectToPMEcardholder(Connection con, ResultSet result)
-	{
-		if(result != null)
-		{
-			try
-			{
-				result.close();
-				result = null;
-				
-			}
-			catch(Exception ignore){}
-		}
-		if(con != null)
-		{
-			try
-			{
-				con.close();
-				con = null;
-			}
-			catch(Exception ignore){}
-		}
-	}
-	
-	
-	
-	/*Connection to ecard db database on demo*/
-	private Connection connectToEcardDBDemo() throws Exception
-	{
-		Connection con = null;
-		con = Env.getConnectionDemoEcardDB();
-		return con;
-	}   
-	
-	private void closeConnectionEcardDBDemo(Connection con, ResultSet result)
-	{
-		if(result != null)
-		{
-			try
-			{
-				result.close();
-				result = null;
-			}
-			catch(Exception ignore){}
-		}
-		if(con != null)
-		{
-			try
-			{
-				con.close();
-				con = null;
-			}
-			catch(Exception ignore){}
-		}
-	}
-	
-	
-	
-	/*Connection to ecard db database on Stagging*/
-	private Connection connectToStaggingEcardDB() throws Exception
-	{
-		Connection con = null;
-		con = Env.getConnectionStaggingEcardDB();
-		return con;
-	}   
-	
-	private void closeConnectionStaggingEcardDB(Connection con, ResultSet result)
-	{
-		if(result != null)
-		{
-			try
-			{
-				result.close();
-				result = null;
-			}
-			catch(Exception ignore){}
-		}
-		if(con != null)
-		{
-			try
-			{
-				con.close();
-				con = null;
-			}
-			catch(Exception ignore){}
-		}
-	}
-	
 	
 	
 	

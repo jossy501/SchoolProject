@@ -39,8 +39,6 @@ public class E_SETTLEMENTDOWNLOAD_BK
 	private String card_num_acct;
 	private String merchant_code_actt;
 	private String gflag;
-	private String issuerCode;
-
 	
 	
 	private String merchant_descr;
@@ -49,20 +47,6 @@ public class E_SETTLEMENTDOWNLOAD_BK
 	private String counter;
 	
 	public E_SETTLEMENTDOWNLOAD_BK(){}
-
-	
-	
-	public String getIssuerCode() {
-		return issuerCode;
-	}
-
-
-
-	public void setIssuerCode(String issuerCode) {
-		this.issuerCode = issuerCode;
-	}
-
-
 
 	public String getGlobalid() {
 		return globalid;

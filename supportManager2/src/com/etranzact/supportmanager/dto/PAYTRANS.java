@@ -38,8 +38,6 @@ public class PAYTRANS
 	private String transaction_count;
 	private String merchant_id;
 	private String merchant_code;
-	private String etzCommissionAmt;
-	private String netAmt;
 	
 	
 	public String getTransaction_count() {
@@ -257,22 +255,6 @@ public class PAYTRANS
 
 	public void setMerchant_code(String merchant_code) {
 		this.merchant_code = merchant_code;
-	}
-
-	public String getEtzCommissionAmt() {
-		return etzCommissionAmt;
-	}
-
-	public void setEtzCommissionAmt(String etzCommissionAmt) {
-		this.etzCommissionAmt = etzCommissionAmt;
-	}
-
-	public String getNetAmt() {
-		return netAmt;
-	}
-
-	public void setNetAmt(String netAmt) {
-		this.netAmt = netAmt;
 	}
 	
 }

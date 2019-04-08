@@ -6,9 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-
-import com.etranzact.institution.util.Sequencer;
 import com.etranzact.psm.dto.TPsmDealer;
+import com.etranzact.supportmanager.dto.Car_Inventory;
 import com.etranzact.supportmanager.dto.E_MERCHANT;
 import com.etranzact.supportmanager.dto.E_MOBILE_SUBSCRIBER_CARD;
 import com.etranzact.supportmanager.dto.IPAddress;
@@ -21,6 +20,7 @@ import com.etranzact.supportmanager.dto.MenuItemToRole;
 import com.etranzact.supportmanager.dto.MenuToRole;
 import com.etranzact.supportmanager.dto.ProfileMenuOptions;
 import com.etranzact.supportmanager.dto.R_pins_bought;
+import com.etranzact.supportmanager.dto.Summary;
 import com.etranzact.supportmanager.dto.User;
 import com.etranzact.supportmanager.dto.UserType;
 import com.etranzact.supportmanager.utility.Env;
@@ -107,11 +107,10 @@ public class AdminModel
 	}
 	
 	
-	
-	
+
 	public String createUser(String email, String password,String lname, String fname, 
 			String mobile, String type_id,String status_id ,String ip_address, String user_code,
-			String createdbyuser_id, String username, String service_id, String esa_auth,String cardscheme,String cardschemenumbers)
+			String createdbyuser_id, String username, String service_id, String esa_auth)
 	{
 		int output = -1;
 		String message = "";
@@ -138,12 +137,12 @@ public class AdminModel
 			}
 			
 			query = "insert into telcodb.dbo.support_user(email, password, lastname, firstname, mobile, type_id, status_id," +
-					" ip_address, create_date, user_code, createdby,username, first_logon, service_id, esa_auth,card_scheme,cardscheme_numbers)" +
+					" ip_address, create_date, user_code, createdby,username, first_logon, service_id, esa_auth)" +
 					"values('"+email+"', '"+crypt_password+"','"+lname+"','"+fname+"', '"+mobile+"', "+type_id+"," +
 							""+status_id+",'"+ip_address+"', getDate(), '"+user_code+"', "+createdbyuser_id+", " +
-							" '"+username+"','0','"+service_id+"', '"+esa_auth+"','"+cardscheme+"','"+cardschemenumbers+"')";
+							" '"+username+"','0','"+service_id+"', '"+esa_auth+"')";
 			
-			System.out.println("query " + query);
+			//System.out.println("query " + query);
 			
 			output = stat.executeUpdate(query);
 			
@@ -177,135 +176,6 @@ public class AdminModel
 		return message;
 	}
 	
-	
-	public void createPMDirectDebit(String companyId,String cardnum,String amountDebitStatus,double amount)
-	{
-		int output = -1;
-		String message = "";
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		String query = "";
-		
-		try
-		{
-		
-			con = connectToSupportLog();
-			stat = con.createStatement();
-	
-			query = "insert into pm_directDebit(company_id, card_num, Amount_Debit_Status,amount)" +
-					"values("+companyId+", '"+cardnum+"','"+amountDebitStatus+"',"+amount+")";
-			
-			System.out.println("query " + query);
-			
-			output = stat.executeUpdate(query);
-			
-			if(output > 0)
-			{
-				con.commit();
-				//message = "Records successfully inserted";
-			}
-			else
-			{
-				con.rollback();
-				//message = "Records not inserted";
-			}
-			
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionSupportLogDB(con, result);
-		
-		}
-		finally
-		{
-			closeConnectionSupportLogDB(con, result);
-		}
-		
-	}
-	
-	
-	/*Method to check for existed vsm Users  */
-	public String checkExistedVSMAccount(String companyid,String mobile)
-	{
-		String query = "";
-		boolean valid = false;
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		String message =  "";
-
-		try
-		{
-			con = connectToSupportLog();
-			stat = con.createStatement();
-			
-			query = "select * from pool_accounts where company_id = "+companyid+" and mobile = '"+mobile+"' and active_Status = '1' ";
-			result = stat.executeQuery(query);
-			System.out.println("query existed"+query);
-			if(result.next())
-			{
-				message = "exists";	
-			}
-			else
-			{
-				message = "Not existed";
-			}
-
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionSupportLogDB(con, result);
-		}
-		finally
-		{
-			closeConnectionSupportLogDB(con, result);
-		}
-		return message;
-	}
-	
-	
-	/*Method to check for existed vsm Users  */
-	public String getCompanyIdByCode(String companyCode)
-	{
-		String query = "";
-		boolean valid = false;
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		String message =  "";
-
-		try
-		{
-			con = connectToSupportLog();
-			stat = con.createStatement();
-			
-			query = "select company_id  from Company where CompCode = '"+companyCode+"' ";
-			result = stat.executeQuery(query);
-			System.out.println("query company Code"+query);
-			if(result.next())
-			{
-				message = ""+result.getObject(1);	
-			}
-			
-
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			
-			closeConnectionSupportLogDB(con, result);
-			
-		}
-		finally
-		{
-			closeConnectionSupportLogDB(con, result);
-			
-		}
-		return message;
-	}
 	
 	public String createMenu(String menu_nm, String menu_comments, String createdbyuser_id)
 	{
@@ -464,6 +334,63 @@ public class AdminModel
 		}
 		return message;
 	}
+	
+	
+
+	/*Method to create the ip address restriction*/
+	public String createCarInventory(String all_makes, String all_model,String car_year, String engine, String transmission, String car_color,
+			String fuelType, String mileage, String vin, String stock_number, String targetPrice)
+	{
+		int output = -1;
+		String message = "";
+		Connection con = null;
+		Statement stat = null;
+		ResultSet result = null;
+		
+		try
+		{
+			
+			con = connectToSupportLog();
+			stat = con.createStatement();
+
+	
+			String query = "insert into telcodb.dbo.cars_inventory(all_makes, all_model, car_year,engine,transmission,car_color,fuel_type,mileage,vin,stock_number,target_price,created_date)" +
+					" values('"+all_makes+"','"+all_model+"','"+car_year+"','"+engine+"','"+transmission+"','"+car_color+"','"+fuelType+"','"+mileage+"','"+vin+"','"+stock_number+"','"+targetPrice+"',getDate())";
+			
+			//System.out.println("query " + query);
+			
+			output = stat.executeUpdate(query);
+			
+			if(output > 0)
+			{
+				con.commit();
+				message = "Records successfully inserted";
+			}
+			else
+			{
+				con.rollback();
+				message = "Records not inserted";
+			}
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+			try
+			{
+				con.rollback();
+				message = "Error occured while creating car inventory";
+			}
+			catch(Exception e){}
+			closeConnectionSupportLogDB(con, result);
+		}
+		finally
+		{
+			closeConnectionSupportLogDB(con, result);
+		}
+		return message;
+	}
+	
+	
 	
 	
 	/*Method to create the ip address restriction*/
@@ -629,6 +556,52 @@ public class AdminModel
 			}
 			else
 			{
+				con.rollback();
+				message = "Records not deleted";
+			}
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+			try
+			{
+				con.rollback();
+				message = "Error occured while deleting menuitem";
+			}
+			catch(Exception e){}
+			closeConnectionSupportLogDB(con, result);
+		}
+		finally
+		{
+			closeConnectionSupportLogDB(con, result);
+		}
+		return message;
+	}
+	
+	/*This method is used to delete the menuitem created*/
+	public String deleteCarInventory(String inventoryId)
+	{
+		int output = -1;
+		String message = "";
+		Connection con = null;
+		Statement stat = null;
+		ResultSet result = null;
+		
+		try
+		{
+			
+			con = connectToSupportLog();
+			stat = con.createStatement();
+			
+			String query = "delete from telcodb.dbo.cars_inventory where inventory_id = "+inventoryId+" ";
+
+			output = stat.executeUpdate(query);
+			
+			if(output > 0){
+				con.commit();
+				message = "Records successfully deleted";
+			}
+			else{
 				con.rollback();
 				message = "Records not deleted";
 			}
@@ -1464,7 +1437,7 @@ public class AdminModel
 	}
 	
 	/*This method is used to get all users*/
-	public ArrayList getUsers(String userType)
+	public ArrayList getUsers()
 	{
 		ArrayList arr = new ArrayList();
 		User user  = null;
@@ -1487,23 +1460,15 @@ public class AdminModel
 					" service_id" +
 					" from telcodb..support_user";*/
 			
-			/*String query = "select user_id, email, password, lastname, firstname, type_id," +
-					" (select distinct type_desc from telcodb..support_TYPE where type_id = telcodb..support_USER.type_id),mobile,  status_id," +
-					" user_code, (select distinct status_desc from telcodb..support_status where status_id = telcodb..support_USER.status_id)," +
-					" username,first_logon, (select description from telcodb..support_bank where bank_code = telcodb..support_user.user_code)," +
-					" (select dealer_name from telcodb..T_PSM_DEALER where dealer_code = telcodb..support_user.user_code)," +
-					" service_id" +
-					" from telcodb..support_user";*/
-			
 			String query = "select user_id, email, password, lastname, firstname, type_id," +
 			" (select distinct type_desc from telcodb..support_TYPE where type_id = telcodb..support_USER.type_id),mobile,  status_id," +
 			" user_code, (select distinct status_desc from telcodb..support_status where status_id = telcodb..support_USER.status_id)," +
 			" username,first_logon, (select description from telcodb..support_bank where bank_code = telcodb..support_user.user_code)," +
 			" (select dealer_name from telcodb..T_PSM_DEALER where dealer_code = telcodb..support_user.user_code)," +
 			" service_id" +
-			" from telcodb..support_user where type_id = "+userType+" ";
+			" from telcodb..support_user";
 			
-			System.out.println("query " + query);
+			//System.out.println("query " + query);
 			
 			result = stat.executeQuery(query); 
 			while(result.next())
@@ -1528,7 +1493,6 @@ public class AdminModel
 				user.setUser_code_nm(user_code_nm);
 				user.setDealer_nm(""+result.getObject(15));
 				user.setService_id(""+result.getObject(16));
-				//user.setCardScheme(""+result.getObject(17));
 				
 				
 				
@@ -1693,118 +1657,7 @@ public class AdminModel
 					" where type_id = telcodb..support_USER.type_id),mobile,  status_id, user_code," +
 					" (select distinct status_desc from telcodb..support_status where status_id = telcodb..support_USER.status_id), username," +
 					" first_logon,(select description from telcodb..support_bank where bank_code = telcodb..support_user.user_code)" +
-					" from telcodb..support_user where service_id like '"+scheme_card+"%' ";
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-				user = new User();
-				user.setUser_id(""+result.getObject(1));
-				user.setEmail(""+result.getObject(2));
-				user.setPassword(""+result.getObject(3));
-				user.setLastname(""+result.getObject(4));
-				user.setFirstname(""+result.getObject(5));
-				user.setType_id(""+result.getObject(6));
-				user.setType_nm(""+result.getObject(7));
-				user.setMobile(""+result.getObject(8));
-				user.setStatus_id(""+result.getObject(9));
-				user.setUser_code(""+result.getObject(10));
-				user.setStatus_nm(""+result.getObject(11));
-				user.setUsername(""+result.getObject(12));
-				user.setFirst_logon(""+result.getObject(13));
-				user.setUser_code_nm(""+result.getObject(14));
-				
-				arr.add(user);
-			}
-			
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionSupportLogDB(con, result);
-		}
-		finally
-		{
-			closeConnectionSupportLogDB(con, result);
-		}
-		return arr;
-	}
-	
-	
-	/*This method is used to get all agent admini*/
-	public ArrayList getAgentAdmin(String agentAdminTypeId)
-	{
-		ArrayList arr = new ArrayList();
-		User user  = null;
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		
-		try
-		{
-			con = connectToSupportLog();
-			stat = con.createStatement();
-			
-			String query = "select user_id, email, password, lastname, firstname, type_id, (select distinct type_desc from telcodb..support_TYPE" +
-					" where type_id = telcodb..support_USER.type_id),mobile,  status_id, user_code," +
-					" (select distinct status_desc from telcodb..support_status where status_id = telcodb..support_USER.status_id), username," +
-					" first_logon,(select description from telcodb..support_bank where bank_code = telcodb..support_user.user_code)" +
-					" from telcodb..support_user where type_id = "+Integer.parseInt(agentAdminTypeId)+" ";
-			result = stat.executeQuery(query);
-			while(result.next())
-			{
-				user = new User();
-				user.setUser_id(""+result.getObject(1));
-				user.setEmail(""+result.getObject(2));
-				user.setPassword(""+result.getObject(3));
-				user.setLastname(""+result.getObject(4));
-				user.setFirstname(""+result.getObject(5));
-				user.setType_id(""+result.getObject(6));
-				user.setType_nm(""+result.getObject(7));
-				user.setMobile(""+result.getObject(8));
-				user.setStatus_id(""+result.getObject(9));
-				user.setUser_code(""+result.getObject(10));
-				user.setStatus_nm(""+result.getObject(11));
-				user.setUsername(""+result.getObject(12));
-				user.setFirst_logon(""+result.getObject(13));
-				user.setUser_code_nm(""+result.getObject(14));
-				
-				arr.add(user);
-			}
-			
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionSupportLogDB(con, result);
-		}
-		finally
-		{
-			closeConnectionSupportLogDB(con, result);
-		}
-		return arr;
-	}
-	
-	/*This method is used to get all depot Admin */
-	public ArrayList getVSMUser(String userTypeId,String serviceId)
-	{
-		ArrayList arr = new ArrayList();
-		User user  = null;
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		
-		try
-		{
-			con = connectToSupportLog();
-			stat = con.createStatement();
-			
-			String query = "select user_id, email, password, lastname, firstname, type_id, (select distinct type_desc from telcodb..support_TYPE" +
-					" where type_id = telcodb..support_USER.type_id),mobile,  status_id, user_code," +
-					" (select distinct status_desc from telcodb..support_status where status_id = telcodb..support_USER.status_id), username," +
-					" first_logon,(select description from telcodb..support_bank where bank_code = telcodb..support_user.user_code)" +
-					" from telcodb..support_user where type_id = "+Integer.parseInt(userTypeId)+" and service_id like '"+serviceId+"%' ";
-			System.out.println("Query  ---- -  "+query);
-			
+					" from telcodb..support_user where service_id = '"+scheme_card+"' ";
 			result = stat.executeQuery(query);
 			while(result.next())
 			{
@@ -1884,99 +1737,6 @@ public class AdminModel
 	}
 	
 	
-	/*Method to load the types of users*/
-	public ArrayList getUserNameByType(String typeId)
-	{
-		ArrayList arr = new ArrayList();
-		UserType user_type;
-		User user ;
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-	
-		try
-		{
-			con = connectToSupportLog();
-			stat = con.createStatement();
-			
-			String query = "select Firstname,Lastname, Mobile,Username from support_user where type_id = "+Integer.parseInt(typeId)+" "; 
-			result = stat.executeQuery(query);
-			System.out.println("getUserNameByType  "+query);
-			while(result.next())
-			{
-				
-				user = new User();
-				user.setFirstname(""+result.getObject(1));
-				user.setLastname(""+result.getObject(2));
-				user.setMobile(""+result.getObject(3));
-				user.setUsername(""+result.getObject(4));
-				String fullName = user.getFirstname()+"      "+user.getLastname()+"     "+"["+user.getMobile()+"]";
-				user.setFullname(fullName);
-			
-				arr.add(user);
-			}
-		}
-		catch(SQLException sq)
-		{
-			System.out.println("error " + sq.getMessage());
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionSupportLogDB(con, result);
-		}
-		finally
-		{
-			closeConnectionSupportLogDB(con, result);
-		}
-		return arr;
-	}
-	
-	
-	/*Method to load users base on its mobile*/
-	public String getUserNameByMobile(String mobileno)
-	{
-		
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		String message = "";
-	
-		try
-		{
-			con = connectToSupportLog();
-			stat = con.createStatement();
-			
-			String query = "select username  from support_user where mobile ='"+mobileno+"' "; 
-			result = stat.executeQuery(query);
-			System.out.println("getUserNameByMobile  "+query);
-			while(result.next())
-			{
-				message = ""+result.getObject(1);
-			}
-		}
-		catch(SQLException sq)
-		{
-			System.out.println("error " + sq.getMessage());
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			closeConnectionSupportLogDB(con, result);
-		}
-		finally
-		{
-			closeConnectionSupportLogDB(con, result);
-		}
-		return message;
-	}
-	
-	
-	
-	
-	
-	
-	
 	/*Method to get the user type name*/
 	public String getUserTypeName(String userType_id)
 	{
@@ -1991,7 +1751,7 @@ public class AdminModel
 			con = connectToSupportLog();
 			stat = con.createStatement();
 			
-			String query = "select type_desc from support_type where type_id = "+userType_id+" ";
+			String query = "select type_desc from telcodb.dbo.support_type where type_id = "+userType_id+" ";
 			result = stat.executeQuery(query);
 			while(result.next())
 			{
@@ -2140,7 +1900,7 @@ public class AdminModel
 			
 			query = "select user_id, email, password, lastname, firstname,type_id,mobile," +
 					"(select distinct type_desc from telcodb..support_TYPE where type_id = telcodb..support_USER.type_id),status_id," +
-					" user_code,username,service_id, esa_auth, card_scheme,cardscheme_numbers from telcodb..support_user where user_id = "+user_id+"";
+					" user_code,username,service_id, esa_auth from telcodb..support_user where user_id = "+user_id+"";
 			
 			result = stat.executeQuery(query);
 			while(result.next())
@@ -2159,16 +1919,6 @@ public class AdminModel
 				user.setUsername(""+result.getObject(11));
 				user.setService_id(""+result.getObject(12));
 				user.setEsa_type(""+result.getObject(13));
-				String cardscheme = ""+result.getObject(14);
-				if(cardscheme == null || cardscheme.equals("null"))
-				{
-					cardscheme = "";
-				}
-				user.setCardScheme(cardscheme);
-				String cardschemenumbers = ""+result.getObject(15);
-				if(cardschemenumbers==null || cardschemenumbers.equals("null")){cardschemenumbers="";}
-				user.setCardSchemeNumbers(cardschemenumbers);
-				
 				arr.add(user);
 			}
 		}
@@ -2350,6 +2100,67 @@ public class AdminModel
 	
 	/**
 	 * 
+	 * Method to get menuitems by id
+	 */
+	public ArrayList getCarInventoryByInventoryID(String inventoryId)
+	{
+		ArrayList arr = new ArrayList();
+		Car_Inventory carInventory;
+		String empty = "";
+		String query = "";
+		Connection con = null;
+		Statement stat = null;
+		ResultSet result = null;
+		
+		try
+		{
+			con = connectToSupportLog();
+			stat = con.createStatement();
+			
+			query = "select inventory_id,all_makes, all_model, car_year, engine," +
+					" transmission, car_color, fuel_type,mileage,vin,stock_number,target_price from telcodb.dbo.cars_inventory where inventory_id =  '"+inventoryId+"' ";
+			
+			//System.out.println("getMenuItems " + query);
+			result = stat.executeQuery(query);
+			while(result.next())
+			{
+				carInventory = new Car_Inventory();
+				carInventory.setInventory_id(""+result.getObject(1));
+				carInventory.setAll_makes(""+result.getObject(2));
+				carInventory.setAll_model(""+result.getObject(3));
+				carInventory.setCar_year(""+result.getObject(4));
+				carInventory.setEngine(""+result.getObject(5));
+				carInventory.setTransmission(""+result.getObject(6));
+				carInventory.setCar_color(""+result.getObject(7));
+				carInventory.setFuel_type(""+result.getObject(8));
+				carInventory.setMileage(""+result.getObject(9));
+				carInventory.setVin(""+result.getObject(10));
+				carInventory.setStock_number(""+result.getObject(11));
+				carInventory.setTarget_price(""+result.getObject(12));
+				
+				arr.add(carInventory);
+			}
+		}
+		catch(SQLException sq)
+		{
+			System.out.println("error " + sq.getMessage());
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+			closeConnectionSupportLogDB(con, result);
+		}
+		finally
+		{
+			closeConnectionSupportLogDB(con, result);
+		}
+		return arr;
+	}
+	
+	
+	
+	/**
+	 * 
 	 * Method to get merchants mapped to a bizdev user
 	 */
 	public ArrayList getMerchantsOfABizDev(String accountid)
@@ -2384,7 +2195,9 @@ public class AdminModel
 				emerchant.setMerchant_name(""+result.getObject(3));
 				arr.add(emerchant);
 			}
-		
+			
+			
+			
 			
 		}
 		catch(SQLException sq)
@@ -2412,7 +2225,7 @@ public class AdminModel
 	 * */
 	public String updateUser(String user_id,String email, String lname, String fname, 
 			String mobile, String type_id, String user_code, String editedby_user_id,
-			String username, String service_id, String esa_auth,String cardscheme,String cardschemenumbers)
+			String username, String service_id, String esa_auth)
 	{
 		int output = -1;
 		String message = "";
@@ -2436,8 +2249,8 @@ public class AdminModel
 			
 			output = stat.executeUpdate("update telcodb.dbo.support_user set email= '"+email+"' , lastname = '"+lname+"'," +
 					" firstname = '"+fname+"', mobile = '"+mobile+"', type_id = "+type_id+", user_code = '"+user_code+"'," +
-					" modified_date = getDate(), username = '"+username+"', service_id = '"+service_id+"', esa_auth = '"+esa_auth+"', " +
-					" card_scheme = '"+cardscheme+"', cardscheme_numbers = '"+cardschemenumbers+"' where user_id = "+user_id+"");
+					" modified_date = getDate(), username = '"+username+"', service_id = '"+service_id+"', esa_auth = '"+esa_auth+"' " +
+					"where user_id = "+user_id+"");
 			if(output > 0)
 			{
 				con.commit();
@@ -2448,7 +2261,7 @@ public class AdminModel
 				con.rollback();
 				message = "Records not updated";
 			}
-			System.out.println("query updateUser()  :: :: : : ::  "+output);
+			
 		}
 		catch(Exception ex)
 		{
@@ -2641,6 +2454,111 @@ public class AdminModel
 		return message;
 	}
 	
+	
+	/**
+	 * 
+	 * Method for update car Inventory
+	 * */
+	
+
+	
+	public String updateCarInventory(String inventoryId,String allMakes, String allModel, String carYear, String engine, String transmission,
+			String carColor, String fuelType, String mileage , String vin, String stockNumber, String targetPrice)
+	{
+		int output = -1;
+		String message = "";
+		Connection con = null;
+		Statement stat = null;
+		ResultSet result = null;
+	
+		try
+		{
+			con = connectToSupportLog();
+			stat = con.createStatement();
+			
+			output = stat.executeUpdate("update telcodb.dbo.cars_inventory set all_makes= '"+allMakes+"', all_model = '"+allModel+"', car_year ='"+carYear+"'"
+					+ ", engine = '"+engine+"', transmission = '"+transmission+"', car_color = '"+carColor+"', fuel_type = '"+fuelType+"',"
+							+ "mileage = '"+mileage+"', vin='"+vin+"', stock_number = '"+stockNumber+"' , target_price = '"+targetPrice+"' where inventory_id = '"+inventoryId+"'");
+			if(output > 0)
+			{
+				con.commit();
+				message = "Records successfully updated";
+			}
+			else
+			{
+				con.rollback();
+				message = "Records not updated";
+			}
+			
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+			try
+			{
+				con.rollback();
+				message = "Error occured while updating user";
+			}
+			catch(Exception e){}
+			closeConnectionSupportLogDB(con, result);
+		}
+		finally
+		{
+			closeConnectionSupportLogDB(con, result);
+		}
+		return message;
+	}
+
+	
+	public ArrayList getSearchCarInventory(String start_dt, String end_dt)
+	{
+		String query = "";
+		ArrayList arr = new ArrayList();
+		Car_Inventory carInventory = null;
+		String str = "";
+		Connection con = null;
+		Statement stat = null;
+		ResultSet result = null;
+		
+		try
+		{
+			con = connectToSupportLog();
+			stat = con.createStatement();
+			
+			//mobile channel
+			query = "select inventory_id, all_makes, all_model,car_year,engine,transmission ,"
+					+ "car_color, fuel_type, created_date, mileage, vin,stock_number,"
+					+ "target_price from telcodb.dbo.cars_inventory where created_date between('"+ start_dt +"') and ('"+ end_dt +"')";
+			result = stat.executeQuery(query);
+			while(result.next()){
+				carInventory = new Car_Inventory();
+				carInventory.setInventory_id(""+result.getObject(1));
+				carInventory.setAll_makes(""+result.getObject(2));
+				carInventory.setAll_model(""+result.getObject(3));
+				carInventory.setCar_year(""+result.getObject(4));
+				carInventory.setEngine(""+result.getObject(5));
+				carInventory.setTransmission(""+result.getObject(6));
+				carInventory.setCar_color(""+result.getObject(7));
+				carInventory.setFuel_type(""+result.getObject(8));
+				carInventory.setCreated_date(""+result.getObject(9));
+				carInventory.setMileage(""+result.getObject(10));
+				carInventory.setVin(""+result.getObject(11));
+				carInventory.setStock_number(""+result.getObject(12));
+				carInventory.setTarget_price(""+result.getObject(13));
+				arr.add(carInventory);
+			}
+		}catch(Exception ex){
+				closeConnectionSupportLogDB(con, result);
+			}
+			finally
+			{
+				closeConnectionSupportLogDB(con, result);
+			}
+		
+		return arr;
+		
+		}
+
 	
 	/**
 	 * 
@@ -3557,6 +3475,66 @@ public class AdminModel
 	}
 	
 	
+	/*Method to get the menuitems*/
+	public ArrayList getCarInventoryMenuItems()
+	{
+		String query = "";
+		ArrayList arr = new ArrayList();
+		Car_Inventory cInventory = null;
+		MenuItem mitem = null;
+		int counter = 0;
+		Connection con = null;
+		Statement stat = null;
+		ResultSet result = null;
+
+		try
+		{
+			con = connectToSupportLog();
+			stat = con.createStatement();
+			
+			query = "select inventory_id, all_makes, all_model, car_year, engine, transmission, car_color,fuel_type,car_price, created_date, car_image_location, "
+					+ "mileage, vin, stock_number, target_price from telcodb.dbo.cars_inventory";
+		
+			//System.out.println("getMenuItems " + query);
+			result = stat.executeQuery(query);
+			while(result.next())
+			{
+				counter++;
+				
+				cInventory = new Car_Inventory();
+				
+				cInventory.setCounter(""+counter);
+				cInventory.setInventory_id(""+result.getObject(1));
+				cInventory.setAll_makes(""+result.getObject(2));
+				cInventory.setAll_model(""+result.getObject(3));
+				cInventory.setCar_year(""+result.getObject(4));
+				cInventory.setEngine(""+result.getObject(5));
+				cInventory.setTransmission(""+result.getObject(6));
+				cInventory.setCar_color(""+result.getObject(7));
+				cInventory.setFuel_type(""+result.getObject(8));
+				cInventory.setCar_price(""+result.getObject(9));
+				cInventory.setCreated_date(""+result.getObject(10));
+				cInventory.setImage_location(""+result.getObject(11));
+				cInventory.setMileage(""+result.getObject(12));
+				cInventory.setVin(""+result.getObject(13));
+				cInventory.setStock_number(""+result.getObject(14));
+				cInventory.setTarget_price(""+result.getObject(15));
+				arr.add(cInventory);
+			}
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+			closeConnectionSupportLogDB(con, result);
+		}
+		finally
+		{
+			closeConnectionSupportLogDB(con, result);
+		}
+		return arr;
+	}
+	
+	
 	/*Method to get the menuitems when i pass the menuitem*/
 	public ArrayList getMenuItemIPAdrress(String menuitem_id)
 	{
@@ -3814,143 +3792,6 @@ public class AdminModel
 		return message;
 	}
 	
-	
-	/*this is used to activate a card number*/
-	public String setMappedMobileForActivation(String mobile_type, String request_by,
-			String request_byip, String mobile,String userCode)
-	{
-		int output = -1;
-		int output1 = -1;
-		String message = "";
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		String UnionMoible = "UnionMobile";
-		boolean mess = false;
-		ArrayList arr = new ArrayList();
-		
-		try
-		{
-
-					
-					if(mobile_type.equals("Version I"))
-					{
-						con = connectToECard();
-						stat = con.createStatement();
-					
-						String query1 = "insert into E_mobile_subscriber_audit" +
-										" select * from E_Mobile_Subscriber where mobile = '"+mobile+"' ";
-						
-						String query = "update e_mobile_subscriber set Active ='1', Auth_username = '"+request_by+"'," +
-								" Auth_IP = '"+request_byip+"' where mobile = '"+mobile+"' ";
-						
-						output1 = stat.executeUpdate(query1);
-						System.out.print("output1  ::::: "+output1);
-						output = stat.executeUpdate(query);
-						if(output > 0)
-						{
-							con.commit();
-							message = " Mobile Number Successfully Activated  ";	
-						}
-						else
-						{
-							con.rollback();
-							message = "Unable  to Activate Your Mobile Number";
-						}
-					}
-
-			
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			try
-			{
-				con.rollback();
-				message = "Error occured while removing a subscriber card";
-			}
-			catch(Exception e){}
-			closeConnectionECard(con, result, result);
-			closeConnectionMobileDB(con, result);
-		}
-		finally
-		{
-			closeConnectionECard(con, result, result);
-			closeConnectionMobileDB(con, result);
-		}
-		return message;
-	}
-
-	
-	
-	/*this is used to set a card for deleting*/
-	public String setMappedMobileForDeativation(String mobile_type, String request_by,
-			String request_byip, String mobile,String userCode)
-	{
-		int output = -1;
-		int output1 = -1;
-		String message = "";
-		Connection con = null;
-		Statement stat = null;
-		ResultSet result = null;
-		String UnionMoible = "UnionMobile";
-		boolean mess = false;
-		
-		try
-		{
-
-					if(mobile_type.equals("Version I"))
-					{
-						con = connectToECard();
-						stat = con.createStatement();
-						
-						String query1 = "insert into E_mobile_subscriber_audit" +
-								" select * from E_Mobile_Subscriber where mobile ='"+mobile+"' ";
-						
-						String query = "update e_mobile_subscriber set active ='0', Auth_username = '"+request_by+"'," +
-								" Auth_IP = '"+request_byip+"' where mobile = '"+mobile+"' ";
-						
-						output1 = stat.executeUpdate(query1);
-						System.out.print("output1 Deactivate  ::::: "+output1);
-						
-						output = stat.executeUpdate(query);
-						
-						if(output > 0)
-						{
-							con.commit();
-							
-							message = " Mobile Number Successfully DeActivated";
-						}
-						else
-						{
-							con.rollback();
-							message = " Unable to DeActivate Mobile Number ";
-						}
-					}
-				
-						
-			
-			
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			try
-			{
-				con.rollback();
-				message = "Error occured while removing a subscriber card";
-			}
-			catch(Exception e){}
-			closeConnectionECard(con, result, result);
-			closeConnectionMobileDB(con, result);
-		}
-		finally
-		{
-			closeConnectionECard(con, result, result);
-			closeConnectionMobileDB(con, result);
-		}
-		return message;
-	}
 	
 	/**
 	 * Connection to the ENV class

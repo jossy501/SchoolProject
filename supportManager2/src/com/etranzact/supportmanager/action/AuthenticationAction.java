@@ -302,9 +302,8 @@ public class AuthenticationAction implements Serializable
 	}*/
 
 	
-	
 	/*ESA Validation*/
-	public String esaValidation(String process)
+	/*public String esaValidation(String process)
 	{
 		String ret = "";
 		try
@@ -318,8 +317,8 @@ public class AuthenticationAction implements Serializable
 
 			System.out.println("about to call webservice");
 			
-            com.etz.sa.ws.server.SAService service = new com.etz.sa.ws.server.SAService(new URL("file:c:/tony/SA.xml"));
-            com.etz.sa.ws.server.SA port = service.getSAPort();
+           com.etz.sa.ws.server.SAService service = new com.etz.sa.ws.server.SAService(new URL("file:c:/tony/SA.xml"));
+           com.etz.sa.ws.server.SA port = service.getSAPort();
             
            
             String appid = "xpo8200087130";
@@ -484,7 +483,7 @@ public class AuthenticationAction implements Serializable
         }
         return ret;
 	}
-	
+	*/
 	
 	
 	
@@ -545,22 +544,13 @@ public class AuthenticationAction implements Serializable
 					u.setFirst_logon(user.getFirst_logon());
 					u.setAccount_id(user.getService_id());
 					u.setService_id(user.getService_id());
-					u.setEsa_type(user.getEsa_type());
-					u.setBankApp(user.getBankApp());
-					u.setMobile(user.getMobile());
-					u.setCardToCredit(user.getCardToCredit());
-					u.setBankToCredit(user.getBankToCredit());
-					u.setBankAccountToCredit(user.getBankAccountToCredit());
-					u.setCardScheme(user.getCardScheme());
-					u.setCardSchemeNumbers(user.getCardSchemeNumbers());
-					
-				
+
 					System.out.println("u.getT " + u.getType_nm());
 					
 					if(user.getEsa_type().equals("0"))//0 means that this user must go through ESA
 					{
 						//ret = "/esa/esaValidation2.xhtml";
-						ret = esaValidation("1");
+						//ret = esaValidation("1");
 					}
 					else
 					{

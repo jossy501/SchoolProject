@@ -63,34 +63,7 @@
                         <h:inputText id="terminal" value="#{reportAction.terminal_id}" required="false"/>
                     </h:panelGroup>
                     
-                   <!--   <h:outputLabel id="trans_stan" value="Transaction Stan"/>
-                    <h:panelGroup>
-                        <h:inputText id="transaction" value="#{reportAction.terminal_id}" required="false"/>
-                    </h:panelGroup>
                     
-                    
-                      <h:outputLabel for="network_Provider" value="Select Network Provider"/>
-                    <h:panelGroup>
-      
-                        <h:selectOneMenu styleClass="controls-length2" required="true" requiredMessage="Channel is required" id="networkProvider"
-                                         value="#{reportAction.channel_id}">
-                                         
-                                         <f:selectItem itemLabel=".:: Select ::." itemValue="" />
-                                         <f:selectItem itemLabel="MTN" itemValue="MTN" />
-                                         <f:selectItem itemLabel="AIRTEL" itemValue="AIRTEL" />
-                                         <f:selectItem itemLabel="GLO" itemValue="GLO" />
-                                         <f:selectItem itemLabel="ETISALAT" itemValue="ETISALAT" />
-                                         <f:selectItem itemLabel="STARCOMM" itemValue="STARCOMM" />
-                        </h:selectOneMenu>
-                        
-                        <h:outputLabel value=" *" styleClass="messagesingle" />
-                        <br/>
-                        <rich:message for="networkProvider" styleClass="messagesingle"
-                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
-                    </h:panelGroup> -->
-                    
-                    
-        
                     <h:outputLabel id ="start_date" for="start_date" value="Start Date"/>
                     <h:panelGroup>
                     	<rich:calendar value="#{reportAction.start_date}" required="true" id="strt_date"

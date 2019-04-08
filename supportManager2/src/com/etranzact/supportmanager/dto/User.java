@@ -41,17 +41,6 @@ public class User
 	private String esa_type;
 	private String esa_question;
 	private String esa_answer;
-	private String amountStatus;
-	private String companyId;
-	private double amount = 0.0d;
-	
-	private String bankApp;
-	private String cardToCredit;
-	private String bankToCredit;
-	private String bankAccountToCredit;
-	private String cardNumber;
-	private String cardScheme;
-	private String cardSchemeNumbers;
 	
 	public User(){}
 
@@ -316,111 +305,6 @@ public class User
 	public void setEsa_answer(String esa_answer) {
 		this.esa_answer = esa_answer;
 	}
-
-
-	public String getBankApp() {
-		return bankApp;
-	}
-
-
-	public void setBankApp(String bankApp) {
-		this.bankApp = bankApp;
-	}
-
-
-	public String getAmountStatus() {
-		return amountStatus;
-	}
-
-
-	public void setAmountStatus(String amountStatus) {
-		this.amountStatus = amountStatus;
-	}
-
-
-	public String getCompanyId() {
-		return companyId;
-	}
-
-
-	public void setCompanyId(String companyId) {
-		this.companyId = companyId;
-	}
-
-
-	public double getAmount() {
-		return amount;
-	}
-
-
-	public void setAmount(double amount) {
-		this.amount = amount;
-	}
-
-
-	public String getCardToCredit() {
-		return cardToCredit;
-	}
-
-
-	public void setCardToCredit(String cardToCredit) {
-		this.cardToCredit = cardToCredit;
-	}
-
-
-	public String getBankToCredit() {
-		return bankToCredit;
-	}
-
-
-	public void setBankToCredit(String bankToCredit) {
-		this.bankToCredit = bankToCredit;
-	}
-
-
-	public String getBankAccountToCredit() {
-		return bankAccountToCredit;
-	}
-
-
-	public void setBankAccountToCredit(String bankAccountToCredit) {
-		this.bankAccountToCredit = bankAccountToCredit;
-	}
-
-
-	public String getCardNumber() {
-		return cardNumber;
-	}
-
-
-	public void setCardNumber(String cardNumber) {
-		this.cardNumber = cardNumber;
-	}
-
-
-	public String getCardScheme() {
-		return cardScheme;
-	}
-
-
-	public void setCardScheme(String cardScheme) {
-		this.cardScheme = cardScheme;
-	}
-
-
-	public String getCardSchemeNumbers() {
-		return cardSchemeNumbers;
-	}
-
-
-	public void setCardSchemeNumbers(String cardSchemeNumbers) {
-		this.cardSchemeNumbers = cardSchemeNumbers;
-	}
-
-	
-   
-	
-	
 	
 	
 	

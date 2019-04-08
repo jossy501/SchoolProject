@@ -32,17 +32,6 @@
             <rich:graphValidator>
                 <h:panelGrid columns="2" rowClasses="prop" columnClasses="name2,value">
 
-
-					<h:outputLabel value="Mobile Type"/>
-                    <h:panelGroup>
-                        <h:selectOneMenu styleClass="controls-length2" id="selType"
-                                         value="#{reportAction.line_type}">
-                                         
-                            <f:selectItem itemLabel="Version I" itemValue="Version I" />
-                            <f:selectItem itemLabel="Version II" itemValue="Version II" />   
-                        </h:selectOneMenu>
-                    </h:panelGroup>
-
                     <h:outputLabel id="mobileno" for="mobileno" value="Card Number"/>
                     <h:panelGroup>
                         <h:inputText id="mobile" value="#{reportAction.card_num}" required="true" requiredMessage="Card Number is required"/>

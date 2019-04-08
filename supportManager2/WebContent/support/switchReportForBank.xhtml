@@ -118,26 +118,6 @@
                                          value="#{reportAction.trans_code}">
                                          
                             <f:selectItem itemLabel=".:: Select ::." itemValue="" />
-                            <f:selectItem itemLabel="NUMBER OF SUBSCRIBER" itemValue="NUMBER OF SUBSCRIBER" />
-                            <f:selectItem itemLabel="NUMBER OF SUBSCRIBER II" itemValue="NUMBER OF SUBSCRIBER II" />
-                            <f:selectItem itemLabel="AVERAGE TRANSACTION COUNT" itemValue="AVERAGE TRANSACTION COUNT" />
-                            <f:selectItem itemLabel="AVERAGE TRANSACTION VOLUME" itemValue="AVERAGE TRANSACTION VOLUME" />
-                            <f:selectItem itemLabel="AVERAGE INCOME " itemValue="AVERAGE INCOME" />
-                            
-                            
-                        </h:selectOneMenu>
-                        <h:outputLabel value=" *" styleClass="messagesingle" />
-                        <br/>
-                        <rich:message for="selStatus" styleClass="messagesingle"
-                                      errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
-                    </h:panelGroup>
-                    
-                     <!--  <h:outputLabel id="status" for="status" value="Transaction Type"/>
-                    <h:panelGroup>
-                        <h:selectOneMenu styleClass="controls-length2" id="selStatus" required="true" requiredMessage="Trans Type is required" 
-                                         value="#{reportAction.trans_code}">
-                                         
-                            <f:selectItem itemLabel=".:: Select ::." itemValue="" />
                             
                             <f:selectItem itemLabel="REGISTERED SUBSCRIBERS" itemValue="REGISTERED SUBSCRIBERS" />
                             <f:selectItem itemLabel="ACTIVE MOBILE SUBSCRIBERS" itemValue="ACTIVE MOBILE SUBSCRIBERS" />
@@ -150,7 +130,7 @@
                         <br/>
                         <rich:message for="selStatus" styleClass="messagesingle"
                                       errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
-                    </h:panelGroup> -->
+                    </h:panelGroup>
                     
                     
                     
@@ -181,15 +161,10 @@
 
             <rich:dataTable id="acardTb" rows="1000" value="#{reportAction.switchReportLog}"  var="crd">
 
-			 <rich:column>
-                    <f:facet name="header">Month</f:facet>
-                    <h:outputText value="#{crd.month}"/>
-              </rich:column>
-
-              <rich:column>
+                <rich:column>
                     <f:facet name="header">Count</f:facet>
                     <h:outputText value="#{crd.card_count}"/>
-              </rich:column>
+                </rich:column>
                 
             </rich:dataTable>
             

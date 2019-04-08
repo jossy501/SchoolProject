@@ -120,8 +120,7 @@
                                          value="#{reportAction.status_id}">
                                          
                                          <f:selectItem itemLabel=".:: Select ::." itemValue="" />
-                                         <f:selectItem itemLabel="LOCAL PAYMENTS (Old)" itemValue="0:0691339901" />
-										 <f:selectItem itemLabel="LOCAL PAYMENTS (New)" itemValue="0:0443241306" />
+                                         <f:selectItem itemLabel="LOCAL PAYMENTS" itemValue="0:0691339901" />
                                          <f:selectItem itemLabel="INTERNATIONAL PAYMENTS" itemValue="1:0110010016" />
            
                         </h:selectOneMenu>
@@ -148,16 +147,6 @@
    </h:form>
    
    <rich:spacer width="10px" height="20px"/>
-
-	<rich:panel style="width: 20%; height:50px" rendered="#{reportAction.cardholdertranLog.size() > 0}">
-		 <h:panelGrid columns="1" rowClasses="prop" columnClasses="name2,value">
-		 	<h:outputText value="&nbsp;Card Balance :  #{reportAction.makeDouble(reportAction.accountName)}">
-		 		<f:convertNumber pattern="#,###,###,###,###.00"/>
-		 	</h:outputText>
-		 	<h:outputText value="&nbsp;Total Amount Transfered : NA "/>
-		 </h:panelGrid>
-		
-	</rich:panel>
 
     <h:form id="manageCardFrm">
 
@@ -240,6 +229,12 @@
                                 </h:outputText>
                         	</div>
                         </rich:column>
+                        <rich:column>
+                        	<div align="right">
+                        		
+                        	</div>
+                        </rich:column>
+                        
                     </rich:columnGroup>
                 </f:facet>
 

@@ -15,25 +15,8 @@ public class E_MERCHANT
 	private String merchant_pin;
 	private String merchant_name;
 	private String account_id;
-	private String transAmount;
 	
 	public E_MERCHANT(){}
-
-	
-
-	public String getTransAmount() {
-		return transAmount;
-	}
-
-
-
-
-	public void setTransAmount(String transAmount) {
-		this.transAmount = transAmount;
-	}
-
-
-
 
 	public String getMerchant_code() {
 		return merchant_code;

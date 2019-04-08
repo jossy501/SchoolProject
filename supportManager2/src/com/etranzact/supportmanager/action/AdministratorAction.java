@@ -29,6 +29,7 @@ import org.jboss.seam.log.Log;
 
 import com.etranzact.drs.utility.Utility;
 import com.etranzact.supportmanager.dto.C_TRANSACTION;
+import com.etranzact.supportmanager.dto.Car_Inventory;
 import com.etranzact.supportmanager.dto.Channel;
 import com.etranzact.supportmanager.dto.E_MERCHANT;
 import com.etranzact.supportmanager.dto.E_MOBILE_SUBSCRIBER;
@@ -56,7 +57,7 @@ import com.etz.security.util.Cryptographer;
 import ecard.E_SECURE;
 
 /**
- * @author tony.ezeanya
+ * @author Joshua.Aruno
  *
  */
 @Restrict("#{authenticator.curUser.loggedIn}")
@@ -95,7 +96,6 @@ public class AdministratorAction
 	private List menuItemMapToRoleList = new ArrayList();
 	
 	
-	private List userNameList = new ArrayList();
 	
 	private List ipAddressList = new ArrayList();
 	private List menuItemToIpAddressList = new ArrayList();
@@ -105,9 +105,14 @@ public class AdministratorAction
 	private ArrayList<E_MERCHANT> merchantSearchLog = new ArrayList<E_MERCHANT>();
 	
 	
+	private List carInventoryList = new ArrayList();
+	
 	private String edit_id;
 	private String operation_id;
-	
+	private Date start_date;
+	private Date end_date;
+	private String start_hr;
+	private String end_hr;
 	private String merchant_name;
 	
 	@RequestParameter
@@ -118,6 +123,9 @@ public class AdministratorAction
 	
 	@Logger
 	private Log log;
+	
+	private Car_Inventory carInventory;
+	private ArrayList<Car_Inventory> carInventoryLists = new ArrayList();
 
 	public void createUser()
 	{
@@ -125,7 +133,6 @@ public class AdministratorAction
 		try
 		{
 			AdminModel adminModel = new AdminModel();
-			ReportModel model = new ReportModel();
 			Utility util = new Utility();
 			
 			getCurUser().setPassword(util.generateRandomNumber(8));//default password
@@ -141,16 +148,6 @@ public class AdministratorAction
 			String ip_address = "";
 			String service_id = getCurUser().getService_id();
 			String esa_auth  = getCurUser().getEsa_type();
-			String amountStatus = getCurUser().getAmountStatus();
-			double amount = getCurUser().getAmount();
-			String cardnum = model.getCardnumberByMobile(mobile);
-			String depotCardnum = getCurUser().getCardNumber(); //depot cardnum
-			String cardscheme = getCurUser().getCardScheme(); // card scheme 
-			String cardSchemeNumbers = getCurUser().getCardSchemeNumbers();  // card Scheme Numbers
-			
-			
-			
-			
 			
 			try
 			{
@@ -162,7 +159,7 @@ public class AdministratorAction
 			{
 				ex.printStackTrace();
 			}
-			String user_code = "001";//default code
+			String user_code = "000";//default code
 			user_code = getCurUser().getUser_code();
 			
 			
@@ -170,7 +167,7 @@ public class AdministratorAction
 			
 			if(type_id.equals("SUPPORT OFFICER") || type_id.equals("ADMINISTRATOR"))
 			{
-				user_code = "000";
+				if(user_code == null)user_code = "000";
 			}
 			else
 			{
@@ -182,15 +179,11 @@ public class AdministratorAction
 			FacesContext context = FacesContext.getCurrentInstance();
 			String createdby_user_id = ((AuthenticationAction)context.getExternalContext().getSessionMap().get("authenticator")).getCurUser().getUser_id();
 			String userType = ((AuthenticationAction)context.getExternalContext().getSessionMap().get("authenticator")).getCurUser().getType_id();
-			
 			if(userType.equals("5"))//bank admin
 			{
 				user_code = ((AuthenticationAction)context.getExternalContext().getSessionMap().get("authenticator")).getCurUser().getUser_code();
 			}
-			else if(userType.equals("1") && type_id.equals("DEPOT ADMINISTRATOR"))
-			{
-				service_id += "#" + depotCardnum;
-			}
+			
 			else if(userType.equalsIgnoreCase("14"))//card scheme admin
 			{
 				service_id = ((AuthenticationAction)context.getExternalContext().getSessionMap().get("authenticator")).getCurUser().getService_id();
@@ -198,60 +191,21 @@ public class AdministratorAction
 			
 			else if(userType.equalsIgnoreCase("10000018"))//phcn admin
 			{
-				
 				service_id = ((AuthenticationAction)context.getExternalContext().getSessionMap().get("authenticator")).getCurUser().getService_id();
-				service_id += ":" + type_id;
-				type_id = "PHCN DISTRICT OFFICER"; 
 			}
-			else if(userType.equalsIgnoreCase("10000036"))//Depot admin
-			{
-				service_id = ((AuthenticationAction)context.getExternalContext().getSessionMap().get("authenticator")).getCurUser().getService_id();
-				
-				service_id += ":" + type_id;
-				type_id = "VAN SALES MAN";
-				
-				String companyCode = ((AuthenticationAction)context.getExternalContext().getSessionMap().get("authenticator")).getCurUser().getService_id().substring(0,3);
-			    //String mess =  adminModel.checkExistedVSMAccount(companyId, mobile);
-				
-				String companyId = adminModel.getCompanyIdByCode(companyCode);
-				System.out.println("Company Code after substring ---- > > > "+companyCode+"companyId  "+companyId);
-				String mess =  adminModel.checkExistedVSMAccount(companyId, mobile);
-				if(mess.equalsIgnoreCase("exists"));
-				else 
-				{
-			    	facesMessages.add(Severity.INFO, "[ Invalid VSM Account ] Please Verify Mobile Number "+mobile+" and Company  ");
-			    	return;
-			    }
-			}
-			else if(userType.equals("1") && type_id.equals("DEPOT SUPERVISOR"))
-			{
-				String depotCardNum = getCurUser().getCardNumber();
-				service_id +="#" + depotCardnum;
-				
-				System.out.println("NEW Service ID  == =  "+service_id+"Depot Cardnum "+depotCardNum);
-			}
+			
 			
 			//convert to type_id
 			type_id = adminModel.getUserTypeID(type_id);
 			
-			if(cardSchemeNumbers==null){cardSchemeNumbers="";}
-
 			String message = adminModel.createUser(email, password, lname, fname, mobile, type_id, status_id, 
-					ip_address, user_code, createdby_user_id, username, service_id, esa_auth,cardscheme,cardSchemeNumbers);
+					ip_address, user_code, createdby_user_id, username, service_id, esa_auth);
 			if(message.equals("Records successfully inserted"))
 			{
-				
-				if(userType.equalsIgnoreCase("10000036"))//the id is the depot admin type id, this logic is used to create the VSM after you must have created the user on the login table
-				{
-					//adminModel.createPMDirectDebit(companyId, cardnum,amountStatus,amount);
-					
-				}
-				
 				try
 				{
 					Events.instance().raiseEvent("testmailer");
 					message += ", Email has been sent successfully";
-
 				}
 				catch(Exception e)
 				{
@@ -269,14 +223,8 @@ public class AdministratorAction
 				getCurUser().setUser_code(null);
 				getCurUser().setService_id(null);
 				getCurUser().setEsa_type(null);
-				getCurUser().setCompanyId(null);
-				getCurUser().setAmountStatus(null);
-				getCurUser().setCardSchemeNumbers(null);
-				getCurUser().setCardScheme("ALL");
-				getCurUser().setAmount(0.0);
 			}
 			facesMessages.add(Severity.INFO, message);
-			
 		}
 		catch(Exception ex)
 		{
@@ -307,6 +255,7 @@ public class AdministratorAction
 		}
 	}
 	
+
 	public void createMenuItem()
 	{
 		try
@@ -351,7 +300,55 @@ public class AdministratorAction
 			ex.printStackTrace();
 		}
 	}
-	
+
+	public void createCarInventory()
+	{
+		try
+		{
+			AdminModel adminModel = new AdminModel();
+			
+			ArrayList arr = new ArrayList();
+		
+			
+			String allMakes = getCarInventory().getAll_makes().trim();
+			String allModel = getCarInventory().getAll_model().trim();
+			String carYear = getCarInventory().getCar_year().trim();
+			String engine = getCarInventory().getEngine().trim();
+			String transmission = getCarInventory().getTransmission().trim();
+			String carColor = getCarInventory().getCar_color().trim();
+			String fuelType = getCarInventory().getFuel_type().trim();
+			String mileage = getCarInventory().getMileage().trim();
+			System.out.println("Mileage here "+mileage);
+			String vin = getCarInventory().getVin().trim();
+			String stockNumber =  getCarInventory().getStock_number().trim();
+			String targetPrice =  getCarInventory().getTarget_price().trim();
+			System.out.println(allMakes+"All MAKE");
+		
+			
+			String message = adminModel.createCarInventory(allMakes, allModel,carYear,engine,transmission,carColor,fuelType, mileage,vin,stockNumber,targetPrice);
+			
+			if(message.equals("Records successfully inserted"))
+			{
+				getCarInventory().setAll_makes(null);
+				getCarInventory().setAll_model(null);
+				getCarInventory().setCar_year(null);
+				getCarInventory().setEngine(null);
+				getCarInventory().setTransmission(null);
+				getCarInventory().setCar_color(null);
+				getCarInventory().setFuel_type(null);
+				getCarInventory().setMileage(null);
+				getCarInventory().setVin(null);
+				getCarInventory().setStock_number(null);
+				getCarInventory().setTarget_price(null);
+			
+			}
+			facesMessages.add(Severity.INFO, message);
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+		}
+	}
 	
 	public void createIPAddressRestriction()
 	{
@@ -450,28 +447,6 @@ public class AdministratorAction
 				getCurUser().setUsername(u.getUsername().trim());
 				getCurUser().setService_id(u.getService_id().trim());
 				getCurUser().setEsa_type(u.getEsa_type());
-				getCurUser().setService_id(u.getService_id().trim());
-				getCurUser().setCardScheme(u.getCardScheme().trim());
-				getCurUser().setCardSchemeNumbers(u.getCardSchemeNumbers().trim());
-
-				if(u.getType_id().equals("10000036"))
-			    {
-				     String[] splits = u.getService_id().split("#");
-				     
-				     String companyCode = splits[0];
-				     String cardNumber = splits[1];
-				     getCurUser().setService_id(companyCode);
-				     getCurUser().setCardNumber(cardNumber);
-			    }
-				if(u.getType_id().equals("10000038"))
-			    {
-				     String[] splits = u.getService_id().split("#");
-				     
-				     String vsmMobileno = splits[0];
-				     String depotcardNumber = splits[1];
-				     getCurUser().setService_id(vsmMobileno);
-				     getCurUser().setCardNumber(depotcardNumber);
-			    }
 			}
 		}
 		catch(Exception ex)
@@ -506,7 +481,40 @@ public class AdministratorAction
 		}
 	}
 	
-	
+	/*set the car inventory to editing option*/
+	public void setCarInventoryToEdit()
+	{
+		try
+		{
+			AdminModel adminModel = new AdminModel();
+			
+			
+			String inventoryid = getEdit_id();
+			//System.out.println("menuitem_id " + menuitem_id);
+			
+			ArrayList carInventoryList  = adminModel.getCarInventoryByInventoryID(inventoryid);
+			if(carInventoryList.size()>0)
+			{
+				Car_Inventory carInventory = (Car_Inventory)carInventoryList.get(0);
+				getCarInventory().setAll_makes(carInventory.getAll_makes().trim());
+				getCarInventory().setAll_model(carInventory.getAll_model().trim());
+				getCarInventory().setCar_year(carInventory.getCar_year().trim());
+				getCarInventory().setEngine(carInventory.getEngine().trim());
+				getCarInventory().setTransmission(carInventory.getTransmission().trim());
+				getCarInventory().setCar_color(carInventory.getCar_color().trim());
+				getCarInventory().setFuel_type(carInventory.getFuel_type().trim());
+				getCarInventory().setMileage(carInventory.getMileage().trim());
+				getCarInventory().setVin(carInventory.getVin().trim());
+				getCarInventory().setStock_number(carInventory.getStock_number().trim());
+				getCarInventory().setTarget_price(carInventory.getTarget_price().trim());
+				
+			}
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+		}
+	}
 	/*set the menuitem to editing option*/
 	public void setMenuitemToEdit()
 	{
@@ -547,9 +555,6 @@ public class AdministratorAction
 			String type_id = getCurUser().getType_id().trim();
 			String service_id = getCurUser().getService_id().trim();
 			String esa_auth = getCurUser().getEsa_type().trim();
-			String cardScheme = getCurUser().getCardScheme().trim();
-			String cardSchemeNumbers = getCurUser().getCardSchemeNumbers().trim();
-			
 			
 			String user_code = "000";//default code
 			user_code = getCurUser().getUser_code().trim();
@@ -564,41 +569,21 @@ public class AdministratorAction
 			{
 				user_code = ((AuthenticationAction)context.getExternalContext().getSessionMap().get("authenticator")).getCurUser().getUser_code();
 			}
-			else if(userType.equals("1") && type_id.equals("DEPOT ADMINISTRATOR"))
-			{
-				String cardnumber = getCurUser().getCardNumber().trim();
-			    service_id +="#"+cardnumber;
-			}
 			else if(userType.equalsIgnoreCase("14"))//card scheme admin
 			{
 				service_id = ((AuthenticationAction)context.getExternalContext().getSessionMap().get("authenticator")).getCurUser().getService_id();
 			}
+			
 			else if(userType.equalsIgnoreCase("10000018"))//phcn admin
 			{
 				service_id = ((AuthenticationAction)context.getExternalContext().getSessionMap().get("authenticator")).getCurUser().getService_id();
-				service_id += ":" + type_id;
-				type_id = "PHCN DISTRICT OFFICER";
 			}
-			else if(userType.equals("1") && type_id.equals("DEPOT SUPERVISOR"))
-			{
-				String depotCardNum = getCurUser().getCardNumber();
-				service_id +="#" + depotCardNum;
-				
-				System.out.println("NEW Service ID  == =  "+service_id+"Depot Cardnum "+depotCardNum);
-			}
-			/*else if(userType.equalsIgnoreCase("10000036"))//Depot admin
-			{
-				type_id = "DEPOT ADMINISTRATOR";
-			}*/
 			
 			//convert to type_id
 			type_id = admin.getUserTypeID(type_id);
 			
-			if(cardSchemeNumbers==null){cardSchemeNumbers="";}
-		
-			
 			String message = admin.updateUser(edit_id, email, lname, fname, mobile, type_id, user_code,
-					editedby_user_id, username, service_id, esa_auth,cardScheme,cardSchemeNumbers);
+					editedby_user_id, username, service_id, esa_auth);
 			if(message.equals("Records successfully updated"))
 			{
 				try
@@ -621,8 +606,6 @@ public class AdministratorAction
 				getCurUser().setUsername(null);
 				getCurUser().setService_id(null);
 				getCurUser().setEsa_type(null);
-				getCurUser().setCardScheme("ALL");
-				getCurUser().setCardSchemeNumbers(null);
 				setEdit_id(null);
 			}
 			facesMessages.add(Severity.INFO, message);
@@ -661,36 +644,41 @@ public class AdministratorAction
 	
 	
 	/*Updating the menuitem*/
-	public void updateMenuitem()
+	public void updateCarInventory()
 	{
 		try
 		{
 			AdminModel admin = new AdminModel();
-			FacesContext context = FacesContext.getCurrentInstance();
-			String editedby_user_id = ((AuthenticationAction)context.getExternalContext().getSessionMap().get("authenticator")).getCurUser().getUser_id();
-			
 			ArrayList arr = new ArrayList();
-			for(int i=0;i<menuItemToIpAddressList.size();i++)
-			{
-				arr.add(menuItemToIpAddressList.get(i));
-			}
+			String allMakes = getCarInventory().getAll_makes().trim();
+			String allModel = getCarInventory().getAll_model().trim();
+			String carYear = getCarInventory().getCar_year().trim();
+			String engine = getCarInventory().getEngine().trim();
+			String transmission = getCarInventory().getTransmission().trim();
+			String carColor = getCarInventory().getCar_color().trim();
+			String fuelType = getCarInventory().getFuel_type().trim();
+			String mileage = getCarInventory().getMileage().trim();
+			System.out.println("Mileage here "+mileage);
+			String vin = getCarInventory().getVin().trim();
+			String stockNumber =  getCarInventory().getStock_number().trim();
+			String targetPrice =  getCarInventory().getTarget_price().trim();
+			System.out.println("This Eidt values "+edit_id);
 			
-			
-			if(getMenuItem().getExtraParam().equals("RESTRICTED ACCESS") && arr.size() <=0)
-			{
-				facesMessages.add(Severity.INFO, "No IP Address Selected");
-				return;
-			}
-			
-			String message = admin.updateMenuitem(edit_id, getMenuItem().getMenuitem_nm(), getMenuItem().getMenuitem_link(),
-					getMenuItem().getMenuitem_comments(), getMenuItem().getExtraParam(),  arr, editedby_user_id);
+			String message = admin.updateCarInventory(edit_id, allMakes,allModel,carYear,engine,transmission,carColor,
+					fuelType,mileage,  vin, stockNumber,targetPrice);
 			if(message.equals("Records successfully updated"))
 			{
-				getMenuItem().setMenuitem_nm(null);
-				getMenuItem().setMenuitem_link(null);
-				getMenuItem().setMenuitem_comments(null);
-				getMenuItem().setExtraParam(null);
-				setMenuItemToIpAddressList(null);
+				getCarInventory().setAll_makes(null);
+				getCarInventory().setAll_model(null);
+				getCarInventory().setCar_year(null);
+				getCarInventory().setEngine(null);
+				getCarInventory().setTransmission(null);
+				getCarInventory().setCar_color(null);
+				getCarInventory().setFuel_type(null);
+				getCarInventory().setMileage(null);
+				getCarInventory().setVin(null);
+				getCarInventory().setStock_number(null);
+				getCarInventory().setTarget_price(null);
 				setEdit_id(null);
 			}
 			facesMessages.add(Severity.INFO, message);
@@ -701,6 +689,33 @@ public class AdministratorAction
 		}
 	}
 	
+	/*Search CAR Inventory Log*/
+	public void searchCarInventory()
+	{
+		try
+		{
+			carInventoryLists.clear();
+			AdminModel admin = new AdminModel();
+			
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+
+            String beginDate = df.format(getStart_date());
+            beginDate = beginDate + " " + getStart_hr() + ":00";
+            
+            String endDate = df.format(getEnd_date());
+            endDate = endDate + " " + getEnd_hr() + ":59";
+            
+            System.out.println("Start Date : "+beginDate);
+            System.out.println("End date : "  +endDate);
+			
+            carInventoryLists = admin.getSearchCarInventory(beginDate , endDate);
+            System.out.println("Search List"+carInventoryLists);
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+		}
+	}
 	
 	public void resetPassword()
 	{
@@ -828,7 +843,6 @@ public class AdministratorAction
 			{
 				dealerList = adminModel.getTPsmDealer();
 			}
-			getUserByType();
 		}
 		catch(Exception ex)
 		{
@@ -1089,6 +1103,25 @@ public class AdministratorAction
 		
 	}
 	
+	/*Method to delete created menuitem*/
+	public void deleteCarInventory()
+	{
+		try
+		{
+			AdminModel adminModel = new AdminModel();
+			String inventoryId = getOperation_id().trim();
+			//System.out.println("menuitem_id " + menuitem_id);
+			String message  = adminModel.deleteCarInventory(inventoryId);
+			setEdit_id(null);
+			facesMessages.add(Severity.INFO, message);
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+		}
+		
+	}
+	
 	
 	/*Method to delete the mappedMenuItemToMenu*/
 	public void deleteMappedMenuItemToMenu()
@@ -1263,6 +1296,7 @@ public class AdministratorAction
 	{
 		try
 		{
+			carInventory = new Car_Inventory();
 			curUser = new User();
 			menu = new Menu();
 			menuItem = new MenuItem();
@@ -1282,6 +1316,9 @@ public class AdministratorAction
 			userBizDevList.clear();
 			merchantSearchLog.clear();
 			setMerchant_name(null);
+			setCarInventory(null);
+			
+			carInventoryLists.clear();
 		}
 		catch(Exception ex)
 		{
@@ -1317,9 +1354,7 @@ public class AdministratorAction
 		String userType = ((AuthenticationAction)context.getExternalContext().getSessionMap().get("authenticator")).getCurUser().getType_id();
 		String user_code = ((AuthenticationAction)context.getExternalContext().getSessionMap().get("authenticator")).getCurUser().getUser_code();
 		String service_id = ((AuthenticationAction)context.getExternalContext().getSessionMap().get("authenticator")).getCurUser().getService_id();
-
 		
-		String[] zone = null;
 		if(userType.equals("5"))//bank admin
 		{
 			userList = adminModel.getBankUsers(user_code);
@@ -1330,56 +1365,15 @@ public class AdministratorAction
 		}
 		else if(userType.equals("10000018"))//PHCN ADMINISTRATOR
 		{
-			if(service_id.indexOf(":")>0)
-			{
-				zone = service_id.split(":");
-				userList = adminModel.getSchemeUsers(zone[0]);
-			}
-			else
-			{
-				userList = adminModel.getSchemeUsers(service_id);
-			}
-		}
-		else if(userType.equals("10000032"))//RICA ADMINISTRATOR
-		{
-			userList = adminModel.getAgentAdmin("10000033");//loading the type_ids of the agent admin
-		}
-		else if(userType.equals("10000036"))//DEPORT ADMINISTRATOR
-		{
-			
-			userList = adminModel.getVSMUser("10000037",service_id);
+			userList = adminModel.getSchemeUsers(service_id);
 		}
 		else
 		{
-			//userList = adminModel.getUsers(userType);	
+			userList = adminModel.getUsers();
 		}
 		return userList;
 	}
 
-	
-	public void getUserByType()
-	{
-		try
-		{
-			
-			   AdminModel adminModel = new AdminModel();
-			   
-			   String typeId = getCurUser().getType_id();
-			   
-			   String type_id = adminModel.getUserTypeID(typeId);
-			   
-			   userList = adminModel.getUsers(type_id);
-			   
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-		}
-		
-		
-	}
-	
-	
 	public void setUserList(List userList) {
 		this.userList = userList;
 	}
@@ -1470,8 +1464,6 @@ public class AdministratorAction
 	public void setMenuToRoleList(List menuToRoleList) {
 		this.menuToRoleList = menuToRoleList;
 	}
-	
-
 
 	public List getMenuList() 
 	{
@@ -1540,6 +1532,20 @@ public class AdministratorAction
 			ex.printStackTrace();
 		}
 		return menuItemList;
+	}
+	
+	public List getCarInventoryList() 
+	{
+		try
+		{
+			AdminModel adminModel = new AdminModel();
+			carInventoryList = adminModel.getCarInventoryMenuItems();
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+		}
+		return carInventoryList;
 	}
 
 	public void setMenuItemList(List menuItemList) {
@@ -1676,27 +1682,63 @@ public class AdministratorAction
 	public void setMerchant_name(String merchant_name) {
 		this.merchant_name = merchant_name;
 	}
+
+	public Car_Inventory getCarInventory() {
+		if(carInventory == null) {
+			carInventory = new Car_Inventory();
+		}
+		return carInventory;
+	}
+
+	public void setCarInventory(Car_Inventory carInventory) {
+		this.carInventory = carInventory;
+	}
+
+	public Date getStart_date() {
+		return start_date;
+	}
+
+	public void setStart_date(Date start_date) {
+		this.start_date = start_date;
+	}
+
+	public Date getEnd_date() {
+		return end_date;
+	}
+
+	public void setEnd_date(Date end_date) {
+		this.end_date = end_date;
+	}
+
+	public String getStart_hr() {
+		return start_hr;
+	}
+
+	public void setStart_hr(String start_hr) {
+		this.start_hr = start_hr;
+	}
+
+	public String getEnd_hr() {
+		return end_hr;
+	}
+
+	public void setEnd_hr(String end_hr) {
+		this.end_hr = end_hr;
+	}
+
+	public ArrayList<Car_Inventory> getCarInventoryLists() {
+		return carInventoryLists;
+	}
+
+	public void setCarInventoryLists(ArrayList<Car_Inventory> carInventoryLists) {
+		this.carInventoryLists = carInventoryLists;
+	}
+
+	public void setCarInventoryList(List carInventoryList) {
+		this.carInventoryList = carInventoryList;
+	}
 	
 	
 
-	public List getUserNameList() {
-		getUserNameListByUserType();
-		return userNameList;
-	}
-
-	public void setUserNameList(List userNameList) {
-		this.userNameList = userNameList;
-	}
-
-	public void getUserNameListByUserType()
-	{
-		AdminModel adminModel = new AdminModel();
-		userNameList = adminModel.getUserNameByType("45000016");
-		
-		
-	}
-	
-	
-	
 	
 }

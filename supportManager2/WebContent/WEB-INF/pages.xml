@@ -85,11 +85,6 @@
         <navigation from-action="#{reportAction.viewAllReportByTransCode}">
             <redirect view-id="/support/merchantAllReportByTransCode.xhtml"/>
         </navigation>
-		
-		<navigation from-action="#{reportAction.viewReportByAccountCodeGroupByTransCode}">
-            <redirect view-id="/support/merchantAllReportByAccountCode.xhtml"/>
-        </navigation>
-		
     </page>
     
     
@@ -150,29 +145,6 @@
         </navigation>
     </page>
     
-	
-	 <!-- Search grouped by account code -->
-    <page view-id="/support/merchantAllReportByAccountCode.xhtml">
-        <navigation from-action="#{reportAction.viewAllReportByAccontCodeAndTransCode}">
-            <redirect view-id="/support/merchantAllReportByAccountCodeAndTransCode.xhtml"/>
-        </navigation>
-    </page>
-    
-    <page view-id="/support/merchantAllReportByAccountCodeAndTransCode.xhtml">
-        <navigation from-action="#{reportAction.viewAllReportByAccountCodeAndTransCodeAndChannel}">
-            <redirect view-id="/support/merchantAllReportByAccountCodeAndTranCodeAndChannel.xhtml"/>
-        </navigation>
-    </page>
-    
-    <page view-id="/support/merchantAllReportByAccountCodeAndTranCodeAndChannel.xhtml">
-        <navigation from-action="#{reportAction.viewDetailedMerchantReport}">
-            <redirect view-id="/support/merchantViewSettledReport.xhtml"/>
-        </navigation>
-    </page>
-    
-    
-    
-    <!--  -->
     
     <page view-id="/support/settlementReport.xhtml">
         <navigation from-action="#{reportAction.viewSettlementReportDetails}">

@@ -227,7 +227,7 @@
                             <f:param name="id" value="#{crd.unique_trans_id}:"/>
                             <rich:componentControl for="panelp" attachTo="link3" operation="show" event="onclick"/>
             		</s:link>
-            		
+	
                 </rich:column>
                 
                 <rich:column>
@@ -294,18 +294,7 @@
         
         <rich:panel style="width:100%" rendered = "#{reportAction.line_type eq 'Version II'}">
 
-            <f:facet name="header">
-           <rich:columnGroup>
-		         <rich:column colspan="4">
-			       <h:outputText value="Report [ Total Record(s) found :  #{reportAction.vtuLog.size()} ]" />
-			           <s:link  view="/excel-reports-templates/vtuInvestigationExcelReport.xhtml"  styleClass= "menu-button"  rendered ="#{reportAction.vtuLog.size() > 0}"  >
-			            <font color = "white">download : </font> <h:graphicImage value="/images/excel5.jpg"/>
-			           </s:link>
-			       	   <rich:toolTip  for="slogo"  value="Please Click to Generate Report in View "/>
-			      </rich:column>
-			 </rich:columnGroup>
-			 
-           </f:facet>
+            <f:facet name="header">Report [ Total Record(s) found :  #{reportAction.vtuLog.size()} ]</f:facet>
 
             <rich:dataTable id="cardTb1" rowKeyVar = "rkv" rows="1000" value="#{reportAction.vtuLog}"  var="crd">
                 

@@ -191,7 +191,6 @@
                             
                             <f:selectItem id="item_a" itemLabel="Commission Report" itemValue="A" />
                             <f:selectItem id="item_b" itemLabel="Commission Report [By Bank]" itemValue="B" />
-                            <f:selectItem id="item_c" itemLabel="Commission Report [By BizGroup]" itemValue="C" />
                         </h:selectOneRadio>
                         <br/>
                         <rich:message for="optionSel" styleClass="messagesingle"
@@ -400,7 +399,7 @@
         
         
         
-       <!-- Report for All Option group by Bank,  Trans_code Stage-->
+        <!-- Report for All Option group by Bank,  Trans_code Stage-->
        <rich:panel style="width:100%" rendered = "#{reportAction.allMerchantBankReportLog.size() > 0 }">
            
            <f:facet name="header">
@@ -470,87 +469,7 @@
         </rich:panel>
 
 
-		<!-- Report for All Option group by BizHeads -->
-       <rich:panel style="width:100%" rendered = "#{reportAction.supportLog.size() > 0 }">
-           
-           <f:facet name="header">
-
-           <rich:columnGroup>
-		         <rich:column colspan="4">
-			       <h:outputText value="BizHead Breakdown Report [ Total Record(s) found :  #{reportAction.supportLog.size()} ]" />
-			      </rich:column>
-			 </rich:columnGroup>
-			 
-           </f:facet>
-
-            <rich:dataTable id="srBZcardTb" rows="40" value="#{reportAction.supportLog}"  var="crd">
-          
-                <rich:column>
-                    <f:facet name="header">BizHead Account ID</f:facet>
-				    <h:commandLink value="#{crd[0]}" action="#{reportAction.viewReportByAccountCodeGroupByTransCode}" id="link4">
-				        <f:setPropertyActionListener target="#{reportAction.strParam}" value="#{crd[0]}" />
-				        <rich:componentControl for="panelp" attachTo="link4" operation="show" event="onclick"/>
-				    </h:commandLink>
-                </rich:column>
-                
-                <rich:column>
-                    <f:facet name="header">Lastname</f:facet>
-                    <h:outputText value="#{crd[2]}"/>
-                </rich:column>
-                
-                <rich:column>
-                    <f:facet name="header">Firstname</f:facet>
-                    <h:outputText value="#{crd[3]}"/>
-                </rich:column>
-                
-                <rich:column>
-                    <f:facet name="header">Merchant Count</f:facet>
-                    <h:outputText value="#{crd[7]}"/>
-                </rich:column>
-                
-				<rich:column>
-                    <f:facet name="header">Total Count</f:facet>
-                    <h:outputText value="#{crd[5]}" style="float: right;"/>
-                </rich:column>
-                
-                <rich:column>
-                    <f:facet name="header">Total Amount</f:facet>
-                    <h:outputText value="#{reportAction.makeDouble(crd[6])}" style="float: right;">
-				    	<f:convertNumber pattern="#,###,###,###,###.00"/>
-				    </h:outputText>
-                </rich:column>
-                
-                <f:facet name="footer">
-                
-                	<rich:columnGroup>
-                        <rich:column colspan="4">
-                        	<div align="left">
-                        		Total Amount
-                        	</div>
-                        </rich:column>
-                        <rich:column>
-                        	<div align="right">
-                        		<h:outputText value="#{reportAction.total_count}"/>
-                        	</div>
-                        </rich:column>
-                        <rich:column>
-                            <div align="right">
-                                <h:outputText value="#{reportAction.makeDouble(reportAction.total_amount)}">
-                                    <f:convertNumber pattern="#,###,###,###,###.00"/>
-                                </h:outputText>
-                            </div>
-                        </rich:column>
-                        
-                    </rich:columnGroup>
-                </f:facet>
-                
-            </rich:dataTable>
-
-
-        </rich:panel>
-
-
-		<rich:panel style="width: 100%; height:50px" rendered="#{reportAction.allMerchantBankReportLog.size() == 0 and reportAction.allMerchantTransReportLog.size() == 0 and reportAction.merchantSummaryReportLog.size() == 0 and reportAction.settle_batch.size() == 0 and reportAction.supportLog.size() == 0}">
+		<rich:panel style="width: 100%; height:50px" rendered="#{reportAction.allMerchantBankReportLog.size() == 0 and reportAction.allMerchantTransReportLog.size() == 0 and reportAction.merchantSummaryReportLog.size() == 0 and reportAction.settle_batch.size() == 0}">
 			<h:outputText value="&nbsp;No record(s) found. "/>
 		</rich:panel>
 
