@@ -1,0 +1,41 @@
+public OrderRequest getOrderRequest(String requestJSONString) {
+		LOGGER.info("In getOrderRequest");
+		OrderRequest orderRequest = null;
+		if (requestJSONString != null) {
+			try {
+				orderRequest = GsonUtil.fromJson(requestJSONString, OrderRequest.class);
+			} catch (JsonSyntaxException jsonSyntaxException) {
+				LOGGER.error(jsonSyntaxException.getMessage(), jsonSyntaxException);
+			}
+		} else {
+
+			LOGGER.error("Input not provided.");
+		}
+
+		return orderRequest;
+	}
+	
+	
+	Interface
+		public OrderRequest getOrderRequest(String requestJSONString);
+		
+		
+		
+	@POST
+	@Path("/submitOrder")	
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public String submitOrder(String requestJSONString, @Context HttpServletRequest request, @Context HttpServletResponse response)
+	{
+		String responseString = null;
+		OrderRequest orderRequest = null;
+		Map<String, Object> orderData = new HashMap<String, Object>();
+
+		orderRequest = payAndGoService.getOrderRequest(requestJSONString);
+		orderRequest.setIp(ClientIPAddress.getClientIPAddress(request, false));
+		orderData = payAndGoService.saveOrUpdateOrder(orderRequest);
+		
+		responseString = GsonUtil.toJson(orderData);
+
+		return responseString;	
+	}
