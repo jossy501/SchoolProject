@@ -22,20 +22,49 @@ public OrderRequest getOrderRequest(String requestJSONString) {
 		
 		
 	@POST
-	@Path("/submitOrder")	
+	@Path("/updateOrder")	
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public String submitOrder(String requestJSONString, @Context HttpServletRequest request, @Context HttpServletResponse response)
+	public String updateOrder(String requestJSONString, @Context HttpServletRequest request, @Context HttpServletResponse response)
 	{
+		LOGGER.info("In a updateOrder service: -->"+ requestJSONString);
 		String responseString = null;
-		OrderRequest orderRequest = null;
+		final OrderRequest orderRequest = new OrderRequest();
 		Map<String, Object> orderData = new HashMap<String, Object>();
-
-		orderRequest = payAndGoService.getOrderRequest(requestJSONString);
-		orderRequest.setIp(ClientIPAddress.getClientIPAddress(request, false));
-		orderData = payAndGoService.saveOrUpdateOrder(orderRequest);
+		PayAndGoUser payAndGo = null;
+		payAndGo = payAndGoService.getOrderRequest(requestJSONString);
 		
+		if (_payAndGoRestUtil.checkValidInputsForUpdateOrder(payAndGo)) {
+			
+			orderRequest.setOrderType(PayAndGoConstants.PAYANDGO_ORDER_TYPE);
+			orderRequest.setApprovalCode(payAndGo.getApprovalCode());
+			orderRequest.setStoreNumber(payAndGo.getStoreNumber());
+			orderRequest.setCustomerNumber(payAndGo.getCustomerNumber());
+			orderRequest.setRxList(payAndGo.getSelectedPrescriptions().stream().
+			map(selectedPrescriptions -> orderRequest.new Rx (
+					selectedPrescriptions.getLocn(), 
+					selectedPrescriptions.getRx(), 
+					selectedPrescriptions.getDteOfSrvc().substring(4)+Constants.DASH+selectedPrescriptions.getDteOfSrvc().substring(0,2)+Constants.DASH+selectedPrescriptions.getDteOfSrvc().substring(2,4))).collect(Collectors.toList()));
+			
+			orderRequest.setIp(ClientIPAddress.getClientIPAddress(request, false));
+			orderData = payAndGoService.updateOrder(orderRequest);
+			
+		}else {
+				LOGGER.info("updateOrder : Invalid inputs");
+				orderData.put(PayAndGoConstants.STATUS, Constants.ERROR);
+				orderData.put(PayAndGoConstants.ERROR_CODE,ErrorCodes.ERROR_CODE_INVALID_INPUT);
+				orderData.put(PayAndGoConstants.ERROR_TYPE,"Invalid Input Parameters");
+				orderData.put(PayAndGoConstants.ERROR_MESSAGE,"Invalid Inputs");
+				responseString = GsonUtil.toJson(orderData);
+		}
 		responseString = GsonUtil.toJson(orderData);
-
 		return responseString;	
 	}
+	
+
+	public boolean checkValidInputsForUpdateOrder(PayAndGoUser payAndGo) {
+		return (!StringUtils.isEmpty(payAndGo.getCustomerNumber()) && !StringUtils.isEmpty(payAndGo.getApprovalCode()) && !StringUtils.isEmpty(payAndGo.getStoreNumber())
+				&& payAndGo.getSelectedPrescriptions() != null && payAndGo.getSelectedPrescriptions().size() > Constants.ZERO_INT);
+	}
+	public OrderResponse updateOrder(OrderRequest orderRequest) throws IOException;
+	
